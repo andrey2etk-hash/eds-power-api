@@ -37,6 +37,7 @@ Data Contract — це правило, яке визначає:
     "request_id": "uuid",
     "source": "gas",
     "user_id": "uuid",
+    "session_token": "session_token",
     "timestamp": "2026-04-25T12:00:00Z"
   },
   "module": "CALC_CONFIGURATOR",
@@ -51,10 +52,38 @@ Data Contract — це правило, яке визначає:
 - meta.request_id — обов’язкове поле; унікальний ID запиту
 - meta.source — обов’язкове поле; джерело запиту: gas / web / api
 - meta.user_id — обов’язкове поле; ID користувача
+- meta.session_token — обов’язкове поле для авторизованої сесії; токен активної сесії
 - meta.timestamp — обов’язкове поле; час створення запиту
 - module — обов’язкове поле; модуль системи
 - action — обов’язкове поле; дія всередині модуля
 - payload — обов’язкове поле; дані для виконання дії
+
+### 4.1. Universal Request Header
+
+Universal Request Header є стандартною частиною `meta` для всіх API-запитів.
+
+Базовий формат:
+
+```json
+{
+  "meta": {
+    "request_id": "uuid",
+    "session_token": "session_token",
+    "user_id": "user_001",
+    "timestamp": "2026-04-25T12:00:00Z",
+    "source": "gas"
+  }
+}
+```
+
+Правила:
+
+- `request_id` використовується для трасування запиту
+- `session_token` використовується тільки для перевірки активної сесії
+- `user_id` визначається через `00-01_AUTH`
+- `timestamp` фіксує час створення запиту
+- `source` визначає джерело запиту
+- `session_token` не зберігається в логах як відкрите значення
 
 ## 5. Базова структура відповіді
 
@@ -120,6 +149,7 @@ Data Contract — це правило, яке визначає:
     "request_id": "7f3a2c9b-1a44-4bb0-9f88-3a1d1e7a1001",
     "source": "gas",
     "user_id": "user_001",
+    "session_token": "session_token",
     "timestamp": "2026-04-25T12:00:00Z"
   },
   "module": "CALC_CONFIGURATOR",
@@ -238,7 +268,7 @@ AUTH/session контекст є частиною `meta` і використов
     "request_id": "uuid",
     "source": "gas",
     "user_id": "user_001",
-    "session_id": "session_001",
+    "session_token": "session_token",
     "timestamp": "2026-04-25T12:00:00Z"
   }
 }
@@ -247,7 +277,7 @@ AUTH/session контекст є частиною `meta` і використов
 Правила:
 
 - `user_id` визначається через `00-01_AUTH`
-- `session_id` використовується тільки якщо сесія вже створена
+- `session_token` використовується тільки якщо сесія вже створена
 - пароль не входить у `meta`
 - токени, паролі та службові ключі не зберігаються в логах
 - AUTH є винятком: пароль передається тільки в `action: login`
@@ -265,7 +295,11 @@ AUTH/session контекст є частиною `meta` і використов
     "object_number": "7445-В",
     "product_type": "KSO",
     "status": "draft",
-    "parameters": {},
+    "parameters": {
+      "common": {},
+      "product_specific": {},
+      "options": {}
+    },
     "result": {}
   }
 }
@@ -277,6 +311,10 @@ AUTH/session контекст є частиною `meta` і використов
 - цей блок не створює нову логіку
 - цей блок не замінює module-specific inputs / outputs
 - цей блок фіксує базову форму об’єкта для майбутнього CALC MVP
+- `parameters.common` містить параметри, спільні для різних виробів
+- `parameters.product_specific` містить параметри конкретного типу виробу
+- `parameters.options` містить додаткові опції без зміни базового контракту
+- нові групи параметрів додаються тільки після опису в документації `00-02_CALC_CONFIGURATOR`
 
 ## 17. Головне правило зміни контракту
 
