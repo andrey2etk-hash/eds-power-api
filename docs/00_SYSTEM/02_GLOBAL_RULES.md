@@ -245,6 +245,75 @@ AI не може:
 - дублювати одні й ті самі правила в багатьох місцях
 - залишати застарілі правила без позначки
 
+## Naming Convention Rules
+
+### Module folders
+
+Module folders use format:
+
+`00-XX_MODULE_NAME`
+
+Example:
+
+`00-01_AUTH`
+`00-02_CALC_CONFIGURATOR`
+
+### Files inside module folders
+
+Files inside every module use fixed numbering:
+
+`00_MODULE_OVERVIEW.md`
+`01_GOAL.md`
+`02_INPUTS.md`
+`03_PROCESS_FLOW.md`
+`04_OUTPUTS.md`
+`05_FUNCTIONS.md`
+`06_DB_TABLES.md`
+`07_MODULE_LINKS.md`
+`08_UI_UX.md`
+`09_STATUS.md`
+`10_CONFIG.md`
+
+### Product submodule folders
+
+Product submodules use format:
+
+`NN_PRODUCT_CODE`
+
+Example:
+
+`09_KZO`
+
+### Files inside product submodules
+
+Files inside every product submodule use fixed numbering:
+
+`00_MVP_SCOPE.md`
+`01_GOAL.md`
+`02_INPUTS.md`
+`03_ALGORITHM.md`
+`04_OUTPUTS.md`
+`05_FUNCTIONS.md`
+`06_DATA_MODEL.md`
+`07_VALIDATION.md`
+`08_STATUS.md`
+`09_AUDIT.md`
+
+### Strict rule
+
+One number = one role.
+
+Duplicate numeric prefixes inside one folder are forbidden.
+
+Cursor must not create a new numbered file if this number already exists.
+
+If a new documentation type is needed, Cursor must:
+
+1. create a TASK first;
+2. explain why existing files are not enough;
+3. propose the new number;
+4. wait for approval.
+
 ---
 
 ## 12. Правила BACKLOG

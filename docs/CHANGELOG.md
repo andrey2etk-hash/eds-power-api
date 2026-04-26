@@ -173,6 +173,50 @@
 
 ---
 
+# 26.04.2026 — KZO submodule numbering governance fix
+
+## Причина
+
+У `docs/00-02_CALC_CONFIGURATOR/09_KZO/` було виявлено numbering collision між goal file і data model file, які використовували однаковий numeric prefix.
+
+Це порушувало governance rule: one number = one role.
+
+## Що перейменовано
+
+- KZO data model file moved to `docs/00-02_CALC_CONFIGURATOR/09_KZO/06_DATA_MODEL.md`
+- KZO questionnaire logic file normalized to `docs/00-02_CALC_CONFIGURATOR/09_KZO/02_INPUTS.md`
+
+## Посилання
+
+- active docs references were scanned and no outdated KZO data model references remain
+- active docs references were scanned and no outdated KZO audit filename references remain
+- active docs references were scanned and no outdated KZO questionnaire filename references remain
+
+## Governance rule added
+
+У `docs/00_SYSTEM/02_GLOBAL_RULES.md` додано правило immutable numbering для product submodules:
+
+```text
+00_SCOPE
+01_GOAL
+02_INPUTS
+03_ALGORITHM
+04_OUTPUTS
+05_FUNCTIONS
+06_DATA_MODEL
+07_VALIDATION
+08_STATUS
+09_AUDIT
+```
+
+Duplicate numbering is forbidden.
+
+## Статус
+
+✔ Structural governance fixed
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP
