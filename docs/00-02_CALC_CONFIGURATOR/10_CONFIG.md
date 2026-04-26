@@ -59,6 +59,16 @@ GAS не викликає внутрішні етапи окремо.
 - Base Calculation Object підтверджений
 - Stage 2 MVP scope погоджений через TASK
 
+## Product-specific documentation rule
+
+Вся product-specific calculation logic і всі MVP scopes мають зберігатися всередині продуктових підпапок.
+
+Для KZO:
+
+`docs/00-02_CALC_CONFIGURATOR/09_KZO/`
+
+Заборонено створювати product-specific files у root `00-02_CALC_CONFIGURATOR`.
+
 ## Заборонено
 
 - додавати продукт-специфічні формули без TASK
