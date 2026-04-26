@@ -339,6 +339,46 @@ No duplicate `logic_version` was added.
 
 ---
 
+# 26.04.2026 — Stage 2E KZO validation foundation
+
+## Причина
+
+Stage 2E закриває фінальні governance blockers перед Stage 3 API skeleton.
+
+## Що додано
+
+- Stage 2E KZO validation matrix foundation
+- first approved MVP scenario
+- KZO validation error codes
+- KZO allowed value matrix
+- KZO draft vs validated rules
+- KZO status file
+
+## First MVP scenario
+
+- Object: 7445-В
+- voltage_class: 10kV
+- configuration_type: SINGLE_BUS_SECTION
+- quantity_total: 22
+- INCOMER: 2
+- OUTGOING: 16
+- PT: 2
+- BUS_SECTION: 2
+
+## Обмеження
+
+- no KTP
+- no Powerline
+- no AUTH expansion
+- no API code
+- no product expansion beyond KZO MVP
+
+## Статус
+
+✔ Stage 2E validation foundation created
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP

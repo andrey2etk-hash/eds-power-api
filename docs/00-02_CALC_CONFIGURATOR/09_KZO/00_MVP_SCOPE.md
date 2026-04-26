@@ -19,14 +19,16 @@ KZO MVP Scope governed.
 Обов’язкові параметри V1:
 
 - product_type: `KZO`
-- quantity
 - voltage_class
-- cabinet_count
+- busbar_current
 - configuration_type
+- quantity_total
+- cell_distribution
 
 Правило:
 
-- quantity = cabinet units
+- quantity_total = cabinet units
+- sum(cell_distribution) == quantity_total
 
 ## Optional parameters
 
@@ -35,11 +37,13 @@ KZO MVP Scope governed.
 - object_number
 - notes
 - option_ids
+- breaker_type
 
 Правило:
 
 - `object_number` — optional at draft stage, required before final / production transition
 - `option_ids` — predefined option IDs only, no open text
+- `breaker_type` — optional in draft, required in validated state when required by selected cell type
 
 ## Validation rules
 
@@ -75,6 +79,26 @@ KZO MVP Scope governed.
   - estimated_cost_base
   - validation_state
 - validation_errors, якщо є помилки
+
+## First Approved MVP Scenario
+
+Object:
+
+7445-В
+
+Parameters:
+
+- voltage_class: 10kV
+- configuration_type: SINGLE_BUS_SECTION
+- quantity_total: 22
+- INCOMER: 2
+- OUTGOING: 16
+- PT: 2
+- BUS_SECTION: 2
+
+Purpose:
+
+This scenario becomes baseline for first end-to-end validation and first API implementation.
 
 ## Stage alignment
 

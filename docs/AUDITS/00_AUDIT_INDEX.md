@@ -11,7 +11,7 @@ Rule:
 
 ## Latest audit
 
-- `2026-04-26_STAGE_2D_GOVERNANCE_STABILIZATION.md`
+- `2026-04-26_STAGE_2E_KZO_VALIDATION_FOUNDATION.md`
 
 ## Stage audits
 
@@ -21,6 +21,7 @@ Rule:
 - `2026-04-26_GEMINI_STAGE2_KZO_AUDIT.md`
 - `2026-04-26_STAGE_2C_GOVERNANCE_PATCH_REPORT.md`
 - `2026-04-26_STAGE_2D_GOVERNANCE_STABILIZATION.md`
+- `2026-04-26_STAGE_2E_KZO_VALIDATION_FOUNDATION.md`
 
 ## Deprecated audits
 
@@ -28,10 +29,6 @@ Rule:
 
 ## Active blockers
 
-- Stage 2C — KZO Validation Matrix
-- predefined `option_ids` catalog
-- allowed `voltage_class` values
-- allowed `configuration_type` values
-- minimal validation matrix
-- first KZO calculation scenario
+- validation matrix final review
+- scenario approval
 - Stage 3 coding approval
