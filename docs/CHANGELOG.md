@@ -377,6 +377,16 @@ Stage 2E закриває фінальні governance blockers перед Stage 
 
 ✔ Stage 2E validation foundation created
 
+Stage 2E entered provisional state due to process breach; pending Gemini approval.
+
+Gemini Stage 2E fix pack applied:
+
+- validation flattened
+- enums normalized
+- future logic removed
+- KZO/global status link added
+- Stage 2E status changed to `APPROVED_WITH_FIXES`
+
 ---
 
 # Майбутні етапи

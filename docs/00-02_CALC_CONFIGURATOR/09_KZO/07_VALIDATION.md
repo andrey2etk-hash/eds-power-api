@@ -1,5 +1,13 @@
 # KZO Validation
 
+## Governance status
+
+APPROVED_WITH_FIXES
+
+Stage 2E validation foundation was normalized after Gemini provisional review.
+
+This file defines flat MVP validation only.
+
 ## 1. Required Fields
 
 Required fields for KZO validation:
@@ -23,33 +31,40 @@ Rules:
 
 ### voltage_class:
 
-- 6kV
-- 10kV
-- 20kV
-- 35kV
+- `VC_06` = 6kV
+- `VC_10` = 10kV
+- `VC_20` = 20kV
+- `VC_35` = 35kV
 
 ### configuration_type:
 
-- SINGLE_BUS
-- SINGLE_BUS_SECTION
-- DOUBLE_BUS (deferred unless MVP approved)
+- `CFG_SINGLE_BUS` = Single bus
+- `CFG_SINGLE_BUS_SECTION` = Single bus with section
 
 ### cell_type:
 
-- INCOMER
-- OUTGOING
-- PT
-- BUS_SECTION
-- RISER
-- SHM
-- SHMR
+- `CELL_INCOMER` = Incomer
+- `CELL_OUTGOING` = Outgoing
+- `CELL_PT` = Voltage transformer cell
+- `CELL_BUS_SECTION` = Bus section cell
 
 ### quantity rules:
 
 - quantity_total > 0
 - sum(cell_distribution) == quantity_total
 
-## 3. Draft vs Validated Rules
+## 3. Flat MVP Validation Rules
+
+Validation checks only:
+
+- field present?
+- field allowed?
+- quantity match?
+- required by selected config?
+
+No deep dependency trees are part of Stage 2E MVP validation.
+
+## 4. Draft vs Validated Rules
 
 Missing `breaker_type`:
 
@@ -65,7 +80,7 @@ Broken JSON schema:
 
 - blocked always
 
-## 4. Error Codes
+## 5. Error Codes
 
 - KZO_REQUIRED_FIELD_MISSING
 - KZO_INVALID_VOLTAGE_CLASS

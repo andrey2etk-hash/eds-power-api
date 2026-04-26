@@ -2,7 +2,7 @@
 
 ## Status
 
-scope_governed
+APPROVED_WITH_FIXES
 
 KZO MVP Scope governed.
 
@@ -12,11 +12,11 @@ KZO MVP Scope governed.
 
 Визначити перший MVP product для `00-02_CALC_CONFIGURATOR` як `KZO`.
 
-Цей файл описує тільки V1 MVP scope для підготовки першого продукт-специфічного розрахунку.
+Цей файл описує тільки MVP scope для підготовки першого продукт-специфічного розрахунку.
 
 ## Mandatory parameters
 
-Обов’язкові параметри V1:
+Обов’язкові параметри MVP:
 
 - product_type: `KZO`
 - voltage_class
@@ -32,7 +32,7 @@ KZO MVP Scope governed.
 
 ## Optional parameters
 
-Опціональні параметри V1:
+Опціональні параметри MVP:
 
 - object_number
 - notes
@@ -51,7 +51,7 @@ KZO MVP Scope governed.
 
 ## Excluded scope
 
-У V1 не входить:
+У MVP не входить:
 
 - deep BOM
 - CAD
@@ -64,7 +64,7 @@ KZO MVP Scope governed.
 
 ## Expected outputs
 
-Очікувані outputs V1:
+Очікувані MVP outputs:
 
 - calculation_id
 - product_type
@@ -88,13 +88,13 @@ Object:
 
 Parameters:
 
-- voltage_class: 10kV
-- configuration_type: SINGLE_BUS_SECTION
+- voltage_class: VC_10 = 10kV
+- configuration_type: CFG_SINGLE_BUS_SECTION = Single bus with section
 - quantity_total: 22
-- INCOMER: 2
-- OUTGOING: 16
-- PT: 2
-- BUS_SECTION: 2
+- CELL_INCOMER: 2
+- CELL_OUTGOING: 16
+- CELL_PT: 2
+- CELL_BUS_SECTION: 2
 
 Purpose:
 
@@ -110,5 +110,4 @@ KZO MVP scope відповідає Stage 2 preparation.
 - scope залишається product-specific but MVP only
 - Base Calculation Object залишається основою для payload
 - `prepare_calculation` залишається єдиним зовнішнім API entry point
-- деталізація алгоритму допускається тільки після TASK approval
-- статус цього scope: `scope_governed`
+- статус цього scope: `APPROVED_WITH_FIXES`
