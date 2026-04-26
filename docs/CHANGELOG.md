@@ -474,6 +474,41 @@ Stage 3B Gemini pre-commit fix pack applied:
 
 ---
 
+# 26.04.2026 — Stage 3C KZO normalized result summary
+
+## Причина
+
+Stage 3C extends the validation-only API skeleton with the first controlled normalized KZO structural summary.
+
+## Що додано
+
+- `basic_result_summary.product_type`
+- `basic_result_summary.logic_version`
+- `basic_result_summary.voltage_class`
+- `basic_result_summary.busbar_current`
+- `basic_result_summary.configuration_type`
+- `basic_result_summary.quantity_total`
+- `basic_result_summary.cell_type_summary`
+- `basic_result_summary.validation_status`
+
+## Обмеження
+
+- no costing
+- no BOM
+- no dimensions
+- no weight
+- no Supabase
+- no AUTH
+- no production logic
+- no architecture rewrite
+- no future logic
+
+## Статус
+
+Stage 3C normalized summary layer created.
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP

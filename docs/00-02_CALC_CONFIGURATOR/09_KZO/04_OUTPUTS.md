@@ -62,9 +62,17 @@ Success response envelope:
     "basic_result_summary": {
       "summary_version": "KZO_MVP_V1",
       "product_type": "KZO",
-      "object_number": "7445-B",
+      "logic_version": "KZO_MVP_V1",
+      "voltage_class": "VC_10",
+      "busbar_current": 1250,
       "configuration_type": "CFG_SINGLE_BUS_SECTION",
       "quantity_total": 22,
+      "cell_type_summary": {
+        "CELL_BUS_SECTION": 2,
+        "CELL_INCOMER": 2,
+        "CELL_OUTGOING": 16,
+        "CELL_PT": 2
+      },
       "validation_status": "VALIDATED"
     }
   },
@@ -80,15 +88,32 @@ Success response envelope:
 
 ## basic_result_summary
 
-`basic_result_summary` is a placeholder only and is returned inside `data.basic_result_summary`.
+`basic_result_summary` is the first normalized KZO structural summary.
+
+It is returned inside `data.basic_result_summary`.
+
+Required fields:
+
+- product_type
+- logic_version
+- voltage_class
+- busbar_current
+- configuration_type
+- quantity_total
+- cell_type_summary
+- validation_status
 
 Rules:
 
+- normalized echo + validated structure only
+- no engineering assumptions
 - no price calculation
 - no BOM calculation
 - no CAD output
 - no production route
 - no commercial offer generation
+- no dimensions
+- no weight
 
 ## error object
 

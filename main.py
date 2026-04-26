@@ -191,6 +191,11 @@ def prepare_calculation(request: dict[str, Any]):
             started_at=started_at,
         )
 
+    cell_type_summary = {
+        cell_type: normalized_payload["cell_distribution"][cell_type]
+        for cell_type in sorted(normalized_payload["cell_distribution"])
+    }
+
     return {
         "status": "success",
         "data": {
@@ -201,9 +206,12 @@ def prepare_calculation(request: dict[str, Any]):
             "basic_result_summary": {
                 "summary_version": "KZO_MVP_V1",
                 "product_type": normalized_payload["product_type"],
-                "object_number": normalized_payload["object_number"],
+                "logic_version": normalized_payload["logic_version"],
+                "voltage_class": normalized_payload["voltage_class"],
+                "busbar_current": normalized_payload["busbar_current"],
                 "configuration_type": normalized_payload["configuration_type"],
                 "quantity_total": normalized_payload["quantity_total"],
+                "cell_type_summary": cell_type_summary,
                 "validation_status": "VALIDATED",
             },
         },
