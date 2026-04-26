@@ -59,6 +59,19 @@
 
 Взаємодія між модулями відбувається тільки через API та описані контракти.
 
+### AUTH MVP freeze rule
+
+AUTH module is frozen at MVP scope until `00-02_CALC_CONFIGURATOR` completes one full end-to-end scenario.
+
+AUTH may include only:
+
+- user identity
+- basic session/auth check
+- role placeholder
+- avatar reference if needed
+
+AUTH must NOT expand into full RBAC before CALC MVP works.
+
 ---
 
 ## 5. Правила API
@@ -197,7 +210,7 @@ Database не повинна:
 
 Глобальні правила стилю описуються у:
 
-`docs/00_SYSTEM/08_DESIGN_SYSTEM.md`
+`docs/00_SYSTEM/09_DESIGN_SYSTEM.md`
 
 Модулі не мають права вигадувати власний стиль.
 

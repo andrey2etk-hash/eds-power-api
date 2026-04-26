@@ -217,6 +217,85 @@ Duplicate numbering is forbidden.
 
 ---
 
+# 26.04.2026 — Gemini Stage 2 KZO governance audit fixes
+
+## Причина
+
+Gemini External Audit Report reviewed Stage 2 KZO governance before Stage 3 coding.
+
+## Accepted governance fixes
+
+- added Global Error Contract
+- added API response metadata requirement
+- added `logic_version` requirement for calculation objects
+- added global Object Lifecycle / Statuses document
+- added AUTH freeze rule until CALC completes one full end-to-end scenario
+
+## Rejected / deferred fixes
+
+- detailed KZO result fields deferred
+- AUTH expansion deferred
+- FastAPI implementation deferred
+- product logic changes deferred
+- detailed KZO algorithm deferred
+
+## Files changed
+
+- `docs/00_SYSTEM/04_DATA_CONTRACTS.md`
+- `docs/00_SYSTEM/06_OBJECT_STATUSES.md`
+- `docs/00_SYSTEM/02_GLOBAL_RULES.md`
+- `docs/AUDITS/2026-04-26_GEMINI_STAGE2_KZO_AUDIT.md`
+- `docs/CHANGELOG.md`
+
+## Статус
+
+✔ Gemini governance fixes applied
+
+---
+
+# 26.04.2026 — Stage 2C system numbering governance patch
+
+## Причина
+
+Після Stage 2C governance patch у `docs/00_SYSTEM/` виник ризик duplicate numeric prefix для system-level файлів.
+
+Це порушувало правило:
+
+```text
+One number = one role
+```
+
+## Що виправлено
+
+- fixed duplicate numbering in `00_SYSTEM`
+- renamed Object Statuses file to `docs/00_SYSTEM/06_OBJECT_STATUSES.md`
+- shifted system placeholder files to preserve unique numeric sequence
+- updated references to renamed system files
+- added Stage 2C governance patch report
+
+## Файли
+
+- `docs/00_SYSTEM/06_OBJECT_STATUSES.md`
+- `docs/00_SYSTEM/07_SECURITY_RULES.md`
+- `docs/00_SYSTEM/08_AI_AGENT_RULES.md`
+- `docs/00_SYSTEM/09_DESIGN_SYSTEM.md`
+- `docs/00_SYSTEM/10_PRESENTATION_NOTES.md`
+- `docs/00_SYSTEM/02_GLOBAL_RULES.md`
+- `docs/AUDITS/2026-04-26_STAGE_2C_GOVERNANCE_PATCH_REPORT.md`
+- `docs/CHANGELOG.md`
+
+## Обмеження
+
+- product logic не змінювалась
+- architecture не переписувалась
+- KZO algorithm не редагувався
+
+## Статус
+
+✔ Stage 2C governance numbering fixed
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP
