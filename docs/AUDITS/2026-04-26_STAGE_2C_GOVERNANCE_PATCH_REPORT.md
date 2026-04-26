@@ -37,11 +37,11 @@ Stage 2C governance patch required fixing `00_SYSTEM` numbering after Gemini aud
 
 ## Structural fixes
 
-- `05_OBJECT_STATUSES.md` renamed to `06_OBJECT_STATUSES.md`
-- `06_SECURITY_RULES.md` renamed to `07_SECURITY_RULES.md`
-- `07_AI_AGENT_RULES.md` renamed to `08_AI_AGENT_RULES.md`
-- `08_DESIGN_SYSTEM.md` renamed to `09_DESIGN_SYSTEM.md`
-- `09_PRESENTATION_NOTES.md` renamed to `10_PRESENTATION_NOTES.md`
+- Object Statuses moved to canonical `06_OBJECT_STATUSES.md`
+- Security Rules moved to canonical `07_SECURITY_RULES.md`
+- AI Agent Rules moved to canonical `08_AI_AGENT_RULES.md`
+- Design System moved to canonical `09_DESIGN_SYSTEM.md`
+- Presentation Notes moved to canonical `10_PRESENTATION_NOTES.md`
 - references to old filenames updated
 - duplicate numeric prefixes in `docs/00_SYSTEM/` removed
 

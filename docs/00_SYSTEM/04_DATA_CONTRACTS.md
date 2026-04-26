@@ -372,7 +372,27 @@ Rules:
 - `metadata.logic_version` is mandatory and may be `null`
 - `metadata.execution_time_ms` is mandatory
 
-## 18. Головне правило зміни контракту
+## 18. MVP Timeout Rule
+
+GAS client uses synchronous request for MVP.
+
+If API exceeds timeout threshold, return:
+
+```json
+{
+  "status": "timeout",
+  "error": {
+    "error_code": "REQUEST_TIMEOUT",
+    "message": "Processing exceeded MVP sync threshold"
+  }
+}
+```
+
+Rule:
+
+- No async queue required for Stage 3 MVP
+
+## 19. Головне правило зміни контракту
 
 Будь-яка зміна формату запиту або відповіді:
 

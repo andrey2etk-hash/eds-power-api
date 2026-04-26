@@ -161,6 +161,34 @@ API відповідає за системну перевірку:
 - UI / GAS не може замінювати API validation
 - API validation є фінальним джерелом істини для виконання дії
 
+### Draft vs Validation Save Rule
+
+DRAFT:
+
+- may contain incomplete data
+- may contain validation warnings
+- may be saved for iterative work
+- must still preserve structural JSON integrity
+
+VALIDATED:
+
+- all required fields complete
+- all module validation passed
+- safe for downstream use
+
+LOCKED:
+
+- immutable except through approved revision/change flow
+
+RULE:
+
+System must not block DRAFT saves for incomplete business data, but must block structurally invalid payloads.
+
+Examples:
+
+- Missing `voltage_class` → allowed in DRAFT, blocked in VALIDATED
+- Broken JSON schema → blocked always
+
 ---
 
 ## 7. Правила бази даних

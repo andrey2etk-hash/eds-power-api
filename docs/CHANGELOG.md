@@ -296,6 +296,49 @@ One number = one role
 
 ---
 
+# 26.04.2026 — Stage 2D governance stabilization
+
+## Причина
+
+Gemini regression fixes required closing remaining governance blockers before Stage 3 coding.
+
+## Що додано
+
+- Draft vs Validation Save Rule
+- Object Status Transition Matrix Lite
+- MVP Timeout Rule
+- ghost reference sweep
+- audit index
+
+## Stale-read note
+
+Gemini stale-read: `logic_version` already implemented.
+
+No duplicate `logic_version` was added.
+
+## Файли
+
+- `docs/00_SYSTEM/02_GLOBAL_RULES.md`
+- `docs/00_SYSTEM/04_DATA_CONTRACTS.md`
+- `docs/00_SYSTEM/06_OBJECT_STATUSES.md`
+- `docs/AUDITS/00_AUDIT_INDEX.md`
+- `docs/AUDITS/2026-04-26_STAGE_2D_GOVERNANCE_STABILIZATION.md`
+- `docs/AUDITS/2026-04-26_STAGE_2C_GOVERNANCE_PATCH_REPORT.md`
+- `docs/CHANGELOG.md`
+
+## Обмеження
+
+- product algorithm edits не виконувались
+- KZO scope не розширювався
+- AUTH не розширювався
+- architecture не переписувалась
+
+## Статус
+
+✔ Stage 2D governance stabilized
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP

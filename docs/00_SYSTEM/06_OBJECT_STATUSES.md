@@ -38,3 +38,21 @@ Object has blocking error.
 - modules may define local statuses only if they map to global lifecycle statuses
 - analytics must use global lifecycle statuses
 - changing status requires explicit action and must be logged
+
+## Allowed transitions
+
+- DRAFT → VALIDATED
+- VALIDATED → LOCKED
+- LOCKED → SENT_TO_NEXT_MODULE
+- ANY → ERROR
+- ERROR → DRAFT
+- ANY → ARCHIVED
+
+## Forbidden transitions
+
+- ARCHIVED → active states
+- LOCKED → DRAFT without revision process
+
+## Note
+
+Detailed workflow may expand later.
