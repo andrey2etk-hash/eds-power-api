@@ -429,6 +429,51 @@ Stage 3B gate = API skeleton only after final verification.
 
 ---
 
+# 26.04.2026 — Stage 3B KZO API skeleton
+
+## Причина
+
+Stage 3B creates the first safe API skeleton endpoint for KZO Calculation Object V1.
+
+## Що додано
+
+- `POST /api/calc/prepare_calculation`
+- request envelope validation
+- `module = CALC_CONFIGURATOR` validation
+- `action = prepare_calculation` validation
+- KZO MVP required field validation
+- KZO enum validation
+- `sum(cell_distribution) == quantity_total` validation
+- Global Error Contract response shape for validation errors
+- success response with `validation_status`, `normalized_payload`, and placeholder `basic_result_summary`
+
+## Обмеження
+
+- no Supabase connection
+- no DB writes
+- no costing
+- no BOM
+- no production transfer
+- no AUTH expansion
+- no KTP
+- no Powerline
+- no architecture rewrite
+
+## Статус
+
+Stage 3B API skeleton created.
+
+Stage 3B Gemini pre-commit fix pack applied:
+
+- success response now exposes `logic_version`
+- success response now exposes object `status`
+- smoke tests expanded for invalid `configuration_type`
+- smoke tests expanded for invalid `cell_distribution` key
+- error envelope shape verified
+- no calculation, DB, Supabase, AUTH, or architecture changes added
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP
