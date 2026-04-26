@@ -558,6 +558,42 @@ Stage 3E gate = manual run from Google Sheets / Apps Script.
 
 ---
 
+# 26.04.2026 — Governance tracking sync after Stage 3D
+
+## Причина
+
+Tracking/status documents lagged behind the actual committed Stage 3D baseline.
+
+## Що оновлено
+
+- `NOW.md`
+- `docs/AUDITS/00_AUDIT_INDEX.md`
+- `docs/00-02_CALC_CONFIGURATOR/09_STATUS.md`
+- `docs/00-02_CALC_CONFIGURATOR/09_KZO/08_STATUS.md`
+- `docs/ANALYTICS/2026-04-26_DAILY_PLAN_FACT.md`
+- `docs/CHANGELOG.md`
+
+## Фактичний baseline
+
+- Stage 3A = KZO Calculation Object Contract committed
+- Stage 3B = API validation skeleton committed
+- Stage 3C = normalized result summary committed
+- Stage 3D = GAS API handshake committed
+
+## Next
+
+Stage 3E = manual GAS execution and log verification.
+
+## Обмеження
+
+- no product logic changes
+- no code changes
+- no API changes
+- no GAS changes
+- no architecture changes
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP

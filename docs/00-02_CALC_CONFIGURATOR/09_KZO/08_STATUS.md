@@ -4,22 +4,31 @@
 
 Stage 2E = APPROVED_WITH_FIXES
 
+Stage 3A = committed
+
+Stage 3B = committed
+
+Stage 3C = committed
+
+Stage 3D = committed
+
 ## Gate
 
-Stage 3 remains blocked until final verification.
+Next = Stage 3E manual run
 
 ## Current status
 
-approved_with_fixes
+Stage 3D baseline committed
 
 ## Blockers
 
-- final verification before Stage 3
-- API skeleton approval
+- manual GAS execution not yet verified
+- Render response logs not yet reviewed
+- GAS `basic_result_summary` logs not yet reviewed
 
 ## Next
 
-Stage 3 = API skeleton only after final verification / user approval
+Stage 3E = manual run from Google Sheets / Apps Script
 
 ## Global status link
 
@@ -34,6 +43,6 @@ KZO may define local implementation progress, but business object lifecycle is g
 - no KTP
 - no Powerline
 - no AUTH expansion
-- no API code
+- no additional API code before Stage 3E verification
 - no KZO deep algorithm
 - no product expansion beyond KZO MVP

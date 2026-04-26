@@ -2,9 +2,16 @@
 
 ## Поточний статус
 
-skeleton_governed
+Stage 3D baseline committed
 
 CALC skeleton = governed foundation complete.
+
+KZO MVP implementation baseline has reached Stage 3D:
+
+- Stage 3A — KZO Calculation Object Contract committed
+- Stage 3B — API validation skeleton committed
+- Stage 3C — normalized result summary committed
+- Stage 3D — GAS API handshake committed
 
 Модуль ще не має статусу `draft_ready`.
 
@@ -38,18 +45,21 @@ CALC skeleton = governed foundation complete.
 - внутрішні API етапи validation / normalization / calculation
 - product-specific documentation rule
 - KZO MVP Scope як перший product-specific scope
+- KZO Calculation Object V1
+- KZO API skeleton for `prepare_calculation`
+- KZO normalized result summary
+- GAS thin-client handshake draft
 
-Для переходу в `draft_ready` ще потрібно:
+Для переходу далі потрібно:
 
-- Stage 2C — KZO Validation Matrix
-- approved TASK
-- approved first calculation scenario
-- approved product-specific parameter rules
+- Stage 3E manual GAS execution
+- Render response log verification
+- GAS `basic_result_summary` log verification
+- explicit approval before UI / DB / business calculation expansion
 
 ## Що не входить у Stage 1
 
-- реалізація алгоритмів розрахунку
-- API endpoints для розрахунків
+- повна реалізація алгоритмів розрахунку
 - таблиці БД для розрахунків
-- UI / GAS реалізація
+- full UI / GAS реалізація
 - інтеграція з комерційними пропозиціями або виробництвом

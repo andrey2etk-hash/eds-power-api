@@ -26,6 +26,11 @@ Documented Stage 1 goals from `NOW.md` / `CHANGELOG.md`:
 - product-specific documentation rule added for CALC
 - KZO MVP freeze rule recorded
 - GitHub synchronization performed during the day
+- Stage 2E KZO validation foundation completed and normalized after audit
+- Stage 3A KZO Calculation Object Contract committed
+- Stage 3B API validation skeleton committed
+- Stage 3C normalized result summary committed
+- Stage 3D GAS API handshake committed
 
 ## Overcompleted
 
@@ -39,19 +44,21 @@ Work completed beyond original Stage 1 day-start plan:
 - KZO object number gate
 - KZO validation direction for `voltage_class` + `configuration_type`
 - multiple Gemini/GPT audit cycles and audit reports
+- controlled acceleration from governance/prep into first KZO MVP implementation baseline
+- first API skeleton for KZO `prepare_calculation`
+- first normalized KZO result summary
+- first GAS thin-client handshake draft
 
 ## Deferred
 
-- Stage 2C — KZO Validation Matrix
 - predefined `option_ids` catalog
-- allowed `voltage_class` values
-- allowed `configuration_type` values
-- first KZO calculation scenario
 - full CALC implementation
-- API endpoints
 - DB schema
-- UI / GAS implementation
+- full UI / GAS implementation
 - move CALC or KZO to `draft_ready`
+- Stage 3E manual GAS execution and log verification
+- Supabase / DB integration
+- costing / BOM / production logic
 
 ## Key governance wins
 
@@ -61,6 +68,7 @@ Work completed beyond original Stage 1 day-start plan:
 - UI / GAS / API / Database boundaries preserved
 - `prepare_calculation` kept as the single external CALC API entry point
 - internal CALC stages kept inside API
+- GAS remained a thin client for Stage 3D
 
 ### Audit system
 
@@ -68,12 +76,14 @@ Work completed beyond original Stage 1 day-start plan:
 - audit reports connected to accepted / rejected / deferred decisions
 - audit discipline corrected when missing reports were identified
 - end-of-day governance state recorded
+- Stage 2E process breach was contained and normalized through Gemini-style audit traceability
+- Stage 3A–3D commits were tracked through audit reports and pre-commit requests
 
 ### Module maturity
 
 - AUTH moved from active preparation to frozen MVP scope
-- CALC moved from `planned` toward `skeleton_governed`
-- KZO moved from raw MVP idea toward `scope_governed`
+- CALC moved from `planned` toward Stage 3D baseline
+- KZO moved from raw MVP idea toward committed MVP API/GAS handshake baseline
 - product-specific CALC documentation boundary established
 
 ## Drift / Risks
@@ -83,12 +93,14 @@ Work completed beyond original Stage 1 day-start plan:
 - CALC scope tried to expand toward implementation, but was kept documentation-only
 - KZO scope had open-ended fields and was tightened
 - `04_DATA_CONTRACTS.md` still needs future synchronization of generic CALC examples before `draft_ready`
-- validation matrix remains the main blocker before deeper MVP work
+- tracking docs lagged behind rapid Stage 3A–3D progress and required governance sync
+- manual GAS execution remains unverified
+- no DB / Supabase / AUTH / UI expansion should start before Stage 3E manual verification
 
 ## Final productivity assessment
 
 - % plan completed: 100% of documented Stage 1 governance plan
-- % overplan completed: 100% of governance overplan items started today; 0% implementation scope
+- % overplan completed: 100% of governance overplan items started today; controlled Stage 3A–3D MVP baseline added
 - strategic value assessment: high
 
 Reason:
@@ -96,8 +108,9 @@ Reason:
 - the system moved from Stage 1 foundation to governed CALC/KZO preparation
 - audit discipline became operational
 - product-specific boundaries were established before implementation
-- no code implementation was started prematurely
+- controlled acceleration was completed with audits and commits
+- implementation stayed within KZO MVP validation / summary / handshake boundaries
 
 ## Next day priority
 
-Stage 2C — KZO Validation Matrix
+Stage 3E — manual GAS execution and log verification
