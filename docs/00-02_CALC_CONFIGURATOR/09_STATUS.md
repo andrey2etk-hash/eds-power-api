@@ -14,6 +14,16 @@ planned
 - зафіксувати extensible parameter architecture
 - підготувати документаційну основу для Stage 2
 
+## Stage 2 preparation refinement
+
+На Stage 2 preparation зафіксовано:
+
+- `prepare_calculation` як єдиний зовнішній API entry point
+- validation, normalization і calculation як внутрішні API етапи
+- Calculation Object Lifecycle
+- auth/session requirements для protected module flow
+- error path без продукт-специфічної логіки
+
 ## Що не входить у Stage 1
 
 - реалізація алгоритмів розрахунку

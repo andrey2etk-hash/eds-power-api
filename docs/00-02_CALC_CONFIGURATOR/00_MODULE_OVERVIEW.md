@@ -14,6 +14,16 @@
 
 Модуль використовує цей об’єкт як стартову форму для майбутнього CALC MVP.
 
+## API Entry Point
+
+Єдина зовнішня API дія модуля на цьому етапі:
+
+- `prepare_calculation`
+
+Validation, normalization і calculation є внутрішніми етапами API.
+
+GAS не викликає ці етапи окремо.
+
 ## Extensible Parameter Architecture
 
 Параметри розрахунку групуються так:
@@ -28,6 +38,17 @@
 - структура параметрів не змінює глобальний request/response contract
 - модуль не реалізує розрахунок на Stage 1
 - деталізація алгоритмів переноситься на Stage 2
+
+## Calculation Object Lifecycle
+
+Базовий lifecycle calculation object:
+
+- draft
+- validated
+- error
+- calculated
+- locked
+- archived
 
 ## Обмеження Stage 1
 

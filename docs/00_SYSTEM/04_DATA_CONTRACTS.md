@@ -292,15 +292,18 @@ AUTH/session контекст є частиною `meta` і використов
 {
   "calculation": {
     "calculation_id": "calc_001",
-    "object_number": "7445-В",
-    "product_type": "KSO",
+    "version": "1.0",
+    "object_number": null,
+    "product_type": "PRODUCT_TYPE_CODE",
     "status": "draft",
     "parameters": {
       "common": {},
       "product_specific": {},
       "options": {}
     },
-    "result": {}
+    "result": {},
+    "created_at": "2026-04-25T12:00:00Z",
+    "updated_at": "2026-04-25T12:00:00Z"
   }
 }
 ```
@@ -311,9 +314,13 @@ AUTH/session контекст є частиною `meta` і використов
 - цей блок не створює нову логіку
 - цей блок не замінює module-specific inputs / outputs
 - цей блок фіксує базову форму об’єкта для майбутнього CALC MVP
+- `version` фіксує версію структури об’єкта розрахунку
+- `object_number` може бути `null` на статусі `draft`
 - `parameters.common` містить параметри, спільні для різних виробів
 - `parameters.product_specific` містить параметри конкретного типу виробу
 - `parameters.options` містить додаткові опції без зміни базового контракту
+- `created_at` фіксує час створення об’єкта
+- `updated_at` фіксує час останнього оновлення об’єкта
 - нові групи параметрів додаються тільки після опису в документації `00-02_CALC_CONFIGURATOR`
 
 ## 17. Головне правило зміни контракту
