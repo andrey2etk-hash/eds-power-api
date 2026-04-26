@@ -2,7 +2,11 @@
 
 ## Status
 
-planned
+scope_governed
+
+KZO MVP Scope governed.
+
+Цей scope ще не має статусу `draft_ready`.
 
 ## Goal
 
@@ -20,19 +24,26 @@ planned
 - cabinet_count
 - configuration_type
 
+Правило:
+
+- quantity = cabinet units
+
 ## Optional parameters
 
 Опціональні параметри V1:
 
 - object_number
 - notes
-- customer_reference
-- delivery_region
-- additional_options
+- option_ids
 
 Правило:
 
-`object_number` — optional at draft stage, required before production transfer
+- `object_number` — optional at draft stage, required before final / production transition
+- `option_ids` — predefined option IDs only, no open text
+
+## Validation rules
+
+- invalid `voltage_class` + `configuration_type` combinations must return `validation_error`
 
 ## Excluded scope
 
@@ -56,7 +67,13 @@ planned
 - object_number
 - status
 - normalized_parameters
-- basic_result_summary
+- result_summary_version = KZO_MVP_V1
+- result_summary:
+  - configuration_type
+  - estimated_dimensions_mm
+  - main_equipment_class
+  - estimated_cost_base
+  - validation_state
 - validation_errors, якщо є помилки
 
 ## Stage alignment
@@ -70,4 +87,4 @@ KZO MVP scope відповідає Stage 2 preparation.
 - Base Calculation Object залишається основою для payload
 - `prepare_calculation` залишається єдиним зовнішнім API entry point
 - деталізація алгоритму допускається тільки після TASK approval
-- статус цього scope: `planned`
+- статус цього scope: `scope_governed`

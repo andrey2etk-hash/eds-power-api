@@ -2,7 +2,11 @@
 
 ## Поточний статус
 
-planned
+skeleton_governed
+
+CALC skeleton = governed foundation complete.
+
+Модуль ще не має статусу `draft_ready`.
 
 ## Stage 1 foundation
 
@@ -23,6 +27,24 @@ planned
 - Calculation Object Lifecycle
 - auth/session requirements для protected module flow
 - error path без продукт-специфічної логіки
+
+## Governance state
+
+Зафіксовано:
+
+- повний documentation skeleton
+- Base Calculation Object
+- єдиний зовнішній API entry point `prepare_calculation`
+- внутрішні API етапи validation / normalization / calculation
+- product-specific documentation rule
+- KZO MVP Scope як перший product-specific scope
+
+Для переходу в `draft_ready` ще потрібно:
+
+- Stage 2C — KZO Validation Matrix
+- approved TASK
+- approved first calculation scenario
+- approved product-specific parameter rules
 
 ## Що не входить у Stage 1
 

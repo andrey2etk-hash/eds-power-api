@@ -6,6 +6,8 @@ draft_ready
 
 AUTH frozen at `draft_ready`.
 
+AUTH frozen at MVP scope.
+
 Це означає:
 
 - структура модуля зафіксована

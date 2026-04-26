@@ -121,6 +121,58 @@
 
 ---
 
+# 26.04.2026 — End-of-day governance update
+
+## Ціль запису
+
+Зафіксувати фактичний governance progress дня без переписування початкового плану.
+
+## Факт
+
+- Stage 1 Fix Pack виконано та закрито через audit report
+- AUTH зафіксовано як frozen at MVP scope
+- CALC Skeleton створено та доведено до governed foundation
+- Stage 2 Fix Pack застосовано до CALC skeleton
+- KZO MVP Scope створено як перший product-specific scope
+- KZO документацію перенесено в продуктову підпапку `09_KZO/`
+- KZO MVP Scope доведено до `scope_governed`
+- Gemini/GPT audit cycles виконувались для:
+  - Stage 1 Fix Pack
+  - CALC Skeleton
+  - KZO MVP Scope
+
+## Governance milestones
+
+- створено `docs/AUDITS/2026-04-26_STAGE_1_GEMINI_AUDIT_FIX_PACK_V2.md`
+- створено `docs/AUDITS/2026-04-26_STAGE_2_CALC_SKELETON_AUDIT.md`
+- створено `docs/AUDITS/2026-04-26_STAGE_2B_KZO_MVP_SCOPE_AUDIT.md`
+- зафіксовано product-specific documentation rule для CALC
+- зафіксовано KZO MVP freeze rule
+
+## Статуси на кінець дня
+
+- Stage 1 — closed
+- `00-01_AUTH` — frozen MVP / draft_ready
+- `00-02_CALC_CONFIGURATOR` — skeleton_governed
+- `00-02_CALC_CONFIGURATOR/09_KZO` — scope_governed
+- Next active stage — Stage 2C KZO Validation Matrix
+
+## Відкладено
+
+- full CALC implementation
+- API endpoints
+- DB schema
+- UI / GAS implementation
+- KZO validation matrix
+- first KZO calculation scenario
+- move to `draft_ready`
+
+## Статус
+
+✔ Governance day closed
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP
