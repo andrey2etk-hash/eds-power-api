@@ -509,6 +509,55 @@ Stage 3C normalized summary layer created.
 
 ---
 
+# 26.04.2026 — Stage 3D GAS API handshake
+
+## Причина
+
+Stage 3D creates the first minimal Google Apps Script to Render API handshake for KZO `prepare_calculation`.
+
+## Що додано
+
+- `gas/Stage3D_KZO_Handshake.gs`
+- `testKzoPrepareCalculation()`
+- one valid KZO MVP request body
+- `UrlFetchApp.fetch` POST call
+- HTTP code logging
+- response status logging
+- error logging
+- `data.basic_result_summary` logging on success
+- timeout / request failure structured logging without automatic retry
+
+## Обмеження
+
+- no full UI
+- no Supabase
+- no DB writes
+- no AUTH expansion
+- no roles
+- no costing
+- no BOM
+- no weight / dimensions
+- no production logic
+- no architecture rewrite
+- no API contract change
+
+## Статус
+
+Stage 3D handshake draft created.
+
+Stage 3D Gemini pre-commit fixes applied:
+
+- GAS endpoint aligned to `/api/calc/prepare_calculation`
+- `contentType: "application/json"` kept explicit
+- `logic_version` verified in payload
+- KZO request body moved to `buildStage3DKzoPayload()`
+- timeout note constant added
+- no retry, async queue, UI, API route change, Supabase, AUTH, or architecture change added
+
+Stage 3E gate = manual run from Google Sheets / Apps Script.
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP
