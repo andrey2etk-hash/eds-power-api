@@ -389,6 +389,46 @@ Gemini Stage 2E fix pack applied:
 
 ---
 
+# 26.04.2026 — Stage 3A KZO calculation object contract
+
+## Причина
+
+Stage 3A bridges governed KZO MVP validation into the first implementation-safe product contract.
+
+## Що додано
+
+- KZO Calculation Object V1
+- first approved MVP scenario JSON payload
+- required / optional / deferred MVP inputs split
+- MVP-only outputs
+- global contract and status alignment rules
+
+## Обмеження
+
+- no API code
+- no FastAPI endpoint
+- no DB migration
+- no Render / Supabase implementation
+- no AUTH expansion
+- no KTP
+- no Powerline
+- no architecture rewrite
+
+## Статус
+
+Stage 3A product contract created.
+
+Stage 3A consistency fixes applied:
+
+- `busbar_current` aligned across validation, inputs, and calculation object
+- `logic_version` and `status` added as required structural validation fields
+- MVP output response envelope aligned with `04_DATA_CONTRACTS.md`
+- non-active questionnaire context marked as future reference only
+
+Stage 3B gate = API skeleton only after final verification.
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP

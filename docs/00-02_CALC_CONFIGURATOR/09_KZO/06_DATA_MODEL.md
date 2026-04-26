@@ -1,5 +1,70 @@
 # KZO Data Model
 
+## KZO Calculation Object V1
+
+This is the first implementation-safe KZO MVP Calculation Object contract.
+
+It bridges governance, product scope, and future API skeleton without defining API code, database schema, or calculation algorithm.
+
+Mandatory fields:
+
+- object_number
+- product_type
+- logic_version
+- voltage_class
+- busbar_current
+- configuration_type
+- quantity_total
+- cell_distribution
+- status
+
+Optional MVP fields:
+
+- breaker_type
+- notes
+
+Rules:
+
+- `product_type` must be `KZO`
+- `logic_version` identifies the KZO MVP logic contract version
+- `status` must follow `docs/00_SYSTEM/06_OBJECT_STATUSES.md`
+- field names and allowed values must align with `07_VALIDATION.md`
+- object structure must align with `docs/00_SYSTEM/04_DATA_CONTRACTS.md`
+
+Example payload for first approved MVP scenario:
+
+```json
+{
+  "object_number": "7445-B",
+  "product_type": "KZO",
+  "logic_version": "KZO_MVP_V1",
+  "voltage_class": "VC_10",
+  "busbar_current": 1250,
+  "configuration_type": "CFG_SINGLE_BUS_SECTION",
+  "quantity_total": 22,
+  "cell_distribution": {
+    "CELL_INCOMER": 2,
+    "CELL_OUTGOING": 16,
+    "CELL_PT": 2,
+    "CELL_BUS_SECTION": 2
+  },
+  "status": "DRAFT",
+  "breaker_type": null,
+  "notes": null
+}
+```
+
+Stage 3A boundaries:
+
+- no API endpoint
+- no DB migration
+- no KZO calculation algorithm
+- no BOM
+- no CAD
+- no production route
+- no supplier logic
+- no commercial offer logic
+
 ## Purpose
 
 Цей файл описує KZO як ієрархічну product-specific модель для `00-02_CALC_CONFIGURATOR`.

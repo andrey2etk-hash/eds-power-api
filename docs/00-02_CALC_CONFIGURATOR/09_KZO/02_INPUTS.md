@@ -1,6 +1,69 @@
 # KZO Questionnaire Logic
 
+## Stage 3A MVP Inputs
+
+This section defines active MVP inputs for KZO Calculation Object V1.
+
+All fields must align with:
+
+- `docs/00-02_CALC_CONFIGURATOR/09_KZO/07_VALIDATION.md`
+- `docs/00_SYSTEM/04_DATA_CONTRACTS.md`
+- `docs/00_SYSTEM/06_OBJECT_STATUSES.md`
+
+### Required MVP Inputs
+
+- object_number
+- product_type
+- logic_version
+- voltage_class
+- busbar_current
+- configuration_type
+- quantity_total
+- cell_distribution
+- status
+
+Rules:
+
+- `product_type` must be `KZO`
+- `voltage_class` uses machine-safe enum keys from `07_VALIDATION.md`
+- `configuration_type` uses machine-safe enum keys from `07_VALIDATION.md`
+- `cell_distribution` uses machine-safe cell type keys from `07_VALIDATION.md`
+- `status` uses global business object lifecycle statuses
+
+### Optional MVP Inputs
+
+- breaker_type
+- notes
+
+Rules:
+
+- `breaker_type` is optional in DRAFT
+- `breaker_type` is required in VALIDATED if required by selected cell type
+- `notes` must not affect validation or calculation logic
+
+### Deferred Inputs
+
+Future only, not active in MVP:
+
+- operating_current_type
+- general equipment preferences
+- row_layout
+- layout_sequence
+- edge cell positions
+- busbar bridge required
+- bridge type
+- distance_between_fronts
+- instance-level overrides
+
+Rules:
+
+- deferred inputs must not be required for Stage 3A
+- deferred inputs must not block the first KZO API skeleton
+- deferred inputs must not create BOM, CAD, production route, supplier, or commercial logic
+
 ## Purpose
+
+NON-ACTIVE CONTEXT / FUTURE REFERENCE ONLY
 
 Цей файл описує questionnaire logic для KZO у межах `00-02_CALC_CONFIGURATOR`.
 

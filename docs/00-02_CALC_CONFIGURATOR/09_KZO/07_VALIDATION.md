@@ -14,11 +14,13 @@ Required fields for KZO validation:
 
 - object_number
 - product_type
+- logic_version
 - voltage_class
 - busbar_current
 - configuration_type
 - quantity_total
 - cell_distribution
+- status
 - breaker_type (if applicable)
 
 Rules:
