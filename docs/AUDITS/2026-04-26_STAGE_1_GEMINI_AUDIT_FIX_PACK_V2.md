@@ -93,6 +93,25 @@ They can be accepted if they:
 
 User requested to commit and push the completed fix pack and required creation of this audit report in `docs/AUDITS/`.
 
+## Key decisions locked
+
+- Universal Request Header is mandatory
+- Session token required for protected modules
+- Validation responsibility layers standardized
+- Global Business Object Lifecycle standardized
+- AUTH frozen at MVP scope
+- CALC foundation starts from Base Calculation Object
+
+## Next stage entry conditions
+
+Before full `00-02_CALC_CONFIGURATOR` development:
+
+- `00_SYSTEM` documents synchronized
+- Base Calculation Object approved
+- `00-02_CALC_CONFIGURATOR` status moved from `planned` → `draft_ready`
+- First product type selected for MVP
+- Stage 2 scope approved through TASK
+
 ## Status
 
-completed
+✔ Closed — Stage 1 Fix Pack Approved
