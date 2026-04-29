@@ -18,6 +18,8 @@ const STAGE_6A_BLOCK_NAME = "STAGE_6_RESERVED_OPERATOR_BLOCK";
 const STAGE_6A_SHELL_BLOCK_VERSION = "KZO_STAGE_6A_OPERATOR_SHELL_V1";
 /** Stage 6B — thin writeback for `engineering_class_summary` (same Stage 6 band `E27:F40`). */
 const STAGE_6B_ENGINEERING_CLASSIFICATION_RANGE_A1 = STAGE_6A_RESERVED_OPERATOR_BLOCK_RANGE_A1;
+/** Stage 6C — thin writeback for `engineering_burden_summary` (same governed Stage 6 band `E27:F40`; overwrites display when run). */
+const STAGE_6C_ENGINEERING_BURDEN_RANGE_A1 = STAGE_6A_RESERVED_OPERATOR_BLOCK_RANGE_A1;
 const STAGE_4A_CELL_MAP = {
   object_number: "B2",
   product_type: "B3",
@@ -1569,5 +1571,135 @@ function writeStage6BEngineeringClassification_(sheet, responseJson, httpCode) {
     sheet: STAGE_4A_SHEET_NAME,
     range: STAGE_6B_ENGINEERING_CLASSIFICATION_RANGE_A1,
     engineering_class_summary_present: true
+  }));
+}
+
+/**
+ * Stage 6C — engineering burden thin writeback (`data.engineering_burden_summary` → Stage 6 band only).
+ */
+function runStage6CEngineeringBurdenFlow() {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = spreadsheet ? spreadsheet.getSheetByName(STAGE_4A_SHEET_NAME) : null;
+
+  if (!sheet) {
+    Logger.log(JSON.stringify({
+      stage: "6C_ENGINEERING_BURDEN",
+      telemetry_tag: "stage=6c-engineering-burden",
+      status: "run_skipped",
+      error: {
+        error_code: "STAGE_4C_OPERATOR_SHELL_MISSING",
+        message: "Run setupStage4COperatorShell() before Stage 6C engineering burden."
+      }
+    }));
+    return;
+  }
+
+  const preflight = buildStage4PreflightPayload_(sheet, STAGE_4C_CELL_MAP);
+
+  if (!preflight.ok) {
+    writeStage6CEngineeringBurdenError_(sheet);
+    Logger.log(JSON.stringify({
+      stage: "6C_ENGINEERING_BURDEN",
+      telemetry_tag: "stage=6c-engineering-burden",
+      status: "local_input_error",
+      error: preflight.error
+    }));
+    return;
+  }
+
+  const requestBody = buildStage4BRequestBody_(preflight.values);
+  const options = {
+    method: "post",
+    contentType: "application/json",
+    payload: JSON.stringify(requestBody),
+    muteHttpExceptions: true
+  };
+
+  try {
+    const response = UrlFetchApp.fetch(API_URL, options);
+    const httpCode = response.getResponseCode();
+    const responseText = response.getContentText();
+    const responseJson = JSON.parse(responseText);
+
+    Logger.log(JSON.stringify({
+      stage: "6C_ENGINEERING_BURDEN",
+      telemetry_tag: "stage=6c-engineering-burden",
+      http_code: httpCode,
+      local_input_status: "OK",
+      status: responseJson.status || null,
+      engineering_burden_summary_present: Boolean(
+        responseJson.data && responseJson.data.engineering_burden_summary
+      ),
+      error: responseJson.error || null
+    }));
+
+    writeStage6CEngineeringBurden_(sheet, responseJson, httpCode);
+  } catch (error) {
+    Logger.log(JSON.stringify({
+      stage: "6C_ENGINEERING_BURDEN",
+      telemetry_tag: "stage=6c-engineering-burden",
+      status: "request_or_writeback_failed",
+      error: {
+        error_code: "GAS_STAGE_6C_ENGINEERING_BURDEN_FAILED",
+        message: error && error.message ? error.message : String(error),
+        note: MVP_TIMEOUT_NOTE
+      },
+      retry: false
+    }));
+  }
+}
+
+function writeStage6CEngineeringBurdenError_(sheet) {
+  var emptyRows = [];
+  var r;
+  for (r = 0; r < 14; r++) {
+    emptyRows.push(["", ""]);
+  }
+  sheet.getRange(STAGE_6C_ENGINEERING_BURDEN_RANGE_A1).setValues(emptyRows);
+}
+
+function writeStage6CEngineeringBurden_(sheet, responseJson, httpCode) {
+  const data = responseJson.data || {};
+  const ebs = data.engineering_burden_summary;
+
+  if (!ebs) {
+    writeStage6CEngineeringBurdenError_(sheet);
+    Logger.log(JSON.stringify({
+      stage: "6C_ENGINEERING_BURDEN",
+      telemetry_tag: "stage=6c-engineering-burden",
+      status: "writeback_completed",
+      warning: "engineering_burden_summary_missing",
+      sheet: STAGE_4A_SHEET_NAME,
+      range: STAGE_6C_ENGINEERING_BURDEN_RANGE_A1,
+      http_code: httpCode
+    }));
+    return;
+  }
+
+  var rows = [
+    ["burden_version", firstDefined(ebs.burden_version, "")],
+    ["structural_burden_class", firstDefined(ebs.structural_burden_class, "")],
+    ["assembly_burden_class", firstDefined(ebs.assembly_burden_class, "")],
+    ["estimated_mass_class", firstDefined(ebs.estimated_mass_class, "")],
+    ["complexity_basis", firstDefined(ebs.complexity_basis, "")],
+    ["topology_basis", firstDefined(ebs.topology_basis, "")],
+    ["footprint_basis", firstDefined(ebs.footprint_basis, "")],
+    ["interpretation_scope", firstDefined(ebs.interpretation_scope, "")],
+    ["stage_note", "Stage 6C — MVP (thin GAS; API truth); not kg/BOM — HTTP " + httpCode],
+    ["", ""],
+    ["", ""],
+    ["", ""],
+    ["", ""],
+    ["", ""]
+  ];
+  sheet.getRange(STAGE_6C_ENGINEERING_BURDEN_RANGE_A1).setValues(rows);
+
+  Logger.log(JSON.stringify({
+    stage: "6C_ENGINEERING_BURDEN",
+    telemetry_tag: "stage=6c-engineering-burden",
+    status: "writeback_completed",
+    sheet: STAGE_4A_SHEET_NAME,
+    range: STAGE_6C_ENGINEERING_BURDEN_RANGE_A1,
+    engineering_burden_summary_present: true
   }));
 }

@@ -1434,6 +1434,49 @@ Reserved діапазон **`E27:F40`** має бути **операційним
 
 ---
 
+## Stage 6B — operator verification closeout (29.04.2026)
+
+### Док-синхронізація
+
+- Операторська верифікація **PASS**: **`http_code` 200**, **`engineering_class_summary_present`**, **`writeback_completed`** → **`Stage4A_MVP!E27:F40`** (14 рядки), без **`request_or_writeback_failed`**; без BOM/pricing/mass/DB/Supabase; GAS = thin transport
+- **IDEA-0013**: у master table лише **`IMPLEMENTED`**; у нотатках зафіксовано **operator-verified** як closure (не новий Status Values)
+- Оновлено `2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`, `12_IDEA_MASTER_LOG.md`
+
+---
+
+## Stage 6B — formal closure + governance synchronization (29.04.2026)
+
+### Док-синхронізація (без змін коду / GAS / Sheet)
+
+- Етап **Stage 6B — Engineering Classification MVP** **формально закрито**: операторська верифікація **PASS** + зовнішній аудит Gemini — **`SAFE TO PROCEED TO STAGE 6C`**
+- **IDEA-0013**: master table **Status** = **`IMPLEMENTED`** (без змін); операторська та Gemini closures — лише у нотатках аудитів / `NOW` / статус-доках
+- Зафіксовано: **Stage 6B = CLOSED**; **Stage 6C — Engineering Logic Foundation MVP** = **NOT STARTED** до **окремої normalized IDEA** та TASK
+- Оновлено: `docs/AUDITS/2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`, `12_IDEA_MASTER_LOG.md`, `docs/00-02_CALC_CONFIGURATOR/09_KZO/08_STATUS.md`, `docs/00-02_CALC_CONFIGURATOR/09_STATUS.md`, `NOW.md`, `docs/AUDITS/00_AUDIT_INDEX.md`
+
+---
+
+# 29.04.2026 — Stage 6C Engineering burden foundation MVP (API + thin GAS)
+
+## Причина
+
+Планувальний **production burden** після класифікації 6B: **burden перед precision** — без kg, BOM, цін.
+
+## Рішення
+
+- `main.py`: `_build_kzo_engineering_burden_summary()` → `data.engineering_burden_summary` (**`ENGINEERING_BURDEN_ONLY_MVP`**; **`estimated_mass_class`** — лише tier, не кілограми)
+- `gas/Stage3D_KZO_Handshake.gs`: `runStage6CEngineeringBurdenFlow()`, **`STAGE_6C_ENGINEERING_BURDEN_RANGE_A1`** (`E27:F40`; той самий band що 6B — взаємний overwrite на листі)
+- **`IDEA-0014`** = **`IMPLEMENTED`**
+
+## Обмеження
+
+- без фактичної маси, BOM, цін, DB, CAD, закупівель
+
+## Governance / аудит
+
+- `docs/AUDITS/2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP

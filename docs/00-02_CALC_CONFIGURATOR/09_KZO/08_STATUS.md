@@ -34,7 +34,9 @@ Stage 5D = VERIFIED (documentation MVP — operator layout governance; IDEA-0011
 
 Stage 6A = VERIFIED (reserved operator block shell — **`E27:F40`**; **IDEA-0012** **`IMPLEMENTED`**; operator PASS 29.04.2026)
 
-Stage 6B = delivered (API **`engineering_class_summary`** + GAS thin writeback **`E27:F40`** — planning classification only — **IDEA-0013** **`IMPLEMENTED`**)
+Stage 6B = **VERIFIED / IMPLEMENTED** — **formally closed** (API **`engineering_class_summary`** + GAS thin writeback **`E27:F40`**; operator PASS + external Gemini **`SAFE TO PROCEED TO STAGE 6C`** — **IDEA-0013** **`IMPLEMENTED`**; closure **29.04.2026**)
+
+Stage 6C = **IMPLEMENTED** (**API **`engineering_burden_summary`** + thin GAS **`runStage6CEngineeringBurdenFlow()`** — **`E27:F40`** — **IDEA-0014** **`IMPLEMENTED`**; audit **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`**)
 
 ## Gate
 
@@ -42,25 +44,27 @@ Stage 6B = delivered (API **`engineering_class_summary`** + GAS thin writeback *
 
 **Stage 6A:** reserved block **`E27:F40`** — **operator-verified** 29.04.2026 (`docs/AUDITS/2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`).
 
-**Stage 6B:** **engineering classification** MVP — API field **`engineering_class_summary`** + **`runStage6BEngineeringClassificationFlow()`** (same **`E27:F40`** band; replaces 6A placeholder when 6B runs). Classification only — **no** mass / BOM / pricing / CAD (`docs/AUDITS/2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`).
+**Stage 6B:** **CLOSED** — **engineering classification** MVP complete: API **`engineering_class_summary`**, thin GAS **`runStage6BEngineeringClassificationFlow()`**, **`E27:F40`**, operator verification PASS, external Gemini verdict **`SAFE TO PROCEED TO STAGE 6C`** (`docs/AUDITS/2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`). **IDEA-0013** master **Status** = **`IMPLEMENTED`** (operator/Gemini closure = notes only).
 
-**Stage 7+ / precision layers** — **blocked** until separate TASKs **after** Stage 6B classification baseline (no ungoverned engineering expansion).
+**Stage 6C — Engineering burden foundation MVP:** **delivered** — API **`engineering_burden_summary`**, thin GAS **`runStage6CEngineeringBurdenFlow()`**, **`E27:F40`**, **`interpretation_scope`** **`ENGINEERING_BURDEN_ONLY_MVP`** (`docs/AUDITS/2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`). **IDEA-0014** master **Status** = **`IMPLEMENTED`** (estimated mass tier = burden indicator only).
+
+**Stage 7+ / precision layers** — **blocked** until separate TASKs **after** Stage 6B classification baseline and any Stage 6C foundation TASK (no ungoverned engineering expansion).
 
 Previous closure: **Stage 5C MVP closed** for IDEA-0010 — Render topology gate **PASS**; operator-visible Sheet topology **PASS** (thin GAS `Stage4A_MVP!E21:F26`; IDEA-0010 **`IMPLEMENTED`** per master table `Status Values`).
 
-Shell registry: **active** blocks (`E4:F20`, `E21:F26`, **`E27:F40`** — Stage **6B** classification writeback).
+Shell registry: **active** blocks (`E4:F20`, `E21:F26`, **`E27:F40`** — Stage **6B** classification writeback і / або **Stage 6C** burden writeback (**той самий band**)).
 
 ## Current status
 
-Stage 5A structural composition summary is verified on deployed Render API, operator-visible output integration is verified in the Sheet, Stage 5B `physical_summary` is verified on deployed Render API per Stage 5B Render gate audit, Stage 5C `physical_topology_summary` is verified on deployed Render API per Stage 5C Render gate audit, Stage 5C topology fields are operator-visible on the Sheet via thin GAS writeback to `E21:F26` per Stage 5C Sheet output integration audit, Stage 5D operator shell zoning is **VERIFIED** as documentation MVP (**IDEA-0011** **`IMPLEMENTED`**), Stage 6A **E27:F40** shell activation **operator-verified**, and Stage 6B **engineering classification** is available on Render API (**`engineering_class_summary`**) with optional thin Sheet writeback to **`E27:F40`** per **`IDEA-0013`**.
+Stage 6A–6C KZO bands are aligned with audits: Stage 6B **closed**; Stage 6C **`engineering_burden_summary`** on **`prepare_calculation`** with thin GAS to **`E27:F40`** (14 rows); **`estimated_mass_class`** залишається **burden-tier** (не kg). **IDEA-0013** / **IDEA-0014** = **`IMPLEMENTED`** in the master table.
 
 ## Blockers
 
-- **Commercial / mass / BOM / pricing precision** expansion — **gated** to future normalized TASKs (Stage 6B delivers **classification** only)
+- **Commercial / mass / BOM / pricing precision** expansion — **gated** until separate TASKs after burden foundation
 
 ## Next
 
-- Optional: operator verifies **`runStage6BEngineeringClassificationFlow()`** on **`Stage4A_MVP`** after Deploy (API must expose **`engineering_class_summary`**).
+- **Stage 7+** precision / commercial TASKs — only after governance review (no rogue kg/BOM)
 - **`E41:F54`** remains reserved untouched until tasked.
 
 ## Global status link

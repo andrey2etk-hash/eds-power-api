@@ -19,17 +19,24 @@
 - **Stage 6A** — reserved блок **`E27:F40`**: операторська перевірка **PASS** (активація + ресет + execution log). **`shell_block_version`**: **`KZO_STAGE_6A_OPERATOR_SHELL_V1`**; активація **`shell_status`** **`ACTIVE_RESERVED_BLOCK`**; после ресета в лозі **`RESERVED_DOC_ONLY`**; телеметрія з **`stage6_operator_shell_summary`**. **IDEA-0012** = `IMPLEMENTED`; **`ACTIVE_RESERVED_BLOCK`** / **`RESERVED_DOC_ONLY`** лише стани shell-блоку, не IDEA lifecycle.
 - Audit оновлено: `docs/AUDITS/2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`.
 
-## Завершено — KZO Stage 6B Engineering classification (API + thin GAS, 29.04.2026)
+## Завершено — KZO Stage 6B Engineering classification (формальне закриття, 29.04.2026)
 
-- **IDEA-0013** = `IMPLEMENTED`. Audit: `docs/AUDITS/2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`.
+- **Stage 6B** = **VERIFIED / IMPLEMENTED / CLOSED** — API **`engineering_class_summary`** (**`interpretation_scope`** **`ENGINEERING_CLASSIFICATION_ONLY_MVP`**) + thin GAS **`E27:F40`** (14-row writeback aligned; writeback mismatch fixed).
+- **IDEA-0013** = **`IMPLEMENTED`** (master table only; операторська верифікація та Gemini — лише нотатки аудиту, без нових **Status Values**).
+- Операторська верифікація **PASS**; зовнішній аудит Gemini — **`SAFE TO PROCEED TO STAGE 6C`**.
+- Audit: `docs/AUDITS/2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`.
 
-## Поточний етап
+## Поточний етап і наступний gate
 
-Execution gate до **precision** шарів (маса, BOM, КП…) — лише через **нові TASK** після бази Stage 6B.
+- **Classification baseline (Stage 6B)** — **closed**.
+- **Stage 6C — burden foundation** — **`engineering_burden_summary`** на API + thin GAS **`runStage6CEngineeringBurdenFlow()`** (**IDEA-0014** **`IMPLEMENTED`**; **`estimated_mass_class`** ≠ kg).
+- **Наступна планована фаза:** **precision / commercial expansion** — лише через окремий **TASK** з governance (**після Stage 6C burden MVP**).
+- Execution до **precision** шарів (маса, BOM, КП…) — лише через **нові TASK** після узгодження меж (6C дає лише burden-tier).
 
 ## Як узгоджено з Gemini doc-pass (Зовнішній аудит)
 
 - Gemini Stage 5C Sheet operator verification: **`PASS WITH DOC FIXES`** → застосовано лише синхронізація доків (без змін API/GAS). Використано статус IDEA **`IMPLEMENTED`**, без нових міток у master table beyond `Status Values`.
+- Stage 6B external Gemini audits: **`SAFE TO PROCEED TO STAGE 6C`** — **Stage 6C** (**`IDEA-0014`**) потім закритий імплементацією `engineering_burden_summary`.
 
 ## Активний сервер
 
@@ -39,7 +46,7 @@ https://eds-power-api.onrender.com
 
 1. 00-01_AUTH — авторизація (frozen MVP / draft_ready)
 2. 00-02_CALC_CONFIGURATOR — конфігуратор (KZO Stage 5A–5C operator-visible path для structural / footprint API / topology API + топологія на Sheet верифіковані)
-3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (до **Stage 6B**: API classification + thin GAS на **`E27:F40`** — **IDEA-0013**; далі precision — окремі TASK)
+3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (**Stage 6C burden foundation**: **IDEA-0014** `IMPLEMENTED`; 6B/6C share **`E27:F40`** writeback alternate — precision лише TASK)
 
 ## Що робимо зараз
 
@@ -92,11 +99,11 @@ https://eds-power-api.onrender.com
 - Stage 5C operator-visible topology on Sheet verified via thin GAS (`runStage5CSheetOutputIntegrationFlow()`; **`E21:F26`**; Gemini Sheet audit PASS WITH DOC FIXES → doc-sync)
 - Stage 5D operator layout governance documentation MVP closed (verification gate PASS WITH DOC FIXES → doc-pass; **IDEA-0011** = `IMPLEMENTED`)
 - Stage 6A reserved block **`E27:F40`** — GAS activation + **operator verification PASS** 29.04.2026 (doc-pass sync) (**IDEA-0012** `IMPLEMENTED`; audit `docs/AUDITS/2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`)
-- Stage 6B **`engineering_class_summary`** on API + **`runStage6BEngineeringClassificationFlow()`** (**IDEA-0013** `IMPLEMENTED`; audit `docs/AUDITS/2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`)
+- Stage 6B **closed** — operator verification PASS + Gemini **`SAFE TO PROCEED TO STAGE 6C`**; formal doc-pass (**IDEA-0013** `IMPLEMENTED`; audit `docs/AUDITS/2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`)
+- Stage 6C **`engineering_burden_summary`** + **`runStage6CEngineeringBurdenFlow()`** (**IDEA-0014** `IMPLEMENTED`; audit `docs/AUDITS/2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`)
 
 ## What remains next (plan)
 
-- optional: operator verifies **`runStage6BEngineeringClassificationFlow()`** after Render deploy exposes **`engineering_class_summary`**
+- **Stage 7+** precision (kg, BOM, commercial) — **окремий TASK**, не входить до 6C burden MVP
 - keep Stage narrow: no BOM, pricing, DB, CAD, or unmanaged Sheet expansion unless separately tasked
 - keep GAS thin on future operator-visible transports
-- precision layers (mass, BOM, commercial) — **нові TASK** після бази класифікації 6B

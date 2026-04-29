@@ -4,6 +4,38 @@
 
 2026-04-29
 
+## Operator verification closeout
+
+**PASS** — manual operator run on **`Stage4A_MVP`** (post **14-row writeback** fix in GAS).
+
+| Fact | Recorded |
+| --- | --- |
+| API | **`http_code` 200**, **`engineering_class_summary_present`**: **true** |
+| GAS | **`writeback_completed`**, telemetry **`stage`**: **`6B_ENGINEERING_CLASSIFICATION`**, **`engineering_class_summary_present`**: **true** |
+| Sheet range | **`E27:F40`** (**14** rows; no row/range mismatch error) |
+| Failure path | **`request_or_writeback_failed`** **not** triggered for writeback |
+| Thin client | Classification only from API JSON — no GAS recomputation of tiers |
+| Scope | No BOM, pricing, mass, DB, Supabase, CAD expansion |
+
+**IDEA-0013:** master table **Status** remains canonical **`IMPLEMENTED`**; **operator-verified** is a **delivery / closure** label in this audit and IDEA notes (not a separate **Status Values** entry).
+
+## External Gemini audit
+
+**PASS** — independent external review of Stage 6B scope (API classification boundary, thin GAS writeback **`E27:F40`**, governance / drift checks).
+
+**Recorded verdict:** **`SAFE TO PROCEED TO STAGE 6C`**
+
+Gemini PASS does **not** implement Stage 6C automatically; **Stage 6C** is delivered under **`IDEA-0014`** (`engineering_burden_summary` — see `docs/AUDITS/2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`).
+
+## Formal closure
+
+**Stage 6B — Engineering classification MVP** is **formally closed** after:
+
+- **Operator verification PASS** (documented above)
+- **External Gemini audit PASS** — **`SAFE TO PROCEED TO STAGE 6C`**
+
+Precision layers (mass, BOM, commercial, DB, Supabase) remain **out of scope** for Stage 6B and gated to future TASKs.
+
 ## Principle
 
 **Classification before precision.** Planning-grade labels only — no mass, BOM, price, thermal, procurement, or CAD.
@@ -30,7 +62,7 @@ Mass, BOM, pricing, CAD, DB, Sidebar, formulas in GAS beyond mapping.
 
 ## Verdict
 
-**PASS** — first engineering-intelligence bridge without violating KZO MVP governance chain.
+**CLOSED — PASS** — engineering classification MVP delivered; **operator verification PASS** and **external Gemini audit PASS** recorded (**`SAFE TO PROCEED TO STAGE 6C`**). Thin GAS, **`E27:F40`**, no precision-layer bypass. **Stage 6C** is **not** started until a **normalized IDEA** for that stage exists.
 
 ## References
 

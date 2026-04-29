@@ -314,6 +314,68 @@ def _build_kzo_engineering_class_summary(
         "interpretation_scope": "ENGINEERING_CLASSIFICATION_ONLY_MVP",
     }
 
+
+def _build_kzo_engineering_burden_summary(
+    engineering_class_summary: dict[str, Any],
+    physical_topology_summary: dict[str, Any],
+    structural_composition_summary: dict[str, Any],
+) -> dict[str, Any]:
+    """Stage 6C — planning burden only (no kg, BOM, price, CAD)."""
+    lc = str(engineering_class_summary.get("lineup_complexity_class") or "STANDARD")
+    ls = str(engineering_class_summary.get("lineup_scale_class") or "STANDARD")
+    topology_type = str(physical_topology_summary.get("topology_type") or "TOPOLOGY_SINGLE_SECTION")
+    total_sections = int(physical_topology_summary.get("total_sections") or 1)
+    structural_flags = structural_composition_summary.get("structural_flags") or []
+    dual_incoming = "dual_incoming" in structural_flags
+
+    complexity_basis = f"COMPLEXITY_{lc}"
+    footprint_basis = f"SCALE_{ls}"
+
+    if lc == "EXTENDED" or ls == "EXTENDED":
+        structural_burden_class = "BURDEN_EXTENDED"
+    elif lc == "HEAVY" and total_sections >= 2:
+        structural_burden_class = "BURDEN_HEAVY"
+    elif ls == "LARGE" and lc == "STANDARD":
+        structural_burden_class = "BURDEN_STANDARD"
+    elif ls == "LARGE" or lc == "HEAVY":
+        structural_burden_class = "BURDEN_HEAVY"
+    elif lc == "LIGHT" and ls == "COMPACT":
+        structural_burden_class = "BURDEN_LIGHT"
+    else:
+        structural_burden_class = "BURDEN_STANDARD"
+
+    if total_sections >= 2 and topology_type == "TOPOLOGY_UNEVEN_SPLIT":
+        assembly_burden_class = "ASSEMBLY_COMPLEX"
+    elif total_sections >= 2 and lc in ("HEAVY", "EXTENDED"):
+        assembly_burden_class = "ASSEMBLY_COMPLEX"
+    elif total_sections == 1 and lc == "LIGHT":
+        assembly_burden_class = "ASSEMBLY_SIMPLE"
+    elif dual_incoming:
+        assembly_burden_class = "ASSEMBLY_COMPLEX"
+    else:
+        assembly_burden_class = "ASSEMBLY_STANDARD"
+
+    tier_order = ("MASS_LITE", "MASS_STANDARD", "MASS_HEAVY", "MASS_EXTENDED")
+    scale_mass_idx = {"COMPACT": 0, "STANDARD": 1, "LARGE": 2, "EXTENDED": 3}.get(ls, 1)
+    mass_idx = scale_mass_idx
+    if lc == "HEAVY":
+        mass_idx = min(mass_idx + 1, 3)
+    if lc == "EXTENDED":
+        mass_idx = 3
+    estimated_mass_class = tier_order[mass_idx]
+
+    return {
+        "burden_version": "KZO_STAGE_6C_ENGINEERING_BURDEN_MVP_V1",
+        "structural_burden_class": structural_burden_class,
+        "assembly_burden_class": assembly_burden_class,
+        "estimated_mass_class": estimated_mass_class,
+        "complexity_basis": complexity_basis,
+        "topology_basis": topology_type,
+        "footprint_basis": footprint_basis,
+        "interpretation_scope": "ENGINEERING_BURDEN_ONLY_MVP",
+    }
+
+
 @app.get("/")
 def root():
     return {"message": "EDS Power API is running"}
@@ -394,6 +456,11 @@ def prepare_calculation(request: dict[str, Any]):
         structural_composition_summary,
         physical_topology_summary,
     )
+    engineering_burden_summary = _build_kzo_engineering_burden_summary(
+        engineering_class_summary,
+        physical_topology_summary,
+        structural_composition_summary,
+    )
 
     return {
         "status": "success",
@@ -417,6 +484,7 @@ def prepare_calculation(request: dict[str, Any]):
             "physical_summary": physical_summary,
             "physical_topology_summary": physical_topology_summary,
             "engineering_class_summary": engineering_class_summary,
+            "engineering_burden_summary": engineering_burden_summary,
         },
         "error": None,
         "metadata": _response_metadata(meta, normalized_payload["logic_version"], started_at),

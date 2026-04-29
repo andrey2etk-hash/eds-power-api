@@ -31,6 +31,7 @@ This file is the single source of truth for all normalized ideas in EDS Power.
 | IDEA-0011 | 2026-04-29 | Stage 5D KZO Operator Layout Governance MVP: fixed stage shell zones and vertical expansion before Stage 6 | `RIGHT_NOW` | `P1` | `TASK` | Stage 5D | After Stage 5C operator Sheet topology writeback verified | Governed operator shell — one stage block — additive downward growth — no redesign | `IMPLEMENTED` |
 | IDEA-0012 | 2026-04-29 | Stage 6A KZO Reserved Operator Block Activation: activate E27:F40 as governed shell infra before Stage 6 engineering | `RIGHT_NOW` | `P1` | `TASK` | Stage 6A | After Stage 5D shell governance MVP implemented | Activate reserved shell block only — no engineering formulas,BOM,Business logic — not API topology | `IMPLEMENTED` |
 | IDEA-0013 | 2026-04-29 | Stage 6B KZO Engineering Classification MVP: lineup scale/complexity classification from structure and topology | `RIGHT_NOW` | `P1` | `TASK` | Stage 6B | After Stage 6A operator shell block verified | Planning-grade engineering class only — no mass, BOM, price, CAD | `IMPLEMENTED` |
+| IDEA-0014 | 2026-04-29 | Stage 6C KZO Engineering Burden Foundation MVP: planning-grade production burden from classification + topology (not kg/BOM/price) | `RIGHT_NOW` | `P1` | `TASK` | Stage 6C | After Stage 6B closed with Gemini SAFE TO PROCEED TO STAGE 6C | Planning burden before precision — burden tiers only — no BOM/CAD procurement | `IMPLEMENTED` |
 
 ## Idea Notes
 
@@ -775,3 +776,29 @@ Implementation record:
 - `main.py`: `_build_kzo_engineering_class_summary()` → `data.engineering_class_summary` on success
 - `gas/Stage3D_KZO_Handshake.gs`: `runStage6BEngineeringClassificationFlow()`, writeback **`E27:F40`** only (Stage 6 band; overwrites Stage 6A placeholder when Stage 6B flow runs — thin transport, no classification math in GAS)
 - Audit: `docs/AUDITS/2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`
+- **Operator verification PASS** — API **`http_code` 200**, **`engineering_class_summary_present`**, GAS **`writeback_completed`** on **`E27:F40`** (14-row block; no **`request_or_writeback_failed`**); thin client preserved; no BOM/pricing/mass/DB/Supabase. Closure: Stage 6B = **`IMPLEMENTED`** + **operator-verified** (**`IMPLEMENTED`** stays the only IDEA **Status** token in master table).
+- **Stage 6B Engineering Classification MVP closed** after **external Gemini PASS** (**`SAFE TO PROCEED TO STAGE 6C`**) + **operator verification PASS** **29.04.2026** — doc-pass + governance sync only; **Stage 6C** not started until **separate normalized IDEA** (no new **Status Values** for closure).
+
+### IDEA-0014 — Stage 6C KZO Engineering Burden Foundation MVP
+
+Classification / priority / decision:
+
+- `RIGHT_NOW` / `P1` / `TASK`
+
+Stage target:
+
+- Stage 6C
+
+Trigger condition:
+
+- After Stage 6B closure and **`SAFE TO PROCEED TO STAGE 6C`** governance gate.
+
+Key thesis:
+
+- **Planning burden before precision burden** — **`engineering_burden_summary`** from 6B + topology + structural flags only; **`estimated_mass_class`** = burden tier, **not** kg.
+
+Implementation record:
+
+- `main.py`: `_build_kzo_engineering_burden_summary()` → `data.engineering_burden_summary` on success
+- `gas/Stage3D_KZO_Handshake.gs`: `runStage6CEngineeringBurdenFlow()`, writeback **`E27:F40`** only (thin transport; overwrites Stage 6 band when 6C runs)
+- Audit: `docs/AUDITS/2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`

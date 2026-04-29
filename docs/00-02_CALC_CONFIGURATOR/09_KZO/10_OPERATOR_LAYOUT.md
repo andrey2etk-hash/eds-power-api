@@ -1,17 +1,17 @@
-# KZO Operator Layout Governance (Stage 5D) — Stages 6A–6B shell & classification
+# KZO Operator Layout Governance (Stage 5D) — Stages 6A–6C shell & engineering layers
 
 ## Purpose
 
 Define the **governance shell** for the KZO Google Sheets operator surface: fixed stage blocks, reserved future rows, and anti-overlap rules. This is **not** a UI redesign — it is continuity and readability architecture so Stage 6+ does not fragment the sheet.
 
-**Formula (product line):** Structure → Scale → Topology → **Shell Governance** → **Shell activation (Stage 6A)** → **Classification (Stage 6B)** → Later precision.
+**Formula (product line):** Structure → Scale → Topology → **Shell Governance** → **Shell activation (Stage 6A)** → **Classification (Stage 6B)** → **Burden foundation (Stage 6C)** → Later precision.
 
 ## Architecture roles (unchanged)
 
 | Layer | Role |
 | --- | --- |
-| **API** | Engineering truth — **`engineering_class_summary`** (**Stage 6B**) derives from Stage 5A/5C summaries only; no mass/BOM/pricing |
-| **GAS** | Transport / writeback to assigned ranges — Stage **6A** shell placeholder (**no** API engineering field); Stage **6B** maps API **`engineering_class_summary`** to **`E27:F40`** only — **no** classification recomputation in GAS |
+| **API** | Engineering truth — **`engineering_class_summary`** (**Stage 6B**) derives from Stage 5A/5C summaries only; **`engineering_burden_summary`** (**Stage 6C**) derives from 6B + topology + structural flags — **no** kg/BOM/pricing |
+| **GAS** | Transport / writeback to assigned ranges — Stage **6A** shell placeholder (**no** API engineering field); Stage **6B** maps API **`engineering_class_summary`** to **`E27:F40`** only; Stage **6C** maps **`engineering_burden_summary`** to **`E27:F40`** only — **no** burden math in GAS |
 | **Sheet** | Governed operator shell — one approved block per stage |
 
 ## Shell model (MVP): `SHELL_VERTICAL_EXPANSION`
@@ -29,7 +29,8 @@ These ranges are **approved** for current operator writeback. GAS must write **o
 | **STAGE_5A_STRUCTURE** | **E4:F20** | Structural / output integration: implementation uses `E4:F19` plus row **`E20:F20`** for flags — together they occupy rows **4–20** (one governance block). |
 | **STAGE_5C_TOPOLOGY** | **E21:F26** | Topology thin writeback (`physical_topology_summary`). |
 | **STAGE_6A_RESERVED_SHELL** | **E27:F40** | **Stage 6A** — shell infrastructure placeholder (`stage6_*` logs / optional placeholder rows before 6B). |
-| **STAGE_6B_ENGINEERING_CLASS** | **E27:F40** | **Stage 6B** — **`engineering_class_summary`** thin writeback (**`runStage6BEngineeringClassificationFlow()`**). Running 6B **replaces** 6A placeholder content in **the same governance band** (no lateral drift). |
+| **STAGE_6B_ENGINEERING_CLASS** | **E27:F40** | **Stage 6B** — **`engineering_class_summary`** (**`runStage6BEngineeringClassificationFlow()`**). |
+| **STAGE_6C_ENGINEERING_BURDEN** | **E27:F40** | **Stage 6C** — **`engineering_burden_summary`** (**`runStage6CEngineeringBurdenFlow()`**). Running **6B** or **6C** overwrites the **same** governed band (`E41:F54` remains untouched). |
 
 **Stage 5B (`physical_summary`):** verified on **Render**; no separate operator Sheet block is defined in this MVP governance slice — scale remains API-visible unless a future TASK allocates a dedicated range.
 
@@ -37,7 +38,7 @@ These ranges are **approved** for current operator writeback. GAS must write **o
 
 | Label | Range | Status |
 | --- | --- | --- |
-| **STAGE_6_ENGINEERING** (classification) | **E27:F40** | **Stage 6B:** API emits **`engineering_class_summary`** (planning taxonomy only); GAS transports to **`E27:F40`**; **Stage 6A** remains prerequisite shell activation. |
+| **STAGE_6_ENGINEERING** (6B classification / 6C burden — same band, alternate writebacks) | **E27:F40** | **Stage 6B / 6C:** API emits **`engineering_class_summary`** / **`engineering_burden_summary`**; **Stage 6A** prerequisite for shell semantics. |
 | **STAGE_7_COMMERCIAL** | **E41:F54** | Reserved — **no** GAS writes until tasked. |
 
 ## Stage 6A — GAS-only shell summary (not an API field in 6A)
@@ -79,6 +80,29 @@ Illustrative shape:
     "total_cells_basis": 22,
     "topology_basis": "TOPOLOGY_BALANCED_SPLIT",
     "interpretation_scope": "ENGINEERING_CLASSIFICATION_ONLY_MVP"
+  }
+}
+```
+
+## Stage 6C — `engineering_burden_summary` (API + thin GAS)
+
+API returns **`data.engineering_burden_summary`** on success (`_build_kzo_engineering_burden_summary`). Interpretation **`ENGINEERING_BURDEN_ONLY_MVP`** — **`estimated_mass_class`** is burden-tier semantics only (**not kg**).
+
+GAS **`runStage6CEngineeringBurdenFlow()`** maps fields to **`E27:F40`** (overwrites sheet content in this band — rerun 6B if classification rows must appear on-sheet).
+
+Illustrative shape:
+
+```json
+{
+  "engineering_burden_summary": {
+    "burden_version": "KZO_STAGE_6C_ENGINEERING_BURDEN_MVP_V1",
+    "structural_burden_class": "BURDEN_STANDARD",
+    "assembly_burden_class": "ASSEMBLY_STANDARD",
+    "estimated_mass_class": "MASS_HEAVY",
+    "complexity_basis": "COMPLEXITY_STANDARD",
+    "topology_basis": "TOPOLOGY_BALANCED_SPLIT",
+    "footprint_basis": "SCALE_LARGE",
+    "interpretation_scope": "ENGINEERING_BURDEN_ONLY_MVP"
   }
 }
 ```
@@ -139,5 +163,5 @@ The API must **never** dictate cell placement; placement is governance + GAS wri
 ## References
 
 - KZO status: `docs/00-02_CALC_CONFIGURATOR/09_KZO/08_STATUS.md`
-- IDEA: **`IDEA-0011`** (Stage 5D), **`IDEA-0012`** (Stage 6A), **`IDEA-0013`** (Stage 6B) in `docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`
-- Audits: `docs/AUDITS/2026-04-29_STAGE_5D_OPERATOR_LAYOUT_GOVERNANCE.md`; verification closure: `docs/AUDITS/2026-04-29_STAGE_5D_GOVERNANCE_VERIFICATION_GATE.md`; Stage 6A: `docs/AUDITS/2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`; Stage 6B: `docs/AUDITS/2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`
+- IDEA: **`IDEA-0011`** (Stage 5D), **`IDEA-0012`** (Stage 6A), **`IDEA-0013`** (Stage 6B), **`IDEA-0014`** (Stage 6C) in `docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`
+- Audits: `docs/AUDITS/2026-04-29_STAGE_5D_OPERATOR_LAYOUT_GOVERNANCE.md`; verification closure: `docs/AUDITS/2026-04-29_STAGE_5D_GOVERNANCE_VERIFICATION_GATE.md`; Stage 6A: `docs/AUDITS/2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`; Stage 6B: `docs/AUDITS/2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`; Stage 6C: `docs/AUDITS/2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`
