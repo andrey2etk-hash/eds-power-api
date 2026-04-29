@@ -43,6 +43,8 @@ Cursor не має права:
 - змінювати system rules без TASK
 - змінювати data contracts без погодження
 - хаотично перебудовувати структуру
+- реалізовувати raw user ideas без normalized classification
+- preparing non-approved ideas
 
 ---
 
@@ -59,6 +61,7 @@ GPT використовується для:
 - управління roadmap
 - daily review
 - changelog strategy
+- idea normalization
 
 GPT не має права:
 
@@ -66,6 +69,10 @@ GPT не має права:
 - змінювати GitHub напряму
 - обходити system docs
 - ігнорувати approved structure
+
+GPT = Idea Normalizer allowed.
+
+Cursor forbidden from implementing or preparing non-approved ideas.
 
 ---
 

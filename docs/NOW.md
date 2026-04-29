@@ -25,6 +25,7 @@ https://eds-power-api.onrender.com
 - тримаємо `00-02_CALC_CONFIGURATOR` у межах KZO MVP
 - перевіряємо GAS → API handshake вручну перед наступним розширенням
 - підтримуємо синхронність GitHub / Cursor / Docs
+- Idea Normalizer = ACTIVE GOVERNANCE
 
 ## Що не робимо зараз
 
@@ -51,6 +52,7 @@ https://eds-power-api.onrender.com
 - Stage 3B API validation skeleton committed
 - Stage 3C normalized result summary committed
 - Stage 3D GAS API handshake committed
+- Idea Normalizer foundation created
 
 ## What remains next (plan)
 

@@ -23,6 +23,8 @@
 - `docs/00_SYSTEM/02_GLOBAL_RULES.md`
 - `docs/00_SYSTEM/03_ARCHITECTURE.md`
 - `docs/00_SYSTEM/04_DATA_CONTRACTS.md`
+- `docs/00_SYSTEM/11_IDEA_NORMALIZER_RULES.md`
+- `docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`
 
 Якщо код суперечить документації — спочатку виправляється документація, потім код.
 
@@ -41,6 +43,20 @@
 - реалізовувати ідею без TASK
 - змінювати архітектуру без опису
 - додавати нову логіку без оновлення документації
+
+### Idea Normalizer Rule
+
+All new ideas must pass Idea Normalizer before tasking.
+
+No raw user idea may directly alter the repository, API, GAS, product logic, modules, or roadmap.
+
+Idea Normalizer rules are defined in:
+
+`docs/00_SYSTEM/11_IDEA_NORMALIZER_RULES.md`
+
+The normalized idea log is maintained in:
+
+`docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`
 
 ---
 

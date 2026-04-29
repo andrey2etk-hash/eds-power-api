@@ -594,6 +594,41 @@ Stage 3E = manual GAS execution and log verification.
 
 ---
 
+# 26.04.2026 — Idea Normalizer governance-grade foundation
+
+## Причина
+
+Create permanent governance structure for idea intake and anti-scope-drift before future expansion.
+
+## Що додано
+
+- `docs/00_SYSTEM/11_IDEA_NORMALIZER_RULES.md`
+- `docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`
+- Idea classification, priority, decision, and mandatory flow rules
+- single master log table for normalized ideas
+
+## Що оновлено
+
+- `docs/00_SYSTEM/02_GLOBAL_RULES.md`
+- `docs/00_SYSTEM/08_AI_AGENT_RULES.md`
+- `docs/NOW.md`
+- `docs/CHANGELOG.md`
+
+## Обмеження
+
+- no feature implementation
+- no API changes
+- no GAS changes
+- no product logic changes
+- no module changes
+- no roadmap rewrite
+
+## Статус
+
+Idea Normalizer governance-grade foundation created.
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP
