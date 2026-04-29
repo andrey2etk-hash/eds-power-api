@@ -12,6 +12,7 @@ Rule:
 
 ## Latest audit
 
+- Stage 6C engineering burden — **Render verification PASS** (`POST` live `prepare_calculation`; deploy lag noted) — `2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`
 - Stage 6C engineering burden foundation MVP — `2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`
 - **Stage 6B — formal closure** (operator PASS + Gemini **`SAFE TO PROCEED TO STAGE 6C`**) — `2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`
 - Stage 6A reserved operator block — operator verification PASS 29.04.2026 — `2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`
@@ -52,6 +53,7 @@ Rule:
 - `2026-04-29_STAGE_5D_GOVERNANCE_VERIFICATION_GATE.md`
 - `2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`
 - `2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`
+- `2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`
 - `2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`
 
 ## Deprecated audits

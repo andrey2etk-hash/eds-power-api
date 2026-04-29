@@ -24,12 +24,12 @@ KZO MVP implementation baseline has reached Stage 5A task definition:
 - Stage 5D — VERIFIED (documentation MVP — shell zones + reserved rows — `docs/00-02_CALC_CONFIGURATOR/09_KZO/10_OPERATOR_LAYOUT.md`; **IDEA-0011** = `IMPLEMENTED`; verification gate `2026-04-29_STAGE_5D_GOVERNANCE_VERIFICATION_GATE.md`)
 - Stage 6A reserved block **`E27:F40`** — GAS shell activation + operator verification PASS (**IDEA-0012** `IMPLEMENTED`; audit `docs/AUDITS/2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`)
 - Stage 6B — **VERIFIED / closed** — API **`engineering_class_summary`** + thin GAS **`runStage6BEngineeringClassificationFlow()`** on **`E27:F40`** — planning classification only; **operator verification PASS** + **external Gemini PASS** (**`SAFE TO PROCEED TO STAGE 6C`**); (**IDEA-0013** **`IMPLEMENTED`**; audit `docs/AUDITS/2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`; master **Status** unchanged — closure in notes)
-- Stage 6C — **IMPLEMENTED / delivered** API **`engineering_burden_summary`** + thin GAS **`runStage6CEngineeringBurdenFlow()`** on **`E27:F40`** — planning burden only (**IDEA-0014** `IMPLEMENTED`; audit `docs/AUDITS/2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`; **Stage 7+** precision — future TASK)
+- Stage 6C — **IMPLEMENTED / Render-verified** API **`engineering_burden_summary`** — thin GAS **`runStage6CEngineeringBurdenFlow()`** on **`E27:F40`** — planning burden (**IDEA-0014** **`RENDER_VERIFIED_PENDING_OPERATOR_TEST`**; audits **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`**, **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`** — operator Sheet PASS **pending**)
 
 
 На цьому рівні виконано:
 
-Структурна топологія та **Stage 6B / 6C** узгоджені з аудитами: класифікація (**`ENGINEERING_CLASSIFICATION_ONLY_MVP`**) та **burden foundation** (**`ENGINEERING_BURDEN_ONLY_MVP`** — **`estimated_mass_class`** як tier, не kg); Gemini Stage 6B **`SAFE TO PROCEED TO STAGE 6C`**; **Stage 6C** delivered (**IDEA-0014**). **Stage 7+** precision — лише окремі TASK.
+Структурна топологія та **Stage 6B / 6C** узгоджені з аудитами: класифікація (**`ENGINEERING_CLASSIFICATION_ONLY_MVP`**) та **burden foundation** (**`ENGINEERING_BURDEN_ONLY_MVP`**); Gemini Stage 6B **`SAFE TO PROCEED TO STAGE 6C`**; **Stage 6C** **`engineering_burden_summary`** — **live Render PASS** (**IDEA-0014** **`RENDER_VERIFIED_PENDING_OPERATOR_TEST`**). **Stage 7+** precision — лише окремі TASK.
 
 ## Stage 1 foundation
 
@@ -88,7 +88,7 @@ KZO MVP implementation baseline has reached Stage 5A task definition:
 - Stage 5B physical footprint `physical_summary` live Render verification passed (see `docs/AUDITS/2026-04-29_STAGE_5B_PHYSICAL_FOOTPRINT_RENDER_GATE.md`)
 - Stage 5C physical topology `physical_topology_summary` live Render verification passed (see `docs/AUDITS/2026-04-29_STAGE_5C_PHYSICAL_TOPOLOGY_RENDER_GATE.md`)
 - Stage 5D shell governance MVP verified documentation-only (`IDEA-0011` `IMPLEMENTED`; `2026-04-29_STAGE_5D_GOVERNANCE_VERIFICATION_GATE.md`)
-- Stage 6B **closed** + Stage 6C **burden foundation delivered** (**IDEA-0014** **IMPLEMENTED**): **`engineering_burden_summary`** on API (`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`); Stage 7+ precision — future TASK only
+- Stage 6B **closed** + Stage 6C **Render gate PASS** + burden API (**IDEA-0014** **`RENDER_VERIFIED_PENDING_OPERATOR_TEST`**, gates `2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md` / `2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`); Stage 7+ precision — future TASK only
 
 ## Що не входить у Stage 1
 

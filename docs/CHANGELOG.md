@@ -1465,7 +1465,6 @@ Reserved діапазон **`E27:F40`** має бути **операційним
 
 - `main.py`: `_build_kzo_engineering_burden_summary()` → `data.engineering_burden_summary` (**`ENGINEERING_BURDEN_ONLY_MVP`**; **`estimated_mass_class`** — лише tier, не кілограми)
 - `gas/Stage3D_KZO_Handshake.gs`: `runStage6CEngineeringBurdenFlow()`, **`STAGE_6C_ENGINEERING_BURDEN_RANGE_A1`** (`E27:F40`; той самий band що 6B — взаємний overwrite на листі)
-- **`IDEA-0014`** = **`IMPLEMENTED`**
 
 ## Обмеження
 
@@ -1474,6 +1473,18 @@ Reserved діапазон **`E27:F40`** має бути **операційним
 ## Governance / аудит
 
 - `docs/AUDITS/2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`
+
+---
+
+## Stage 6C — Render verification gate (**live Render**, **29.04.2026**)
+
+### Док-синхронізація (verification-only; код не змінювався під gate)
+
+- **PASS** probe **`POST https://eds-power-api.onrender.com/api/calc/prepare_calculation`** (`meta.request_id` **`stage6c-render-gate`**; канонічний KZO MVP vector як Stage 5B gate)
+- Спостережено **deployment lag** (спроби **1–2** без **`engineering_burden_summary`**; **спроба 3** (~93s) — **PASS**)
+- **`IDEA-0014`** master table **Status** → **`RENDER_VERIFIED_PENDING_OPERATOR_TEST`**
+- `docs/AUDITS/2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`; оновлення `12_IDEA_MASTER_LOG.md`, `CHANGELOG.md`, `00_AUDIT_INDEX.md`, `NOW.md`, **`09_KZO/08_STATUS.md`**, **`09_STATUS.md`**
+- Коміт деплою на **`main`**: **`35ac23a`**
 
 ---
 
