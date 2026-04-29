@@ -4,15 +4,15 @@
 
 Display API-provided **`data.physical_topology_summary`** in the Google Sheet (`Stage4A_MVP`) via **thin GAS transport/writeback only**.
 
-## Status
+## Verification note (not a lifecycle / governance status token)
 
-`OPERATOR_VISIBLE_VERIFIED`
-
-Manual operator Apps Script verification **PASS** 29.04.2026:
+Manual operator Apps Script run 29.04.2026 — **Operator-visible verification passed**:
 
 - Execution log includes `stage` = `5C_SHEET_OUTPUT_INTEGRATION`, `telemetry_tag` = `stage=5C-sheet-output-integration`, `http_code` = `200`, `physical_topology_summary_present` = `true`, writeback `Stage4A_MVP!E21:F26`.
 
-External Gemini review ledger: **`docs/AUDITS/2026-04-29_STAGE_5C_SHEET_GEMINI_AUDIT_REQUEST.md`** (verbatim prompt); outcome recorded in governance doc-pass (IDEA-0010 = `IMPLEMENTED`).
+Governance alignment: IDEA-0010 **Status** remains **`IMPLEMENTED`** per `docs/00_SYSTEM/12_IDEA_MASTER_LOG.md` **Status Values** (no standalone audit status label introduced).
+
+Prompt archive: **`docs/AUDITS/2026-04-29_STAGE_5C_SHEET_GEMINI_AUDIT_REQUEST.md`**.
 
 ## Trigger condition
 

@@ -28,7 +28,7 @@ Stage 5A-Output-Integration = verified operator-visible Sheet transport/writebac
 
 Stage 5B = verified Render (`data.physical_summary` — Render gate audit)
 
-Stage 5C = verified Render + operator Sheet thin GAS (`data.physical_topology_summary` — Render gate + Sheet output integration audit)
+Stage 5C = VERIFIED
 
 ## Gate
 

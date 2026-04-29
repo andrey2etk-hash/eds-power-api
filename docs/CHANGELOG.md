@@ -1327,8 +1327,8 @@ Display API `data.physical_topology_summary` in operator Sheet without recomputi
 
 ## Governance
 
-- `IDEA-0010` master table Status = **`IMPLEMENTED`** (перед цим — operator Sheet PASS 29.04.2026; Gemini зовнішній аудит: **PASS WITH DOC FIXES**, усунено лише розбіжність доків без зміни коду/GAS)
-- аудит `docs/AUDITS/2026-04-29_STAGE_5C_SHEET_OUTPUT_INTEGRATION.md` — статус `OPERATOR_VISIBLE_VERIFIED`; промпт аудиту: `docs/AUDITS/2026-04-29_STAGE_5C_SHEET_GEMINI_AUDIT_REQUEST.md`
+- `IDEA-0010` master table Status = **`IMPLEMENTED`**; нотатка: Operator Sheet verification PASS 29.04.2026 (Gemini **PASS WITH DOC FIXES** — лише doc-sync; без нових lifecycle-міток поза `Status Values`)
+- аудит `docs/AUDITS/2026-04-29_STAGE_5C_SHEET_OUTPUT_INTEGRATION.md` — текстова нотатка про проходження operator-visible verification; промпт: `docs/AUDITS/2026-04-29_STAGE_5C_SHEET_GEMINI_AUDIT_REQUEST.md`
 
 ---
 

@@ -20,7 +20,7 @@ KZO MVP implementation baseline has reached Stage 5A task definition:
 - Stage 5A — verified structural composition summary on Render (`structural_composition_summary`)
 - Stage 5A-Output-Integration — verified operator-visible transport/writeback-only Sheet visibility
 - Stage 5B — `physical_summary` verified on deployed Render (Render gate audit; `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION`)
-- Stage 5C — operator-visible topology on Sheet (`physical_topology_summary` → `Stage4A_MVP!E21:F26` thin GAS — audit `docs/AUDITS/2026-04-29_STAGE_5C_SHEET_OUTPUT_INTEGRATION.md`; `OPERATOR_VISIBLE_VERIFIED`)
+- Stage 5C — VERIFIED (topology on Sheet: `physical_topology_summary` → `Stage4A_MVP!E21:F26` thin GAS — audit `docs/AUDITS/2026-04-29_STAGE_5C_SHEET_OUTPUT_INTEGRATION.md`; IDEA-0010 = `IMPLEMENTED`)
 
 На цьому рівні виконано:
 

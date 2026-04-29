@@ -6,7 +6,8 @@
 
 ## Завершено — KZO MVP Stage 5C (факт перевірки, 29.04.2026)
 
-- **IDEA-0010** = `IMPLEMENTED`: API `physical_topology_summary` (**Render**) + операторська видимість на Sheet через thin GAS (**`Stage4A_MVP!E21:F26`**; `runStage5CSheetOutputIntegrationFlow()`).
+- **Stage 5C** = **VERIFIED**: API `physical_topology_summary` (**Render**) + топологія на Sheet (**`Stage4A_MVP!E21:F26`**, thin GAS — `runStage5CSheetOutputIntegrationFlow()`).
+- **IDEA-0010** = `IMPLEMENTED` (master table **Status Values**). Нотатка: Operator Sheet verification PASS 29.04.2026.
 
 ## Поточний етап
 
@@ -35,7 +36,6 @@ https://eds-power-api.onrender.com
 - Stage 4C = VERIFIED_OPERATOR_SHELL
 - Stage 5A-Output-Integration = `VERIFIED_OPERATOR_VISIBLE`
 - Stage 5B `physical_summary` = `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` on live Render (Stage 5B Render gate)
-- Stage 5C API `physical_topology_summary` = `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` on live Render (Stage 5C Render gate); Stage 5C Sheet **`E21:F26`** = operator-verified thin GAS (Sheet output integration audit)
 - тримаємо `00-01_AUTH` frozen at MVP
 - тримаємо `00-02_CALC_CONFIGURATOR` у межах KZO MVP поки нема окремого TASK на розширення
 - підтримуємо синхронність GitHub / Cursor / Docs
