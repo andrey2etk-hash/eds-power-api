@@ -1411,6 +1411,29 @@ Reserved діапазон **`E27:F40`** має бути **операційним
 
 ---
 
+# 29.04.2026 — Stage 6B Engineering classification MVP (API + thin GAS)
+
+## Причина
+
+Перший **engineering intelligence** шар після shell activation: **classification before precision** — планувальні класи lineup без kg / BOM / CAD.
+
+## Рішення
+
+- `main.py`: `_build_kzo_engineering_class_summary()` → `data.engineering_class_summary`
+- `gas/Stage3D_KZO_Handshake.gs`: `runStage6BEngineeringClassificationFlow()`, **`STAGE_6B_ENGINEERING_CLASSIFICATION_RANGE_A1`** (`E27:F40`)
+- **`IDEA-0013`** = **`IMPLEMENTED`**
+
+## Обмеження
+
+- без маси, BOM, цін, thermal, procurement, CAD
+- GAS не перераховує класи локально
+
+## Governance / аудит
+
+- `docs/AUDITS/2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP

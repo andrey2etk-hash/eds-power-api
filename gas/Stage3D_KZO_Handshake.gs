@@ -16,6 +16,8 @@ const STAGE_5C_SHEET_OUTPUT_RANGE_A1 = "E21:F26";
 const STAGE_6A_RESERVED_OPERATOR_BLOCK_RANGE_A1 = "E27:F40";
 const STAGE_6A_BLOCK_NAME = "STAGE_6_RESERVED_OPERATOR_BLOCK";
 const STAGE_6A_SHELL_BLOCK_VERSION = "KZO_STAGE_6A_OPERATOR_SHELL_V1";
+/** Stage 6B — thin writeback for `engineering_class_summary` (same Stage 6 band `E27:F40`). */
+const STAGE_6B_ENGINEERING_CLASSIFICATION_RANGE_A1 = STAGE_6A_RESERVED_OPERATOR_BLOCK_RANGE_A1;
 const STAGE_4A_CELL_MAP = {
   object_number: "B2",
   product_type: "B3",
@@ -1435,3 +1437,138 @@ function writeStage6APlaceholderGovernanceBlock_(sheet, activationDateIso, shell
   sheet.getRange(STAGE_6A_RESERVED_OPERATOR_BLOCK_RANGE_A1).setValues(rows);
 }
 
+/**
+ * Stage 6B — engineering classification thin writeback (`data.engineering_class_summary` → Stage 6 band only).
+ */
+function runStage6BEngineeringClassificationFlow() {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = spreadsheet ? spreadsheet.getSheetByName(STAGE_4A_SHEET_NAME) : null;
+
+  if (!sheet) {
+    Logger.log(JSON.stringify({
+      stage: "6B_ENGINEERING_CLASSIFICATION",
+      telemetry_tag: "stage=6b-engineering-class",
+      status: "run_skipped",
+      error: {
+        error_code: "STAGE_4C_OPERATOR_SHELL_MISSING",
+        message: "Run setupStage4COperatorShell() before Stage 6B engineering classification."
+      }
+    }));
+    return;
+  }
+
+  const preflight = buildStage4PreflightPayload_(sheet, STAGE_4C_CELL_MAP);
+
+  if (!preflight.ok) {
+    writeStage6BEngineeringClassificationError_(sheet);
+    Logger.log(JSON.stringify({
+      stage: "6B_ENGINEERING_CLASSIFICATION",
+      telemetry_tag: "stage=6b-engineering-class",
+      status: "local_input_error",
+      error: preflight.error
+    }));
+    return;
+  }
+
+  const requestBody = buildStage4BRequestBody_(preflight.values);
+  const options = {
+    method: "post",
+    contentType: "application/json",
+    payload: JSON.stringify(requestBody),
+    muteHttpExceptions: true
+  };
+
+  try {
+    const response = UrlFetchApp.fetch(API_URL, options);
+    const httpCode = response.getResponseCode();
+    const responseText = response.getContentText();
+    const responseJson = JSON.parse(responseText);
+
+    Logger.log(JSON.stringify({
+      stage: "6B_ENGINEERING_CLASSIFICATION",
+      telemetry_tag: "stage=6b-engineering-class",
+      http_code: httpCode,
+      local_input_status: "OK",
+      status: responseJson.status || null,
+      engineering_class_summary_present: Boolean(
+        responseJson.data && responseJson.data.engineering_class_summary
+      ),
+      error: responseJson.error || null
+    }));
+
+    writeStage6BEngineeringClassification_(sheet, responseJson, httpCode);
+  } catch (error) {
+    Logger.log(JSON.stringify({
+      stage: "6B_ENGINEERING_CLASSIFICATION",
+      telemetry_tag: "stage=6b-engineering-class",
+      status: "request_or_writeback_failed",
+      error: {
+        error_code: "GAS_STAGE_6B_ENGINEERING_CLASSIFICATION_FAILED",
+        message: error && error.message ? error.message : String(error),
+        note: MVP_TIMEOUT_NOTE
+      },
+      retry: false
+    }));
+  }
+}
+
+function writeStage6BEngineeringClassificationError_(sheet) {
+  var emptyRows = [];
+  var r;
+  for (r = 0; r < 14; r++) {
+    emptyRows.push(["", ""]);
+  }
+  sheet.getRange(STAGE_6B_ENGINEERING_CLASSIFICATION_RANGE_A1).setValues(emptyRows);
+}
+
+function writeStage6BEngineeringClassification_(sheet, responseJson, httpCode) {
+  const data = responseJson.data || {};
+  const ecs = data.engineering_class_summary;
+
+  if (!ecs) {
+    writeStage6BEngineeringClassificationError_(sheet);
+    Logger.log(JSON.stringify({
+      stage: "6B_ENGINEERING_CLASSIFICATION",
+      telemetry_tag: "stage=6b-engineering-class",
+      status: "writeback_completed",
+      warning: "engineering_class_summary_missing",
+      sheet: STAGE_4A_SHEET_NAME,
+      range: STAGE_6B_ENGINEERING_CLASSIFICATION_RANGE_A1,
+      http_code: httpCode
+    }));
+    return;
+  }
+
+  var profileDisplay = "";
+  if (ecs.section_complexity_profile && ecs.section_complexity_profile.length !== undefined) {
+    profileDisplay = JSON.stringify(ecs.section_complexity_profile);
+  }
+
+  var rows = [
+    ["classification_version", firstDefined(ecs.classification_version, "")],
+    ["lineup_complexity_class", firstDefined(ecs.lineup_complexity_class, "")],
+    ["lineup_scale_class", firstDefined(ecs.lineup_scale_class, "")],
+    ["section_complexity_profile", profileDisplay],
+    ["total_cells_basis", ecs.total_cells_basis !== undefined && ecs.total_cells_basis !== null ? ecs.total_cells_basis : ""],
+    ["topology_basis", firstDefined(ecs.topology_basis, "")],
+    ["interpretation_scope", firstDefined(ecs.interpretation_scope, "")],
+    ["stage_note", "Stage 6B — engineering classification MVP (GAS thin client; API truth)"],
+    ["http_code_snapshot", httpCode],
+    ["", ""],
+    ["", ""],
+    ["", ""],
+    ["", ""],
+    ["", ""],
+    ["", ""]
+  ];
+  sheet.getRange(STAGE_6B_ENGINEERING_CLASSIFICATION_RANGE_A1).setValues(rows);
+
+  Logger.log(JSON.stringify({
+    stage: "6B_ENGINEERING_CLASSIFICATION",
+    telemetry_tag: "stage=6b-engineering-class",
+    status: "writeback_completed",
+    sheet: STAGE_4A_SHEET_NAME,
+    range: STAGE_6B_ENGINEERING_CLASSIFICATION_RANGE_A1,
+    engineering_class_summary_present: true
+  }));
+}

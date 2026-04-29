@@ -12,7 +12,8 @@ Rule:
 
 ## Latest audit
 
-- Stage 6A reserved operator block — **operator verification PASS** 29.04.2026 (manual activate/reset/logs; infra audit `2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`) — **`IDEA-0012`** remains **`IMPLEMENTED`**
+- Stage 6B engineering classification MVP (API `engineering_class_summary` + thin GAS `E27:F40`) — `2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`
+- Stage 6A reserved operator block — operator verification PASS 29.04.2026 — `2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`
 - Stage 5D governance verification — **PASS WITH DOC FIXES**, doc-pass closed — `2026-04-29_STAGE_5D_GOVERNANCE_VERIFICATION_GATE.md` (upstream MVP audit: `2026-04-29_STAGE_5D_OPERATOR_LAYOUT_GOVERNANCE.md`)
 - Stage 5C operator Sheet visibility (topology — thin GAS, **VERIFIED**) — `2026-04-29_STAGE_5C_SHEET_OUTPUT_INTEGRATION.md`
 - **Gemini external audit request** — `2026-04-29_STAGE_5C_SHEET_GEMINI_AUDIT_REQUEST.md`
@@ -49,6 +50,7 @@ Rule:
 - `2026-04-29_STAGE_5D_OPERATOR_LAYOUT_GOVERNANCE.md`
 - `2026-04-29_STAGE_5D_GOVERNANCE_VERIFICATION_GATE.md`
 - `2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`
+- `2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`
 
 ## Deprecated audits
 

@@ -30,6 +30,7 @@ This file is the single source of truth for all normalized ideas in EDS Power.
 | IDEA-0010 | 2026-04-29 | Stage 5C KZO Physical Topology MVP: section distribution and topology type from structural/footprint layers | `RIGHT_NOW` | `P1` | `TASK` | Stage 5C | After Stage 5A structural composition and Stage 5B physical footprint are Render-verified | MVP physical arrangement semantics only — no busbar/cable/detailed engineering | `IMPLEMENTED` |
 | IDEA-0011 | 2026-04-29 | Stage 5D KZO Operator Layout Governance MVP: fixed stage shell zones and vertical expansion before Stage 6 | `RIGHT_NOW` | `P1` | `TASK` | Stage 5D | After Stage 5C operator Sheet topology writeback verified | Governed operator shell — one stage block — additive downward growth — no redesign | `IMPLEMENTED` |
 | IDEA-0012 | 2026-04-29 | Stage 6A KZO Reserved Operator Block Activation: activate E27:F40 as governed shell infra before Stage 6 engineering | `RIGHT_NOW` | `P1` | `TASK` | Stage 6A | After Stage 5D shell governance MVP implemented | Activate reserved shell block only — no engineering formulas,BOM,Business logic — not API topology | `IMPLEMENTED` |
+| IDEA-0013 | 2026-04-29 | Stage 6B KZO Engineering Classification MVP: lineup scale/complexity classification from structure and topology | `RIGHT_NOW` | `P1` | `TASK` | Stage 6B | After Stage 6A operator shell block verified | Planning-grade engineering class only — no mass, BOM, price, CAD | `IMPLEMENTED` |
 
 ## Idea Notes
 
@@ -750,3 +751,27 @@ Implementation record:
 - `gas/Stage3D_KZO_Handshake.gs`: `STAGE_6A_RESERVED_OPERATOR_BLOCK_RANGE_A1` = `E27:F40`, `STAGE_6A_BLOCK_NAME`, `STAGE_6A_SHELL_BLOCK_VERSION`, `runStage6AActivateReservedOperatorBlockFlow()`, `runStage6AResetReservedOperatorBlockOnly()`, `buildStage6OperatorShellSummary_()` (logged shape matches target JSON; not an API field in 6A)
 - Audit: `docs/AUDITS/2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`
 - Operator verification **PASS 29.04.2026** — **`E27:F40`** activation and reset behavior verified; **`shell_block_version`** **`KZO_STAGE_6A_OPERATOR_SHELL_V1`**; **`shell_status`** activation **`ACTIVE_RESERVED_BLOCK`** / reset log **`RESERVED_DOC_ONLY`**; telemetry includes **`stage6_operator_shell_summary`**. (**`ACTIVE_RESERVED_BLOCK`** / **`RESERVED_DOC_ONLY`** are shell block states, not IDEA **Status Values**.)
+
+### IDEA-0013 — Stage 6B KZO Engineering Classification MVP
+
+Classification / priority / decision:
+
+- `RIGHT_NOW` / `P1` / `TASK`
+
+Stage target:
+
+- Stage 6B
+
+Trigger condition:
+
+- After Stage 6A reserved operator shell block operator-verified.
+
+Key thesis:
+
+- **Classification before precision**: API derives **`engineering_class_summary`** from structural + topology summaries only — planning labels (scale / complexity tier / per-section profile), **no** kg, BOM, thermal, CAD, procurement.
+
+Implementation record:
+
+- `main.py`: `_build_kzo_engineering_class_summary()` → `data.engineering_class_summary` on success
+- `gas/Stage3D_KZO_Handshake.gs`: `runStage6BEngineeringClassificationFlow()`, writeback **`E27:F40`** only (Stage 6 band; overwrites Stage 6A placeholder when Stage 6B flow runs — thin transport, no classification math in GAS)
+- Audit: `docs/AUDITS/2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`

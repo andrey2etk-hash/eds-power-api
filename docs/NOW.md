@@ -19,9 +19,13 @@
 - **Stage 6A** — reserved блок **`E27:F40`**: операторська перевірка **PASS** (активація + ресет + execution log). **`shell_block_version`**: **`KZO_STAGE_6A_OPERATOR_SHELL_V1`**; активація **`shell_status`** **`ACTIVE_RESERVED_BLOCK`**; после ресета в лозі **`RESERVED_DOC_ONLY`**; телеметрія з **`stage6_operator_shell_summary`**. **IDEA-0012** = `IMPLEMENTED`; **`ACTIVE_RESERVED_BLOCK`** / **`RESERVED_DOC_ONLY`** лише стани shell-блоку, не IDEA lifecycle.
 - Audit оновлено: `docs/AUDITS/2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`.
 
+## Завершено — KZO Stage 6B Engineering classification (API + thin GAS, 29.04.2026)
+
+- **IDEA-0013** = `IMPLEMENTED`. Audit: `docs/AUDITS/2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`.
+
 ## Поточний етап
 
-**Stage 6B / engineering у `E27:F40`** — лише через **окремий TASK** (операторська верифікація Stage 6A **завершена** 29.04.2026).
+Execution gate до **precision** шарів (маса, BOM, КП…) — лише через **нові TASK** після бази Stage 6B.
 
 ## Як узгоджено з Gemini doc-pass (Зовнішній аудит)
 
@@ -35,7 +39,7 @@ https://eds-power-api.onrender.com
 
 1. 00-01_AUTH — авторизація (frozen MVP / draft_ready)
 2. 00-02_CALC_CONFIGURATOR — конфігуратор (KZO Stage 5A–5C operator-visible path для structural / footprint API / topology API + топологія на Sheet верифіковані)
-3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (**Stage 6A** **`E27:F40`** operator-verified 29.04.2026; Stage **6B** — лише TASK після доку-мітки верифікації)
+3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (до **Stage 6B**: API classification + thin GAS на **`E27:F40`** — **IDEA-0013**; далі precision — окремі TASK)
 
 ## Що робимо зараз
 
@@ -88,9 +92,11 @@ https://eds-power-api.onrender.com
 - Stage 5C operator-visible topology on Sheet verified via thin GAS (`runStage5CSheetOutputIntegrationFlow()`; **`E21:F26`**; Gemini Sheet audit PASS WITH DOC FIXES → doc-sync)
 - Stage 5D operator layout governance documentation MVP closed (verification gate PASS WITH DOC FIXES → doc-pass; **IDEA-0011** = `IMPLEMENTED`)
 - Stage 6A reserved block **`E27:F40`** — GAS activation + **operator verification PASS** 29.04.2026 (doc-pass sync) (**IDEA-0012** `IMPLEMENTED`; audit `docs/AUDITS/2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`)
+- Stage 6B **`engineering_class_summary`** on API + **`runStage6BEngineeringClassificationFlow()`** (**IDEA-0013** `IMPLEMENTED`; audit `docs/AUDITS/2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`)
 
 ## What remains next (plan)
 
+- optional: operator verifies **`runStage6BEngineeringClassificationFlow()`** after Render deploy exposes **`engineering_class_summary`**
 - keep Stage narrow: no BOM, pricing, DB, CAD, or unmanaged Sheet expansion unless separately tasked
 - keep GAS thin on future operator-visible transports
-- **Stage 6B** engineering у **`E27:F40`** — лише окремим TASK (Stage 6A operator verification doc-pass завершено)
+- precision layers (mass, BOM, commercial) — **нові TASK** після бази класифікації 6B

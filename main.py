@@ -249,6 +249,71 @@ def _build_kzo_physical_topology_summary(structural_composition_summary: dict[st
     }
 
 
+def _kzo_lineup_scale_class(total_cells: int) -> str:
+    """Planning-grade scale bucket from cell count; not manufacturing truth."""
+    if total_cells <= 8:
+        return "COMPACT"
+    if total_cells <= 16:
+        return "STANDARD"
+    if total_cells <= 26:
+        return "LARGE"
+    return "EXTENDED"
+
+
+def _kzo_section_complexity_piece_mvp(section_cell_count: int) -> str:
+    """Per-section planning label for engineering_class_summary."""
+    if section_cell_count <= 6:
+        return "LIGHT"
+    if section_cell_count <= 14:
+        return "STANDARD"
+    return "HEAVY"
+
+
+def _build_kzo_engineering_class_summary(
+    structural_composition_summary: dict[str, Any],
+    physical_topology_summary: dict[str, Any],
+) -> dict[str, Any]:
+    """Stage 6B — planning intelligence only (no mass, BOM, price, CAD)."""
+    lineup = structural_composition_summary["lineup_summary"]
+    structural_flags = structural_composition_summary.get("structural_flags") or []
+    total_cells = int(lineup["total_cells"])
+    total_sections = physical_topology_summary.get("total_sections", 1)
+    topology_type = str(physical_topology_summary.get("topology_type") or "TOPOLOGY_SINGLE_SECTION")
+
+    lineup_scale_class = _kzo_lineup_scale_class(total_cells)
+
+    counts = physical_topology_summary.get("section_cell_counts")
+    if not isinstance(counts, list):
+        counts = [total_cells]
+    section_complexity_profile = [_kzo_section_complexity_piece_mvp(int(c)) for c in counts]
+
+    dual_incoming = "dual_incoming" in structural_flags
+    high_outgoing_density = "high_outgoing_density" in structural_flags
+    uneven_topology = topology_type == "TOPOLOGY_UNEVEN_SPLIT"
+
+    if total_cells >= 27 or uneven_topology:
+        lineup_complexity_class = "EXTENDED"
+    elif (
+        isinstance(total_sections, int)
+        and total_sections >= 2
+        and (dual_incoming or high_outgoing_density)
+    ):
+        lineup_complexity_class = "HEAVY"
+    elif total_sections == 1 and total_cells <= 8:
+        lineup_complexity_class = "LIGHT"
+    else:
+        lineup_complexity_class = "STANDARD"
+
+    return {
+        "classification_version": "KZO_STAGE_6B_ENGINEERING_CLASS_MVP_V1",
+        "lineup_complexity_class": lineup_complexity_class,
+        "lineup_scale_class": lineup_scale_class,
+        "section_complexity_profile": section_complexity_profile,
+        "total_cells_basis": total_cells,
+        "topology_basis": topology_type,
+        "interpretation_scope": "ENGINEERING_CLASSIFICATION_ONLY_MVP",
+    }
+
 @app.get("/")
 def root():
     return {"message": "EDS Power API is running"}
@@ -325,6 +390,10 @@ def prepare_calculation(request: dict[str, Any]):
     structural_composition_summary = _build_kzo_structural_composition_summary(normalized_payload)
     physical_summary = _build_kzo_physical_footprint_summary(structural_composition_summary)
     physical_topology_summary = _build_kzo_physical_topology_summary(structural_composition_summary)
+    engineering_class_summary = _build_kzo_engineering_class_summary(
+        structural_composition_summary,
+        physical_topology_summary,
+    )
 
     return {
         "status": "success",
@@ -347,6 +416,7 @@ def prepare_calculation(request: dict[str, Any]):
             "structural_composition_summary": structural_composition_summary,
             "physical_summary": physical_summary,
             "physical_topology_summary": physical_topology_summary,
+            "engineering_class_summary": engineering_class_summary,
         },
         "error": None,
         "metadata": _response_metadata(meta, normalized_payload["logic_version"], started_at),
