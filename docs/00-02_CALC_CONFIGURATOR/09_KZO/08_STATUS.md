@@ -18,17 +18,19 @@ Stage 3F = verified
 
 Stage 4A = verified MVP only
 
+Stage 4B = verified structural preflight
+
 ## Gate
 
 Next = normalized task for next stage
 
 ## Current status
 
-Stage 4A protected template shell verified as MVP-only baseline
+Stage 4B structural preflight verified
 
 ## Blockers
 
-- none for Stage 4A
+- none for Stage 4B
 
 ## Next
 

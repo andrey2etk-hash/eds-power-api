@@ -5,6 +5,7 @@ const STAGE_3F_WRITEBACK_RANGE_A1 = "A1:B5";
 const STAGE_4A_SHEET_NAME = "Stage4A_MVP";
 const STAGE_4A_INPUT_RANGE_A1 = "B2:B14";
 const STAGE_4A_OUTPUT_RANGE_A1 = "D2:E8";
+const STAGE_4B_OUTPUT_RANGE_A1 = "D2:E11";
 const STAGE_4A_PROTECTION_DESCRIPTION = "Stage 4A protected MVP shell";
 const STAGE_4A_CELL_MAP = {
   object_number: "B2",
@@ -21,6 +22,35 @@ const STAGE_4A_CELL_MAP = {
   status: "B13",
   breaker_type: "B14"
 };
+const STAGE_4B_REQUIRED_FIELDS = [
+  "object_number",
+  "product_type",
+  "logic_version",
+  "voltage_class",
+  "busbar_current",
+  "configuration_type",
+  "quantity_total",
+  "cell_incomer",
+  "cell_outgoing",
+  "cell_pt",
+  "cell_bus_section",
+  "status"
+];
+const STAGE_4B_ENUM_FIELDS = {
+  product_type: ["KZO"],
+  logic_version: ["KZO_MVP_V1"],
+  voltage_class: ["VC_06", "VC_10", "VC_20", "VC_35"],
+  configuration_type: ["CFG_SINGLE_BUS", "CFG_SINGLE_BUS_SECTION"],
+  status: ["DRAFT"]
+};
+const STAGE_4B_NUMBER_FIELDS = [
+  "busbar_current",
+  "quantity_total",
+  "cell_incomer",
+  "cell_outgoing",
+  "cell_pt",
+  "cell_bus_section"
+];
 
 /**
  * Stage 3D minimal GAS -> Render API handshake.
@@ -339,9 +369,9 @@ function writeStage4AShellLayout_(sheet) {
     ["busbar_current", 1250, "", "busbar_current", ""],
     ["configuration_type", "CFG_SINGLE_BUS_SECTION", "", "http_code", ""],
     ["quantity_total", 22, "", "stage", ""],
-    ["CELL_INCOMER", 2, "", "", ""],
-    ["CELL_OUTGOING", 16, "", "", ""],
-    ["CELL_PT", 2, "", "", ""],
+    ["CELL_INCOMER", 2, "", "local_input_status", ""],
+    ["CELL_OUTGOING", 16, "", "error_code", ""],
+    ["CELL_PT", 2, "", "error_field", ""],
     ["CELL_BUS_SECTION", 2, "", "", ""],
     ["status", "DRAFT", "", "", ""],
     ["breaker_type", "", "", "", ""]
@@ -451,5 +481,257 @@ function writeStage4AOutput_(sheet, responseJson, httpCode) {
     status: "writeback_completed",
     sheet: STAGE_4A_SHEET_NAME,
     range: STAGE_4A_OUTPUT_RANGE_A1
+  }));
+}
+
+/**
+ * Stage 4B resilient manual-input flow.
+ *
+ * GAS performs pre-flight safety only:
+ * - normalize raw Sheet values
+ * - block obvious structural input mistakes locally
+ * - send only a safe request shape to the API
+ *
+ * Final validation remains the API source of truth.
+ */
+function runStage4BKzoTemplateFlow() {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = spreadsheet ? spreadsheet.getSheetByName(STAGE_4A_SHEET_NAME) : null;
+
+  if (!sheet) {
+    Logger.log(JSON.stringify({
+      stage: "4B",
+      status: "run_skipped",
+      error: {
+        error_code: "STAGE_4A_TEMPLATE_SHEET_MISSING",
+        message: "Run setupStage4ATemplateShell() before Stage 4B execution."
+      }
+    }));
+    return;
+  }
+
+  const preflight = buildStage4BPreflightPayload_(sheet);
+
+  if (!preflight.ok) {
+    writeStage4BLocalInputError_(sheet, preflight.error);
+    Logger.log(JSON.stringify({
+      stage: "4B",
+      status: "local_input_error",
+      error: preflight.error
+    }));
+    return;
+  }
+
+  const requestBody = buildStage4BRequestBody_(preflight.values);
+  const options = {
+    method: "post",
+    contentType: "application/json",
+    payload: JSON.stringify(requestBody),
+    muteHttpExceptions: true
+  };
+
+  try {
+    const response = UrlFetchApp.fetch(API_URL, options);
+    const httpCode = response.getResponseCode();
+    const responseText = response.getContentText();
+    const responseJson = JSON.parse(responseText);
+
+    Logger.log(JSON.stringify({
+      stage: "4B",
+      http_code: httpCode,
+      local_input_status: "OK",
+      status: responseJson.status || null,
+      error: responseJson.error || null
+    }));
+
+    writeStage4BOutput_(sheet, responseJson, httpCode, {
+      local_input_status: "OK",
+      error_code: null,
+      error_field: null
+    });
+  } catch (error) {
+    Logger.log(JSON.stringify({
+      stage: "4B",
+      status: "request_or_writeback_failed",
+      error: {
+        error_code: "GAS_STAGE_4B_FAILED",
+        message: error && error.message ? error.message : String(error),
+        note: MVP_TIMEOUT_NOTE
+      },
+      retry: false
+    }));
+  }
+}
+
+function buildStage4BPreflightPayload_(sheet) {
+  const values = {};
+
+  Object.keys(STAGE_4A_CELL_MAP).forEach(function(fieldName) {
+    values[fieldName] = normalizeStage4BCellValue_(getStage4ACellValue_(sheet, fieldName));
+  });
+
+  for (let i = 0; i < STAGE_4B_REQUIRED_FIELDS.length; i += 1) {
+    const fieldName = STAGE_4B_REQUIRED_FIELDS[i];
+    if (values[fieldName] === null) {
+      return {
+        ok: false,
+        error: {
+          error_code: "INPUT_ERROR_MISSING_REQUIRED",
+          message: "Required input is missing",
+          error_field: fieldName
+        }
+      };
+    }
+  }
+
+  const enumFields = Object.keys(STAGE_4B_ENUM_FIELDS);
+  for (let i = 0; i < enumFields.length; i += 1) {
+    const fieldName = enumFields[i];
+    if (STAGE_4B_ENUM_FIELDS[fieldName].indexOf(values[fieldName]) === -1) {
+      return {
+        ok: false,
+        error: {
+          error_code: "INPUT_ERROR_BAD_ENUM",
+          message: "Input does not match allowed enum values",
+          error_field: fieldName
+        }
+      };
+    }
+  }
+
+  for (let i = 0; i < STAGE_4B_NUMBER_FIELDS.length; i += 1) {
+    const fieldName = STAGE_4B_NUMBER_FIELDS[i];
+    const parsedNumber = parseStage4BNumber_(values[fieldName]);
+
+    if (parsedNumber === null) {
+      return {
+        ok: false,
+        error: {
+          error_code: "INPUT_ERROR_BAD_NUMBER",
+          message: "Input must be a valid number",
+          error_field: fieldName
+        }
+      };
+    }
+
+    values[fieldName] = parsedNumber;
+  }
+
+  return {
+    ok: true,
+    values: values
+  };
+}
+
+function normalizeStage4BCellValue_(value) {
+  if (value === null || value === undefined) {
+    return null;
+  }
+
+  if (typeof value === "string") {
+    const trimmedValue = value.trim();
+
+    if (trimmedValue === "" || trimmedValue.toUpperCase() === "N/A") {
+      return null;
+    }
+
+    return trimmedValue;
+  }
+
+  return value;
+}
+
+function parseStage4BNumber_(value) {
+  if (typeof value === "number" && isFinite(value)) {
+    return value;
+  }
+
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const normalizedValue = value.trim();
+
+  if (!/^-?\d+(\.\d+)?$/.test(normalizedValue)) {
+    return null;
+  }
+
+  const parsedNumber = Number(normalizedValue);
+  return isFinite(parsedNumber) ? parsedNumber : null;
+}
+
+function buildStage4BRequestBody_(values) {
+  return {
+    meta: {
+      request_id: Utilities.getUuid(),
+      source: "gas",
+      user_id: "manual_test_user",
+      session_token: "manual_test_session",
+      timestamp: new Date().toISOString()
+    },
+    module: "CALC_CONFIGURATOR",
+    action: "prepare_calculation",
+    payload: {
+      object_number: values.object_number,
+      product_type: values.product_type,
+      logic_version: values.logic_version,
+      voltage_class: values.voltage_class,
+      busbar_current: values.busbar_current,
+      configuration_type: values.configuration_type,
+      quantity_total: values.quantity_total,
+      cell_distribution: {
+        CELL_INCOMER: values.cell_incomer,
+        CELL_OUTGOING: values.cell_outgoing,
+        CELL_PT: values.cell_pt,
+        CELL_BUS_SECTION: values.cell_bus_section
+      },
+      status: values.status,
+      breaker_type: values.breaker_type,
+      notes: null
+    }
+  };
+}
+
+function writeStage4BLocalInputError_(sheet, error) {
+  const rows = [
+    ["validation_status", null],
+    ["object_number", null],
+    ["product_type", null],
+    ["voltage_class", null],
+    ["busbar_current", null],
+    ["http_code", null],
+    ["stage", "4B"],
+    ["local_input_status", "ERROR"],
+    ["error_code", error.error_code],
+    ["error_field", error.error_field]
+  ];
+
+  sheet.getRange(STAGE_4B_OUTPUT_RANGE_A1).setValues(rows);
+}
+
+function writeStage4BOutput_(sheet, responseJson, httpCode, localStatus) {
+  const data = responseJson.data || {};
+  const summary = data.basic_result_summary || {};
+  const normalizedPayload = data.normalized_payload || {};
+  const rows = [
+    ["validation_status", firstDefined(data.validation_status, summary.validation_status)],
+    ["object_number", firstDefined(normalizedPayload.object_number, null)],
+    ["product_type", firstDefined(summary.product_type, normalizedPayload.product_type)],
+    ["voltage_class", firstDefined(summary.voltage_class, normalizedPayload.voltage_class)],
+    ["busbar_current", firstDefined(summary.busbar_current, normalizedPayload.busbar_current)],
+    ["http_code", httpCode],
+    ["stage", "4B"],
+    ["local_input_status", localStatus.local_input_status],
+    ["error_code", localStatus.error_code],
+    ["error_field", localStatus.error_field]
+  ];
+
+  sheet.getRange(STAGE_4B_OUTPUT_RANGE_A1).setValues(rows);
+
+  Logger.log(JSON.stringify({
+    stage: "4B",
+    status: "writeback_completed",
+    sheet: STAGE_4A_SHEET_NAME,
+    range: STAGE_4B_OUTPUT_RANGE_A1
   }));
 }

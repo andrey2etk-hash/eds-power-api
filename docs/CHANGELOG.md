@@ -812,6 +812,75 @@ Next stage must be defined through a separate normalized task.
 
 ---
 
+# 29.04.2026 — Stage 4B input normalization implementation prepared
+
+## Причина
+
+Harden the protected Stage 4A shell against fragile manual input while keeping API validation as the source of truth.
+
+## Що додано
+
+- `runStage4BKzoTemplateFlow()`
+- blank / `N/A` / whitespace normalization
+- required field gate before API call
+- enum verification for MVP allowed values
+- safe numeric parsing
+- local input error writeback
+- output additions:
+  - `local_input_status`
+  - `error_code`
+  - `error_field`
+- Stage 4B audit record
+
+## Обмеження
+
+- no API changes
+- no API contract changes
+- no business calculations in GAS
+- no engineering logic in GAS
+- no hidden rule engine
+- no Sidebar
+- no advanced UI
+- no batch
+- no DB
+- no Supabase
+- no product expansion
+- no business logic migration from API
+
+## Статус
+
+Stage 4B = `VERIFIED_STRUCTURAL_PREFLIGHT`.
+
+## Manual verification
+
+Verified:
+
+- missing required `object_number` blocked locally
+- local error code = `INPUT_ERROR_MISSING_REQUIRED`
+- local error field = `object_number`
+- invalid enum `voltage_class = VC_999` blocked locally
+- local error code = `INPUT_ERROR_BAD_ENUM`
+- local error field = `voltage_class`
+- bad number `busbar_current = abc` blocked locally
+- local error code = `INPUT_ERROR_BAD_NUMBER`
+- local error field = `busbar_current`
+- valid input reached Render
+- HTTP code = `200`
+- response status = `success`
+- `local_input_status` = `OK`
+- writeback completed to `Stage4A_MVP!D2:E11`
+
+Observation:
+
+- non-empty `object_number` values are treated as structurally present by Stage 4B preflight.
+- object number format validation is not part of Stage 4B unless separately normalized.
+
+## Next
+
+Next stage must be defined through a separate normalized task.
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP

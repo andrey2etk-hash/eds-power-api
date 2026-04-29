@@ -22,6 +22,7 @@ This file is the single source of truth for all normalized ideas in EDS Power.
 | IDEA_20260426_001 | 2026-04-29 | Run Stage 3E manual `testKzoPrepareCalculation()` execution to verify GAS -> API handshake on Render | `RIGHT_NOW` | `P1` | `TASK` | Stage 3E | Stage 3D handshake baseline exists and manual log verification is the active gate before any UI expansion | Verify the data pipeline between Google and Render without adding a UI layer | `ACTIVE` |
 | IDEA-0003 | 2026-04-29 | Stage 3F Sheet Writeback MVP: Google Sheet -> GAS -> Render API -> basic_result_summary -> fixed test range writeback | `RIGHT_NOW` | `P1` | `TASK` | Stage 3F | Immediately after validated Stage 3E manual API handshake success | Implement minimal visible writeback loop from Render API response into Google Sheets test range | `ACTIVE` |
 | IDEA-0004 | 2026-04-29 | Stage 4A Google Sheet Core Template Protection and Structured Input Layer | `RIGHT_NOW` | `P1` | `TASK` | Stage 4A | Immediately after Stage 3F governance sync with VERIFIED_MVP_ONLY / verified writeback baseline | Transform Stage 3F test loop into protected Google Sheet MVP configurator shell with deterministic structure | `IMPLEMENTED` |
+| IDEA-0005 | 2026-04-29 | Stage 4B Input Normalization Layer for Google Sheet MVP Shell | `RIGHT_NOW` | `P1` | `TASK` | Stage 4B | After Stage 4A protected shell verified | Convert protected template shell into resilient human-operable MVP shell through deterministic GAS normalization | `IMPLEMENTED` |
 
 ## Idea Notes
 
@@ -186,3 +187,101 @@ Scope guard:
 
 - Stage 4A = shell hardening only
 - not platform expansion
+
+### IDEA-0005 — Stage 4B Input Normalization Layer
+
+Review stage:
+
+- After stable manual-input resilience is confirmed.
+
+Required MVP scope:
+
+- empty normalization
+- required field gate before API call
+- enum verification against allowed maps
+- safe numeric parsing
+- explicit local output errors
+- preserve final API validation as source of truth
+
+Empty normalization:
+
+- blank -> `null`
+- `N/A` -> `null`
+- whitespace trim
+- explicit optional vs required distinction
+
+Required field gate:
+
+- missing required fields block local request
+- no API call when required fields are missing
+- write explicit output zone error
+
+Enum verification:
+
+- Sheet value must match allowed enum map
+- mismatch writes local error
+
+Safe numeric parsing:
+
+- trim
+- parse integer / float deterministically
+- reject malformed values
+- no silent coercion
+
+Required local output error codes:
+
+- `INPUT_ERROR_MISSING_REQUIRED`
+- `INPUT_ERROR_BAD_ENUM`
+- `INPUT_ERROR_BAD_NUMBER`
+
+Required output zone additions:
+
+- `local_input_status`
+- `error_code`
+- `error_field`
+
+Thin client law:
+
+- allowed: sanitize
+- allowed: format
+- allowed: structure validate
+- allowed: transport
+- forbidden: business calculations
+- forbidden: engineering logic
+- forbidden: product intelligence
+- forbidden: hidden rule engine
+
+API law:
+
+- final validation remains API
+- GAS = pre-flight safety only
+
+Forbidden scope:
+
+- Sidebar
+- Advanced UI
+- Batch
+- DB
+- Supabase
+- Product expansion
+- Rule creep
+
+Required documentation candidates:
+
+- `Stage_4B_Input_Normalization.md`
+- `GAS_Preflight_Governance.md`
+- `MVP_Input_Error_Codes.md`
+
+Success definition:
+
+- user enters imperfect manual data
+- GAS safely normalizes
+- obvious mistakes are blocked locally
+- valid payload is sent
+- API validates
+- stable output is returned
+
+Scope guard:
+
+- Stage 4B = resilience layer only
+- not business logic migration

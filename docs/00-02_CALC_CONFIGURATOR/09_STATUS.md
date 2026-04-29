@@ -2,11 +2,11 @@
 
 ## Поточний статус
 
-Stage 4A verified MVP only
+Stage 4B verified structural preflight
 
 CALC skeleton = governed foundation complete.
 
-KZO MVP implementation baseline has reached Stage 4A:
+KZO MVP implementation baseline has reached Stage 4B:
 
 - Stage 3A — KZO Calculation Object Contract committed
 - Stage 3B — API validation skeleton committed
@@ -15,6 +15,7 @@ KZO MVP implementation baseline has reached Stage 4A:
 - Stage 3E — manual GAS execution verified with Render cold-start observation
 - Stage 3F — Sheet Writeback MVP verified
 - Stage 4A — protected template shell verified as MVP-only baseline
+- Stage 4B — structural preflight verified
 
 Модуль ще не має статусу `draft_ready`.
 
@@ -58,6 +59,8 @@ KZO MVP implementation baseline has reached Stage 4A:
 - protected Google Sheet MVP shell
 - fixed input / output zones
 - verified Stage 4A template setup and output writeback
+- GAS preflight input normalization layer
+- local input error writeback
 
 Для переходу далі потрібно:
 
