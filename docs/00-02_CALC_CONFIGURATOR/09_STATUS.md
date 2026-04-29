@@ -20,11 +20,11 @@ KZO MVP implementation baseline has reached Stage 5A task definition:
 - Stage 5A — verified structural composition summary on Render (`structural_composition_summary`)
 - Stage 5A-Output-Integration — verified operator-visible transport/writeback-only Sheet visibility
 - Stage 5B — `physical_summary` verified on deployed Render (Render gate audit; `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION`)
-- Stage 5C — `physical_topology_summary` verified on deployed Render (Render gate audit; `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION`)
+- Stage 5C — operator-visible topology on Sheet (`physical_topology_summary` → `Stage4A_MVP!E21:F26` thin GAS — audit `docs/AUDITS/2026-04-29_STAGE_5C_SHEET_OUTPUT_INTEGRATION.md`; `OPERATOR_VISIBLE_VERIFIED`)
 
 На цьому рівні виконано:
 
-- Structural composition meaning layer доступна оператору в Sheet через тонкий GAS writeback
+- Structural composition meaning layer доступна оператору в Sheet через тонкий GAS writeback; physical topology операторськи видна на Sheet (Stage 5C thin GAS та самий API на Render).
 
 ## Stage 1 foundation
 
@@ -82,6 +82,7 @@ KZO MVP implementation baseline has reached Stage 5A task definition:
 - Stage 5A output integration verified in operator-visible Sheet (`runStage5AOutputIntegrationFlow()`)
 - Stage 5B physical footprint `physical_summary` live Render verification passed (see `docs/AUDITS/2026-04-29_STAGE_5B_PHYSICAL_FOOTPRINT_RENDER_GATE.md`)
 - Stage 5C physical topology `physical_topology_summary` live Render verification passed (see `docs/AUDITS/2026-04-29_STAGE_5C_PHYSICAL_TOPOLOGY_RENDER_GATE.md`)
+- Stage 5C operator Sheet writeback for topology (`E21:F26` thin GAS) verification recorded (see `docs/AUDITS/2026-04-29_STAGE_5C_SHEET_OUTPUT_INTEGRATION.md`; Gemini doc-pass)
 
 ## Що не входить у Stage 1
 

@@ -6,13 +6,13 @@ Display API-provided **`data.physical_topology_summary`** in the Google Sheet (`
 
 ## Status
 
-`IMPLEMENTATION_PREPARED_PENDING_MANUAL_OPERATOR_TEST`
+`OPERATOR_VISIBLE_VERIFIED`
 
-(Update to `OPERATOR_VISIBLE_VERIFIED` only after manual run confirms operator-visible correctness.)
+Manual operator Apps Script verification **PASS** 29.04.2026:
 
-Governance-aligned IDEA lifecycle string (manual test pending):
+- Execution log includes `stage` = `5C_SHEET_OUTPUT_INTEGRATION`, `telemetry_tag` = `stage=5C-sheet-output-integration`, `http_code` = `200`, `physical_topology_summary_present` = `true`, writeback `Stage4A_MVP!E21:F26`.
 
-`OPERATOR_VISIBLE_INTEGRATION_PENDING_TEST`
+External Gemini review ledger: **`docs/AUDITS/2026-04-29_STAGE_5C_SHEET_GEMINI_AUDIT_REQUEST.md`** (verbatim prompt); outcome recorded in governance doc-pass (IDEA-0010 = `IMPLEMENTED`).
 
 ## Trigger condition
 
@@ -61,15 +61,6 @@ Production logs include:
 - `stage` = `5C_SHEET_OUTPUT_INTEGRATION`
 - `telemetry_tag` = `stage=5C-sheet-output-integration`
 - `physical_topology_summary_present` when applicable
-
-## Manual verification steps
-
-Run in Apps Script:
-
-1. Open `Stage4A_MVP` after Stage 4C shell setup exists.
-2. Execute `runStage5CSheetOutputIntegrationFlow()` against deployed API.
-3. Confirm `E21:F26` shows values matching live API for the canonical KZO vector.
-4. Confirm no formulas or local topology arithmetic were added to the script.
 
 ## Anti-drift law
 

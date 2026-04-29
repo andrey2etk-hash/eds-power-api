@@ -12,7 +12,7 @@ Rule:
 
 ## Latest audit
 
-- Stage 5C operator Sheet visibility (thin GAS, pending manual test) — `2026-04-29_STAGE_5C_SHEET_OUTPUT_INTEGRATION.md`
+- Stage 5C operator Sheet visibility (topology — thin GAS, **VERIFIED**) — `2026-04-29_STAGE_5C_SHEET_OUTPUT_INTEGRATION.md`
 - **Gemini external audit request** — `2026-04-29_STAGE_5C_SHEET_GEMINI_AUDIT_REQUEST.md`
 - Operational gate — `2026-04-29_STAGE_5C_PHYSICAL_TOPOLOGY_RENDER_GATE.md`
 - Prior gate — `2026-04-29_STAGE_5B_PHYSICAL_FOOTPRINT_RENDER_GATE.md`

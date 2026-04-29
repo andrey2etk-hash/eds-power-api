@@ -4,14 +4,17 @@
 
 Створити системний фундамент EDS Power для подальшої розробки модулів, API, БД, UI та AI-агентів.
 
+## Завершено — KZO MVP Stage 5C (факт перевірки, 29.04.2026)
+
+- **IDEA-0010** = `IMPLEMENTED`: API `physical_topology_summary` (**Render**) + операторська видимість на Sheet через thin GAS (**`Stage4A_MVP!E21:F26`**; `runStage5CSheetOutputIntegrationFlow()`).
+
 ## Поточний етап
 
-Stage 5C — Physical Topology MVP (`VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` on Render). 29.04.2026
+Execution gate до наступного scoped TASK поза межами узгодженого KZO MVP band (структура / масштаб / топологія операторськи видні на Sheet).
 
-## Stage 5C snapshot
+## Як узгоджено з Gemini doc-pass (Зовнішній аудит)
 
-- IDEA-0010 = `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` — live `physical_topology_summary` verified (`docs/AUDITS/2026-04-29_STAGE_5C_PHYSICAL_TOPOLOGY_RENDER_GATE.md`)
-- Operator-visible Sheet wiring for `physical_topology_summary` remains **out-of-scope** unless separately tasked
+- Gemini Stage 5C Sheet operator verification: **`PASS WITH DOC FIXES`** → застосовано лише синхронізація доків (без змін API/GAS). Використано статус IDEA **`IMPLEMENTED`**, без нових міток у master table beyond `Status Values`.
 
 ## Активний сервер
 
@@ -20,8 +23,8 @@ https://eds-power-api.onrender.com
 ## Активні модулі
 
 1. 00-01_AUTH — авторизація (frozen MVP / draft_ready)
-2. 00-02_CALC_CONFIGURATOR — конфігуратор (Stage 5B footprint + Stage 5C topology verified on Render API)
-3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (5A/5B/5C API layers on deployed Render)
+2. 00-02_CALC_CONFIGURATOR — конфігуратор (KZO Stage 5A–5C operator-visible path для structural / footprint API / topology API + топологія на Sheet верифіковані)
+3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (Stage 5C closure на рівні API + Sheet thin GAS)
 
 ## Що робимо зараз
 
@@ -31,11 +34,10 @@ https://eds-power-api.onrender.com
 - Stage 4B = VERIFIED_STRUCTURAL_PREFLIGHT
 - Stage 4C = VERIFIED_OPERATOR_SHELL
 - Stage 5A-Output-Integration = `VERIFIED_OPERATOR_VISIBLE`
-- Stage 5B `physical_summary` = `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` on live Render (`https://eds-power-api.onrender.com` checklist in Stage 5B Render gate audit)
-- Stage 5C `physical_topology_summary` = `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` on live Render (`docs/AUDITS/2026-04-29_STAGE_5C_PHYSICAL_TOPOLOGY_RENDER_GATE.md`)
+- Stage 5B `physical_summary` = `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` on live Render (Stage 5B Render gate)
+- Stage 5C API `physical_topology_summary` = `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` on live Render (Stage 5C Render gate); Stage 5C Sheet **`E21:F26`** = operator-verified thin GAS (Sheet output integration audit)
 - тримаємо `00-01_AUTH` frozen at MVP
-- тримаємо `00-02_CALC_CONFIGURATOR` у межах KZO MVP
-- утримуємо Stage 5A як узгоджену базу виконання (API meaning + операторський writeback без розширення GAS)
+- тримаємо `00-02_CALC_CONFIGURATOR` у межах KZO MVP поки нема окремого TASK на розширення
 - підтримуємо синхронність GitHub / Cursor / Docs
 - Idea Normalizer = ACTIVE GOVERNANCE
 
@@ -73,9 +75,10 @@ https://eds-power-api.onrender.com
 - Stage 5A output integration verified in operator Sheet (`runStage5AOutputIntegrationFlow()`)
 - Stage 5B physical footprint MVP verified on deployed Render (`data.physical_summary` checklist PASS per Render gate audit)
 - Stage 5C physical topology MVP verified on deployed Render (`data.physical_topology_summary` checklist PASS per Stage 5C Render gate audit)
+- Stage 5C operator-visible topology on Sheet verified via thin GAS (`runStage5CSheetOutputIntegrationFlow()`; **`E21:F26`**; Gemini Sheet audit PASS WITH DOC FIXES → doc-sync)
 
 ## What remains next (plan)
 
-- keep Stage 5A narrow: no design, BOM, pricing, DB, GAS logic, or Sheet redesign
-- keep GAS thin
+- keep Stage narrow: no BOM, pricing, DB, CAD, or unmanaged Sheet expansion unless separately tasked
+- keep GAS thin on future operator-visible transports
 - avoid sidebar, buttons, menus, DB, Supabase, AUTH, costing, BOM, and production logic unless separately tasked
