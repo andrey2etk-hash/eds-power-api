@@ -210,6 +210,45 @@ def _build_kzo_physical_footprint_summary(structural_composition_summary: dict[s
     }
 
 
+def _build_kzo_physical_topology_summary(structural_composition_summary: dict[str, Any]) -> dict[str, Any]:
+    lineup = structural_composition_summary["lineup_summary"]
+    total_cells: int = lineup["total_cells"]
+    total_sections: int = lineup["sections"]
+
+    if total_sections == 1:
+        topology_type = "TOPOLOGY_SINGLE_SECTION"
+        section_distribution = [{"section_id": "A", "cell_count": total_cells}]
+    elif total_sections == 2:
+        a_cells = (total_cells + 1) // 2
+        b_cells = total_cells // 2
+        topology_type = "TOPOLOGY_BALANCED_SPLIT" if a_cells == b_cells else "TOPOLOGY_UNEVEN_SPLIT"
+        section_distribution = [
+            {"section_id": "A", "cell_count": a_cells},
+            {"section_id": "B", "cell_count": b_cells},
+        ]
+    else:
+        # Invariant: MVP configuration types map to 1–2 sections only; keep safe single-bucket output.
+        topology_type = "TOPOLOGY_UNSUPPORTED_SECTION_COUNT_MVP"
+        section_distribution = [{"section_id": "A", "cell_count": total_cells}]
+
+    section_cell_counts = [bucket["cell_count"] for bucket in section_distribution]
+
+    basis = (
+        "distribution from lineup_summary.total_cells and lineup_summary.sections "
+        "(Stage 5A structural composition); scale context from Stage 5B physical footprint MVP (same request)"
+    )
+
+    return {
+        "topology_version": "KZO_STAGE_5C_TOPOLOGY_MVP_V1",
+        "total_sections": total_sections,
+        "topology_type": topology_type,
+        "section_distribution": section_distribution,
+        "section_cell_counts": section_cell_counts,
+        "interpretation_scope": "PHYSICAL_TOPOLOGY_MVP_ONLY",
+        "basis": basis,
+    }
+
+
 @app.get("/")
 def root():
     return {"message": "EDS Power API is running"}
@@ -285,6 +324,7 @@ def prepare_calculation(request: dict[str, Any]):
     }
     structural_composition_summary = _build_kzo_structural_composition_summary(normalized_payload)
     physical_summary = _build_kzo_physical_footprint_summary(structural_composition_summary)
+    physical_topology_summary = _build_kzo_physical_topology_summary(structural_composition_summary)
 
     return {
         "status": "success",
@@ -306,6 +346,7 @@ def prepare_calculation(request: dict[str, Any]):
             },
             "structural_composition_summary": structural_composition_summary,
             "physical_summary": physical_summary,
+            "physical_topology_summary": physical_topology_summary,
         },
         "error": None,
         "metadata": _response_metadata(meta, normalized_payload["logic_version"], started_at),

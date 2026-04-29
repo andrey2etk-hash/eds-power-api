@@ -27,6 +27,7 @@ This file is the single source of truth for all normalized ideas in EDS Power.
 | IDEA-0007 | 2026-04-29 | Stage 5A First Practical KZO Logic: Structural Composition and Lineup Meaning Layer | `RIGHT_NOW` | `P1` | `TASK` | Stage 5A | Immediately after Stage 4C `VERIFIED_OPERATOR_SHELL` with frozen input contract | Introduce first structural engineering meaning without crossing into design, BOM, or commercial layers | `IMPLEMENTED` |
 | IDEA-0008 | 2026-04-29 | Stage 5A-Output-Integration: Operator-visible structural summary | `RIGHT_NOW` | `P1` | `TASK` | Stage 5A-Output-Integration | After Stage 5A API structural summary verified | Expose existing Stage 5A structural engineering output to operator shell without expanding GAS logic | `IMPLEMENTED` |
 | IDEA-0009 | 2026-04-29 | Stage 5B KZO Physical Footprint MVP: API-side lineup scale estimate from structural composition | `RIGHT_NOW` | `P1` | `TASK` | Stage 5B | After Stage 5A structural meaning + operator-visible output integration verified | Rough physical footprint scale from validated structure without CAD/BOM/weight/detail design | `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` |
+| IDEA-0010 | 2026-04-29 | Stage 5C KZO Physical Topology MVP: section distribution and topology type from structural/footprint layers | `RIGHT_NOW` | `P1` | `TASK` | Stage 5C | After Stage 5A structural composition and Stage 5B physical footprint are Render-verified | MVP physical arrangement semantics only — no busbar/cable/detailed engineering | `ACTIVE` |
 
 ## Idea Notes
 
@@ -664,3 +665,30 @@ Render gate:
 - Audit record: `docs/AUDITS/2026-04-29_STAGE_5B_PHYSICAL_FOOTPRINT_RENDER_GATE.md`
 - Live Render `POST /api/calc/prepare_calculation` checklist: **PASS** (see audit)
 - Lifecycle status after live verification: `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION`
+
+### IDEA-0010 — Stage 5C KZO Physical Topology MVP
+
+Classification / priority / decision:
+
+- `RIGHT_NOW` / `P1` / `TASK`
+
+Stage target:
+
+- Stage 5C
+
+Trigger condition:
+
+- After Stage 5A structural composition and Stage 5B physical footprint are Render-verified.
+
+Narrow execution candidate:
+
+- `physical_topology_summary` only — additive field in `prepare_calculation` success payload.
+
+Implementation record:
+
+- `_build_kzo_physical_topology_summary(structural_composition_summary)` in `main.py`
+- `data.physical_topology_summary` on success; derived from `lineup_summary.total_cells` and `lineup_summary.sections` (Stage 5A structural); basis text references Stage 5B footprint as same-request context only — no GAS / no Sheet changes
+
+Render gate:
+
+- `DEPLOYMENT_CANDIDATE_PENDING_RENDER_VERIFICATION` until live checklist (follow Stage 5B Render gate audit pattern)

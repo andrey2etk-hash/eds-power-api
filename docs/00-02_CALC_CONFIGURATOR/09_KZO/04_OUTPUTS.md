@@ -206,6 +206,33 @@ Example:
 }
 ```
 
+## physical_topology_summary
+
+`physical_topology_summary` is the Stage 5C MVP **physical arrangement** interpretation: how total cells are grouped into named sections for the configured section count. It is additive; returned inside `data.physical_topology_summary`. It is derived from Stage 5A `lineup_summary.total_cells` and `lineup_summary.sections`; it does **not** perform bus sizing, routing, CAD, BOM, pricing, or weight.
+
+Rules:
+
+- API-side only — no GAS, no Sheet
+- deterministic split: one section ⇒ all cells in `A`; two sections ⇒ uneven split assigns the odd cell to section `A` (`TOPOLOGY_UNEVEN_SPLIT`), balanced counts ⇒ `TOPOLOGY_BALANCED_SPLIT`
+- not detailed plant layout — topology labels are MVP placeholders only
+
+Example (two sections, 22 cells, balanced):
+
+```json
+{
+  "topology_version": "KZO_STAGE_5C_TOPOLOGY_MVP_V1",
+  "total_sections": 2,
+  "topology_type": "TOPOLOGY_BALANCED_SPLIT",
+  "section_distribution": [
+    { "section_id": "A", "cell_count": 11 },
+    { "section_id": "B", "cell_count": 11 }
+  ],
+  "section_cell_counts": [11, 11],
+  "interpretation_scope": "PHYSICAL_TOPOLOGY_MVP_ONLY",
+  "basis": "distribution from lineup_summary.total_cells and lineup_summary.sections (Stage 5A structural composition); scale context from Stage 5B physical footprint MVP (same request)"
+}
+```
+
 ## error object
 
 Errors must follow the Global Error Contract in `docs/00_SYSTEM/04_DATA_CONTRACTS.md`.

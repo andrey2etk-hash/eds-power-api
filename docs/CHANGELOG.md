@@ -1283,6 +1283,25 @@ After Stage 5A structural composition, provide a rough lineup physical scale est
 
 ---
 
+# 29.04.2026 — Stage 5C physical topology MVP (API-only, additive)
+
+## Причина
+
+After structure (5A) and scale (5B), expose a minimal deterministic **section-wise cell distribution** label as `physical_topology_summary` without busbar/cable/CAD/BOM.
+
+## Рішення
+
+- `_build_kzo_physical_topology_summary(structural_composition_summary)` in `main.py`
+- `data.physical_topology_summary` on success — additive contract only
+- `IDEA-0010` in `docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`
+
+## Обмеження
+
+- no GAS / Sheet in this change set
+- MVP split rules only; not plant layout
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP
