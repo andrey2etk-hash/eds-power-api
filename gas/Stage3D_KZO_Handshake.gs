@@ -10,6 +10,7 @@ const STAGE_4A_PROTECTION_DESCRIPTION = "Stage 4A protected MVP shell";
 const STAGE_4C_OUTPUT_RANGE_A1 = "E4:F14";
 const STAGE_4C_PROTECTION_DESCRIPTION = "Stage 4C operator-safe KZO shell";
 const STAGE_4C_INPUT_RANGES_A1 = ["C4:C6", "C9:C10", "C13:C20"];
+const STAGE_5A_OUTPUT_INTEGRATION_RANGE_A1 = "E4:F19";
 const STAGE_4A_CELL_MAP = {
   object_number: "B2",
   product_type: "B3",
@@ -1020,5 +1021,159 @@ function writeStage4COutput_(sheet, responseJson, httpCode, localStatus) {
       sheet_protection: STAGE_4C_PROTECTION_DESCRIPTION,
       editable_input_ranges: STAGE_4C_INPUT_RANGES_A1
     }
+  }));
+}
+
+/**
+ * Stage 5A output visibility integration.
+ *
+ * GAS remains transport/writeback only:
+ * - reads the already verified Stage 4C input map
+ * - calls the API
+ * - displays existing Stage 5A structural output
+ *
+ * It does not interpret structure, duplicate API logic, calculate, price, build
+ * BOM, redesign the Sheet, or migrate product logic into GAS.
+ */
+function runStage5AOutputIntegrationFlow() {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = spreadsheet ? spreadsheet.getSheetByName(STAGE_4A_SHEET_NAME) : null;
+
+  if (!sheet) {
+    Logger.log(JSON.stringify({
+      stage: "5A_OUTPUT_INTEGRATION",
+      telemetry_tag: "stage=5A-output-integration",
+      status: "run_skipped",
+      error: {
+        error_code: "STAGE_4C_OPERATOR_SHELL_MISSING",
+        message: "Run setupStage4COperatorShell() before Stage 5A output integration."
+      }
+    }));
+    return;
+  }
+
+  const preflight = buildStage4PreflightPayload_(sheet, STAGE_4C_CELL_MAP);
+
+  if (!preflight.ok) {
+    writeStage5AOutputIntegrationError_(sheet, preflight.error);
+    Logger.log(JSON.stringify({
+      stage: "5A_OUTPUT_INTEGRATION",
+      telemetry_tag: "stage=5A-output-integration",
+      status: "local_input_error",
+      error: preflight.error
+    }));
+    return;
+  }
+
+  const requestBody = buildStage4BRequestBody_(preflight.values);
+  const options = {
+    method: "post",
+    contentType: "application/json",
+    payload: JSON.stringify(requestBody),
+    muteHttpExceptions: true
+  };
+
+  try {
+    const response = UrlFetchApp.fetch(API_URL, options);
+    const httpCode = response.getResponseCode();
+    const responseText = response.getContentText();
+    const responseJson = JSON.parse(responseText);
+
+    Logger.log(JSON.stringify({
+      stage: "5A_OUTPUT_INTEGRATION",
+      telemetry_tag: "stage=5A-output-integration",
+      http_code: httpCode,
+      local_input_status: "OK",
+      status: responseJson.status || null,
+      structural_summary_present: Boolean(
+        responseJson.data && responseJson.data.structural_composition_summary
+      ),
+      error: responseJson.error || null
+    }));
+
+    writeStage5AOutputIntegration_(sheet, responseJson, httpCode, {
+      local_input_status: "OK",
+      error_code: null,
+      error_field: null
+    });
+  } catch (error) {
+    Logger.log(JSON.stringify({
+      stage: "5A_OUTPUT_INTEGRATION",
+      telemetry_tag: "stage=5A-output-integration",
+      status: "request_or_writeback_failed",
+      error: {
+        error_code: "GAS_STAGE_5A_OUTPUT_INTEGRATION_FAILED",
+        message: error && error.message ? error.message : String(error),
+        note: MVP_TIMEOUT_NOTE
+      },
+      retry: false
+    }));
+  }
+}
+
+function writeStage5AOutputIntegrationError_(sheet, error) {
+  const rows = [
+    ["validation_status", null],
+    ["object_number", null],
+    ["product_type", null],
+    ["voltage_class", null],
+    ["busbar_current", null],
+    ["http_code", null],
+    ["stage", "5A_OUTPUT_INTEGRATION"],
+    ["local_input_status", "ERROR"],
+    ["error_code", error.error_code],
+    ["error_field", error.error_field],
+    ["operator_shell_status", "STRUCTURAL_INPUT_BLOCKED"],
+    ["stage5a_summary_version", null],
+    ["total_cells", null],
+    ["incoming_count", null],
+    ["outgoing_count", null],
+    ["pt_count", null]
+  ];
+
+  sheet.getRange(STAGE_5A_OUTPUT_INTEGRATION_RANGE_A1).setValues(rows);
+}
+
+function writeStage5AOutputIntegration_(sheet, responseJson, httpCode, localStatus) {
+  const data = responseJson.data || {};
+  const summary = data.basic_result_summary || {};
+  const normalizedPayload = data.normalized_payload || {};
+  const structuralSummary = data.structural_composition_summary || {};
+  const lineupSummary = structuralSummary.lineup_summary || {};
+  const cellComposition = structuralSummary.cell_composition || {};
+  const structuralFlags = structuralSummary.structural_flags || [];
+
+  const rows = [
+    ["validation_status", firstDefined(data.validation_status, summary.validation_status)],
+    ["object_number", firstDefined(normalizedPayload.object_number, null)],
+    ["product_type", firstDefined(summary.product_type, normalizedPayload.product_type)],
+    ["voltage_class", firstDefined(summary.voltage_class, normalizedPayload.voltage_class)],
+    ["busbar_current", firstDefined(summary.busbar_current, normalizedPayload.busbar_current)],
+    ["http_code", httpCode],
+    ["stage", "5A_OUTPUT_INTEGRATION"],
+    ["local_input_status", localStatus.local_input_status],
+    ["error_code", structuralSummary.summary_version ? localStatus.error_code : "STAGE_5A_STRUCTURAL_SUMMARY_MISSING"],
+    ["error_field", localStatus.error_field],
+    ["operator_shell_status", structuralSummary.summary_version ? "STAGE_5A_OUTPUT_VISIBLE" : "STAGE_5A_OUTPUT_MISSING"],
+    ["stage5a_summary_version", firstDefined(structuralSummary.summary_version, null)],
+    ["total_cells", firstDefined(lineupSummary.total_cells, null)],
+    ["incoming_count", firstDefined(cellComposition.incoming, null)],
+    ["outgoing_count", firstDefined(cellComposition.outgoing, null)],
+    ["pt_count", firstDefined(cellComposition.pt, null)]
+  ];
+
+  sheet.getRange(STAGE_5A_OUTPUT_INTEGRATION_RANGE_A1).setValues(rows);
+  sheet.getRange("E20:F20").setValues([
+    ["structural_flags", structuralFlags.join(", ")]
+  ]);
+
+  Logger.log(JSON.stringify({
+    stage: "5A_OUTPUT_INTEGRATION",
+    telemetry_tag: "stage=5A-output-integration",
+    status: "writeback_completed",
+    sheet: STAGE_4A_SHEET_NAME,
+    range: STAGE_5A_OUTPUT_INTEGRATION_RANGE_A1,
+    flags_range: "E20:F20",
+    structural_summary_present: Boolean(structuralSummary.summary_version)
   }));
 }

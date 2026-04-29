@@ -12,7 +12,7 @@ Rule:
 
 ## Latest audit
 
-- `2026-04-29_STAGE_5A_STRUCTURAL_COMPOSITION_TASK.md`
+- `2026-04-29_STAGE_5B_PHYSICAL_FOOTPRINT_RENDER_GATE.md`
 
 ## Stage audits
 
@@ -34,6 +34,8 @@ Rule:
 - `2026-04-29_STAGE_4B_INPUT_NORMALIZATION.md`
 - `2026-04-29_STAGE_4C_OPERATOR_SHELL.md`
 - `2026-04-29_STAGE_5A_STRUCTURAL_COMPOSITION_TASK.md`
+- `2026-04-29_STAGE_5A_OUTPUT_INTEGRATION.md`
+- `2026-04-29_STAGE_5B_PHYSICAL_FOOTPRINT_RENDER_GATE.md`
 
 ## Deprecated audits
 
@@ -41,6 +43,6 @@ Rule:
 
 ## Active blockers
 
-- Stage 5A requires deployed Render API verification
+- Stage 5B `physical_summary`: Render verification checklist pending deployment of revision containing Stage 5B (audit `2026-04-29_STAGE_5B_PHYSICAL_FOOTPRINT_RENDER_GATE.md`)
 - no sidebar / buttons / menus before a separate normalized task
 - no DB / Supabase / AUTH / BOM / costing / production transfer expansion

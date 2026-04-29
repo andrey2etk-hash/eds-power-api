@@ -17,9 +17,16 @@ KZO MVP implementation baseline has reached Stage 5A task definition:
 - Stage 4A — protected template shell verified as MVP-only baseline
 - Stage 4B — structural preflight verified
 - Stage 4C — operator shell verified
-- Stage 5A — deployment candidate pending Render verification
+- Stage 5A — verified structural composition summary on Render (`structural_composition_summary`)
+- Stage 5A-Output-Integration — verified operator-visible transport/writeback-only Sheet visibility
 
 Модуль ще не має статусу `draft_ready`.
+
+## Перехідний стан
+
+На цьому рівні виконано:
+
+- Structural composition meaning layer доступна оператору в Sheet через тонкий GAS writeback
 
 ## Stage 1 foundation
 
@@ -73,12 +80,8 @@ KZO MVP implementation baseline has reached Stage 5A task definition:
 - Stage 5A structural composition summary implemented in API
 - Stage 5A local smoke test passed
 - Stage 5A deployment candidate prepared because Render deploy is GitHub-based
-
-Для переходу далі потрібно:
-
-- verify Stage 5A through deployed Render API after GitHub push/deploy
-- keep Stage 5A API-side only until separately expanded
-- explicit approval before UI / DB / business calculation expansion
+- Stage 5A live Render verification passed
+- Stage 5A output integration verified in operator-visible Sheet (`runStage5AOutputIntegrationFlow()`)
 
 ## Що не входить у Stage 1
 

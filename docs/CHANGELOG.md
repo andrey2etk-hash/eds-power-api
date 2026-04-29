@@ -1149,6 +1149,136 @@ Verification still required after deploy:
 - `functional_lineup_composition`
 - `structural_flags`
 
+## Render verification result
+
+Stage 5A = `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION`.
+
+Live Render returned:
+
+- `structural_composition_summary`
+- `lineup_summary`
+- `cell_composition`
+- `functional_lineup_composition`
+- `structural_flags`
+
+Confirmed live summary:
+
+- `summary_version` = `KZO_STAGE_5A_STRUCTURAL_COMPOSITION_V1`
+- `total_cells` = `22`
+- `sections` = `2`
+- `primary_voltage_class` = `10kV`
+- `busbar_current` = `1250A`
+- `incoming` = `2`
+- `outgoing` = `16`
+- `pt` = `2`
+- `sectionalizer` = `2`
+- `structural_flags` include:
+  - `dual_incoming`
+  - `high_outgoing_density`
+  - `pt_present`
+  - `sectionalized_lineup`
+
+Not done:
+
+- no GAS output redesign
+- no Sheet layout change
+- no Stage 5B
+- no pricing/BOM/DB expansion
+
+---
+
+# 29.04.2026 — Stage 5A output integration prepared and verified in operator Sheet
+
+## Причина
+
+Expose the already verified Stage 5A API structural output to the operator Sheet without adding GAS logic.
+
+## Що додано
+
+- `runStage5AOutputIntegrationFlow()`
+- `writeStage5AOutputIntegration_()`
+- `writeStage5AOutputIntegrationError_()`
+- output integration range `E4:F19`
+- `structural_flags` display range `E20:F20`
+- Stage 5A output integration audit record
+
+## Visible output fields
+
+- `stage5a_summary_version`
+- `total_cells`
+- `incoming_count`
+- `outgoing_count`
+- `pt_count`
+- `structural_flags`
+
+## Обмеження
+
+- no GAS structural interpretation
+- no API logic duplication
+- no new calculations
+- no pricing
+- no BOM
+- no dimensions
+- no weights
+- no DB
+- no Supabase
+- no Sidebar
+- no layout redesign
+- no product logic migration
+
+## Статус
+
+Stage 5A-Output-Integration began as implementation preparation, then manual verification completed.
+
+## Manual verification
+
+- Timestamp: 29.04.2026 15:51-15:52
+- Function: `runStage5AOutputIntegrationFlow()`
+- Log: HTTP `200`, `stage` = `5A_OUTPUT_INTEGRATION`, `telemetry_tag` = `stage=5A-output-integration`, `structural_summary_present` = `true`
+- Writeback: `Stage4A_MVP!E4:F19`, flags `Stage4A_MVP!E20:F20`
+- Sheet: Stage 5A counts + `structural_flags` visible (`operator_shell_status` = `STAGE_5A_OUTPUT_VISIBLE`)
+
+## Final status
+
+Stage 5A-Output-Integration = `VERIFIED_OPERATOR_VISIBLE`.
+
+## Next
+
+No further manual verification gate for Stage 5A Sheet visibility.
+
+## Next operational rule
+
+Keep Stage 5A Sheet visibility as thin transport/writeback-only in GAS; any new layered product logic stays out-of-band until tasked.
+
+---
+
+# 29.04.2026 — Stage 5B physical footprint MVP (API-only)
+
+## Причина
+
+After Stage 5A structural composition, provide a rough lineup physical scale estimate without CAD/BOM or GAS changes.
+
+## Рішення
+
+- `KZO_STAGE_5B_MVP_STANDARD_CELL_WIDTH_MM` = `800`
+- `_build_kzo_physical_footprint_summary(structural_composition_summary)` in `main.py`
+- success payload includes `data.physical_summary` with `estimated_total_width_mm`, `section_count`, `footprint_class`, `basis`, `mvp_standard_cell_width_mm`
+
+## Обмеження
+
+- estimate MVP only; not shop-floor truth
+- no Sheet / GAS changes in this change set
+
+## Governance
+
+- `IDEA-0009` recorded in `docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`
+
+## Render verification gate
+
+- Status: `DEPLOYMENT_CANDIDATE_PENDING_RENDER_VERIFICATION` until live Render exposes `data.physical_summary` per checklist
+- Audit: `docs/AUDITS/2026-04-29_STAGE_5B_PHYSICAL_FOOTPRINT_RENDER_GATE.md`
+- After successful live checklist: `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` (still no Sheet/GAS scope in-gate unless separately tasked)
+
 ---
 
 # Майбутні етапи

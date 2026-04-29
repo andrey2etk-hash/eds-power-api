@@ -44,6 +44,8 @@ KZO_CONFIGURATION_SECTION_COUNTS = {
     "CFG_SINGLE_BUS": 1,
     "CFG_SINGLE_BUS_SECTION": 2,
 }
+# Stage 5B MVP — rough lineup width only (not detailed engineering / not CAD)
+KZO_STAGE_5B_MVP_STANDARD_CELL_WIDTH_MM = 800
 KZO_OBJECT_STATUSES = {
     "DRAFT",
     "VALIDATED",
@@ -180,6 +182,34 @@ def _build_kzo_structural_composition_summary(normalized_payload: dict[str, Any]
     }
 
 
+def _kzo_footprint_class_mvp(total_cells: int) -> str:
+    """Deterministic MVP bucket from cell count; not product catalog truth."""
+    if total_cells <= 12:
+        return "compact_lineup"
+    if total_cells <= 18:
+        return "standard_lineup"
+    if total_cells <= 26:
+        return "large_lineup"
+    return "extended_lineup"
+
+
+def _build_kzo_physical_footprint_summary(structural_composition_summary: dict[str, Any]) -> dict[str, Any]:
+    lineup = structural_composition_summary["lineup_summary"]
+    total_cells: int = lineup["total_cells"]
+    section_count: int = lineup["sections"]
+    w_mm = KZO_STAGE_5B_MVP_STANDARD_CELL_WIDTH_MM
+    estimated_width_mm = total_cells * w_mm
+    return {
+        "summary_version": "KZO_STAGE_5B_PHYSICAL_FOOTPRINT_MVP_V1",
+        "estimated_total_width_mm": estimated_width_mm,
+        "section_count": section_count,
+        "footprint_class": _kzo_footprint_class_mvp(total_cells),
+        "basis": "total_cells x standard_cell_width_mvp",
+        "mvp_standard_cell_width_mm": w_mm,
+        "interpretation_scope": "PHYSICAL_SCALE_ESTIMATE_MVP_ONLY",
+    }
+
+
 @app.get("/")
 def root():
     return {"message": "EDS Power API is running"}
@@ -254,6 +284,7 @@ def prepare_calculation(request: dict[str, Any]):
         for cell_type in sorted(normalized_payload["cell_distribution"])
     }
     structural_composition_summary = _build_kzo_structural_composition_summary(normalized_payload)
+    physical_summary = _build_kzo_physical_footprint_summary(structural_composition_summary)
 
     return {
         "status": "success",
@@ -274,6 +305,7 @@ def prepare_calculation(request: dict[str, Any]):
                 "validation_status": "VALIDATED",
             },
             "structural_composition_summary": structural_composition_summary,
+            "physical_summary": physical_summary,
         },
         "error": None,
         "metadata": _response_metadata(meta, normalized_payload["logic_version"], started_at),

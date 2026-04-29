@@ -14,7 +14,11 @@ It must not transform the system into a design engine, BOM engine, costing engin
 
 ## Status
 
-`DEPLOYMENT_CANDIDATE_PENDING_RENDER_VERIFICATION`
+`COMPLETE_API_RENDER_AND_OPERATOR_VISIBLE_SHEET`
+
+Operator-visible integration artifact:
+
+`docs/AUDITS/2026-04-29_STAGE_5A_OUTPUT_INTEGRATION.md`
 
 ## Trigger Condition
 
@@ -275,8 +279,7 @@ Local result:
 
 Pending:
 
-- deployed Render API verification after GitHub-based deployment
-- optional GAS readback confirmation if the operator shell later needs to expose the new field
+- operator-visible integration if the Stage 4C shell later needs to expose the new field
 
 Not required in Stage 5A:
 
@@ -324,3 +327,64 @@ Required live Render fields after deploy:
 - `cell_composition`
 - `functional_lineup_composition`
 - `structural_flags`
+
+## Live Render Verification Result
+
+Deployment candidate commit:
+
+- `483a556` — `Add Stage 5A KZO structural composition summary`
+
+Live Render verification:
+
+- first checks after push still returned Stage 3C / Stage 4B fields only
+- after Render deployment completed, live API returned Stage 5A fields
+
+Confirmed live response fields:
+
+- `structural_composition_summary` = present
+- `lineup_summary` = present
+- `cell_composition` = present
+- `functional_lineup_composition` = present
+- `structural_flags` = present
+
+Confirmed live summary:
+
+```json
+{
+  "summary_version": "KZO_STAGE_5A_STRUCTURAL_COMPOSITION_V1",
+  "product_type": "KZO",
+  "lineup_summary": {
+    "total_cells": 22,
+    "sections": 2,
+    "primary_voltage_class": "10kV",
+    "busbar_current": "1250A",
+    "configuration_type": "CFG_SINGLE_BUS_SECTION"
+  },
+  "cell_composition": {
+    "incoming": 2,
+    "outgoing": 16,
+    "pt": 2,
+    "sectionalizer": 2
+  },
+  "functional_lineup_composition": {
+    "incoming_cells": 2,
+    "outgoing_cells": 16,
+    "voltage_transformer_cells": 2,
+    "sectionalizer_cells": 2
+  },
+  "structural_flags": [
+    "dual_incoming",
+    "high_outgoing_density",
+    "pt_present",
+    "sectionalized_lineup"
+  ],
+  "interpretation_scope": "STRUCTURAL_COMPOSITION_ONLY"
+}
+```
+
+Gate result:
+
+- Stage 5A = `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION`
+- no GAS layout changes were made
+- no Sheet writeback redesign was made
+- no Stage 5B scope was started

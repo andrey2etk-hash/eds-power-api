@@ -22,23 +22,25 @@ Stage 4B = verified structural preflight
 
 Stage 4C = verified operator shell
 
-Stage 5A = deployment candidate pending Render verification
+Stage 5A = verified Render
+
+Stage 5A-Output-Integration = verified operator-visible Sheet transport/writeback
 
 ## Gate
 
-Current = Stage 5A Render verification
+Current = Stage 5A complete for API meaning + operator-visible Sheet exposure (transport-only GAS)
 
 ## Current status
 
-Stage 5A structural composition summary is implemented API-side, passed local smoke verification, and is prepared as deployment candidate
+Stage 5A structural composition summary is verified on deployed Render API, and operator-visible output integration is verified in the Sheet
 
 ## Blockers
 
-- Stage 5A still needs deployed Render API verification after GitHub-based deploy
+- none for Stage 5A operator-visible integration
 
 ## Next
 
-Verify `structural_composition_summary` through deployed Render API
+Keep GAS transport-only; any next product layer requires a new normalized task
 
 ## Global status link
 

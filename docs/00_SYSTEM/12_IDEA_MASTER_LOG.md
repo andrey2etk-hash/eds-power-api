@@ -24,7 +24,9 @@ This file is the single source of truth for all normalized ideas in EDS Power.
 | IDEA-0004 | 2026-04-29 | Stage 4A Google Sheet Core Template Protection and Structured Input Layer | `RIGHT_NOW` | `P1` | `TASK` | Stage 4A | Immediately after Stage 3F governance sync with VERIFIED_MVP_ONLY / verified writeback baseline | Transform Stage 3F test loop into protected Google Sheet MVP configurator shell with deterministic structure | `IMPLEMENTED` |
 | IDEA-0005 | 2026-04-29 | Stage 4B Input Normalization Layer for Google Sheet MVP Shell | `RIGHT_NOW` | `P1` | `TASK` | Stage 4B | After Stage 4A protected shell verified | Convert protected template shell into resilient human-operable MVP shell through deterministic GAS normalization | `IMPLEMENTED` |
 | IDEA-0006 | 2026-04-29 | Stage 4C KZO Usable Input Form | `RIGHT_NOW` | `P1` | `TASK` | Stage 4C | Immediately after Stage 4B `VERIFIED_STRUCTURAL_PREFLIGHT` | Stabilize the KZO operator-grade input shell before practical product logic | `IMPLEMENTED` |
-| IDEA-0007 | 2026-04-29 | Stage 5A First Practical KZO Logic: Structural Composition and Lineup Meaning Layer | `RIGHT_NOW` | `P1` | `TASK` | Stage 5A | Immediately after Stage 4C `VERIFIED_OPERATOR_SHELL` with frozen input contract | Introduce first structural engineering meaning without crossing into design, BOM, or commercial layers | `DEPLOYMENT_CANDIDATE_PENDING_RENDER_VERIFICATION` |
+| IDEA-0007 | 2026-04-29 | Stage 5A First Practical KZO Logic: Structural Composition and Lineup Meaning Layer | `RIGHT_NOW` | `P1` | `TASK` | Stage 5A | Immediately after Stage 4C `VERIFIED_OPERATOR_SHELL` with frozen input contract | Introduce first structural engineering meaning without crossing into design, BOM, or commercial layers | `IMPLEMENTED` |
+| IDEA-0008 | 2026-04-29 | Stage 5A-Output-Integration: Operator-visible structural summary | `RIGHT_NOW` | `P1` | `TASK` | Stage 5A-Output-Integration | After Stage 5A API structural summary verified | Expose existing Stage 5A structural engineering output to operator shell without expanding GAS logic | `IMPLEMENTED` |
+| IDEA-0009 | 2026-04-29 | Stage 5B KZO Physical Footprint MVP: API-side lineup scale estimate from structural composition | `RIGHT_NOW` | `P1` | `TASK` | Stage 5B | After Stage 5A structural meaning + operator-visible output integration verified | Rough physical footprint scale from validated structure without CAD/BOM/weight/detail design | `DEPLOYMENT_CANDIDATE_PENDING_RENDER_VERIFICATION` |
 
 ## Idea Notes
 
@@ -484,6 +486,181 @@ Implementation record:
 - local smoke test passed
 - live Render pre-deploy check still returns Stage 3C / Stage 4B fields only
 - deployment candidate required because Render deploy is GitHub-based
+- live Render verification passed after deployment
 - no GAS logic expansion
 - no Sheet redesign
 - no pricing, BOM, DB, commercial, or production logic
+
+### IDEA-0008 — Stage 5A-Output-Integration Operator-Visible Structural Summary
+
+Review stage:
+
+- Completed: operator-visible structural summary confirmed in Sheet (manual Apps Script verification).
+Trigger condition:
+
+- after Stage 5A API structural summary verified
+
+Key thesis:
+
+- Expose existing Stage 5A structural engineering output to operator shell without expanding GAS logic.
+
+Reason:
+
+- This is not a new logic layer.
+- This is existing Stage 5A value exposure.
+- API already performs the engineering logic.
+- GAS must only transport and write visible results.
+- Without this, Stage 5A remains partially hidden from the operator.
+
+Allowed scope:
+
+- read `structural_composition_summary` from API response
+- minimal GAS field mapping
+- write summary to defined output zone
+- minimal output zone extension if structurally required
+- preserve frozen shell architecture where possible
+- logging
+
+Forbidden scope:
+
+- new calculations
+- structural interpretation in GAS
+- API logic duplication
+- pricing
+- BOM
+- dimensions
+- weights
+- DB
+- Supabase
+- Sidebar
+- layout redesign
+- product logic migration
+
+Safe implementation model:
+
+- API returns:
+  - `lineup_summary`
+  - `cell_composition`
+  - `structural_flags`
+- GAS reads and writes only.
+- Sheet displays:
+  - `total_cells`
+  - incoming count
+  - outgoing count
+  - PT count
+  - structural flags
+
+Critical governance rule:
+
+- If GAS transforms engineering meaning beyond formatting/writeback, it is a governance breach.
+- Allowed: display.
+- Forbidden: interpret.
+
+Success condition:
+
+- operator moves from `Payload validated` to `I visibly see KZO structure in Sheet`
+
+Anti-drift law:
+
+- Output visibility does not equal logic expansion.
+
+Narrowest safe execution:
+
+- Stage 5A API output visibility only
+- no new logic
+- no shell drift
+- no GAS breach
+
+Implementation record:
+
+- `runStage5AOutputIntegrationFlow()` verified
+- `writeStage5AOutputIntegration_()` verified
+- `writeStage5AOutputIntegrationError_()` verified
+- output rows verified for:
+  - `stage5a_summary_version`
+  - `total_cells`
+  - `incoming_count`
+  - `outgoing_count`
+  - `pt_count`
+  - `structural_flags`
+- manual Sheet verification verified transport/writeback-only behavior
+
+Manual verification record:
+
+- Timestamp: 29.04.2026 15:51-15:52
+- Function: `runStage5AOutputIntegrationFlow()`
+- Log: HTTP `200`, `stage` = `5A_OUTPUT_INTEGRATION`, `telemetry_tag` = `stage=5A-output-integration`, `structural_summary_present` = `true`
+- Writeback: `Stage4A_MVP!E4:F19`, flags `Stage4A_MVP!E20:F20`
+- Sheet: `operator_shell_status` = `STAGE_5A_OUTPUT_VISIBLE`; counts visible; `structural_flags` visible
+
+### IDEA-0009 — Stage 5B KZO Physical Footprint MVP
+
+Classification / priority / decision:
+
+- `RIGHT_NOW` / `P1` / `TASK`
+
+Stage target:
+
+- Stage 5B
+
+Trigger condition:
+
+- After Stage 5A structural meaning + operator-visible output integration verified.
+
+Key thesis:
+
+- API-side estimate of lineup physical scale from already validated structural composition (structure → rough physical scale).
+
+Narrow execution candidate:
+
+- `Lineup Physical Footprint Summary` — field `physical_summary` in `prepare_calculation` success payload.
+
+Allowed:
+
+- KZO-only
+- API-side only
+- estimated lineup width (`estimated_total_width_mm`)
+- section count (`section_count`, aligned with structural `lineup_summary.sections`)
+- rough footprint class (`footprint_class`, deterministic MVP buckets)
+- normalized output with documented MVP assumptions (`basis`, `mvp_standard_cell_width_mm`)
+- deterministic MVP assumptions only
+
+Forbidden:
+
+- pricing
+- BOM
+- weight
+- CAD
+- procurement
+- DB / Supabase
+- sidebar
+- Sheet redesign
+- GAS business logic
+- detailed engineering dimensions
+
+Example output shape:
+
+```json
+{
+  "physical_summary": {
+    "summary_version": "KZO_STAGE_5B_PHYSICAL_FOOTPRINT_MVP_V1",
+    "estimated_total_width_mm": 17600,
+    "section_count": 2,
+    "footprint_class": "large_lineup",
+    "basis": "total_cells x standard_cell_width_mvp",
+    "mvp_standard_cell_width_mm": 800,
+    "interpretation_scope": "PHYSICAL_SCALE_ESTIMATE_MVP_ONLY"
+  }
+}
+```
+
+Implementation record:
+
+- `_build_kzo_physical_footprint_summary(structural_composition_summary)` added in `main.py`
+- `data.physical_summary` returned on success (derived only from Stage 5A structural summary; no GAS changes)
+
+Render gate:
+
+- Audit record: `docs/AUDITS/2026-04-29_STAGE_5B_PHYSICAL_FOOTPRINT_RENDER_GATE.md`
+- Current lifecycle status until live Render checklist passes: `DEPLOYMENT_CANDIDATE_PENDING_RENDER_VERIFICATION`
+- Transition after successful live checklist: `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION`

@@ -180,6 +180,32 @@ Example:
 }
 ```
 
+## physical_summary
+
+`physical_summary` is the Stage 5B MVP **rough physical scale** estimate for the KZO lineup. It is derived only from the Stage 5A `structural_composition_summary.lineup_summary` (validated cell count and configuration sections). It is returned inside `data.physical_summary`.
+
+Rules:
+
+- API-side only
+- estimate only — not detailed engineering, not CAD
+- deterministic MVP assumptions (documented constant `mvp_standard_cell_width_mm`)
+- no BOM, no pricing, no weight
+- no GAS computation (GAS unchanged)
+
+Example:
+
+```json
+{
+  "summary_version": "KZO_STAGE_5B_PHYSICAL_FOOTPRINT_MVP_V1",
+  "estimated_total_width_mm": 17600,
+  "section_count": 2,
+  "footprint_class": "large_lineup",
+  "basis": "total_cells x standard_cell_width_mvp",
+  "mvp_standard_cell_width_mm": 800,
+  "interpretation_scope": "PHYSICAL_SCALE_ESTIMATE_MVP_ONLY"
+}
+```
+
 ## error object
 
 Errors must follow the Global Error Contract in `docs/00_SYSTEM/04_DATA_CONTRACTS.md`.
