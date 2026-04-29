@@ -1308,6 +1308,30 @@ After structure (5A) and scale (5B), expose a minimal deterministic **section-wi
 
 ---
 
+# 29.04.2026 — Stage 5C Sheet output integration (thin GAS only)
+
+## Причина
+
+Display API `data.physical_topology_summary` in operator Sheet without recomputing topology in GAS.
+
+## Рішення
+
+- `runStage5CSheetOutputIntegrationFlow()` в `gas/Stage3D_KZO_Handshake.gs`
+- фіксований діапазон запису **`Stage4A_MVP!E21:F26`**: topology_type, total_sections, section_cell_counts (JSON string), topology_version, interpretation_scope, basis
+- якщо `physical_topology_summary` відсутній — порожні рядки, лог із попередженням, без fallback-розрахунків у GAS
+
+## Обмеження
+
+- без змін API й правил топології в `main.py`
+- без BOM / CAD / ціни / ваги; без redesign листа понад additive-range
+
+## Governance
+
+- `IDEA-0010` = `OPERATOR_VISIBLE_INTEGRATION_PENDING_TEST`
+- аудит `docs/AUDITS/2026-04-29_STAGE_5C_SHEET_OUTPUT_INTEGRATION.md`
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP

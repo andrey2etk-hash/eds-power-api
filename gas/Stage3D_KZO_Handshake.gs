@@ -11,6 +11,7 @@ const STAGE_4C_OUTPUT_RANGE_A1 = "E4:F14";
 const STAGE_4C_PROTECTION_DESCRIPTION = "Stage 4C operator-safe KZO shell";
 const STAGE_4C_INPUT_RANGES_A1 = ["C4:C6", "C9:C10", "C13:C20"];
 const STAGE_5A_OUTPUT_INTEGRATION_RANGE_A1 = "E4:F19";
+const STAGE_5C_SHEET_OUTPUT_RANGE_A1 = "E21:F26";
 const STAGE_4A_CELL_MAP = {
   object_number: "B2",
   product_type: "B3",
@@ -1175,5 +1176,144 @@ function writeStage5AOutputIntegration_(sheet, responseJson, httpCode, localStat
     range: STAGE_5A_OUTPUT_INTEGRATION_RANGE_A1,
     flags_range: "E20:F20",
     structural_summary_present: Boolean(structuralSummary.summary_version)
+  }));
+}
+
+/**
+ * Stage 5C physical topology — operator-visible integration (thin transport only).
+ *
+ * Maps API `data.physical_topology_summary` into a fixed output range. No topology
+ * computation, no API changes, no BOM/CAD/pricing. If the field is absent, values
+ * remain empty and a warning is logged (no GAS fallback calculations).
+ */
+function runStage5CSheetOutputIntegrationFlow() {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = spreadsheet ? spreadsheet.getSheetByName(STAGE_4A_SHEET_NAME) : null;
+
+  if (!sheet) {
+    Logger.log(JSON.stringify({
+      stage: "5C_SHEET_OUTPUT_INTEGRATION",
+      telemetry_tag: "stage=5C-sheet-output-integration",
+      status: "run_skipped",
+      error: {
+        error_code: "STAGE_4C_OPERATOR_SHELL_MISSING",
+        message: "Run setupStage4COperatorShell() before Stage 5C Sheet output integration."
+      }
+    }));
+    return;
+  }
+
+  const preflight = buildStage4PreflightPayload_(sheet, STAGE_4C_CELL_MAP);
+
+  if (!preflight.ok) {
+    writeStage5CSheetOutputIntegrationError_(sheet, preflight.error);
+    Logger.log(JSON.stringify({
+      stage: "5C_SHEET_OUTPUT_INTEGRATION",
+      telemetry_tag: "stage=5C-sheet-output-integration",
+      status: "local_input_error",
+      error: preflight.error
+    }));
+    return;
+  }
+
+  const requestBody = buildStage4BRequestBody_(preflight.values);
+  const options = {
+    method: "post",
+    contentType: "application/json",
+    payload: JSON.stringify(requestBody),
+    muteHttpExceptions: true
+  };
+
+  try {
+    const response = UrlFetchApp.fetch(API_URL, options);
+    const httpCode = response.getResponseCode();
+    const responseText = response.getContentText();
+    const responseJson = JSON.parse(responseText);
+
+    Logger.log(JSON.stringify({
+      stage: "5C_SHEET_OUTPUT_INTEGRATION",
+      telemetry_tag: "stage=5C-sheet-output-integration",
+      http_code: httpCode,
+      local_input_status: "OK",
+      status: responseJson.status || null,
+      physical_topology_summary_present: Boolean(
+        responseJson.data && responseJson.data.physical_topology_summary
+      ),
+      error: responseJson.error || null
+    }));
+
+    writeStage5CSheetOutputIntegration_(sheet, responseJson, httpCode, {
+      local_input_status: "OK",
+      error_code: null,
+      error_field: null
+    });
+  } catch (error) {
+    Logger.log(JSON.stringify({
+      stage: "5C_SHEET_OUTPUT_INTEGRATION",
+      telemetry_tag: "stage=5C-sheet-output-integration",
+      status: "request_or_writeback_failed",
+      error: {
+        error_code: "GAS_STAGE_5C_SHEET_OUTPUT_INTEGRATION_FAILED",
+        message: error && error.message ? error.message : String(error),
+        note: MVP_TIMEOUT_NOTE
+      },
+      retry: false
+    }));
+  }
+}
+
+function writeStage5CSheetOutputIntegrationError_(sheet, error) {
+  const empty = [
+    ["topology_type", ""],
+    ["total_sections", ""],
+    ["section_cell_counts", ""],
+    ["topology_version", ""],
+    ["interpretation_scope", ""],
+    ["basis", ""]
+  ];
+  sheet.getRange(STAGE_5C_SHEET_OUTPUT_RANGE_A1).setValues(empty);
+}
+
+function writeStage5CSheetOutputIntegration_(sheet, responseJson, httpCode, localStatus) {
+  const data = responseJson.data || {};
+  const topology = data.physical_topology_summary;
+
+  if (!topology) {
+    writeStage5CSheetOutputIntegrationError_(sheet, { error_code: "STAGE_5C_PHYSICAL_TOPOLOGY_MISSING" });
+    Logger.log(JSON.stringify({
+      stage: "5C_SHEET_OUTPUT_INTEGRATION",
+      telemetry_tag: "stage=5C-sheet-output-integration",
+      status: "writeback_completed",
+      warning: "physical_topology_summary_missing",
+      sheet: STAGE_4A_SHEET_NAME,
+      range: STAGE_5C_SHEET_OUTPUT_RANGE_A1,
+      http_code: httpCode
+    }));
+    return;
+  }
+
+  var sectionCellCountsDisplay = "";
+  if (topology.section_cell_counts && typeof topology.section_cell_counts.length === "number") {
+    sectionCellCountsDisplay = JSON.stringify(topology.section_cell_counts);
+  }
+
+  const rows = [
+    ["topology_type", firstDefined(topology.topology_type, "")],
+    ["total_sections", topology.total_sections !== undefined && topology.total_sections !== null ? topology.total_sections : ""],
+    ["section_cell_counts", sectionCellCountsDisplay],
+    ["topology_version", firstDefined(topology.topology_version, "")],
+    ["interpretation_scope", firstDefined(topology.interpretation_scope, "")],
+    ["basis", firstDefined(topology.basis, "")]
+  ];
+
+  sheet.getRange(STAGE_5C_SHEET_OUTPUT_RANGE_A1).setValues(rows);
+
+  Logger.log(JSON.stringify({
+    stage: "5C_SHEET_OUTPUT_INTEGRATION",
+    telemetry_tag: "stage=5C-sheet-output-integration",
+    status: "writeback_completed",
+    sheet: STAGE_4A_SHEET_NAME,
+    range: STAGE_5C_SHEET_OUTPUT_RANGE_A1,
+    physical_topology_summary_present: true
   }));
 }
