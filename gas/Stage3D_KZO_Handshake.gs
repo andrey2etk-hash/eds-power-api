@@ -20,6 +20,8 @@ const STAGE_6A_SHELL_BLOCK_VERSION = "KZO_STAGE_6A_OPERATOR_SHELL_V1";
 const STAGE_6B_ENGINEERING_CLASSIFICATION_RANGE_A1 = STAGE_6A_RESERVED_OPERATOR_BLOCK_RANGE_A1;
 /** Stage 6C — thin writeback for `engineering_burden_summary` (same governed Stage 6 band `E27:F40`; overwrites display when run). */
 const STAGE_6C_ENGINEERING_BURDEN_RANGE_A1 = STAGE_6A_RESERVED_OPERATOR_BLOCK_RANGE_A1;
+/** Stage 7A — unified MVP writes `engineering_class_summary` + `engineering_burden_summary` in one `E27:F40` setValues (same band; no new API math). */
+const STAGE_7A_KZO_MVP_STAGE6_BAND_RANGE_A1 = STAGE_6A_RESERVED_OPERATOR_BLOCK_RANGE_A1;
 const STAGE_4A_CELL_MAP = {
   object_number: "B2",
   product_type: "B3",
@@ -1702,4 +1704,169 @@ function writeStage6CEngineeringBurden_(sheet, responseJson, httpCode) {
     range: STAGE_6C_ENGINEERING_BURDEN_RANGE_A1,
     engineering_burden_summary_present: true
   }));
+}
+
+function writeStage7AUnifiedStage6BandError_(sheet) {
+  var emptyRows = [];
+  var r;
+  for (r = 0; r < 14; r++) {
+    emptyRows.push(["", ""]);
+  }
+  sheet.getRange(STAGE_7A_KZO_MVP_STAGE6_BAND_RANGE_A1).setValues(emptyRows);
+}
+
+/**
+ * Stage 7A — one-shot writeback for **`E27:F40`**: stacks 6B + 6C keys in 14 rows (single setValues).
+ * Omits ECS `topology_basis` row (topology remains visible via Stage 5C + burden `topology_basis`).
+ */
+function writeStage7AUnifiedStage6Band_(sheet, responseJson, httpCode) {
+  const data = responseJson.data || {};
+  const ecs = data.engineering_class_summary;
+  const ebs = data.engineering_burden_summary;
+
+  var profileDisplay = "";
+  if (ecs && ecs.section_complexity_profile && ecs.section_complexity_profile.length !== undefined) {
+    profileDisplay = JSON.stringify(ecs.section_complexity_profile);
+  }
+
+  var rows = [
+    ["classification_version", ecs ? firstDefined(ecs.classification_version, "") : ""],
+    ["lineup_complexity_class", ecs ? firstDefined(ecs.lineup_complexity_class, "") : ""],
+    ["lineup_scale_class", ecs ? firstDefined(ecs.lineup_scale_class, "") : ""],
+    ["section_complexity_profile", profileDisplay],
+    ["total_cells_basis", ecs && ecs.total_cells_basis !== undefined && ecs.total_cells_basis !== null ? ecs.total_cells_basis : ""],
+    ["interpretation_scope", ecs ? firstDefined(ecs.interpretation_scope, "") : ""],
+    ["burden_version", ebs ? firstDefined(ebs.burden_version, "") : ""],
+    ["structural_burden_class", ebs ? firstDefined(ebs.structural_burden_class, "") : ""],
+    ["assembly_burden_class", ebs ? firstDefined(ebs.assembly_burden_class, "") : ""],
+    ["estimated_mass_class", ebs ? firstDefined(ebs.estimated_mass_class, "") : ""],
+    ["complexity_basis", ebs ? firstDefined(ebs.complexity_basis, "") : ""],
+    ["topology_basis", ebs ? firstDefined(ebs.topology_basis, "") : ""],
+    ["footprint_basis", ebs ? firstDefined(ebs.footprint_basis, "") : ""],
+    ["interpretation_scope_burden", ebs ? firstDefined(ebs.interpretation_scope, "") : ""]
+  ];
+  sheet.getRange(STAGE_7A_KZO_MVP_STAGE6_BAND_RANGE_A1).setValues(rows);
+
+  Logger.log(JSON.stringify({
+    stage: "7A_UNIFIED_STAGE6_BAND",
+    telemetry_tag: "stage=7a-kzo-mvp-flow",
+    status: "writeback_completed",
+    sheet: STAGE_4A_SHEET_NAME,
+    range: STAGE_7A_KZO_MVP_STAGE6_BAND_RANGE_A1,
+    http_code: httpCode || null,
+    engineering_class_summary_present: Boolean(ecs),
+    engineering_burden_summary_present: Boolean(ebs)
+  }));
+}
+
+/**
+ * Stage 7A — end-to-end KZO MVP: one `prepare_calculation` POST, then orchestrated Sheet writeback
+ * (Stage 5A integration + Stage 5C topology + unified Stage 6 band). No BOM/DB/pricing/new API math.
+ */
+function runKzoMvpFlow() {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = spreadsheet ? spreadsheet.getSheetByName(STAGE_4A_SHEET_NAME) : null;
+
+  if (!sheet) {
+    Logger.log(JSON.stringify({
+      stage: "7A_KZO_MVP_FLOW",
+      telemetry_tag: "stage=7a-kzo-mvp-flow",
+      mvp_run_outcome: "MVP_RUN_FAILED",
+      status: "run_skipped",
+      error: {
+        error_code: "STAGE_4C_OPERATOR_SHELL_MISSING",
+        message: "Run setupStage4COperatorShell() before runKzoMvpFlow()."
+      }
+    }));
+    return;
+  }
+
+  const preflight = buildStage4PreflightPayload_(sheet, STAGE_4C_CELL_MAP);
+
+  if (!preflight.ok) {
+    writeStage5AOutputIntegrationError_(sheet, preflight.error);
+    writeStage5CSheetOutputIntegrationError_(sheet, preflight.error);
+    writeStage7AUnifiedStage6BandError_(sheet);
+    Logger.log(JSON.stringify({
+      stage: "7A_KZO_MVP_FLOW",
+      telemetry_tag: "stage=7a-kzo-mvp-flow",
+      mvp_run_outcome: "MVP_RUN_FAILED",
+      status: "local_input_error",
+      error: preflight.error
+    }));
+    return;
+  }
+
+  const requestBody = buildStage4BRequestBody_(preflight.values);
+  const options = {
+    method: "post",
+    contentType: "application/json",
+    payload: JSON.stringify(requestBody),
+    muteHttpExceptions: true
+  };
+
+  try {
+    const response = UrlFetchApp.fetch(API_URL, options);
+    const httpCode = response.getResponseCode();
+    const responseText = response.getContentText();
+    const responseJson = JSON.parse(responseText);
+
+    const dataProbe = responseJson.data || {};
+    Logger.log(JSON.stringify({
+      stage: "7A_KZO_MVP_FLOW",
+      telemetry_tag: "stage=7a-kzo-mvp-flow",
+      http_code: httpCode,
+      api_status: responseJson.status || null,
+      structural_summary_present: Boolean(dataProbe.structural_composition_summary),
+      physical_summary_present: Boolean(dataProbe.physical_summary),
+      physical_topology_summary_present: Boolean(dataProbe.physical_topology_summary),
+      engineering_class_summary_present: Boolean(dataProbe.engineering_class_summary),
+      engineering_burden_summary_present: Boolean(dataProbe.engineering_burden_summary),
+      error: responseJson.error || null
+    }));
+
+    if (responseJson.status !== "success") {
+      Logger.log(JSON.stringify({
+        stage: "7A_KZO_MVP_FLOW",
+        telemetry_tag: "stage=7a-kzo-mvp-flow",
+        mvp_run_outcome: "MVP_RUN_FAILED",
+        status: "api_non_success",
+        api_status: responseJson.status || null,
+        http_code: httpCode,
+        retry: Boolean(httpCode >= 500)
+      }));
+      return;
+    }
+
+    const localOk = {
+      local_input_status: "OK",
+      error_code: null,
+      error_field: null
+    };
+    writeStage5AOutputIntegration_(sheet, responseJson, httpCode, localOk);
+    writeStage5CSheetOutputIntegration_(sheet, responseJson, httpCode, localOk);
+    writeStage7AUnifiedStage6Band_(sheet, responseJson, httpCode);
+
+    Logger.log(JSON.stringify({
+      stage: "7A_KZO_MVP_FLOW",
+      telemetry_tag: "stage=7a-kzo-mvp-flow",
+      mvp_run_outcome: "MVP_RUN_SUCCESS",
+      status: "mvp_flow_completed",
+      http_code: httpCode,
+      physical_summary_present: Boolean(dataProbe.physical_summary)
+    }));
+  } catch (error) {
+    Logger.log(JSON.stringify({
+      stage: "7A_KZO_MVP_FLOW",
+      telemetry_tag: "stage=7a-kzo-mvp-flow",
+      mvp_run_outcome: "MVP_RUN_FAILED",
+      status: "request_parse_or_writeback_failed",
+      error: {
+        error_code: "GAS_STAGE_7A_KZO_MVP_FLOW_FAILED",
+        message: error && error.message ? error.message : String(error),
+        note: MVP_TIMEOUT_NOTE
+      },
+      retry: false
+    }));
+  }
 }

@@ -32,6 +32,8 @@ This file is the single source of truth for all normalized ideas in EDS Power.
 | IDEA-0012 | 2026-04-29 | Stage 6A KZO Reserved Operator Block Activation: activate E27:F40 as governed shell infra before Stage 6 engineering | `RIGHT_NOW` | `P1` | `TASK` | Stage 6A | After Stage 5D shell governance MVP implemented | Activate reserved shell block only — no engineering formulas,BOM,Business logic — not API topology | `IMPLEMENTED` |
 | IDEA-0013 | 2026-04-29 | Stage 6B KZO Engineering Classification MVP: lineup scale/complexity classification from structure and topology | `RIGHT_NOW` | `P1` | `TASK` | Stage 6B | After Stage 6A operator shell block verified | Planning-grade engineering class only — no mass, BOM, price, CAD | `IMPLEMENTED` |
 | IDEA-0014 | 2026-04-29 | Stage 6C KZO Engineering Burden Foundation MVP: planning-grade production burden from classification + topology (not kg/BOM/price) | `RIGHT_NOW` | `P1` | `TASK` | Stage 6C | After Stage 6B closed with Gemini SAFE TO PROCEED TO STAGE 6C | Planning burden before precision — burden tiers only — no BOM/CAD procurement | `IMPLEMENTED` |
+| IDEA-0015 | 2026-04-29 | Stage 7A KZO end-to-end MVP stabilization: unified operator-grade flow (single API call + orchestrated Sheet writeback) | `IMMEDIATE_CRITICAL` | `P0` | `URGENT_TASK` | Stage 7A | After Stage 6C operator-visible **`IMPLEMENTED`** closes layered stack | **Stabilize before deepen** — one scenario (5A+5C+6B/6C layers) — no BOM/DB/pricing/new API math until MVP cohesion validated | `IMPLEMENTED` |
+| IDEA-0016 | 2026-04-29 | Stage 7B KZO MVP snapshot contract freeze: canonical `KZO_MVP_SNAPSHOT_V1` before persistence | `IMMEDIATE_CRITICAL` | `P0` | `URGENT_TASK` | Stage 7B | After **IDEA-0015** `IMPLEMENTED` (7A operational PASS) | **Freeze before persistence** — one trusted object for Stage 8A — no Supabase/SQL in 7B | `IMPLEMENTED` |
 
 ## Idea Notes
 
@@ -777,7 +779,7 @@ Implementation record:
 - `gas/Stage3D_KZO_Handshake.gs`: `runStage6BEngineeringClassificationFlow()`, writeback **`E27:F40`** only (Stage 6 band; overwrites Stage 6A placeholder when Stage 6B flow runs — thin transport, no classification math in GAS)
 - Audit: `docs/AUDITS/2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`
 - **Operator verification PASS** — API **`http_code` 200**, **`engineering_class_summary_present`**, GAS **`writeback_completed`** on **`E27:F40`** (14-row block; no **`request_or_writeback_failed`**); thin client preserved; no BOM/pricing/mass/DB/Supabase. Closure: Stage 6B = **`IMPLEMENTED`** + **operator-verified** (**`IMPLEMENTED`** stays the only IDEA **Status** token in master table).
-- **Stage 6B Engineering Classification MVP closed** after **external Gemini PASS** (**`SAFE TO PROCEED TO STAGE 6C`**) + **operator verification PASS** **29.04.2026** — doc-pass + governance sync only; **Stage 6C** not started until **separate normalized IDEA** (no new **Status Values** for closure).
+- **Stage 6B Engineering Classification MVP closed** after **external Gemini PASS** (**`SAFE TO PROCEED TO STAGE 6C`**) + **operator verification PASS** **29.04.2026** — doc-pass + governance sync only; **Stage 6C** (**IDEA-0014**) delivered afterward; cohesion gate **Stage 7A** (**IDEA-0015**) tracks unified MVP operator flow (no new **Status Values** for closure-only notes).
 
 ### IDEA-0014 — Stage 6C KZO Engineering Burden Foundation MVP
 
@@ -805,3 +807,55 @@ Implementation record:
 - **Live Render PASS** (**29.04.2026**) — deploy **`35ac23a`**; probe **`POST`** `prepare_calculation`; attempts **1–2** через deployment lag — **attempt 3**: **`engineering_burden_summary`** присутній (`docs/AUDITS/2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`)
 - **Operator Sheet verification PASS** (**29.04.2026**) — **`runStage6CEngineeringBurdenFlow()`**, **`Stage4A_MVP`**, **`http_code` 200**, **`engineering_burden_summary_present`**, **`writeback_completed`** → **`E27:F40`**; thin GAS; scope preserved (нема kg/BOM/pricing як у gate)
 - Master table **Status**: **`IMPLEMENTED`** (interim label **`RENDER_VERIFIED_PENDING_OPERATOR_TEST`** знято док-пасом після operator-visible PASS)
+
+### IDEA-0015 — Stage 7A KZO end-to-end MVP stabilization
+
+Classification / priority / decision:
+
+- `IMMEDIATE_CRITICAL` / `P0` / `URGENT_TASK`
+
+Stage target:
+
+- Stage 7A
+
+Trigger condition:
+
+- After **IDEA-0014** `IMPLEMENTED` (**Stage 6C** layered output proven); before **Stage 7B+** depth expansion — **architecture stabilization gate** (“MVP cohesion before expansion”).
+
+Key thesis:
+
+- **Validated layers → unified flow → operational MVP.** One operator entry (**`runKzoMvpFlow()`**): single **`prepare_calculation`** POST → writeback orchestration only — Structure (**5A**), Physical scale (**`data.physical_summary`** telemetry / API-only block), Topology (**5C**), Classification + Burden (**unified `E27:F40`** — stacked 6B+6C fields in **one** `setValues`, no duplicate per-stage reruns).
+
+Implementation record:
+
+- `gas/Stage3D_KZO_Handshake.gs`: **`runKzoMvpFlow()`**, **`writeStage7AUnifiedStage6Band_()`** — reuses **`writeStage5AOutputIntegration_`**, **`writeStage5CSheetOutputIntegration_`**; telemetry **`mvp_run_outcome`**: **`MVP_RUN_SUCCESS`** / **`MVP_RUN_FAILED`**; **`telemetry_tag`**: **`stage=7a-kzo-mvp-flow`**
+- Forbidden: new parameters/calcs, BOM, pricing, DB, Supabase; no new **`E41:F54`** writes
+- Audit (cohesion): `docs/AUDITS/2026-04-29_STAGE_7A_KZO_END_TO_END_MVP_STABILIZATION.md`
+- **Operator verification PASS** (manual Apps Script) — API **`success`**, **`http_code`** **200**, **`mvp_run_outcome`** **`MVP_RUN_SUCCESS`**; **`Stage4A_MVP`** zones **`E4:F19`** / **`E20:F20`**, **`E21:F26`**, **`E27:F40`**; **`structural_composition_summary`**, **`physical_summary`**, **`physical_topology_summary`**, **`engineering_class_summary`**, **`engineering_burden_summary`** present in **`data`**; thin GAS transport/orchestration only (**doc-pass**).
+- Master table **Status**: **`IMPLEMENTED`** (unchanged **`Status Values`**).
+
+### IDEA-0016 — Stage 7B KZO MVP snapshot contract freeze
+
+Classification / priority / decision:
+
+- `IMMEDIATE_CRITICAL` / `P0` / `URGENT_TASK`
+
+Stage target:
+
+- Stage 7B
+
+Trigger condition:
+
+- After **IDEA-0015** `IMPLEMENTED` (**Stage 7A** unified run operator-verified); **before** **Stage 8A** Supabase (or any DB) persistence.
+
+Key thesis:
+
+- **Working MVP → persistable system object.** Single canonical **`KZO_MVP_SNAPSHOT_V1`**: **`snapshot_version`**, **`run_status`**, **`timestamp_basis`**, **`logic_version`**, **`request_metadata`**, **`normalized_input`**, plus **all** current validated output layers (**`structural_composition_summary`**, **`physical_summary`**, **`physical_topology_summary`**, **`engineering_class_summary`**, **`engineering_burden_summary`**) — API key names preserved (no alias drift).
+
+Implementation record:
+
+- Normative contract: `docs/00-02_CALC_CONFIGURATOR/09_KZO/11_KZO_MVP_SNAPSHOT_V1_CONTRACT.md` — versioning policy; **`SUCCESS`** / **`FAILED`** envelope; explicit **non-inclusion** of BOM/pricing/DB IDs in V1
+- Audit: `docs/AUDITS/2026-04-29_STAGE_7B_KZO_MVP_SNAPSHOT_CONTRACT_FREEZE.md` (**freeze before persistence**)
+- Forbidden in Stage 7B: Supabase tables, SQL, DB deployment, new engineering fields beyond validated MVP layers
+- Master table **Status**: **`IMPLEMENTED`** (documentation contract only; **Stage 8A** references this object as persistence source)
+- **Formal closure (Gemini doc-pass):** Stage **7B** **CLOSED** after external Gemini **`SAFE TO PROCEED TO STAGE 8A`** — **`KZO_MVP_SNAPSHOT_V1`** remains **frozen** as sole persistence-shape baseline (**no V1 contract edits** outside a new snapshot version + IDEA); **Stage 8A** **NOT STARTED** until separate normalized **IDEA + TASK**.

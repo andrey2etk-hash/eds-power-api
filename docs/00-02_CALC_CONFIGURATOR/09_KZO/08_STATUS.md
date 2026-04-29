@@ -38,6 +38,10 @@ Stage 6B = **VERIFIED / IMPLEMENTED** — **formally closed** (API **`engineerin
 
 Stage 6C = **IMPLEMENTED / Render + operator-visible verified** (**`engineering_burden_summary`** API + **`runStage6CEngineeringBurdenFlow()`** **`E27:F40`** — **IDEA-0014** **`IMPLEMENTED`**; audits **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`** (Render + Sheet closeout))
 
+Stage 7A = **IMPLEMENTED / operator-verified** (unified **`runKzoMvpFlow()`** — одна відповідь API → **5A** + **5C** + **уніфікований Stage 6 band `E27:F40`** (6B+6C stacked); manual PASS: **`api_status`** **`success`**, **`http_code`** **200**, **`mvp_run_outcome`** **`MVP_RUN_SUCCESS`**; zones **`E4:F19`/`E20:F20`**, **`E21:F26`**, **`E27:F40`**; **IDEA-0015** **`IMPLEMENTED`**; audit **`2026-04-29_STAGE_7A_KZO_END_TO_END_MVP_STABILIZATION.md`**)
+
+Stage 7B = **VERIFIED / IMPLEMENTED / formally closed** (canonical **`KZO_MVP_SNAPSHOT_V1`** — `docs/00-02_CALC_CONFIGURATOR/09_KZO/11_KZO_MVP_SNAPSHOT_V1_CONTRACT.md`; external Gemini **`SAFE TO PROCEED TO STAGE 8A`**; **`2026-04-29_STAGE_7B_KZO_MVP_SNAPSHOT_CONTRACT_FREEZE.md` formal closure section; **IDEA-0016** **`IMPLEMENTED`**)
+
 ## Gate
 
 **Stage 5D** documentation MVP is **closed** — shell registry in **`10_OPERATOR_LAYOUT.md`** accepted after governance verification **PASS WITH DOC FIXES** (see `docs/AUDITS/2026-04-29_STAGE_5D_GOVERNANCE_VERIFICATION_GATE.md`).
@@ -48,15 +52,18 @@ Stage 6C = **IMPLEMENTED / Render + operator-visible verified** (**`engineering_
 
 **Stage 6C — Engineering burden foundation MVP:** **delivered (API + Sheet)** — **`interpretation_scope`** **`ENGINEERING_BURDEN_ONLY_MVP`** — Render + operator PASS (`docs/AUDITS/2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`; foundation `2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`). **IDEA-0014** master **Status** = **`IMPLEMENTED`** (**RENDER_VERIFIED_…** was interim prior to Sheet PASS).
 
-**Stage 7+ / precision layers** — **blocked** until separate TASKs **after** Stage 6B classification baseline and any Stage 6C foundation TASK (no ungoverned engineering expansion).
+**Stage 7B — `KZO_MVP_SNAPSHOT_V1`:** **CLOSED** — canonical snapshot frozen (**`IDEA-0016`** **`IMPLEMENTED`**); Gemini **`SAFE TO PROCEED TO STAGE 8A`**. **`KZO_MVP_SNAPSHOT_V1`** — **immutable** until new snapshot version + IDEA; **no contract edits** outside that process.
+
+**Stage 8A:** **NOT STARTED**. First persistence (e.g. Supabase) only as **normalized IDEA + TASK**; implement **persist frozen V1 only** — no MVP redesign.
+**Stage 7A unified MVP Runner:** **`runKzoMvpFlow()`** — cohesion gate (**IDEA-0015** **`IMPLEMENTED`**); operator verification **PASS** (manual **`MVP_RUN_SUCCESS`**, **`http_code`** **200**) — документовано **`docs/AUDITS/2026-04-29_STAGE_7A_KZO_END_TO_END_MVP_STABILIZATION.md`**.
 
 Previous closure: **Stage 5C MVP closed** for IDEA-0010 — Render topology gate **PASS**; operator-visible Sheet topology **PASS** (thin GAS `Stage4A_MVP!E21:F26`; IDEA-0010 **`IMPLEMENTED`** per master table `Status Values`).
 
-Shell registry: **active** blocks (`E4:F20`, `E21:F26`, **`E27:F40`** — Stage **6B** classification writeback і / або **Stage 6C** burden writeback (**той самий band**)).
+Shell registry: **active** blocks (**`E4:F20`**, **`E21:F26`**, **`E27:F40`**). Use per-stage runners (**`runStage6B*`** / **`runStage6CE*`**) or **`runKzoMvpFlow()`** (7A unified) depending on operator workflow — same governed band **`E27:F40`** for 6B / 6C / 7A.
 
 ## Current status
 
-Stage 6A–6C KZO bands are aligned with audits: Stage 6C **`engineering_burden_summary`** — **live Render PASS** + **operator Sheet PASS** (**`Stage4A_MVP`** **`E27:F40`**) (**IDEA-0014** **`IMPLEMENTED`**). **`estimated_mass_class`** remains **burden-tier** (not kg). **IDEA-0013** = **`IMPLEMENTED`**.
+**Stage 7B — formally closed** (Gemini **`SAFE TO PROCEED TO STAGE 8A`**). **`KZO_MVP_SNAPSHOT_V1`** is the **only** approved persistence-shape baseline until a new snapshot **`IDEA`** — **IDEA-0016** **`IMPLEMENTED`**. **Stage 8A** remains **NOT STARTED**. **Stage 7A** remains operator-verified (**IDEA-0015**). **IDEA-0013** = **`IMPLEMENTED`**; **`estimated_mass_class`** = burden-tier (not kg).
 
 ## Blockers
 
@@ -64,7 +71,8 @@ Stage 6A–6C KZO bands are aligned with audits: Stage 6C **`engineering_burden_
 
 ## Next
 
-- **Stage 7+** precision / commercial TASKs — only after governance review (no rogue kg/BOM)
+- **Stage 8A** — Supabase (or other DB) **first persistence MVP** — **NEXT GATE**, **NOT STARTED** until separate **normalized IDEA + TASK**; **persist `KZO_MVP_SNAPSHOT_V1` only**
+- **Commercial / precision** (BOM, kg, …) — **separate TASKs** beyond V1 snapshot — not part of Stage 8A unless explicitly scoped
 - **`E41:F54`** remains reserved untouched until tasked.
 
 ## Global status link

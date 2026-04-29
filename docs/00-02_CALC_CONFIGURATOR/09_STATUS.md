@@ -25,11 +25,13 @@ KZO MVP implementation baseline has reached Stage 5A task definition:
 - Stage 6A reserved block **`E27:F40`** — GAS shell activation + operator verification PASS (**IDEA-0012** `IMPLEMENTED`; audit `docs/AUDITS/2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`)
 - Stage 6B — **VERIFIED / closed** — API **`engineering_class_summary`** + thin GAS **`runStage6BEngineeringClassificationFlow()`** on **`E27:F40`** — planning classification only; **operator verification PASS** + **external Gemini PASS** (**`SAFE TO PROCEED TO STAGE 6C`**); (**IDEA-0013** **`IMPLEMENTED`**; audit `docs/AUDITS/2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`; master **Status** unchanged — closure in notes)
 - Stage 6C — **IMPLEMENTED / Render + operator-visible verified** API **`engineering_burden_summary`** — thin GAS **`runStage6CEngineeringBurdenFlow()`** **`E27:F40`** — planning burden (**IDEA-0014** **`IMPLEMENTED`**; audits **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`**, **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`**)
+- Stage 7A — **IMPLEMENTED / operator-verified** cohesion **`runKzoMvpFlow()`** (**`api_status`** **`success`**, **`http`** **200**, **`mvp_run_outcome`** **`MVP_RUN_SUCCESS`**; **`E4:F19`/`E20:F20`**, **`E21:F26`**, **`E27:F40`**; summaries **`structural_composition_summary`**, **`physical_summary`**, **`physical_topology_summary`**, **`engineering_class_summary`**, **`engineering_burden_summary`**) (**IDEA-0015** **`IMPLEMENTED`**; audit **`2026-04-29_STAGE_7A_KZO_END_TO_END_MVP_STABILIZATION.md`**)
+- Stage **7B** — **VERIFIED / IMPLEMENTED / formally closed** — canonical **`KZO_MVP_SNAPSHOT_V1`** (`docs/00-02_CALC_CONFIGURATOR/09_KZO/11_KZO_MVP_SNAPSHOT_V1_CONTRACT.md`); Gemini **`SAFE TO PROCEED TO STAGE 8A`**; audit **`2026-04-29_STAGE_7B_KZO_MVP_SNAPSHOT_CONTRACT_FREEZE.md` formal closure; **IDEA-0016** **`IMPLEMENTED`** (**no V1 field changes** outside new snapshot + IDEA)
 
 
 На цьому рівні виконано:
 
-Структурна топологія та **Stage 6B / 6C** узгоджені з аудитами: **Stage 6C** **`engineering_burden_summary`** — Render + operator PASS (**IDEA-0014** **`IMPLEMENTED`**). **Stage 7+** precision — лише окремі TASK.
+Структурна топологія та **Stage 7A / 7B** узгоджені з аудитами: **Stage 7B CLOSED** (**`KZO_MVP_SNAPSHOT_V1`** frozen; **`IDEA-0016`**). **Stage 8A** (first persistence, e.g. Supabase) — **NEXT GATE**, **NOT STARTED** until окрема normalized **IDEA + TASK**; лише **frozen V1 persistence** — без розширення MVP-контракту через DB.
 
 ## Stage 1 foundation
 

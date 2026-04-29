@@ -12,6 +12,11 @@ Rule:
 
 ## Latest audit
 
+- **Stage 7B — final closure (Gemini `SAFE TO PROCEED TO STAGE 8A` + governance doc-pass)** — `2026-04-29_STAGE_7B_KZO_MVP_SNAPSHOT_CONTRACT_FREEZE.md` (**`KZO_MVP_SNAPSHOT_V1` frozen**; **IDEA-0016 `IMPLEMENTED`**; Stage **8A NOT STARTED** until separate IDEA+TASK)
+- **Gemini external audit request — Stage 7B** — `2026-04-29_STAGE_7B_GEMINI_EXTERNAL_AUDIT_REQUEST.md`
+- **Gemini external audit request — Stage 7A final closure** — `2026-04-29_STAGE_7A_GEMINI_EXTERNAL_AUDIT_REQUEST.md`
+- **Stage 7A — operator verification PASS + MVP cohesion dossier** — `2026-04-29_STAGE_7A_KZO_END_TO_END_MVP_STABILIZATION.md` (**manual `runKzoMvpFlow()`**, **`mvp_run_outcome` `MVP_RUN_SUCCESS`**, Sheet **`E4:F19`/`E20:F20`**, **`E21:F26`**, **`E27:F40`**; **IDEA-0015 `IMPLEMENTED`**)
+- **Gemini external audit request (Stage 6C full closure)** — `2026-04-29_STAGE_6C_GEMINI_EXTERNAL_AUDIT_REQUEST.md`
 - Stage 6C — **operator-visible Sheet PASS** + Render gate dossier **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`**
 - Stage 6C engineering burden foundation MVP — `2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`
 - **Stage 6B — formal closure** (operator PASS + Gemini **`SAFE TO PROCEED TO STAGE 6C`**) — `2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`
@@ -53,6 +58,10 @@ Rule:
 - `2026-04-29_STAGE_5D_GOVERNANCE_VERIFICATION_GATE.md`
 - `2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`
 - `2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`
+- `2026-04-29_STAGE_7A_KZO_END_TO_END_MVP_STABILIZATION.md`
+- `2026-04-29_STAGE_7A_GEMINI_EXTERNAL_AUDIT_REQUEST.md`
+- `2026-04-29_STAGE_7B_KZO_MVP_SNAPSHOT_CONTRACT_FREEZE.md`
+- `2026-04-29_STAGE_7B_GEMINI_EXTERNAL_AUDIT_REQUEST.md`
 - `2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`
 - `2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`
 

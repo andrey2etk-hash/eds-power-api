@@ -26,19 +26,27 @@
 - Операторська верифікація **PASS**; зовнішній аудит Gemini — **`SAFE TO PROCEED TO STAGE 6C`**.
 - Audit: `docs/AUDITS/2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`.
 
+## Завершено — KZO Stage 7A End-to-end MVP cohesion (**operator verification PASS**, doc-pass, 29.04.2026)
+
+- **`runKzoMvpFlow()`** — manual PASS: **`status`** **`success`**, **`http_code`** **200**, **`mvp_run_outcome`** **`MVP_RUN_SUCCESS`**.
+- **`Stage4A_MVP`** — **`E4:F19`** + **`E20:F20`**, **`E21:F26`**, **`E27:F40`**; у **`data`** зафіксовано **`structural_composition_summary`**, **`physical_summary`**, **`physical_topology_summary`**, **`engineering_class_summary`**, **`engineering_burden_summary`**.
+- **IDEA-0015** = **`IMPLEMENTED`**; аудит **`2026-04-29_STAGE_7A_KZO_END_TO_END_MVP_STABILIZATION.md`** доповнено operator PASS (**без нової інженерної логіки в GAS**).
+
+## Завершено — KZO Stage 7B MVP snapshot contract freeze (**Gemini PASS**, formal closure, 29.04.2026)
+
+- **`KZO_MVP_SNAPSHOT_V1`** frozen — `docs/00-02_CALC_CONFIGURATOR/09_KZO/11_KZO_MVP_SNAPSHOT_V1_CONTRACT.md` (verified layers: **`structural_composition_summary`**, **`physical_summary`**, **`physical_topology_summary`**, **`engineering_class_summary`**, **`engineering_burden_summary`**; SUCCESS/FAILED envelopes; **`snapshot_version`** + **`logic_version`** policy).
+- Audit **`2026-04-29_STAGE_7B_KZO_MVP_SNAPSHOT_CONTRACT_FREEZE.md`** — external Gemini **`SAFE TO PROCEED TO STAGE 8A`**; Stage **7B** **CLOSED**; **`IDEA-0016`** **`IMPLEMENTED`** (unchanged Status Values).
+- **Stage 8A** (Supabase / first persistence MVP) — **NOT STARTED** until separate normalized **IDEA + TASK**; persistence must store **frozen V1 only** — no MVP contract redesign in 8A.
+
 ## Поточний етап і наступний gate
 
-- **Classification baseline (Stage 6B)** — **closed**.
-- **Stage 6C — burden foundation** — **`engineering_burden_summary`**: Render gate **PASS** + operator **`runStage6CEngineeringBurdenFlow()`** **PASS** (**IDEA-0014** **`IMPLEMENTED`**; аудит **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`** — execution log + sheet visual)
-- **Наступна планована фаза:** **precision / commercial expansion** — лише через окремий **TASK** з governance (**після Stage 6C burden MVP**).
-- Execution до **precision** шарів (маса, BOM, КП…) — лише через **нові TASK** після узгодження меж (6C дає лише burden-tier).
+- **Наступний gate:** **Stage 8A — Supabase First Persistence MVP** — **або еквівалент першого DB шару** (**NOT STARTED**): дозволено лише після **окремої нормалізованої IDEA + TASK**. Реалізація зберігання лише **`KZO_MVP_SNAPSHOT_V1`** як frozen object — **не** розширення MVP-контракту через persistence.
 
 ## Як узгоджено з Gemini doc-pass (Зовнішній аудит)
 
 - Gemini Stage 5C Sheet operator verification: **`PASS WITH DOC FIXES`** → застосовано лише синхронізація доків (без змін API/GAS). Використано статус IDEA **`IMPLEMENTED`**, без нових міток у master table beyond `Status Values`.
 - Stage 6B external Gemini audits: **`SAFE TO PROCEED TO STAGE 6C`** — **Stage 6C** (**`IDEA-0014`**) потім закритий імплементацією `engineering_burden_summary`.
-
-## Активний сервер
+- Stage **7B** snapshot contract — external Gemini **`SAFE TO PROCEED TO STAGE 8A`**; **`KZO_MVP_SNAPSHOT_V1`** frozen (**`IDEA-0016`** **`IMPLEMENTED`**); Stage **8A NOT STARTED** until separate IDEA+TASK.
 
 https://eds-power-api.onrender.com
 
@@ -46,7 +54,7 @@ https://eds-power-api.onrender.com
 
 1. 00-01_AUTH — авторизація (frozen MVP / draft_ready)
 2. 00-02_CALC_CONFIGURATOR — конфігуратор (KZO Stage 5A–5C operator-visible path для structural / footprint API / topology API + топологія на Sheet верифіковані)
-3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (**Stage 6C** operator-visible burden **PASS**, **IDEA-0014** **`IMPLEMENTED`**; 6B/6C **`E27:F40`**; precision — окремий TASK)
+3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (**7A/** **7B** **`IMPLEMENTED`**; **Stage 8A** — **NEXT GATE**, **NOT STARTED** until normalized IDEA+TASK — persist **frozen `KZO_MVP_SNAPSHOT_V1` only**)
 
 ## Що робимо зараз
 
@@ -101,9 +109,11 @@ https://eds-power-api.onrender.com
 - Stage 6A reserved block **`E27:F40`** — GAS activation + **operator verification PASS** 29.04.2026 (doc-pass sync) (**IDEA-0012** `IMPLEMENTED`; audit `docs/AUDITS/2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`)
 - Stage 6B **closed** — operator verification PASS + Gemini **`SAFE TO PROCEED TO STAGE 6C`**; formal doc-pass (**IDEA-0013** `IMPLEMENTED`; audit `docs/AUDITS/2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`)
 - Stage 6C Render + **`runStage6CEngineeringBurdenFlow()`** operator **PASS** (**IDEA-0014** **`IMPLEMENTED`**; **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`**)
+- Stage 7A **`runKzoMvpFlow()`** manual operator **PASS** — **`mvp_run_outcome`** **`MVP_RUN_SUCCESS`**, **`http_code`** **200**, zones **`E4:F19`/`E20:F20`**, **`E21:F26`**, **`E27:F40`**, summaries present (**IDEA-0015** **`IMPLEMENTED`**; doc-pass **`2026-04-29_STAGE_7A_KZO_END_TO_END_MVP_STABILIZATION.md`**)
+- Stage **7B** **`KZO_MVP_SNAPSHOT_V1`** — formal closure (**Gemini** **`SAFE TO PROCEED TO STAGE 8A`**; **`2026-04-29_STAGE_7B_KZO_MVP_SNAPSHOT_CONTRACT_FREEZE.md`** updated; **`IDEA-0016`** **`IMPLEMENTED`**)
 
 ## What remains next (plan)
 
-- **Stage 7+** precision (kg, BOM, commercial) — **окремий TASK**, не входить до 6C burden MVP
+- **Stage 8A** — Supabase (or equivalent) **first persistence MVP** — **NOT STARTED** until **separate normalized IDEA + TASK**; store **only** **`KZO_MVP_SNAPSHOT_V1`** — **no contract expansion** inside persistence scope
 - keep Stage narrow: no BOM, pricing, DB, CAD, or unmanaged Sheet expansion unless separately tasked
 - keep GAS thin on future operator-visible transports

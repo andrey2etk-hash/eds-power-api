@@ -1,17 +1,17 @@
-# KZO Operator Layout Governance (Stage 5D) — Stages 6A–6C shell & engineering layers
+# KZO Operator Layout Governance (Stage 5D) — Stages 6A–7A shell & engineering layers
 
 ## Purpose
 
 Define the **governance shell** for the KZO Google Sheets operator surface: fixed stage blocks, reserved future rows, and anti-overlap rules. This is **not** a UI redesign — it is continuity and readability architecture so Stage 6+ does not fragment the sheet.
 
-**Formula (product line):** Structure → Scale → Topology → **Shell Governance** → **Shell activation (Stage 6A)** → **Classification (Stage 6B)** → **Burden foundation (Stage 6C)** → Later precision.
+**Formula (product line):** Structure → Scale → Topology → **Shell Governance** → **Shell activation (Stage 6A)** → **Classification (Stage 6B)** → **Burden foundation (Stage 6C)** → **Stage 7A unified MVP runner** (**`runKzoMvpFlow()`**) → Later precision.
 
 ## Architecture roles (unchanged)
 
 | Layer | Role |
 | --- | --- |
 | **API** | Engineering truth — **`engineering_class_summary`** (**Stage 6B**) derives from Stage 5A/5C summaries only; **`engineering_burden_summary`** (**Stage 6C**) derives from 6B + topology + structural flags — **no** kg/BOM/pricing |
-| **GAS** | Transport / writeback to assigned ranges — Stage **6A** shell placeholder (**no** API engineering field); Stage **6B** maps API **`engineering_class_summary`** to **`E27:F40`** only; Stage **6C** maps **`engineering_burden_summary`** to **`E27:F40`** only — **no** burden math in GAS |
+| **GAS** | Transport / writeback to assigned ranges — Stage **6A** shell placeholder (**no** API engineering field); Stage **6B** maps API **`engineering_class_summary`** to **`E27:F40`** only; Stage **6C** maps **`engineering_burden_summary`** to **`E27:F40`** only; **Stage 7A** **`runKzoMvpFlow()`** orchestrates **5A + 5C + unified `E27:F40`** (stacked 6B+6C fields — **no** burden math in GAS) |
 | **Sheet** | Governed operator shell — one approved block per stage |
 
 ## Shell model (MVP): `SHELL_VERTICAL_EXPANSION`
@@ -31,8 +31,9 @@ These ranges are **approved** for current operator writeback. GAS must write **o
 | **STAGE_6A_RESERVED_SHELL** | **E27:F40** | **Stage 6A** — shell infrastructure placeholder (`stage6_*` logs / optional placeholder rows before 6B). |
 | **STAGE_6B_ENGINEERING_CLASS** | **E27:F40** | **Stage 6B** — **`engineering_class_summary`** (**`runStage6BEngineeringClassificationFlow()`**). |
 | **STAGE_6C_ENGINEERING_BURDEN** | **E27:F40** | **Stage 6C** — **`engineering_burden_summary`** (**`runStage6CEngineeringBurdenFlow()`**). Running **6B** or **6C** overwrites the **same** governed band (`E41:F54` remains untouched). |
+| **STAGE_7A_UNIFIED_KZO_MVP** | **E4:F26** (+ **`E27:F40`**) | **Stage 7A** — **`runKzoMvpFlow()`**: одна **`prepare_calculation`** відповідь → **5A** integration (**`E4:F20`**) → **5C** topology (**`E21:F26`**) → **unified Stage 6** (**`writeStage7AUnifiedStage6Band_`** → **`E27:F40`**, один **`setValues`**, stacked classification + burden; telemetry **`mvp_run_outcome`**). |
 
-**Stage 5B (`physical_summary`):** verified on **Render**; no separate operator Sheet block is defined in this MVP governance slice — scale remains API-visible unless a future TASK allocates a dedicated range.
+**Stage 5B (`physical_summary`):** verified on **Render**; no separate operator Sheet block is defined in this MVP governance slice — scale remains API-visible (**Stage 7A** telemetry field **`physical_summary_present`**) unless a future TASK allocates a dedicated range.
 
 ## Reserved future zones
 

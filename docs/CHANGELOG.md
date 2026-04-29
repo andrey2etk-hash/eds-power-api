@@ -1498,6 +1498,39 @@ Reserved діапазон **`E27:F40`** має бути **операційним
 
 ---
 
+## Stage 7A — KZO end-to-end MVP stabilization (29.04.2026)
+
+### Реалізація
+
+- Єдиний оркестратор **`runKzoMvpFlow()`**: один **`prepare_calculation`** → послідовний writeback **5A output integration**, **5C topology**, **уніфікований band `E27:F40`** (stacked **6B+6C** через **`writeStage7AUnifiedStage6Band_()`**, без другого **`setValues`** поверх того ж band)
+- Телеметрія: **`telemetry_tag`** **`stage=7a-kzo-mvp-flow`**, **`mvp_run_outcome`**: **`MVP_RUN_SUCCESS`** / **`MVP_RUN_FAILED`**; **`physical_summary`** — лише через API/telemetry (без нового Sheet-zone для масштабу footprint)
+- **IDEA-0015**: master row + Idea Notes (`docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`), аудит згортки MVP — `docs/AUDITS/2026-04-29_STAGE_7A_KZO_END_TO_END_MVP_STABILIZATION.md`, оновлення `00_AUDIT_INDEX.md`, статус-документів KZO
+
+### Операторська верифікація PASS (doc-pass)
+
+- **`runKzoMvpFlow()`** — manual execution; **`status`** **`success`**; **`http_code`** **200**; **`mvp_run_outcome`** **`MVP_RUN_SUCCESS`**
+- **`Stage4A_MVP`**: **`E4:F19`** + **`E20:F20`**, **`E21:F26`**, **`E27:F40`**
+- Готово **`data`**: **`structural_composition_summary`** (structural path), **`physical_summary`**, **`physical_topology_summary`**, **`engineering_class_summary`**, **`engineering_burden_summary`** — узгоджено з перевіркою; GAS = orchestration/writeback only
+- **`IDEA-0015`**: **`IMPLEMENTED`** (без нових статус-токенів поза **`Status Values`**); оновлено аудит **`2026-04-29_STAGE_7A_KZO_END_TO_END_MVP_STABILIZATION.md`**, **`12_IDEA_MASTER_LOG.md`**, **`NOW.md`**, **`09_KZO/08_STATUS.md`**, **`09_STATUS.md`**, **`00_AUDIT_INDEX.md`**
+
+---
+
+## Stage 7B — KZO MVP snapshot contract freeze (29.04.2026)
+
+### Документація (без коду / без DB)
+
+- Нормативний контракт **`KZO_MVP_SNAPSHOT_V1`**: `docs/00-02_CALC_CONFIGURATOR/09_KZO/11_KZO_MVP_SNAPSHOT_V1_CONTRACT.md` — обовʼязкові поля, версіонування, **`SUCCESS`** / **`FAILED`**, заборона розширення V1 без нового snapshot/IDEA
+- Аудит **«freeze before persistence»**: `docs/AUDITS/2026-04-29_STAGE_7B_KZO_MVP_SNAPSHOT_CONTRACT_FREEZE.md`
+- **IDEA-0016**: **`IMPLEMENTED`** — джерело об’єкта для майбутнього **Stage 8A** persistence (Supabase — окремий TASK після 7B)
+
+### Final closure (Gemini + governance doc-pass)
+
+- Зовнішній аудит Gemini: **`SAFE TO PROCEED TO STAGE 8A`** (persistence baseline accepted; **no** MVP contract change via DB work)
+- **`KZO_MVP_SNAPSHOT_V1`** — **frozen**; зміни лише через майбутній **`KZO_MVP_SNAPSHOT_V2`** (+ окрема **IDEA**)
+- **Stage 7B** = **CLOSED**. **Stage 8A** = **NOT STARTED** until окрема нормалізована **IDEA + TASK**; Stage **8A** implements persistence of **frozen V1 only**
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP
