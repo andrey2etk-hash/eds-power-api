@@ -1402,6 +1402,15 @@ Reserved діапазон **`E27:F40`** має бути **операційним
 
 ---
 
+## Stage 6A — operator verification doc-pass (29.04.2026)
+
+### Док-синхронізація
+
+- Операторська верифікація **PASS**: range **`E27:F40`**, **`shell_block_version`** **`KZO_STAGE_6A_OPERATOR_SHELL_V1`**, **`shell_status`** активація **`ACTIVE_RESERVED_BLOCK`**, ресет **`RESERVED_DOC_ONLY`**, телеметрія містить **`stage6_operator_shell_summary`**; **`IDEA-0012`** без змін **`IMPLEMENTED`**; **`ACTIVE_RESERVED_BLOCK`** / **`RESERVED_DOC_ONLY`** задокументовано як стани shell-блоку (не IDEA **Status Values**)
+- Оновлено **`2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`**, `12_IDEA_MASTER_LOG.md` (IDEA-0012), **`NOW.md`**, **`00_AUDIT_INDEX.md`**
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP

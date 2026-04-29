@@ -4,6 +4,21 @@
 
 2026-04-29
 
+## Operator verification
+
+**PASS 29.04.2026** — manual operator run on **`Stage4A_MVP`**.
+
+| Fact | Recorded |
+| --- | --- |
+| Range | **`E27:F40`** |
+| **`shell_block_version`** | **`KZO_STAGE_6A_OPERATOR_SHELL_V1`** |
+| Activation **`shell_status`** (placeholder + log) | **`ACTIVE_RESERVED_BLOCK`** |
+| Reset **`shell_status`** (log after **`runStage6AResetReservedOperatorBlockOnly`**) | **`RESERVED_DOC_ONLY`** |
+| Telemetry | includes nested **`stage6_operator_shell_summary`** |
+| **IDEA-0012** | remains **`IMPLEMENTED`** (**Status Values** unchanged) |
+
+**Governance:** **`ACTIVE_RESERVED_BLOCK`** and **`RESERVED_DOC_ONLY`** describe **reserved shell block state** in GAS/Sheet narrative — **not** IDEA lifecycle status labels.
+
 ## Objective
 
 Activate documented reserved range **`E27:F40`** as **governed shell infrastructure** — placeholder labels, activation date, reset-to-empty for block only, and telemetry — **before** any Stage 6 engineering (Stage 6B+) content.
@@ -27,11 +42,13 @@ Activate documented reserved range **`E27:F40`** as **governed shell infrastruct
 
 ## Gate
 
-**Stage 6B** — **blocked** until Stage 6A activation is **operator-verified** (manual run + execution log) **and** a follow-on TASK defines engineering payloads.
+**Stage 6A** shell activation — **operator-verified** 29.04.2026 (manual run + execution log).
+
+**Stage 6B** — **blocked** until a follow-on TASK defines engineering payloads (**Stage 6A** infra + operator verification baseline is satisfied).
 
 ## Verdict
 
-**PASS** — shell infrastructure activation delivered as thin GAS-only surface; engineering expansion remains gated.
+**PASS** — shell infrastructure activation delivered as thin GAS-only surface; operator verification **PASS** 29.04.2026 recorded; engineering expansion remains gated.
 
 ## References
 

@@ -14,14 +14,14 @@
 - **Stage 5D** = **VERIFIED** (documentation MVP — реєстр shell у `docs/00-02_CALC_CONFIGURATOR/09_KZO/10_OPERATOR_LAYOUT.md`).
 - **IDEA-0011** = `IMPLEMENTED`. Stage 5D Operator Layout Governance MVP **accepted** після governance verification **PASS WITH DOC FIXES** (doc-pass; без змін API/GAS/Sheet).
 
-## Завершено — KZO Stage 6A Reserved operator block (shell infrastructure, 29.04.2026)
+## Завершено — KZO Stage 6A Reserved operator block (**VERIFIED** operator, 29.04.2026)
 
-- **Stage 6A** — reserved block **`E27:F40`** активовано в GAS (placeholder + telemetry; **`runStage6AActivateReservedOperatorBlockFlow()`** / **`runStage6AResetReservedOperatorBlockOnly()`**). **`stage6_operator_shell_summary`** формується в логах GAS лише (**без** поля API).
-- **IDEA-0012** = `IMPLEMENTED`. Audit: `docs/AUDITS/2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`.
+- **Stage 6A** — reserved блок **`E27:F40`**: операторська перевірка **PASS** (активація + ресет + execution log). **`shell_block_version`**: **`KZO_STAGE_6A_OPERATOR_SHELL_V1`**; активація **`shell_status`** **`ACTIVE_RESERVED_BLOCK`**; после ресета в лозі **`RESERVED_DOC_ONLY`**; телеметрія з **`stage6_operator_shell_summary`**. **IDEA-0012** = `IMPLEMENTED`; **`ACTIVE_RESERVED_BLOCK`** / **`RESERVED_DOC_ONLY`** лише стани shell-блоку, не IDEA lifecycle.
+- Audit оновлено: `docs/AUDITS/2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`.
 
 ## Поточний етап
 
-**Stage 6B / engineering у `E27:F40`** — під **TASK** та після операторської **верифікації** Stage 6A (перевірка execution log).
+**Stage 6B / engineering у `E27:F40`** — лише через **окремий TASK** (операторська верифікація Stage 6A **завершена** 29.04.2026).
 
 ## Як узгоджено з Gemini doc-pass (Зовнішній аудит)
 
@@ -35,7 +35,8 @@ https://eds-power-api.onrender.com
 
 1. 00-01_AUTH — авторизація (frozen MVP / draft_ready)
 2. 00-02_CALC_CONFIGURATOR — конфігуратор (KZO Stage 5A–5C operator-visible path для structural / footprint API / topology API + топологія на Sheet верифіковані)
-3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (Stage **6A** shell block **`E27:F40`** активовано в GAS; Stage **6B** — лише після верифікації 6A та окремого TASK)
+3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (**Stage 6A** **`E27:F40`** operator-verified 29.04.2026; Stage **6B** — лише TASK після доку-мітки верифікації)
+
 ## Що робимо зараз
 
 - Stage 3E = VERIFIED_WITH_COLD_START_NOTE
@@ -86,10 +87,10 @@ https://eds-power-api.onrender.com
 - Stage 5C physical topology MVP verified on deployed Render (`data.physical_topology_summary` checklist PASS per Stage 5C Render gate audit)
 - Stage 5C operator-visible topology on Sheet verified via thin GAS (`runStage5CSheetOutputIntegrationFlow()`; **`E21:F26`**; Gemini Sheet audit PASS WITH DOC FIXES → doc-sync)
 - Stage 5D operator layout governance documentation MVP closed (verification gate PASS WITH DOC FIXES → doc-pass; **IDEA-0011** = `IMPLEMENTED`)
-- Stage 6A reserved block **`E27:F40`** — GAS activation (**IDEA-0012** `IMPLEMENTED`; audit `2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`)
+- Stage 6A reserved block **`E27:F40`** — GAS activation + **operator verification PASS** 29.04.2026 (doc-pass sync) (**IDEA-0012** `IMPLEMENTED`; audit `docs/AUDITS/2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`)
+
 ## What remains next (plan)
 
-- операторська верифікація Stage 6A: виконати **`runStage6AActivateReservedOperatorBlockFlow()`**, перевірити лог `stage=6A-reserved-operator-block`
 - keep Stage narrow: no BOM, pricing, DB, CAD, or unmanaged Sheet expansion unless separately tasked
 - keep GAS thin on future operator-visible transports
-- **Stage 6B** engineering у **`E27:F40`** — лише окремим TASK після підтвердження 6A
+- **Stage 6B** engineering у **`E27:F40`** — лише окремим TASK (Stage 6A operator verification doc-pass завершено)

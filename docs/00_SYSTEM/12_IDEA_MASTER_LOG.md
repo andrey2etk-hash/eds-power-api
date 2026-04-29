@@ -749,3 +749,4 @@ Implementation record:
 
 - `gas/Stage3D_KZO_Handshake.gs`: `STAGE_6A_RESERVED_OPERATOR_BLOCK_RANGE_A1` = `E27:F40`, `STAGE_6A_BLOCK_NAME`, `STAGE_6A_SHELL_BLOCK_VERSION`, `runStage6AActivateReservedOperatorBlockFlow()`, `runStage6AResetReservedOperatorBlockOnly()`, `buildStage6OperatorShellSummary_()` (logged shape matches target JSON; not an API field in 6A)
 - Audit: `docs/AUDITS/2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`
+- Operator verification **PASS 29.04.2026** — **`E27:F40`** activation and reset behavior verified; **`shell_block_version`** **`KZO_STAGE_6A_OPERATOR_SHELL_V1`**; **`shell_status`** activation **`ACTIVE_RESERVED_BLOCK`** / reset log **`RESERVED_DOC_ONLY`**; telemetry includes **`stage6_operator_shell_summary`**. (**`ACTIVE_RESERVED_BLOCK`** / **`RESERVED_DOC_ONLY`** are shell block states, not IDEA **Status Values**.)
