@@ -6,12 +6,12 @@
 
 ## Поточний етап
 
-Stage 5B — Physical Footprint MVP (`VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` on Render). 29.04.2026
+Stage 5C — Physical Topology MVP (`VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` on Render). 29.04.2026
 
-## Stage 5B snapshot
+## Stage 5C snapshot
 
-- IDEA-0009 = `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` (live Render returned `physical_summary`; audit `docs/AUDITS/2026-04-29_STAGE_5B_PHYSICAL_FOOTPRINT_RENDER_GATE.md`)
-- Operator-visible Sheet wiring for `physical_summary` remains **out-of-scope** for Stage 5B Render gate unless separately tasked
+- IDEA-0010 = `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` — live `physical_topology_summary` verified (`docs/AUDITS/2026-04-29_STAGE_5C_PHYSICAL_TOPOLOGY_RENDER_GATE.md`)
+- Operator-visible Sheet wiring for `physical_topology_summary` remains **out-of-scope** unless separately tasked
 
 ## Активний сервер
 
@@ -20,8 +20,8 @@ https://eds-power-api.onrender.com
 ## Активні модулі
 
 1. 00-01_AUTH — авторизація (frozen MVP / draft_ready)
-2. 00-02_CALC_CONFIGURATOR — конфігуратор (Stage 5B `physical_summary` verified on Render)
-3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (Stage 5B footprint summary on API)
+2. 00-02_CALC_CONFIGURATOR — конфігуратор (Stage 5B footprint + Stage 5C topology verified on Render API)
+3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (5A/5B/5C API layers on deployed Render)
 
 ## Що робимо зараз
 
@@ -32,6 +32,7 @@ https://eds-power-api.onrender.com
 - Stage 4C = VERIFIED_OPERATOR_SHELL
 - Stage 5A-Output-Integration = `VERIFIED_OPERATOR_VISIBLE`
 - Stage 5B `physical_summary` = `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` on live Render (`https://eds-power-api.onrender.com` checklist in Stage 5B Render gate audit)
+- Stage 5C `physical_topology_summary` = `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` on live Render (`docs/AUDITS/2026-04-29_STAGE_5C_PHYSICAL_TOPOLOGY_RENDER_GATE.md`)
 - тримаємо `00-01_AUTH` frozen at MVP
 - тримаємо `00-02_CALC_CONFIGURATOR` у межах KZO MVP
 - утримуємо Stage 5A як узгоджену базу виконання (API meaning + операторський writeback без розширення GAS)
@@ -71,6 +72,7 @@ https://eds-power-api.onrender.com
 - Stage 5A structural composition verified on deployed Render API
 - Stage 5A output integration verified in operator Sheet (`runStage5AOutputIntegrationFlow()`)
 - Stage 5B physical footprint MVP verified on deployed Render (`data.physical_summary` checklist PASS per Render gate audit)
+- Stage 5C physical topology MVP verified on deployed Render (`data.physical_topology_summary` checklist PASS per Stage 5C Render gate audit)
 
 ## What remains next (plan)
 

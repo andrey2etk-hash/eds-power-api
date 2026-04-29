@@ -28,21 +28,23 @@ Stage 5A-Output-Integration = verified operator-visible Sheet transport/writebac
 
 Stage 5B = verified Render (`data.physical_summary` — Render gate audit)
 
+Stage 5C = verified Render (`data.physical_topology_summary` — Render gate audit)
+
 ## Gate
 
-Current = Stage 5B physical footprint on API verified on deployed Render (`VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION`)
+Current = Stage 5C physical topology on API verified on deployed Render (`VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION`)
 
 ## Current status
 
-Stage 5A structural composition summary is verified on deployed Render API, operator-visible output integration is verified in the Sheet, and Stage 5B `physical_summary` is verified on deployed Render API per Stage 5B Render gate audit.
+Stage 5A structural composition summary is verified on deployed Render API, operator-visible output integration is verified in the Sheet, Stage 5B `physical_summary` is verified on deployed Render API per Stage 5B Render gate audit, and Stage 5C `physical_topology_summary` is verified on deployed Render API per Stage 5C Render gate audit.
 
 ## Blockers
 
-- none blocking Stage 5A / Stage 5B footprint summary verified on deployed Render (`physical_summary`)
+- none blocking Stage 5A / Stage 5B / Stage 5C API-verified summary fields on deployed Render
 
 ## Next
 
-Keep GAS transport-only on existing Sheet flows; optional operator-visible Sheet for `physical_summary` stays out-of-band until tasked. Otherwise any next product layer requires a new normalized task.
+Keep GAS transport-only on existing Sheet flows; optional operator-visible Sheet for Stage 5B/5C footprint/topology fields stays out-of-band until tasked. Otherwise any next product layer requires a new normalized task.
 ## Global status link
 
 KZO local progress must obey:

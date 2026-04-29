@@ -27,7 +27,7 @@ This file is the single source of truth for all normalized ideas in EDS Power.
 | IDEA-0007 | 2026-04-29 | Stage 5A First Practical KZO Logic: Structural Composition and Lineup Meaning Layer | `RIGHT_NOW` | `P1` | `TASK` | Stage 5A | Immediately after Stage 4C `VERIFIED_OPERATOR_SHELL` with frozen input contract | Introduce first structural engineering meaning without crossing into design, BOM, or commercial layers | `IMPLEMENTED` |
 | IDEA-0008 | 2026-04-29 | Stage 5A-Output-Integration: Operator-visible structural summary | `RIGHT_NOW` | `P1` | `TASK` | Stage 5A-Output-Integration | After Stage 5A API structural summary verified | Expose existing Stage 5A structural engineering output to operator shell without expanding GAS logic | `IMPLEMENTED` |
 | IDEA-0009 | 2026-04-29 | Stage 5B KZO Physical Footprint MVP: API-side lineup scale estimate from structural composition | `RIGHT_NOW` | `P1` | `TASK` | Stage 5B | After Stage 5A structural meaning + operator-visible output integration verified | Rough physical footprint scale from validated structure without CAD/BOM/weight/detail design | `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` |
-| IDEA-0010 | 2026-04-29 | Stage 5C KZO Physical Topology MVP: section distribution and topology type from structural/footprint layers | `RIGHT_NOW` | `P1` | `TASK` | Stage 5C | After Stage 5A structural composition and Stage 5B physical footprint are Render-verified | MVP physical arrangement semantics only — no busbar/cable/detailed engineering | `ACTIVE` |
+| IDEA-0010 | 2026-04-29 | Stage 5C KZO Physical Topology MVP: section distribution and topology type from structural/footprint layers | `RIGHT_NOW` | `P1` | `TASK` | Stage 5C | After Stage 5A structural composition and Stage 5B physical footprint are Render-verified | MVP physical arrangement semantics only — no busbar/cable/detailed engineering | `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` |
 
 ## Idea Notes
 
@@ -691,4 +691,6 @@ Implementation record:
 
 Render gate:
 
-- `DEPLOYMENT_CANDIDATE_PENDING_RENDER_VERIFICATION` until live checklist (follow Stage 5B Render gate audit pattern)
+- Audit record: `docs/AUDITS/2026-04-29_STAGE_5C_PHYSICAL_TOPOLOGY_RENDER_GATE.md`
+- Live Render `POST /api/calc/prepare_calculation` checklist: **PASS** (deploy commit `f8065a3`; attempts 1–2 deployment lag, attempt 3 matched)
+- Lifecycle status after live verification: `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION`

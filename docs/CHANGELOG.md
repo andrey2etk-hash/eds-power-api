@@ -1300,6 +1300,12 @@ After structure (5A) and scale (5B), expose a minimal deterministic **section-wi
 - no GAS / Sheet in this change set
 - MVP split rules only; not plant layout
 
+## Render verification gate (live)
+
+- Deploy commit `f8065a3`; probe `POST https://eds-power-api.onrender.com/api/calc/prepare_calculation`
+- Deployment lag: first two probes without `physical_topology_summary`; third probe **PASS**
+- `IDEA-0010` = `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` (audit: `docs/AUDITS/2026-04-29_STAGE_5C_PHYSICAL_TOPOLOGY_RENDER_GATE.md`)
+
 ---
 
 # Майбутні етапи
