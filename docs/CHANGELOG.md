@@ -1275,9 +1275,11 @@ After Stage 5A structural composition, provide a rough lineup physical scale est
 
 ## Render verification gate
 
-- Status: `DEPLOYMENT_CANDIDATE_PENDING_RENDER_VERIFICATION` until live Render exposes `data.physical_summary` per checklist
-- Audit: `docs/AUDITS/2026-04-29_STAGE_5B_PHYSICAL_FOOTPRINT_RENDER_GATE.md`
-- After successful live checklist: `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` (still no Sheet/GAS scope in-gate unless separately tasked)
+- Status transitions: deployment candidate pushed → polling `POST /api/calc/prepare_calculation` on Render → checklist **PASS** on live `eds-power-api.onrender.com` (deployment lag observed: first two probes without `physical_summary`, third probe matched expected fields).
+
+### Live result
+
+- IDEA-0009 = `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` (see `docs/AUDITS/2026-04-29_STAGE_5B_PHYSICAL_FOOTPRINT_RENDER_GATE.md`)
 
 ---
 

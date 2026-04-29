@@ -6,13 +6,12 @@
 
 ## Поточний етап
 
-Stage 5B — Physical Footprint MVP (Render verification gate active). 29.04.2026
+Stage 5B — Physical Footprint MVP (`VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` on Render). 29.04.2026
 
 ## Stage 5B snapshot
 
-- IDEA-0009 = `DEPLOYMENT_CANDIDATE_PENDING_RENDER_VERIFICATION` until live Render exposes `data.physical_summary`
-- Successful live checklist → `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` (audit: `docs/AUDITS/2026-04-29_STAGE_5B_PHYSICAL_FOOTPRINT_RENDER_GATE.md`)
-- Operator-visible Sheet integration for `physical_summary` = separate optional task — not verified by Render gate alone
+- IDEA-0009 = `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` (live Render returned `physical_summary`; audit `docs/AUDITS/2026-04-29_STAGE_5B_PHYSICAL_FOOTPRINT_RENDER_GATE.md`)
+- Operator-visible Sheet wiring for `physical_summary` remains **out-of-scope** for Stage 5B Render gate unless separately tasked
 
 ## Активний сервер
 
@@ -21,8 +20,8 @@ https://eds-power-api.onrender.com
 ## Активні модулі
 
 1. 00-01_AUTH — авторизація (frozen MVP / draft_ready)
-2. 00-02_CALC_CONFIGURATOR — конфігуратор (Stage 5B deployment candidate; pending live Render `physical_summary`)
-3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (Stage 5B Render gate)
+2. 00-02_CALC_CONFIGURATOR — конфігуратор (Stage 5B `physical_summary` verified on Render)
+3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (Stage 5B footprint summary on API)
 
 ## Що робимо зараз
 
@@ -32,8 +31,7 @@ https://eds-power-api.onrender.com
 - Stage 4B = VERIFIED_STRUCTURAL_PREFLIGHT
 - Stage 4C = VERIFIED_OPERATOR_SHELL
 - Stage 5A-Output-Integration = `VERIFIED_OPERATOR_VISIBLE`
-- Stage 5B `physical_summary` = `DEPLOYMENT_CANDIDATE_PENDING_RENDER_VERIFICATION` (push to GitHub → Render deploy → `POST /api/calc/prepare_calculation` checklist in Stage 5B Render gate audit)
-- після проходження live checklist: `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` — без змін GAS/Sheet у межах цього gate
+- Stage 5B `physical_summary` = `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` on live Render (`https://eds-power-api.onrender.com` checklist in Stage 5B Render gate audit)
 - тримаємо `00-01_AUTH` frozen at MVP
 - тримаємо `00-02_CALC_CONFIGURATOR` у межах KZO MVP
 - утримуємо Stage 5A як узгоджену базу виконання (API meaning + операторський writeback без розширення GAS)
@@ -72,11 +70,10 @@ https://eds-power-api.onrender.com
 - Stage 4C operator shell verified manually; warm run confirmed no cold start blocker
 - Stage 5A structural composition verified on deployed Render API
 - Stage 5A output integration verified in operator Sheet (`runStage5AOutputIntegrationFlow()`)
-- Stage 5B physical footprint MVP implemented in API locally; Render verification gate documented (`docs/AUDITS/2026-04-29_STAGE_5B_PHYSICAL_FOOTPRINT_RENDER_GATE.md`); `IDEA-0009` = `DEPLOYMENT_CANDIDATE_PENDING_RENDER_VERIFICATION` until live checklist passes
+- Stage 5B physical footprint MVP verified on deployed Render (`data.physical_summary` checklist PASS per Render gate audit)
 
 ## What remains next (plan)
 
-- run Stage 5B live Render checklist (`POST /api/calc/prepare_calculation`) after GitHub → Render deploy; then move `IDEA-0009` to `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` per audit
 - keep Stage 5A narrow: no design, BOM, pricing, DB, GAS logic, or Sheet redesign
 - keep GAS thin
 - avoid sidebar, buttons, menus, DB, Supabase, AUTH, costing, BOM, and production logic unless separately tasked

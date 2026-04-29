@@ -43,6 +43,5 @@ Rule:
 
 ## Active blockers
 
-- Stage 5B `physical_summary`: Render verification checklist pending deployment of revision containing Stage 5B (audit `2026-04-29_STAGE_5B_PHYSICAL_FOOTPRINT_RENDER_GATE.md`)
 - no sidebar / buttons / menus before a separate normalized task
 - no DB / Supabase / AUTH / BOM / costing / production transfer expansion

@@ -19,8 +19,7 @@ KZO MVP implementation baseline has reached Stage 5A task definition:
 - Stage 4C — operator shell verified
 - Stage 5A — verified structural composition summary on Render (`structural_composition_summary`)
 - Stage 5A-Output-Integration — verified operator-visible transport/writeback-only Sheet visibility
-
-Модуль ще не має статусу `draft_ready`.
+- Stage 5B — `physical_summary` verified on deployed Render (Render gate audit; `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION`)
 
 ## Перехідний стан
 
@@ -82,6 +81,7 @@ KZO MVP implementation baseline has reached Stage 5A task definition:
 - Stage 5A deployment candidate prepared because Render deploy is GitHub-based
 - Stage 5A live Render verification passed
 - Stage 5A output integration verified in operator-visible Sheet (`runStage5AOutputIntegrationFlow()`)
+- Stage 5B physical footprint `physical_summary` live Render verification passed (see `docs/AUDITS/2026-04-29_STAGE_5B_PHYSICAL_FOOTPRINT_RENDER_GATE.md`)
 
 ## Що не входить у Stage 1
 
