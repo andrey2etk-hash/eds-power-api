@@ -87,7 +87,7 @@ When a future TASK emits **`operator_layout_governance_summary`**, shape should 
 }
 ```
 
-Required fields for that future payload: **`layout_version`**, **`shell_structure_type`**, **`active_stage_zones`**, **`reserved_future_zones`**, **`block_growth_direction`**, **`anti_overlap_rules`**, **`interpretation_scope`**.
+Required fields for that future payload: **`layout_version`**, **`shell_structure_type`**, **`active_stage_zones`**, **`reserved_future_zones`**, **`block_growth_direction`**, **`anti_overlap_rules`**, **`interpretation_scope`**, **`basis`**.
 
 ## API placement rule
 
@@ -97,4 +97,4 @@ The API must **never** dictate cell placement; placement is governance + GAS wri
 
 - KZO status: `docs/00-02_CALC_CONFIGURATOR/09_KZO/08_STATUS.md`
 - IDEA: `IDEA-0011` in `docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`
-- Audit: `docs/AUDITS/2026-04-29_STAGE_5D_OPERATOR_LAYOUT_GOVERNANCE.md`
+- Audit: `docs/AUDITS/2026-04-29_STAGE_5D_OPERATOR_LAYOUT_GOVERNANCE.md`; verification closure: `docs/AUDITS/2026-04-29_STAGE_5D_GOVERNANCE_VERIFICATION_GATE.md`

@@ -1351,19 +1351,30 @@ Display API `data.physical_topology_summary` in operator Sheet without recomputi
 
 - `docs/00-02_CALC_CONFIGURATOR/09_KZO/10_OPERATOR_LAYOUT.md` — модель **SHELL_VERTICAL_EXPANSION**, активні **E4:F20** (5A structure band), **E21:F26** (5C topology), резерв **E27:F40** / **E41:F54** для майбутніх Stage 6/7 — використання лише після TASK
 - референсний JSON для майбутнього поля `operator_layout_governance_summary` (без впровадження в API у цьому TASK)
-- `IDEA-0011` = **`ACTIVE`** у `docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`
+- `IDEA-0011` = **`IMPLEMENTED`** у `docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`
 
 ## Обмеження
 
 - без змін `main.py`, топології, інженерних розрахунків
 - без DB / AUTH / Supabase
 - без redesign листа понад реєстром зон
-- **Stage 6** sheet expansion у зарезервованих діапазонах — лише після закриття Stage 5D governance та окремого TASK на GAS/constants
+- **Stage 6** sheet expansion у зарезервованих діапазонах — лише після окремого TASK на GAS/constants (Stage 5D documentation MVP closed окремою doc-pass хвилею)
 
 ## Governance / аудит
 
 - `docs/AUDITS/2026-04-29_STAGE_5D_OPERATOR_LAYOUT_GOVERNANCE.md`
-- Gate: `docs/00-02_CALC_CONFIGURATOR/09_KZO/08_STATUS.md`
+- Закриття verification / doc-pass: `docs/AUDITS/2026-04-29_STAGE_5D_GOVERNANCE_VERIFICATION_GATE.md`
+- Gate (оновлено): `docs/00-02_CALC_CONFIGURATOR/09_KZO/08_STATUS.md`
+
+---
+
+## Stage 5D — doc-pass (29.04.2026)
+
+### Док-синхронізація
+
+- `10_OPERATOR_LAYOUT.md` — узгоджено **required fields** для майбутнього payload: додано **`basis`** поряд із прикладом JSON
+- IDEA-0011 → **`IMPLEMENTED`**; нотатка: Stage 5D Operator Layout Governance MVP accepted after **PASS WITH DOC FIXES**
+- Оновлено `NOW.md`, `12_IDEA_MASTER_LOG.md`, `09_STATUS.md`, `09_KZO/08_STATUS.md`, `00_AUDIT_INDEX.md`; додано `2026-04-29_STAGE_5D_GOVERNANCE_VERIFICATION_GATE.md`
 
 ---
 
