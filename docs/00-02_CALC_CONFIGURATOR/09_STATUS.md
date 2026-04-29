@@ -2,16 +2,19 @@
 
 ## Поточний статус
 
-Stage 3D baseline committed
+Stage 4A verified MVP only
 
 CALC skeleton = governed foundation complete.
 
-KZO MVP implementation baseline has reached Stage 3D:
+KZO MVP implementation baseline has reached Stage 4A:
 
 - Stage 3A — KZO Calculation Object Contract committed
 - Stage 3B — API validation skeleton committed
 - Stage 3C — normalized result summary committed
 - Stage 3D — GAS API handshake committed
+- Stage 3E — manual GAS execution verified with Render cold-start observation
+- Stage 3F — Sheet Writeback MVP verified
+- Stage 4A — protected template shell verified as MVP-only baseline
 
 Модуль ще не має статусу `draft_ready`.
 
@@ -49,12 +52,16 @@ KZO MVP implementation baseline has reached Stage 3D:
 - KZO API skeleton for `prepare_calculation`
 - KZO normalized result summary
 - GAS thin-client handshake draft
+- manual GAS execution verification
+- minimal Sheet writeback function
+- verified fixed-range Sheet writeback
+- protected Google Sheet MVP shell
+- fixed input / output zones
+- verified Stage 4A template setup and output writeback
 
 Для переходу далі потрібно:
 
-- Stage 3E manual GAS execution
-- Render response log verification
-- GAS `basic_result_summary` log verification
+- next stage normalized task
 - explicit approval before UI / DB / business calculation expansion
 
 ## Що не входить у Stage 1

@@ -1,5 +1,26 @@
 const API_URL = "https://eds-power-api.onrender.com/api/calc/prepare_calculation";
 const MVP_TIMEOUT_NOTE = "Render free tier may cold-start; Stage 3E manual test may need rerun after wake-up.";
+const STAGE_3F_TEST_SHEET_NAME = "Stage3F_Test";
+const STAGE_3F_WRITEBACK_RANGE_A1 = "A1:B5";
+const STAGE_4A_SHEET_NAME = "Stage4A_MVP";
+const STAGE_4A_INPUT_RANGE_A1 = "B2:B14";
+const STAGE_4A_OUTPUT_RANGE_A1 = "D2:E8";
+const STAGE_4A_PROTECTION_DESCRIPTION = "Stage 4A protected MVP shell";
+const STAGE_4A_CELL_MAP = {
+  object_number: "B2",
+  product_type: "B3",
+  logic_version: "B4",
+  voltage_class: "B5",
+  busbar_current: "B6",
+  configuration_type: "B7",
+  quantity_total: "B8",
+  cell_incomer: "B9",
+  cell_outgoing: "B10",
+  cell_pt: "B11",
+  cell_bus_section: "B12",
+  status: "B13",
+  breaker_type: "B14"
+};
 
 /**
  * Stage 3D minimal GAS -> Render API handshake.
@@ -103,4 +124,332 @@ function testKzoPrepareCalculation() {
       retry: false
     }));
   }
+}
+
+/**
+ * Stage 3F minimal visible Sheet writeback.
+ *
+ * GAS remains request / response / writeback only:
+ * - reuses the Stage 3D request
+ * - reads the API response
+ * - writes selected normalized response fields into a fixed test range
+ * - does not calculate, validate, format UI, create buttons, or change architecture
+ */
+function testKzoPrepareCalculationWithSheetWriteback() {
+  const requestBody = buildStage3DKzoPayload();
+  const options = {
+    method: "post",
+    contentType: "application/json",
+    payload: JSON.stringify(requestBody),
+    muteHttpExceptions: true
+  };
+
+  try {
+    const response = UrlFetchApp.fetch(API_URL, options);
+    const httpCode = response.getResponseCode();
+    const responseText = response.getContentText();
+    const responseJson = JSON.parse(responseText);
+
+    Logger.log(JSON.stringify({
+      stage: "3F",
+      http_code: httpCode,
+      status: responseJson.status || null,
+      error: responseJson.error || null
+    }));
+
+    if (responseJson.status !== "success") {
+      Logger.log(JSON.stringify({
+        stage: "3F",
+        status: "writeback_skipped",
+        reason: "API response was not successful"
+      }));
+      return;
+    }
+
+    writeStage3FTestRange(responseJson);
+  } catch (error) {
+    Logger.log(JSON.stringify({
+      stage: "3F",
+      status: "request_or_writeback_failed",
+      error: {
+        error_code: "GAS_STAGE_3F_FAILED",
+        message: error && error.message ? error.message : String(error),
+        note: MVP_TIMEOUT_NOTE
+      },
+      retry: false
+    }));
+  }
+}
+
+function writeStage3FTestRange(responseJson) {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = spreadsheet ? spreadsheet.getSheetByName(STAGE_3F_TEST_SHEET_NAME) : null;
+
+  if (!sheet) {
+    Logger.log(JSON.stringify({
+      stage: "3F",
+      status: "writeback_skipped",
+      error: {
+        error_code: "STAGE_3F_TEST_SHEET_MISSING",
+        message: "Create a test sheet named Stage3F_Test before running Stage 3F writeback."
+      }
+    }));
+    return;
+  }
+
+  const data = responseJson.data || {};
+  const summary = data.basic_result_summary || {};
+  const normalizedPayload = data.normalized_payload || {};
+  const rows = [
+    ["validation_status", firstDefined(data.validation_status, summary.validation_status)],
+    ["object_number", firstDefined(normalizedPayload.object_number, null)],
+    ["product_type", firstDefined(summary.product_type, normalizedPayload.product_type)],
+    ["voltage_class", firstDefined(summary.voltage_class, normalizedPayload.voltage_class)],
+    ["busbar_current", firstDefined(summary.busbar_current, normalizedPayload.busbar_current)]
+  ];
+
+  sheet.getRange(STAGE_3F_WRITEBACK_RANGE_A1).setValues(rows);
+
+  Logger.log(JSON.stringify({
+    stage: "3F",
+    status: "writeback_completed",
+    sheet: STAGE_3F_TEST_SHEET_NAME,
+    range: STAGE_3F_WRITEBACK_RANGE_A1
+  }));
+}
+
+function firstDefined(primaryValue, fallbackValue) {
+  return primaryValue === undefined || primaryValue === null ? fallbackValue : primaryValue;
+}
+
+/**
+ * Stage 4A protected template shell setup.
+ *
+ * This creates only a deterministic MVP shell:
+ * - fixed input cells
+ * - fixed output cells
+ * - enum-safe input validation where possible
+ * - sheet protection with input cells left editable
+ *
+ * It does not add sidebar, buttons, menus, formulas, DB, Supabase, AUTH, BOM,
+ * costing, production transfer, or business logic.
+ */
+function setupStage4ATemplateShell() {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  if (!spreadsheet) {
+    Logger.log(JSON.stringify({
+      stage: "4A",
+      status: "setup_failed",
+      error: {
+        error_code: "SPREADSHEET_NOT_FOUND",
+        message: "Active spreadsheet is required for Stage 4A template setup."
+      }
+    }));
+    return;
+  }
+
+  const sheet = getOrCreateStage4ASheet_(spreadsheet);
+  writeStage4AShellLayout_(sheet);
+  applyStage4AInputValidation_(sheet);
+  protectStage4AShell_(sheet);
+
+  Logger.log(JSON.stringify({
+    stage: "4A",
+    status: "template_shell_prepared",
+    sheet: STAGE_4A_SHEET_NAME,
+    input_range: STAGE_4A_INPUT_RANGE_A1,
+    output_range: STAGE_4A_OUTPUT_RANGE_A1
+  }));
+}
+
+/**
+ * Stage 4A fixed-cell operational shell.
+ *
+ * GAS remains thin:
+ * - reads fixed cells
+ * - builds the request
+ * - sends the API request
+ * - parses response
+ * - writes fixed outputs
+ */
+function runStage4AKzoTemplateFlow() {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = spreadsheet ? spreadsheet.getSheetByName(STAGE_4A_SHEET_NAME) : null;
+
+  if (!sheet) {
+    Logger.log(JSON.stringify({
+      stage: "4A",
+      status: "run_skipped",
+      error: {
+        error_code: "STAGE_4A_TEMPLATE_SHEET_MISSING",
+        message: "Run setupStage4ATemplateShell() before Stage 4A execution."
+      }
+    }));
+    return;
+  }
+
+  const requestBody = buildStage4AKzoPayloadFromSheet_(sheet);
+  const options = {
+    method: "post",
+    contentType: "application/json",
+    payload: JSON.stringify(requestBody),
+    muteHttpExceptions: true
+  };
+
+  try {
+    const response = UrlFetchApp.fetch(API_URL, options);
+    const httpCode = response.getResponseCode();
+    const responseText = response.getContentText();
+    const responseJson = JSON.parse(responseText);
+
+    Logger.log(JSON.stringify({
+      stage: "4A",
+      http_code: httpCode,
+      status: responseJson.status || null,
+      error: responseJson.error || null
+    }));
+
+    writeStage4AOutput_(sheet, responseJson, httpCode);
+  } catch (error) {
+    Logger.log(JSON.stringify({
+      stage: "4A",
+      status: "request_or_writeback_failed",
+      error: {
+        error_code: "GAS_STAGE_4A_FAILED",
+        message: error && error.message ? error.message : String(error),
+        note: MVP_TIMEOUT_NOTE
+      },
+      retry: false
+    }));
+  }
+}
+
+function getOrCreateStage4ASheet_(spreadsheet) {
+  const existingSheet = spreadsheet.getSheetByName(STAGE_4A_SHEET_NAME);
+  return existingSheet || spreadsheet.insertSheet(STAGE_4A_SHEET_NAME);
+}
+
+function writeStage4AShellLayout_(sheet) {
+  sheet.getRange("A1:E14").setValues([
+    ["Stage 4A MVP Configurator Shell", "", "", "Stage 4A Outputs", ""],
+    ["object_number", "7445-B", "", "validation_status", ""],
+    ["product_type", "KZO", "", "object_number", ""],
+    ["logic_version", "KZO_MVP_V1", "", "product_type", ""],
+    ["voltage_class", "VC_10", "", "voltage_class", ""],
+    ["busbar_current", 1250, "", "busbar_current", ""],
+    ["configuration_type", "CFG_SINGLE_BUS_SECTION", "", "http_code", ""],
+    ["quantity_total", 22, "", "stage", ""],
+    ["CELL_INCOMER", 2, "", "", ""],
+    ["CELL_OUTGOING", 16, "", "", ""],
+    ["CELL_PT", 2, "", "", ""],
+    ["CELL_BUS_SECTION", 2, "", "", ""],
+    ["status", "DRAFT", "", "", ""],
+    ["breaker_type", "", "", "", ""]
+  ]);
+}
+
+function applyStage4AInputValidation_(sheet) {
+  setListValidation_(sheet.getRange(STAGE_4A_CELL_MAP.product_type), ["KZO"]);
+  setListValidation_(sheet.getRange(STAGE_4A_CELL_MAP.logic_version), ["KZO_MVP_V1"]);
+  setListValidation_(sheet.getRange(STAGE_4A_CELL_MAP.voltage_class), ["VC_06", "VC_10", "VC_20", "VC_35"]);
+  setListValidation_(sheet.getRange(STAGE_4A_CELL_MAP.configuration_type), ["CFG_SINGLE_BUS", "CFG_SINGLE_BUS_SECTION"]);
+  setListValidation_(sheet.getRange(STAGE_4A_CELL_MAP.status), ["DRAFT"]);
+
+  const positiveNumberRule = SpreadsheetApp.newDataValidation()
+    .requireNumberGreaterThan(0)
+    .setAllowInvalid(false)
+    .build();
+
+  [
+    STAGE_4A_CELL_MAP.busbar_current,
+    STAGE_4A_CELL_MAP.quantity_total,
+    STAGE_4A_CELL_MAP.cell_incomer,
+    STAGE_4A_CELL_MAP.cell_outgoing,
+    STAGE_4A_CELL_MAP.cell_pt,
+    STAGE_4A_CELL_MAP.cell_bus_section
+  ].forEach(function(cellA1) {
+    sheet.getRange(cellA1).setDataValidation(positiveNumberRule);
+  });
+}
+
+function setListValidation_(range, values) {
+  const rule = SpreadsheetApp.newDataValidation()
+    .requireValueInList(values, true)
+    .setAllowInvalid(false)
+    .build();
+
+  range.setDataValidation(rule);
+}
+
+function protectStage4AShell_(sheet) {
+  const existingProtections = sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET);
+  existingProtections.forEach(function(protection) {
+    if (protection.getDescription() === STAGE_4A_PROTECTION_DESCRIPTION && protection.canEdit()) {
+      protection.remove();
+    }
+  });
+
+  const protection = sheet.protect().setDescription(STAGE_4A_PROTECTION_DESCRIPTION);
+  protection.setWarningOnly(false);
+  protection.setUnprotectedRanges([sheet.getRange(STAGE_4A_INPUT_RANGE_A1)]);
+}
+
+function buildStage4AKzoPayloadFromSheet_(sheet) {
+  return {
+    meta: {
+      request_id: Utilities.getUuid(),
+      source: "gas",
+      user_id: "manual_test_user",
+      session_token: "manual_test_session",
+      timestamp: new Date().toISOString()
+    },
+    module: "CALC_CONFIGURATOR",
+    action: "prepare_calculation",
+    payload: {
+      object_number: getStage4ACellValue_(sheet, "object_number"),
+      product_type: getStage4ACellValue_(sheet, "product_type"),
+      logic_version: getStage4ACellValue_(sheet, "logic_version"),
+      voltage_class: getStage4ACellValue_(sheet, "voltage_class"),
+      busbar_current: Number(getStage4ACellValue_(sheet, "busbar_current")),
+      configuration_type: getStage4ACellValue_(sheet, "configuration_type"),
+      quantity_total: Number(getStage4ACellValue_(sheet, "quantity_total")),
+      cell_distribution: {
+        CELL_INCOMER: Number(getStage4ACellValue_(sheet, "cell_incomer")),
+        CELL_OUTGOING: Number(getStage4ACellValue_(sheet, "cell_outgoing")),
+        CELL_PT: Number(getStage4ACellValue_(sheet, "cell_pt")),
+        CELL_BUS_SECTION: Number(getStage4ACellValue_(sheet, "cell_bus_section"))
+      },
+      status: getStage4ACellValue_(sheet, "status"),
+      breaker_type: getStage4ACellValue_(sheet, "breaker_type") || null,
+      notes: null
+    }
+  };
+}
+
+function getStage4ACellValue_(sheet, fieldName) {
+  return sheet.getRange(STAGE_4A_CELL_MAP[fieldName]).getValue();
+}
+
+function writeStage4AOutput_(sheet, responseJson, httpCode) {
+  const data = responseJson.data || {};
+  const summary = data.basic_result_summary || {};
+  const normalizedPayload = data.normalized_payload || {};
+  const rows = [
+    ["validation_status", firstDefined(data.validation_status, summary.validation_status)],
+    ["object_number", firstDefined(normalizedPayload.object_number, null)],
+    ["product_type", firstDefined(summary.product_type, normalizedPayload.product_type)],
+    ["voltage_class", firstDefined(summary.voltage_class, normalizedPayload.voltage_class)],
+    ["busbar_current", firstDefined(summary.busbar_current, normalizedPayload.busbar_current)],
+    ["http_code", httpCode],
+    ["stage", "4A"]
+  ];
+
+  sheet.getRange(STAGE_4A_OUTPUT_RANGE_A1).setValues(rows);
+
+  Logger.log(JSON.stringify({
+    stage: "4A",
+    status: "writeback_completed",
+    sheet: STAGE_4A_SHEET_NAME,
+    range: STAGE_4A_OUTPUT_RANGE_A1
+  }));
 }

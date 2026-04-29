@@ -6,7 +6,7 @@
 
 ## Поточний етап
 
-Stage 3F — Sheet Writeback MVP. 29.04.2026
+Stage 4A — Google Sheet Core Template Protection. 29.04.2026
 
 ## Активний сервер
 
@@ -15,16 +15,17 @@ https://eds-power-api.onrender.com
 ## Активні модулі
 
 1. 00-01_AUTH — авторизація (frozen MVP / draft_ready)
-2. 00-02_CALC_CONFIGURATOR — конфігуратор розрахунків (Stage 3E verified with cold-start note)
-3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (Stage 3E verified with cold-start note)
+2. 00-02_CALC_CONFIGURATOR — конфігуратор розрахунків (Stage 4A verified MVP only)
+3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (Stage 4A verified MVP only)
 
 ## Що робимо зараз
 
 - Stage 3E = VERIFIED_WITH_COLD_START_NOTE
-- Next = Stage 3F — Sheet Writeback MVP
+- Stage 3F = VERIFIED
+- Stage 4A = VERIFIED_MVP_ONLY
 - тримаємо `00-01_AUTH` frozen at MVP
 - тримаємо `00-02_CALC_CONFIGURATOR` у межах KZO MVP
-- готуємо мінімальний безпечний sheet writeback scope після verified GAS → API handshake
+- готуємо наступний етап тільки через окрему normalized task
 - підтримуємо синхронність GitHub / Cursor / Docs
 - Idea Normalizer = ACTIVE GOVERNANCE
 
@@ -54,11 +55,13 @@ https://eds-power-api.onrender.com
 - Stage 3C normalized result summary committed
 - Stage 3D GAS API handshake committed
 - Stage 3E manual GAS execution verified with Render cold-start observation
+- Stage 3F Sheet Writeback MVP verified
+- Stage 4A protected template shell verified as MVP-only baseline
 - Idea Normalizer foundation created
 
 ## What remains next (plan)
 
-- Stage 3F — Sheet Writeback MVP
-- define smallest safe sheet writeback scope
+- define next stage only through Idea Normalizer
+- keep Stage 4A as protected MVP shell baseline
 - keep GAS thin
 - avoid sidebar, buttons, menus, DB, Supabase, AUTH, costing, BOM, and production logic unless separately tasked

@@ -12,23 +12,27 @@ Stage 3C = committed
 
 Stage 3D = committed
 
+Stage 3E = verified with cold-start note
+
+Stage 3F = verified
+
+Stage 4A = verified MVP only
+
 ## Gate
 
-Next = Stage 3E manual run
+Next = normalized task for next stage
 
 ## Current status
 
-Stage 3D baseline committed
+Stage 4A protected template shell verified as MVP-only baseline
 
 ## Blockers
 
-- manual GAS execution not yet verified
-- Render response logs not yet reviewed
-- GAS `basic_result_summary` logs not yet reviewed
+- none for Stage 4A
 
 ## Next
 
-Stage 3E = manual run from Google Sheets / Apps Script
+Next stage must be created through Idea Normalizer
 
 ## Global status link
 
@@ -43,6 +47,7 @@ KZO may define local implementation progress, but business object lifecycle is g
 - no KTP
 - no Powerline
 - no AUTH expansion
-- no additional API code before Stage 3E verification
+- no additional API code
+- no Sidebar / UI polish / buttons / menus without a separate normalized task
 - no KZO deep algorithm
 - no product expansion beyond KZO MVP

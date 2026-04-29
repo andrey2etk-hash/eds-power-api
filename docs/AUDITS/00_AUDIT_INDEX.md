@@ -12,8 +12,7 @@ Rule:
 
 ## Latest audit
 
-- `2026-04-26_GEMINI_STAGE3D_GAS_API_HANDSHAKE_AUDIT_REQUEST.md`
-- `2026-04-26_STAGE_3D_GAS_API_HANDSHAKE.md`
+- `2026-04-29_STAGE_4A_TEMPLATE_PROTECTION.md`
 
 ## Stage audits
 
@@ -29,6 +28,9 @@ Rule:
 - `2026-04-26_STAGE_3B_API_SKELETON.md`
 - `2026-04-26_STAGE_3C_NORMALIZED_SUMMARY.md`
 - `2026-04-26_STAGE_3D_GAS_API_HANDSHAKE.md`
+- `2026-04-29_STAGE_3E_MANUAL_GAS_EXECUTION.md`
+- `2026-04-29_STAGE_3F_SHEET_WRITEBACK_MVP.md`
+- `2026-04-29_STAGE_4A_TEMPLATE_PROTECTION.md`
 
 ## Deprecated audits
 
@@ -36,7 +38,6 @@ Rule:
 
 ## Active blockers
 
-- Stage 3E manual GAS execution
-- Render response log verification
-- GAS `basic_result_summary` log verification
-- no UI expansion before manual handshake verification
+- next stage must be created through Idea Normalizer
+- no sidebar / buttons / menus before a separate normalized task
+- no DB / Supabase / AUTH / BOM / costing / production transfer expansion

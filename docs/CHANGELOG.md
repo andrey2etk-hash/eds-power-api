@@ -673,6 +673,145 @@ Stage 3F — Sheet Writeback MVP.
 
 ---
 
+# 29.04.2026 — Stage 3F Sheet Writeback MVP implementation prepared
+
+## Причина
+
+Create the smallest visible operational loop after verified Stage 3E handshake:
+
+```text
+Google Sheet -> GAS -> Render API -> normalized response -> test cells
+```
+
+## Що додано
+
+- `testKzoPrepareCalculationWithSheetWriteback()`
+- fixed test sheet target: `Stage3F_Test`
+- fixed writeback range: `A1:B5`
+- writeback mapping for:
+  - `validation_status`
+  - `object_number`
+  - `product_type`
+  - `voltage_class`
+  - `busbar_current`
+- missing test sheet guard
+- Stage 3F audit record
+
+## Обмеження
+
+- no API changes
+- no API contract changes
+- no business logic in GAS
+- no Sidebar
+- no UI polish
+- no buttons
+- no menus
+- no Supabase
+- no AUTH
+- no BOM
+- no costing
+- no production transfer
+- no multi-sheet architecture
+
+## Статус
+
+Stage 3F = `VERIFIED`.
+
+## First manual run observation
+
+- GAS reached Render
+- HTTP code = `200`
+- response status = `success`
+- writeback skipped because test sheet `Stage3F_Test` was missing
+- guard returned `STAGE_3F_TEST_SHEET_MISSING`
+- no UI, button, menu, or sheet structure was created automatically
+
+## Final manual run observation
+
+- test sheet `Stage3F_Test` existed
+- GAS reached Render
+- HTTP code = `200`
+- response status = `success`
+- writeback completed to `Stage3F_Test!A1:B5`
+- visible sheet result confirmed:
+  - `validation_status` = `VALIDATED`
+  - `object_number` = `7445-B`
+  - `product_type` = `KZO`
+  - `voltage_class` = `VC_10`
+  - `busbar_current` = `1250`
+
+## Next
+
+Next stage must be defined through a separate normalized task.
+
+---
+
+# 29.04.2026 — Stage 4A protected template shell implementation prepared
+
+## Причина
+
+Move from Stage 3F test writeback to a protected MVP configurator shell with deterministic structure.
+
+## Що додано
+
+- `setupStage4ATemplateShell()`
+- `runStage4AKzoTemplateFlow()`
+- fixed sheet target: `Stage4A_MVP`
+- fixed input range: `B2:B14`
+- fixed output range: `D2:E8`
+- input cell map for KZO MVP fields
+- structured enum input validation
+- sheet protection with approved input cells left editable
+- Stage 4A audit record
+
+## Обмеження
+
+- no API changes
+- no API contract changes
+- no business logic in GAS
+- no Sidebar
+- no buttons
+- no menus
+- no batch flow
+- no DB
+- no Supabase
+- no AUTH
+- no BOM
+- no costing
+- no production transfer
+- no multi-product support
+- no architecture expansion
+
+## Статус
+
+Stage 4A = `VERIFIED_MVP_ONLY`.
+
+## Manual verification
+
+- `setupStage4ATemplateShell()` completed
+- `Stage4A_MVP` prepared
+- input range = `B2:B14`
+- output range = `D2:E8`
+- enum dropdowns visible for structured inputs
+- `runStage4AKzoTemplateFlow()` completed
+- HTTP code = `200`
+- response status = `success`
+- writeback completed to `Stage4A_MVP!D2:E8`
+- visible output result confirmed:
+  - `validation_status` = `VALIDATED`
+  - `object_number` = `7445-B`
+  - `product_type` = `KZO`
+  - `voltage_class` = `VC_10`
+  - `busbar_current` = `1250`
+  - `http_code` = `200`
+  - `stage` = `4A`
+
+## Next
+
+Next stage must be defined through a separate normalized task.
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP
