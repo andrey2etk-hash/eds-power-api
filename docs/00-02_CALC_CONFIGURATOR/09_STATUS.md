@@ -85,6 +85,7 @@ KZO MVP implementation baseline has reached Stage 5A task definition:
 - Stage 5A output integration verified in operator-visible Sheet (`runStage5AOutputIntegrationFlow()`)
 - Stage 5B physical footprint `physical_summary` live Render verification passed (see `docs/AUDITS/2026-04-29_STAGE_5B_PHYSICAL_FOOTPRINT_RENDER_GATE.md`)
 - Stage 5C physical topology `physical_topology_summary` live Render verification passed (see `docs/AUDITS/2026-04-29_STAGE_5C_PHYSICAL_TOPOLOGY_RENDER_GATE.md`)
+- Stage 5D shell governance MVP verified documentation-only (`IDEA-0011` `IMPLEMENTED`; `2026-04-29_STAGE_5D_GOVERNANCE_VERIFICATION_GATE.md`)
 - Stage 6A shell activation GAS/constants for **`E27:F40`** + audit `2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md` (**IDEA-0012** `IMPLEMENTED`); Stage 6B engineering gated
 
 ## Що не входить у Stage 1
