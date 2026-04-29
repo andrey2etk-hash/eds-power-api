@@ -1,4 +1,4 @@
-const API_URL = "https://YOUR_RENDER_URL/api/calc/prepare_calculation";
+const API_URL = "https://eds-power-api.onrender.com/api/calc/prepare_calculation";
 const MVP_TIMEOUT_NOTE = "Render free tier may cold-start; Stage 3E manual test may need rerun after wake-up.";
 
 /**

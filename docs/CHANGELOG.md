@@ -629,6 +629,50 @@ Idea Normalizer governance-grade foundation created.
 
 ---
 
+# 29.04.2026 — Stage 3E manual GAS execution verified with Render cold-start observation
+
+## Причина
+
+Verify the first real Google Apps Script to Render API handshake in production-like conditions before any Sheet writeback or UI expansion.
+
+## Факт
+
+- `testKzoPrepareCalculation()` executed manually from Google Apps Script Editor
+- Render endpoint responded with HTTP `200`
+- response status = `success`
+- JSON parse = `OK`
+- `validation_status` = `VALIDATED`
+- `logic_version` = `KZO_MVP_V1`
+- `basic_result_summary` received
+- first manual run after idle succeeded with HTTP `200` and approximately 32-33 seconds latency
+- immediate repeated runs succeeded with HTTP `200` and near-instant response
+- `basic_result_summary` received in all successful runs
+- contract integrity remained stable across all observed successful runs
+
+## Висновок
+
+Stage 3E = `VERIFIED_WITH_COLD_START_NOTE`.
+
+Observed first-run latency is consistent with Render cold start behavior.
+
+## Обмеження
+
+- no code changes
+- no GAS logic changes
+- no API changes
+- no retry logic added
+- no UI added
+- no sidebar added
+- no buttons or menus added
+- no sheet writeback added
+- no DB, Supabase, AUTH, costing, BOM, or production logic added
+
+## Next
+
+Stage 3F — Sheet Writeback MVP.
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP

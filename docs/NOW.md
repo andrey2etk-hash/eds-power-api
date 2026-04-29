@@ -6,7 +6,7 @@
 
 ## Поточний етап
 
-Stage 3E — Manual GAS execution and log verification. 26.04.2026
+Stage 3F — Sheet Writeback MVP. 29.04.2026
 
 ## Активний сервер
 
@@ -15,15 +15,16 @@ https://eds-power-api.onrender.com
 ## Активні модулі
 
 1. 00-01_AUTH — авторизація (frozen MVP / draft_ready)
-2. 00-02_CALC_CONFIGURATOR — конфігуратор розрахунків (Stage 3D baseline committed)
-3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (Stage 3D baseline committed)
+2. 00-02_CALC_CONFIGURATOR — конфігуратор розрахунків (Stage 3E verified with cold-start note)
+3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (Stage 3E verified with cold-start note)
 
 ## Що робимо зараз
 
-- готуємо Stage 3E — manual GAS execution and log verification
+- Stage 3E = VERIFIED_WITH_COLD_START_NOTE
+- Next = Stage 3F — Sheet Writeback MVP
 - тримаємо `00-01_AUTH` frozen at MVP
 - тримаємо `00-02_CALC_CONFIGURATOR` у межах KZO MVP
-- перевіряємо GAS → API handshake вручну перед наступним розширенням
+- готуємо мінімальний безпечний sheet writeback scope після verified GAS → API handshake
 - підтримуємо синхронність GitHub / Cursor / Docs
 - Idea Normalizer = ACTIVE GOVERNANCE
 
@@ -52,11 +53,12 @@ https://eds-power-api.onrender.com
 - Stage 3B API validation skeleton committed
 - Stage 3C normalized result summary committed
 - Stage 3D GAS API handshake committed
+- Stage 3E manual GAS execution verified with Render cold-start observation
 - Idea Normalizer foundation created
 
 ## What remains next (plan)
 
-- Stage 3E — manual GAS execution from Google Sheets / Apps Script
-- verify Render response logs
-- verify `basic_result_summary` logging in GAS
-- keep Stage 3E manual-only before any UI expansion
+- Stage 3F — Sheet Writeback MVP
+- define smallest safe sheet writeback scope
+- keep GAS thin
+- avoid sidebar, buttons, menus, DB, Supabase, AUTH, costing, BOM, and production logic unless separately tasked
