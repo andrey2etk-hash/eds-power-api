@@ -12,6 +12,7 @@ Rule:
 
 ## Latest audit
 
+- Stage 6A reserved operator block activation (GAS shell infra — **ACTIVE** target) — `2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`
 - Stage 5D governance verification — **PASS WITH DOC FIXES**, doc-pass closed — `2026-04-29_STAGE_5D_GOVERNANCE_VERIFICATION_GATE.md` (upstream MVP audit: `2026-04-29_STAGE_5D_OPERATOR_LAYOUT_GOVERNANCE.md`)
 - Stage 5C operator Sheet visibility (topology — thin GAS, **VERIFIED**) — `2026-04-29_STAGE_5C_SHEET_OUTPUT_INTEGRATION.md`
 - **Gemini external audit request** — `2026-04-29_STAGE_5C_SHEET_GEMINI_AUDIT_REQUEST.md`
@@ -47,6 +48,7 @@ Rule:
 - `2026-04-29_STAGE_5C_SHEET_GEMINI_AUDIT_REQUEST.md`
 - `2026-04-29_STAGE_5D_OPERATOR_LAYOUT_GOVERNANCE.md`
 - `2026-04-29_STAGE_5D_GOVERNANCE_VERIFICATION_GATE.md`
+- `2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`
 
 ## Deprecated audits
 

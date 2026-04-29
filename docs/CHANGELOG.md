@@ -1378,6 +1378,30 @@ Display API `data.physical_topology_summary` in operator Sheet without recomputi
 
 ---
 
+# 29.04.2026 — Stage 6A Reserved operator block activation (GAS shell infrastructure)
+
+## Причина
+
+Reserved діапазон **`E27:F40`** має бути **операційним shell-блоком** (плейсхолдер + телеметрія) до будь-якої Stage 6 engineering логіки — **activation ≠ logic**.
+
+## Рішення
+
+- `gas/Stage3D_KZO_Handshake.gs`: константи **`STAGE_6A_RESERVED_OPERATOR_BLOCK_RANGE_A1`**, **`STAGE_6A_BLOCK_NAME`**, **`STAGE_6A_SHELL_BLOCK_VERSION`**; **`runStage6AActivateReservedOperatorBlockFlow()`**, **`runStage6AResetReservedOperatorBlockOnly()`**, **`buildStage6OperatorShellSummary_()`** (логи з **`stage6_operator_shell_summary`** — **без** API)
+- `docs/00-02_CALC_CONFIGURATOR/09_KZO/10_OPERATOR_LAYOUT.md` — Stage 6A в active zones + GAS summary contract
+- **`IDEA-0012` = `IMPLEMENTED`**
+
+## Обмеження
+
+- без змін `main.py` / API response
+- без змін зон Stage 5A / 5C
+- без інженерних формул, BOM, pricing
+
+## Governance / аудит
+
+- `docs/AUDITS/2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP

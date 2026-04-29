@@ -14,9 +14,14 @@
 - **Stage 5D** = **VERIFIED** (documentation MVP — реєстр shell у `docs/00-02_CALC_CONFIGURATOR/09_KZO/10_OPERATOR_LAYOUT.md`).
 - **IDEA-0011** = `IMPLEMENTED`. Stage 5D Operator Layout Governance MVP **accepted** після governance verification **PASS WITH DOC FIXES** (doc-pass; без змін API/GAS/Sheet).
 
+## Завершено — KZO Stage 6A Reserved operator block (shell infrastructure, 29.04.2026)
+
+- **Stage 6A** — reserved block **`E27:F40`** активовано в GAS (placeholder + telemetry; **`runStage6AActivateReservedOperatorBlockFlow()`** / **`runStage6AResetReservedOperatorBlockOnly()`**). **`stage6_operator_shell_summary`** формується в логах GAS лише (**без** поля API).
+- **IDEA-0012** = `IMPLEMENTED`. Audit: `docs/AUDITS/2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`.
+
 ## Поточний етап
 
-Execution gate до наступного **окремого TASK** (зокрема Stage 6 sheet expansion у зарезервованому **`E27:F40`**): реалізація GAS/constants і контенту — не частина Stage 5D doc closure.
+**Stage 6B / engineering у `E27:F40`** — під **TASK** та після операторської **верифікації** Stage 6A (перевірка execution log).
 
 ## Як узгоджено з Gemini doc-pass (Зовнішній аудит)
 
@@ -30,8 +35,7 @@ https://eds-power-api.onrender.com
 
 1. 00-01_AUTH — авторизація (frozen MVP / draft_ready)
 2. 00-02_CALC_CONFIGURATOR — конфігуратор (KZO Stage 5A–5C operator-visible path для structural / footprint API / topology API + топологія на Sheet верифіковані)
-3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (**Stage 5D** shell governance документовано й **verified** як documentation MVP; **Stage 6** заблоковано до окремого TASK на reserved ranges)
-
+3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (Stage **6A** shell block **`E27:F40`** активовано в GAS; Stage **6B** — лише після верифікації 6A та окремого TASK)
 ## Що робимо зараз
 
 - Stage 3E = VERIFIED_WITH_COLD_START_NOTE
@@ -82,10 +86,10 @@ https://eds-power-api.onrender.com
 - Stage 5C physical topology MVP verified on deployed Render (`data.physical_topology_summary` checklist PASS per Stage 5C Render gate audit)
 - Stage 5C operator-visible topology on Sheet verified via thin GAS (`runStage5CSheetOutputIntegrationFlow()`; **`E21:F26`**; Gemini Sheet audit PASS WITH DOC FIXES → doc-sync)
 - Stage 5D operator layout governance documentation MVP closed (verification gate PASS WITH DOC FIXES → doc-pass; **IDEA-0011** = `IMPLEMENTED`)
-
+- Stage 6A reserved block **`E27:F40`** — GAS activation (**IDEA-0012** `IMPLEMENTED`; audit `2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`)
 ## What remains next (plan)
 
+- операторська верифікація Stage 6A: виконати **`runStage6AActivateReservedOperatorBlockFlow()`**, перевірити лог `stage=6A-reserved-operator-block`
 - keep Stage narrow: no BOM, pricing, DB, CAD, or unmanaged Sheet expansion unless separately tasked
 - keep GAS thin on future operator-visible transports
-- Stage 6 reserved **`E27:F40`**: requires separate TASK before any writes
-- avoid sidebar, buttons, menus, DB, Supabase, AUTH, costing, BOM, and production logic unless separately tasked
+- **Stage 6B** engineering у **`E27:F40`** — лише окремим TASK після підтвердження 6A

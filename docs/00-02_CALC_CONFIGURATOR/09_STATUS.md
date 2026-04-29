@@ -22,6 +22,8 @@ KZO MVP implementation baseline has reached Stage 5A task definition:
 - Stage 5B — `physical_summary` verified on deployed Render (Render gate audit; `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION`)
 - Stage 5C — VERIFIED (topology on Sheet: `physical_topology_summary` → `Stage4A_MVP!E21:F26` thin GAS — audit `docs/AUDITS/2026-04-29_STAGE_5C_SHEET_OUTPUT_INTEGRATION.md`; IDEA-0010 = `IMPLEMENTED`)
 - Stage 5D — VERIFIED (documentation MVP — shell zones + reserved rows — `docs/00-02_CALC_CONFIGURATOR/09_KZO/10_OPERATOR_LAYOUT.md`; **IDEA-0011** = `IMPLEMENTED`; verification gate `2026-04-29_STAGE_5D_GOVERNANCE_VERIFICATION_GATE.md`)
+- Stage 6A reserved block **`E27:F40`** — GAS shell activation (**IDEA-0012** `IMPLEMENTED`; audit `docs/AUDITS/2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`); Stage 6B engineering — gated
+
 
 На цьому рівні виконано:
 
@@ -83,7 +85,7 @@ KZO MVP implementation baseline has reached Stage 5A task definition:
 - Stage 5A output integration verified in operator-visible Sheet (`runStage5AOutputIntegrationFlow()`)
 - Stage 5B physical footprint `physical_summary` live Render verification passed (see `docs/AUDITS/2026-04-29_STAGE_5B_PHYSICAL_FOOTPRINT_RENDER_GATE.md`)
 - Stage 5C physical topology `physical_topology_summary` live Render verification passed (see `docs/AUDITS/2026-04-29_STAGE_5C_PHYSICAL_TOPOLOGY_RENDER_GATE.md`)
-- Stage 5D operator layout governance documentation MVP **verified** (**IDEA-0011** `IMPLEMENTED`; doc-pass **`2026-04-29_STAGE_5D_GOVERNANCE_VERIFICATION_GATE.md`**); Stage 6 sheet expansion remains gated to a **separate TASK**
+- Stage 6A shell activation GAS/constants for **`E27:F40`** + audit `2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md` (**IDEA-0012** `IMPLEMENTED`); Stage 6B engineering gated
 
 ## Що не входить у Stage 1
 

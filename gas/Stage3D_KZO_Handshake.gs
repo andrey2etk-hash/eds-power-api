@@ -12,6 +12,10 @@ const STAGE_4C_PROTECTION_DESCRIPTION = "Stage 4C operator-safe KZO shell";
 const STAGE_4C_INPUT_RANGES_A1 = ["C4:C6", "C9:C10", "C13:C20"];
 const STAGE_5A_OUTPUT_INTEGRATION_RANGE_A1 = "E4:F19";
 const STAGE_5C_SHEET_OUTPUT_RANGE_A1 = "E21:F26";
+/** Stage 6A — reserved operator block (shell infrastructure only; no Stage 6 engineering logic). */
+const STAGE_6A_RESERVED_OPERATOR_BLOCK_RANGE_A1 = "E27:F40";
+const STAGE_6A_BLOCK_NAME = "STAGE_6_RESERVED_OPERATOR_BLOCK";
+const STAGE_6A_SHELL_BLOCK_VERSION = "KZO_STAGE_6A_OPERATOR_SHELL_V1";
 const STAGE_4A_CELL_MAP = {
   object_number: "B2",
   product_type: "B3",
@@ -1317,3 +1321,117 @@ function writeStage5CSheetOutputIntegration_(sheet, responseJson, httpCode, loca
     physical_topology_summary_present: true
   }));
 }
+
+/**
+ * Stage 6A — activate reserved operator block E27:F40 (shell infrastructure only).
+ * No API call, no topology, no engineering formulas. Writes placeholder governance labels
+ * and logs `stage6_operator_shell_summary`-shaped telemetry for operator visibility.
+ */
+function runStage6AActivateReservedOperatorBlockFlow() {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = spreadsheet ? spreadsheet.getSheetByName(STAGE_4A_SHEET_NAME) : null;
+  var activationDateIso = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd");
+
+  if (!sheet) {
+    Logger.log(JSON.stringify({
+      stage: "6A_RESERVED_OPERATOR_BLOCK",
+      telemetry_tag: "stage=6A-reserved-operator-block",
+      block_version: STAGE_6A_SHELL_BLOCK_VERSION,
+      shell_status: "ACTIVATION_SKIPPED",
+      error: {
+        error_code: "STAGE_4C_OPERATOR_SHELL_MISSING",
+        message: "Sheet " + STAGE_4A_SHEET_NAME + " not found."
+      }
+    }));
+    return;
+  }
+
+  writeStage6APlaceholderGovernanceBlock_(sheet, activationDateIso, "ACTIVE_RESERVED_BLOCK");
+
+  var summaryPayload = buildStage6OperatorShellSummary_(activationDateIso, "ACTIVE_RESERVED_BLOCK");
+
+  Logger.log(JSON.stringify({
+    stage: "6A_RESERVED_OPERATOR_BLOCK",
+    telemetry_tag: "stage=6A-reserved-operator-block",
+    block_version: STAGE_6A_SHELL_BLOCK_VERSION,
+    shell_status: "ACTIVE_RESERVED_BLOCK",
+    sheet: STAGE_4A_SHEET_NAME,
+    range: STAGE_6A_RESERVED_OPERATOR_BLOCK_RANGE_A1,
+    block_name: STAGE_6A_BLOCK_NAME,
+    status: "placeholder_writeback_completed",
+    stage6_operator_shell_summary: summaryPayload.stage6_operator_shell_summary
+  }));
+}
+
+/**
+ * Stage 6A — clear only E27:F40 to empty strings (does not touch Stage 5A/5C zones).
+ */
+function runStage6AResetReservedOperatorBlockOnly() {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = spreadsheet ? spreadsheet.getSheetByName(STAGE_4A_SHEET_NAME) : null;
+
+  if (!sheet) {
+    Logger.log(JSON.stringify({
+      stage: "6A_RESERVED_OPERATOR_BLOCK",
+      telemetry_tag: "stage=6A-reserved-operator-block",
+      block_version: STAGE_6A_SHELL_BLOCK_VERSION,
+      shell_status: "RESET_SKIPPED",
+      error: { error_code: "STAGE_4C_OPERATOR_SHELL_MISSING", message: "Sheet not found." }
+    }));
+    return;
+  }
+
+  var emptyRows = [];
+  var r;
+  for (r = 0; r < 14; r++) {
+    emptyRows.push(["", ""]);
+  }
+  sheet.getRange(STAGE_6A_RESERVED_OPERATOR_BLOCK_RANGE_A1).setValues(emptyRows);
+
+  var summaryPayload = buildStage6OperatorShellSummary_("", "RESERVED_DOC_ONLY");
+
+  Logger.log(JSON.stringify({
+    stage: "6A_RESERVED_OPERATOR_BLOCK",
+    telemetry_tag: "stage=6A-reserved-operator-block",
+    block_version: STAGE_6A_SHELL_BLOCK_VERSION,
+    shell_status: "RESERVED_DOC_ONLY",
+    action: "block_reset",
+    sheet: STAGE_4A_SHEET_NAME,
+    range: STAGE_6A_RESERVED_OPERATOR_BLOCK_RANGE_A1,
+    stage6_operator_shell_summary: summaryPayload.stage6_operator_shell_summary
+  }));
+}
+
+function buildStage6OperatorShellSummary_(activationDateIso, shellStatus) {
+  return {
+    stage6_operator_shell_summary: {
+      shell_block_version: STAGE_6A_SHELL_BLOCK_VERSION,
+      reserved_range: "E27:F40",
+      shell_status: shellStatus,
+      shell_activation_date: activationDateIso || "",
+      shell_type: "SHELL_VERTICAL_EXPANSION",
+      interpretation_scope: "SHELL_ONLY_NO_ENGINEERING"
+    }
+  };
+}
+
+function writeStage6APlaceholderGovernanceBlock_(sheet, activationDateIso, shellStatus) {
+  var rows = [
+    ["stage6_block_label", STAGE_6A_BLOCK_NAME],
+    ["stage_header", "Stage 6A — Reserved operator block (shell infrastructure)"],
+    ["governance", "Reserved / Locked — no Stage 6 engineering until Stage 6B+ TASK"],
+    ["future_use", "Future Stage 6 engineering — gated"],
+    ["shell_block_version", STAGE_6A_SHELL_BLOCK_VERSION],
+    ["reserved_range", "E27:F40"],
+    ["shell_status", shellStatus],
+    ["shell_activation_date", activationDateIso],
+    ["shell_type", "SHELL_VERTICAL_EXPANSION"],
+    ["interpretation_scope", "SHELL_ONLY_NO_ENGINEERING"],
+    ["payload_note", "stage6_operator_shell_summary logged from GAS only (no API field in Stage 6A)"],
+    ["", ""],
+    ["", ""],
+    ["", ""]
+  ];
+  sheet.getRange(STAGE_6A_RESERVED_OPERATOR_BLOCK_RANGE_A1).setValues(rows);
+}
+

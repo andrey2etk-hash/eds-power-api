@@ -29,6 +29,7 @@ This file is the single source of truth for all normalized ideas in EDS Power.
 | IDEA-0009 | 2026-04-29 | Stage 5B KZO Physical Footprint MVP: API-side lineup scale estimate from structural composition | `RIGHT_NOW` | `P1` | `TASK` | Stage 5B | After Stage 5A structural meaning + operator-visible output integration verified | Rough physical footprint scale from validated structure without CAD/BOM/weight/detail design | `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION` |
 | IDEA-0010 | 2026-04-29 | Stage 5C KZO Physical Topology MVP: section distribution and topology type from structural/footprint layers | `RIGHT_NOW` | `P1` | `TASK` | Stage 5C | After Stage 5A structural composition and Stage 5B physical footprint are Render-verified | MVP physical arrangement semantics only — no busbar/cable/detailed engineering | `IMPLEMENTED` |
 | IDEA-0011 | 2026-04-29 | Stage 5D KZO Operator Layout Governance MVP: fixed stage shell zones and vertical expansion before Stage 6 | `RIGHT_NOW` | `P1` | `TASK` | Stage 5D | After Stage 5C operator Sheet topology writeback verified | Governed operator shell — one stage block — additive downward growth — no redesign | `IMPLEMENTED` |
+| IDEA-0012 | 2026-04-29 | Stage 6A KZO Reserved Operator Block Activation: activate E27:F40 as governed shell infra before Stage 6 engineering | `RIGHT_NOW` | `P1` | `TASK` | Stage 6A | After Stage 5D shell governance MVP implemented | Activate reserved shell block only — no engineering formulas,BOM,Business logic — not API topology | `IMPLEMENTED` |
 
 ## Idea Notes
 
@@ -725,3 +726,26 @@ Governance record:
 - MVP shell: `SHELL_VERTICAL_EXPANSION` — active `E4:F20` (5A structure band), `E21:F26` (5C topology); reserved `E27:F40` (Stage 6), `E41:F54` (Stage 7)
 - This MVP wave: **documentation only** — no API payload, no new GAS surfaces (reference JSON for future `operator_layout_governance_summary` when tasked)
 - **Accepted:** Stage 5D Operator Layout Governance MVP after **PASS WITH DOC FIXES** (governance verification gate + `basis` field alignment in `10_OPERATOR_LAYOUT.md`; doc-pass 29.04.2026)
+
+### IDEA-0012 — Stage 6A KZO Reserved Operator Block Activation MVP
+
+Classification / priority / decision:
+
+- `RIGHT_NOW` / `P1` / `TASK`
+
+Stage target:
+
+- Stage 6A
+
+Trigger condition:
+
+- After Stage 5D operator shell governance documentation MVP (**IDEA-0011** `IMPLEMENTED`).
+
+Key thesis:
+
+- **Reserved ≠ operational** until shell activation: GAS-only constants, placeholder writeback to **`E27:F40`**, reset for block only, telemetry — **no** API `stage6_operator_shell_summary`, **no** engineering layer (Stage 6B+ only after verification).
+
+Implementation record:
+
+- `gas/Stage3D_KZO_Handshake.gs`: `STAGE_6A_RESERVED_OPERATOR_BLOCK_RANGE_A1` = `E27:F40`, `STAGE_6A_BLOCK_NAME`, `STAGE_6A_SHELL_BLOCK_VERSION`, `runStage6AActivateReservedOperatorBlockFlow()`, `runStage6AResetReservedOperatorBlockOnly()`, `buildStage6OperatorShellSummary_()` (logged shape matches target JSON; not an API field in 6A)
+- Audit: `docs/AUDITS/2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`
