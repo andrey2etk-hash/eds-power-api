@@ -12,6 +12,7 @@ Rule:
 
 ## Latest audit
 
+- Stage 5D operator layout governance (shell registry — **ACTIVE**) — `2026-04-29_STAGE_5D_OPERATOR_LAYOUT_GOVERNANCE.md`
 - Stage 5C operator Sheet visibility (topology — thin GAS, **VERIFIED**) — `2026-04-29_STAGE_5C_SHEET_OUTPUT_INTEGRATION.md`
 - **Gemini external audit request** — `2026-04-29_STAGE_5C_SHEET_GEMINI_AUDIT_REQUEST.md`
 - Operational gate — `2026-04-29_STAGE_5C_PHYSICAL_TOPOLOGY_RENDER_GATE.md`
@@ -44,6 +45,7 @@ Rule:
 - `2026-04-29_STAGE_5C_PHYSICAL_TOPOLOGY_RENDER_GATE.md`
 - `2026-04-29_STAGE_5C_SHEET_OUTPUT_INTEGRATION.md`
 - `2026-04-29_STAGE_5C_SHEET_GEMINI_AUDIT_REQUEST.md`
+- `2026-04-29_STAGE_5D_OPERATOR_LAYOUT_GOVERNANCE.md`
 
 ## Deprecated audits
 

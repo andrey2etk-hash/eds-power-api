@@ -11,7 +11,7 @@
 
 ## Поточний етап
 
-Execution gate до наступного scoped TASK поза межами узгодженого KZO MVP band (структура / масштаб / топологія операторськи видні на Sheet).
+Stage **5D** — операторська **shell governance** (вертикальні блоки, резерв під Stage 6/7). Документ: `docs/00-02_CALC_CONFIGURATOR/09_KZO/10_OPERATOR_LAYOUT.md`. **Stage 6** sheet expansion — лише після закриття governance та окремого TASK (**IDEA-0011** ACTIVE).
 
 ## Як узгоджено з Gemini doc-pass (Зовнішній аудит)
 
@@ -25,7 +25,7 @@ https://eds-power-api.onrender.com
 
 1. 00-01_AUTH — авторизація (frozen MVP / draft_ready)
 2. 00-02_CALC_CONFIGURATOR — конфігуратор (KZO Stage 5A–5C operator-visible path для structural / footprint API / topology API + топологія на Sheet верифіковані)
-3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (Stage 5C closure на рівні API + Sheet thin GAS)
+3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (Stage 5C verified; Stage 5D shell governance ACTIVE)
 
 ## Що робимо зараз
 

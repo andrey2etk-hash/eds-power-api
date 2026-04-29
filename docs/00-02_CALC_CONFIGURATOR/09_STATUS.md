@@ -21,6 +21,7 @@ KZO MVP implementation baseline has reached Stage 5A task definition:
 - Stage 5A-Output-Integration — verified operator-visible transport/writeback-only Sheet visibility
 - Stage 5B — `physical_summary` verified on deployed Render (Render gate audit; `VERIFIED_RENDER_PENDING_OPERATOR_VISIBLE_INTEGRATION`)
 - Stage 5C — VERIFIED (topology on Sheet: `physical_topology_summary` → `Stage4A_MVP!E21:F26` thin GAS — audit `docs/AUDITS/2026-04-29_STAGE_5C_SHEET_OUTPUT_INTEGRATION.md`; IDEA-0010 = `IMPLEMENTED`)
+- Stage 5D — ACTIVE — operator layout governance MVP (shell zones + reserved rows; docs-only — `docs/00-02_CALC_CONFIGURATOR/09_KZO/10_OPERATOR_LAYOUT.md`; IDEA-0011)
 
 На цьому рівні виконано:
 
@@ -82,7 +83,7 @@ KZO MVP implementation baseline has reached Stage 5A task definition:
 - Stage 5A output integration verified in operator-visible Sheet (`runStage5AOutputIntegrationFlow()`)
 - Stage 5B physical footprint `physical_summary` live Render verification passed (see `docs/AUDITS/2026-04-29_STAGE_5B_PHYSICAL_FOOTPRINT_RENDER_GATE.md`)
 - Stage 5C physical topology `physical_topology_summary` live Render verification passed (see `docs/AUDITS/2026-04-29_STAGE_5C_PHYSICAL_TOPOLOGY_RENDER_GATE.md`)
-- Stage 5C operator Sheet writeback for topology (`E21:F26` thin GAS) verification recorded (see `docs/AUDITS/2026-04-29_STAGE_5C_SHEET_OUTPUT_INTEGRATION.md`; Gemini doc-pass)
+- Stage 5D operator layout shell governance MVP documented (`10_OPERATOR_LAYOUT.md`; docs-only; IDEA-0011 ACTIVE; audit `2026-04-29_STAGE_5D_OPERATOR_LAYOUT_GOVERNANCE.md`); Stage 6 sheet expansion gated
 
 ## Що не входить у Stage 1
 

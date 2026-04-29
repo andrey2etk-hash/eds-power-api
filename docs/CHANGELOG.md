@@ -1341,6 +1341,32 @@ Display API `data.physical_topology_summary` in operator Sheet without recomputi
 
 ---
 
+# 29.04.2026 — Stage 5D Operator Layout Governance MVP (documentation only)
+
+## Причина
+
+Зафіксувати операторський shell у Google Sheet до Stage 6: активні зони підтверджених етапів, зарезервовані рядки під наступні шари, анти-накладання — без UI redesign.
+
+## Рішення
+
+- `docs/00-02_CALC_CONFIGURATOR/09_KZO/10_OPERATOR_LAYOUT.md` — модель **SHELL_VERTICAL_EXPANSION**, активні **E4:F20** (5A structure band), **E21:F26** (5C topology), резерв **E27:F40** / **E41:F54** для майбутніх Stage 6/7 — використання лише після TASK
+- референсний JSON для майбутнього поля `operator_layout_governance_summary` (без впровадження в API у цьому TASK)
+- `IDEA-0011` = **`ACTIVE`** у `docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`
+
+## Обмеження
+
+- без змін `main.py`, топології, інженерних розрахунків
+- без DB / AUTH / Supabase
+- без redesign листа понад реєстром зон
+- **Stage 6** sheet expansion у зарезервованих діапазонах — лише після закриття Stage 5D governance та окремого TASK на GAS/constants
+
+## Governance / аудит
+
+- `docs/AUDITS/2026-04-29_STAGE_5D_OPERATOR_LAYOUT_GOVERNANCE.md`
+- Gate: `docs/00-02_CALC_CONFIGURATOR/09_KZO/08_STATUS.md`
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP
