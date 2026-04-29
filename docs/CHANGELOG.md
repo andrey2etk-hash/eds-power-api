@@ -1488,6 +1488,16 @@ Reserved діапазон **`E27:F40`** має бути **операційним
 
 ---
 
+## Stage 6C — operator verification closeout (29.04.2026)
+
+### Док-синхронізація
+
+- Операторська верифікація **PASS**: **`runStage6CEngineeringBurdenFlow()`**, **`Stage4A_MVP!E27:F40`**, **`http_code` 200**, **`engineering_burden_summary_present`**, **`writeback_completed`** — детально в **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`**
+- **`IDEA-0014`**: master table **Status** → **`IMPLEMENTED`** (після interim **`RENDER_VERIFIED_PENDING_OPERATOR_TEST`**)
+- Оновлено `12_IDEA_MASTER_LOG.md`, `NOW.md`, **`09_KZO/08_STATUS.md`**, **`09_STATUS.md`**, **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`**, **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`**, **`00_AUDIT_INDEX.md`**
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP

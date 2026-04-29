@@ -36,7 +36,7 @@ Stage 6A = VERIFIED (reserved operator block shell — **`E27:F40`**; **IDEA-001
 
 Stage 6B = **VERIFIED / IMPLEMENTED** — **formally closed** (API **`engineering_class_summary`** + GAS thin writeback **`E27:F40`**; operator PASS + external Gemini **`SAFE TO PROCEED TO STAGE 6C`** — **IDEA-0013** **`IMPLEMENTED`**; closure **29.04.2026**)
 
-Stage 6C = **IMPLEMENTED / Render-verified API** (**`engineering_burden_summary`** on live **`prepare_calculation`** — gate **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`** — **IDEA-0014** **`RENDER_VERIFIED_PENDING_OPERATOR_TEST`** — thin GAS **`runStage6CEngineeringBurdenFlow()`** — operator test **pending**)
+Stage 6C = **IMPLEMENTED / Render + operator-visible verified** (**`engineering_burden_summary`** API + **`runStage6CEngineeringBurdenFlow()`** **`E27:F40`** — **IDEA-0014** **`IMPLEMENTED`**; audits **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`** (Render + Sheet closeout))
 
 ## Gate
 
@@ -46,7 +46,7 @@ Stage 6C = **IMPLEMENTED / Render-verified API** (**`engineering_burden_summary`
 
 **Stage 6B:** **CLOSED** — **engineering classification** MVP complete: API **`engineering_class_summary`**, thin GAS **`runStage6BEngineeringClassificationFlow()`**, **`E27:F40`**, operator verification PASS, external Gemini verdict **`SAFE TO PROCEED TO STAGE 6C`** (`docs/AUDITS/2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`). **IDEA-0013** master **Status** = **`IMPLEMENTED`** (operator/Gemini closure = notes only).
 
-**Stage 6C — Engineering burden foundation MVP:** **delivered (API)** + **Render PASS** **`engineering_burden_summary`** — thin GAS optional — **`interpretation_scope`** **`ENGINEERING_BURDEN_ONLY_MVP`** (`docs/AUDITS/2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`; Render gate: **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`**). **IDEA-0014** master **Status** = **`RENDER_VERIFIED_PENDING_OPERATOR_TEST`** (operator-visible writeback **`runStage6CEngineeringBurdenFlow()`** pending).
+**Stage 6C — Engineering burden foundation MVP:** **delivered (API + Sheet)** — **`interpretation_scope`** **`ENGINEERING_BURDEN_ONLY_MVP`** — Render + operator PASS (`docs/AUDITS/2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`; foundation `2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`). **IDEA-0014** master **Status** = **`IMPLEMENTED`** (**RENDER_VERIFIED_…** was interim prior to Sheet PASS).
 
 **Stage 7+ / precision layers** — **blocked** until separate TASKs **after** Stage 6B classification baseline and any Stage 6C foundation TASK (no ungoverned engineering expansion).
 
@@ -56,7 +56,7 @@ Shell registry: **active** blocks (`E4:F20`, `E21:F26`, **`E27:F40`** — Stage 
 
 ## Current status
 
-Stage 6A–6C KZO bands are aligned with audits: Stage 6B **closed**; Stage 6C **`engineering_burden_summary`** on **`prepare_calculation`** (live Render verified — **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`**) with thin GAS to **`E27:F40`** (14 rows) **pending operator test**; **`estimated_mass_class`** remains **burden-tier** (not kg). **IDEA-0013** = **`IMPLEMENTED`**; **IDEA-0014** = **`RENDER_VERIFIED_PENDING_OPERATOR_TEST`** in the master table.
+Stage 6A–6C KZO bands are aligned with audits: Stage 6C **`engineering_burden_summary`** — **live Render PASS** + **operator Sheet PASS** (**`Stage4A_MVP`** **`E27:F40`**) (**IDEA-0014** **`IMPLEMENTED`**). **`estimated_mass_class`** remains **burden-tier** (not kg). **IDEA-0013** = **`IMPLEMENTED`**.
 
 ## Blockers
 

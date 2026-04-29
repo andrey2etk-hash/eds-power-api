@@ -2,11 +2,11 @@
 
 ## Objective
 
-Verify `data.engineering_burden_summary` for KZO MVP on **live Render** (`POST /api/calc/prepare_calculation`) before declaring **Stage 6C** Render API verification complete. Operator-visible Sheet verification remains **out of scope** for this gate (see **IDEA-0014** status).
+Verify `data.engineering_burden_summary` for KZO MVP on **live Render** (`POST /api/calc/prepare_calculation`) before declaring **Stage 6C** Render API verification complete. **Operator Sheet PASS** — see **Operator Sheet verification closeout** below.
 
-## IDEA-0014 status (after live PASS)
+## IDEA-0014 master `Status`
 
-**`RENDER_VERIFIED_PENDING_OPERATOR_TEST`**
+- **`IMPLEMENTED`** once **Render PASS** + **operator-visible Sheet PASS** were both recorded (**IDEA-0014** remains the only canonical **Status** token in master table — **RENDER_VERIFIED_…** was an interim rollout label superseded here).
 
 ## Live verification recorded
 
@@ -88,6 +88,34 @@ Aligned with **`docs/AUDITS/2026-04-29_STAGE_5B_PHYSICAL_FOOTPRINT_RENDER_GATE.m
 | `complexity_basis`, `topology_basis`, `footprint_basis` present | yes |
 | `interpretation_scope` = `ENGINEERING_BURDEN_ONLY_MVP` | yes |
 | Prior layers preserved (listed above) | yes |
+
+## Operator Sheet verification closeout
+
+**PASS** — manual operator run **`runStage6CEngineeringBurdenFlow()`** on **`Stage4A_MVP`**, canonical KZO input ( **`CFG_SINGLE_BUS_SECTION`**, **`quantity_total`**: **22**, aligned with Render gate payload).
+
+### Recorded Execution log excerpts (Apps Script)
+
+Probe order preserved as received:
+
+```
+18:46:15  Примечание  Выполнение начато
+18:47:01  Информация  {"stage":"6C_ENGINEERING_BURDEN","telemetry_tag":"stage=6c-engineering-burden","http_code":200,"local_input_status":"OK","status":"success","engineering_burden_summary_present":true,"error":null}
+18:47:01  Информация  {"stage":"6C_ENGINEERING_BURDEN","telemetry_tag":"stage=6c-engineering-burden","status":"writeback_completed","sheet":"Stage4A_MVP","range":"E27:F40","engineering_burden_summary_present":true}
+18:46:22  Примечание  Выполнение завершено
+```
+
+| Fact | Recorded |
+| --- | --- |
+| HTTP | **`http_code`** **200** |
+| API upstream | **`status`** **success**, **`engineering_burden_summary_present`** **true** |
+| GAS | **`writeback_completed`**; telemetry **`stage`**: **`6C_ENGINEERING_BURDEN`** |
+| Sheet | **`Stage4A_MVP!E27:F40`** (14-row band) |
+| Thin client | API JSON → sheet cells — **no** burden heuristic in GAS |
+| Scope | No BOM, kg, pricing, DB, CAD beyond planning burden tiers |
+
+Sheet visual (**EDS Power Stage 3E Test** workbook / **`Stage4A_MVP`**) corroborates: **`ENGINEERING_BURDEN_ONLY_MVP`** in **`interpretation_scope`**, **`burden_version`** line present, **`stage_note`** cites thin GAS scope.
+
+---
 
 ## References
 

@@ -29,7 +29,7 @@
 ## Поточний етап і наступний gate
 
 - **Classification baseline (Stage 6B)** — **closed**.
-- **Stage 6C — burden foundation** — **`engineering_burden_summary`** на API (**live Render PASS** — `docs/AUDITS/2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`) + thin GAS **`runStage6CEngineeringBurdenFlow()`** (**IDEA-0014** **`RENDER_VERIFIED_PENDING_OPERATOR_TEST`**; **`estimated_mass_class`** ≠ kg).
+- **Stage 6C — burden foundation** — **`engineering_burden_summary`**: Render gate **PASS** + operator **`runStage6CEngineeringBurdenFlow()`** **PASS** (**IDEA-0014** **`IMPLEMENTED`**; аудит **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`** — execution log + sheet visual)
 - **Наступна планована фаза:** **precision / commercial expansion** — лише через окремий **TASK** з governance (**після Stage 6C burden MVP**).
 - Execution до **precision** шарів (маса, BOM, КП…) — лише через **нові TASK** після узгодження меж (6C дає лише burden-tier).
 
@@ -46,7 +46,7 @@ https://eds-power-api.onrender.com
 
 1. 00-01_AUTH — авторизація (frozen MVP / draft_ready)
 2. 00-02_CALC_CONFIGURATOR — конфігуратор (KZO Stage 5A–5C operator-visible path для structural / footprint API / topology API + топологія на Sheet верифіковані)
-3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (**Stage 6C**: **IDEA-0014** **`RENDER_VERIFIED_PENDING_OPERATOR_TEST`** — Render gate PASS; операторська верифікація GAS **`runStage6CEngineeringBurdenFlow()`** pending; 6B/6C **`E27:F40`** — precision лише TASK)
+3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (**Stage 6C** operator-visible burden **PASS**, **IDEA-0014** **`IMPLEMENTED`**; 6B/6C **`E27:F40`**; precision — окремий TASK)
 
 ## Що робимо зараз
 
@@ -100,7 +100,7 @@ https://eds-power-api.onrender.com
 - Stage 5D operator layout governance documentation MVP closed (verification gate PASS WITH DOC FIXES → doc-pass; **IDEA-0011** = `IMPLEMENTED`)
 - Stage 6A reserved block **`E27:F40`** — GAS activation + **operator verification PASS** 29.04.2026 (doc-pass sync) (**IDEA-0012** `IMPLEMENTED`; audit `docs/AUDITS/2026-04-29_STAGE_6A_RESERVED_BLOCK_ACTIVATION.md`)
 - Stage 6B **closed** — operator verification PASS + Gemini **`SAFE TO PROCEED TO STAGE 6C`**; formal doc-pass (**IDEA-0013** `IMPLEMENTED`; audit `docs/AUDITS/2026-04-29_STAGE_6B_ENGINEERING_CLASSIFICATION.md`)
-- Stage 6C **`engineering_burden_summary`** live **`eds-power-api.onrender.com`** PASS + **`runStage6CEngineeringBurdenFlow()`** (**IDEA-0014** **`RENDER_VERIFIED_PENDING_OPERATOR_TEST`**; foundation audit **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`**; Render gate **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`**)
+- Stage 6C Render + **`runStage6CEngineeringBurdenFlow()`** operator **PASS** (**IDEA-0014** **`IMPLEMENTED`**; **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`**)
 
 ## What remains next (plan)
 

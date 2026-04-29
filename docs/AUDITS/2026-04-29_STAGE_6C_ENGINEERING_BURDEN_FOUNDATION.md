@@ -32,6 +32,8 @@ kg, BOM, price, CAD, procurement, thermal, DB, Supabase, false exact mass.
 
 **PASS** — burden layer is classification-grade and bounded.
 
+**Operator-visible Sheet PASS** (**29.04.2026**) — **`runStage6CEngineeringBurdenFlow()`** **`Stage4A_MVP!E27:F40`** — details: `docs/AUDITS/2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md` (same path as Render gate workbook record).
+
 ## References
 
 - `docs/00-02_CALC_CONFIGURATOR/09_KZO/10_OPERATOR_LAYOUT.md`
