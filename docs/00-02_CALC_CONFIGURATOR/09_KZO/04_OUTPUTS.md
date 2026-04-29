@@ -115,6 +115,71 @@ Rules:
 - no dimensions
 - no weight
 
+## structural_composition_summary
+
+`structural_composition_summary` is the Stage 5A first practical KZO structural meaning layer.
+
+It is returned inside `data.structural_composition_summary`.
+
+Required fields:
+
+- summary_version
+- product_type
+- lineup_summary
+- cell_composition
+- functional_lineup_composition
+- structural_flags
+- interpretation_scope
+
+Rules:
+
+- API-side only
+- deterministic structural interpretation only
+- no design recommendations
+- no breaker selection
+- no PT truck selection
+- no busbar sizing
+- no price calculation
+- no BOM calculation
+- no CAD output
+- no production route
+- no commercial offer generation
+
+Example:
+
+```json
+{
+  "summary_version": "KZO_STAGE_5A_STRUCTURAL_COMPOSITION_V1",
+  "product_type": "KZO",
+  "lineup_summary": {
+    "total_cells": 22,
+    "sections": 2,
+    "primary_voltage_class": "10kV",
+    "busbar_current": "1250A",
+    "configuration_type": "CFG_SINGLE_BUS_SECTION"
+  },
+  "cell_composition": {
+    "incoming": 2,
+    "outgoing": 16,
+    "pt": 2,
+    "sectionalizer": 2
+  },
+  "functional_lineup_composition": {
+    "incoming_cells": 2,
+    "outgoing_cells": 16,
+    "voltage_transformer_cells": 2,
+    "sectionalizer_cells": 2
+  },
+  "structural_flags": [
+    "dual_incoming",
+    "high_outgoing_density",
+    "pt_present",
+    "sectionalized_lineup"
+  ],
+  "interpretation_scope": "STRUCTURAL_COMPOSITION_ONLY"
+}
+```
+
 ## error object
 
 Errors must follow the Global Error Contract in `docs/00_SYSTEM/04_DATA_CONTRACTS.md`.

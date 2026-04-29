@@ -28,6 +28,22 @@ KZO_CELL_TYPES = {
     "CELL_PT",
     "CELL_BUS_SECTION",
 }
+KZO_CELL_COMPOSITION_FIELDS = {
+    "CELL_INCOMER": "incoming",
+    "CELL_OUTGOING": "outgoing",
+    "CELL_PT": "pt",
+    "CELL_BUS_SECTION": "sectionalizer",
+}
+KZO_VOLTAGE_CLASS_LABELS = {
+    "VC_06": "6kV",
+    "VC_10": "10kV",
+    "VC_20": "20kV",
+    "VC_35": "35kV",
+}
+KZO_CONFIGURATION_SECTION_COUNTS = {
+    "CFG_SINGLE_BUS": 1,
+    "CFG_SINGLE_BUS_SECTION": 2,
+}
 KZO_OBJECT_STATUSES = {
     "DRAFT",
     "VALIDATED",
@@ -122,6 +138,48 @@ def _validate_kzo_payload(payload: dict[str, Any]) -> tuple[dict[str, Any] | Non
     return normalized_payload, None
 
 
+def _build_kzo_structural_composition_summary(normalized_payload: dict[str, Any]) -> dict[str, Any]:
+    cell_distribution = normalized_payload["cell_distribution"]
+    cell_composition = {
+        summary_field: cell_distribution.get(cell_type, 0)
+        for cell_type, summary_field in KZO_CELL_COMPOSITION_FIELDS.items()
+    }
+    total_cells = normalized_payload["quantity_total"]
+    section_cells = cell_composition["sectionalizer"]
+    sections = KZO_CONFIGURATION_SECTION_COUNTS[normalized_payload["configuration_type"]]
+    structural_flags = []
+
+    if cell_composition["incoming"] >= 2:
+        structural_flags.append("dual_incoming")
+    if total_cells > 0 and cell_composition["outgoing"] / total_cells >= 0.5:
+        structural_flags.append("high_outgoing_density")
+    if cell_composition["pt"] > 0:
+        structural_flags.append("pt_present")
+    if section_cells > 0:
+        structural_flags.append("sectionalized_lineup")
+
+    return {
+        "summary_version": "KZO_STAGE_5A_STRUCTURAL_COMPOSITION_V1",
+        "product_type": normalized_payload["product_type"],
+        "lineup_summary": {
+            "total_cells": total_cells,
+            "sections": sections,
+            "primary_voltage_class": KZO_VOLTAGE_CLASS_LABELS[normalized_payload["voltage_class"]],
+            "busbar_current": f"{normalized_payload['busbar_current']}A",
+            "configuration_type": normalized_payload["configuration_type"],
+        },
+        "cell_composition": cell_composition,
+        "functional_lineup_composition": {
+            "incoming_cells": cell_composition["incoming"],
+            "outgoing_cells": cell_composition["outgoing"],
+            "voltage_transformer_cells": cell_composition["pt"],
+            "sectionalizer_cells": cell_composition["sectionalizer"],
+        },
+        "structural_flags": structural_flags,
+        "interpretation_scope": "STRUCTURAL_COMPOSITION_ONLY",
+    }
+
+
 @app.get("/")
 def root():
     return {"message": "EDS Power API is running"}
@@ -195,6 +253,7 @@ def prepare_calculation(request: dict[str, Any]):
         cell_type: normalized_payload["cell_distribution"][cell_type]
         for cell_type in sorted(normalized_payload["cell_distribution"])
     }
+    structural_composition_summary = _build_kzo_structural_composition_summary(normalized_payload)
 
     return {
         "status": "success",
@@ -214,6 +273,7 @@ def prepare_calculation(request: dict[str, Any]):
                 "cell_type_summary": cell_type_summary,
                 "validation_status": "VALIDATED",
             },
+            "structural_composition_summary": structural_composition_summary,
         },
         "error": None,
         "metadata": _response_metadata(meta, normalized_payload["logic_version"], started_at),

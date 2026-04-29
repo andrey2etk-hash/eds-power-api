@@ -22,23 +22,23 @@ Stage 4B = verified structural preflight
 
 Stage 4C = verified operator shell
 
-Stage 5A = unlocked next primary
+Stage 5A = deployment candidate pending Render verification
 
 ## Gate
 
-Current = Stage 5A first practical KZO logic task definition
+Current = Stage 5A Render verification
 
 ## Current status
 
-Stage 4C operator shell verified after successful setup, Render API flow, output writeback, and warm run confirmation
+Stage 5A structural composition summary is implemented API-side, passed local smoke verification, and is prepared as deployment candidate
 
 ## Blockers
 
-- Stage 5A still requires a separate normalized execution task before implementation
+- Stage 5A still needs deployed Render API verification after GitHub-based deploy
 
 ## Next
 
-Define Stage 5A first practical KZO logic through Idea Normalizer and keep scope narrow
+Verify `structural_composition_summary` through deployed Render API
 
 ## Global status link
 

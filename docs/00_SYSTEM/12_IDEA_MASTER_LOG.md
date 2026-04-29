@@ -24,7 +24,7 @@ This file is the single source of truth for all normalized ideas in EDS Power.
 | IDEA-0004 | 2026-04-29 | Stage 4A Google Sheet Core Template Protection and Structured Input Layer | `RIGHT_NOW` | `P1` | `TASK` | Stage 4A | Immediately after Stage 3F governance sync with VERIFIED_MVP_ONLY / verified writeback baseline | Transform Stage 3F test loop into protected Google Sheet MVP configurator shell with deterministic structure | `IMPLEMENTED` |
 | IDEA-0005 | 2026-04-29 | Stage 4B Input Normalization Layer for Google Sheet MVP Shell | `RIGHT_NOW` | `P1` | `TASK` | Stage 4B | After Stage 4A protected shell verified | Convert protected template shell into resilient human-operable MVP shell through deterministic GAS normalization | `IMPLEMENTED` |
 | IDEA-0006 | 2026-04-29 | Stage 4C KZO Usable Input Form | `RIGHT_NOW` | `P1` | `TASK` | Stage 4C | Immediately after Stage 4B `VERIFIED_STRUCTURAL_PREFLIGHT` | Stabilize the KZO operator-grade input shell before practical product logic | `IMPLEMENTED` |
-| IDEA-0007 | 2026-04-29 | Stage 5A First Practical KZO Logic | `RIGHT_NOW` | `P1` | `TASK` | Stage 5A | Only after Stage 4C `VERIFIED_OPERATOR_SHELL` | Inject first narrow practical KZO logic only after the operator shell is stable | `UNLOCKED_NEXT_PRIMARY` |
+| IDEA-0007 | 2026-04-29 | Stage 5A First Practical KZO Logic: Structural Composition and Lineup Meaning Layer | `RIGHT_NOW` | `P1` | `TASK` | Stage 5A | Immediately after Stage 4C `VERIFIED_OPERATOR_SHELL` with frozen input contract | Introduce first structural engineering meaning without crossing into design, BOM, or commercial layers | `DEPLOYMENT_CANDIDATE_PENDING_RENDER_VERIFICATION` |
 
 ## Idea Notes
 
@@ -348,16 +348,75 @@ Scope guard:
 Sequencing role:
 
 - `NEXT_PRIMARY / IMMEDIATE_POST_4C`
-- not parallel with Stage 4C
+- active only after Stage 4C `VERIFIED_OPERATOR_SHELL`
 
 Trigger condition:
 
-- only after Stage 4C `VERIFIED_OPERATOR_SHELL`
+- immediately after Stage 4C `VERIFIED_OPERATOR_SHELL` with frozen input contract
 
 Required scope:
 
-- first narrow KZO logic only
-- use stabilized operator shell only
+- KZO only
+- API-side only
+- structural engineering normalization only
+- lineup structural summary
+- cell-type composition summary
+- first practical technical meaning
+- normalized output expansion only
+- deterministic rules only
+
+Narrow execution candidate:
+
+- Configured KZO Structural Composition Summary
+
+Input interpretation:
+
+- total lineup
+- voltage class
+- busbar current
+- cell types and quantities
+
+Allowed first outputs:
+
+- total lineup structure
+- cell category breakdown
+- functional lineup composition
+- first structural flags
+
+Example safe output:
+
+```json
+{
+  "validation_status": "VALIDATED",
+  "product_type": "KZO",
+  "lineup_summary": {
+    "total_cells": 22,
+    "sections": 1,
+    "primary_voltage_class": "10kV",
+    "busbar_current": "630A"
+  },
+  "cell_composition": {
+    "incoming": 2,
+    "outgoing": 16,
+    "pt": 2,
+    "sectionalizer": 1,
+    "bus_riser": 1
+  },
+  "structural_flags": [
+    "dual_incoming",
+    "high_outgoing_density",
+    "pt_present"
+  ]
+}
+```
+
+Safe first rule types:
+
+- cell count validation
+- cell type grouping
+- lineup composition logic
+- section count
+- functional role summary
 
 Forbidden scope:
 
@@ -365,20 +424,66 @@ Forbidden scope:
 - commercial layer
 - BOM explosion
 - CAD
-- technical department overbuild
+- DB
+- Supabase
+- Sidebar
+- GAS logic expansion
+- Sheet redesign
+- technical documentation packs
+- procurement logic
 - multi-product
+- production transfer
+- technical department overbuild
 - DB foundation shift
+
+Explicitly forbidden outputs:
+
+- use this breaker
+- use this PT truck
+- busbar size = X
+- price = Y
 
 Reason:
 
-- Stage 5A is strategically immediate but must not run before shell maturity.
-- This protects architecture from premature coupling.
-- Correct sequence is `4B -> 4C -> 5A`, not `4B -> (4C + 5A)`.
+- Stage 4C stabilized the operator shell and froze the input contract.
+- Stage 5A can safely move from validation shell to practical structural interpretation.
+- The system should answer what the KZO structurally is without entering design, BOM, costing, or commercial layers.
 
 Key governance principle:
 
-- First stable operator shell, then practical product logic.
+- Interpret structure.
+- Do not engineer solutions yet.
 
 Scope guard:
 
-- 5A remains parked until Stage 4C is verified as operator shell.
+- Stage 5A = Structural Composition + Lineup Meaning Layer only.
+- Not design logic.
+- Not commercial logic.
+- Not production logic.
+
+Success condition:
+
+- before Stage 5A: payload is valid
+- after Stage 5A: KZO is explained structurally, for example:
+  - 22-cell lineup
+  - dual incoming
+  - 16 outgoing
+  - PT-equipped
+  - 10kV / 630A structure
+
+Strategic bridge:
+
+- Validation
+- Structural Understanding
+- later technical logic in future Stage 5B+
+
+Implementation record:
+
+- API-side helper `_build_kzo_structural_composition_summary()` added
+- response field `data.structural_composition_summary` added
+- local smoke test passed
+- live Render pre-deploy check still returns Stage 3C / Stage 4B fields only
+- deployment candidate required because Render deploy is GitHub-based
+- no GAS logic expansion
+- no Sheet redesign
+- no pricing, BOM, DB, commercial, or production logic

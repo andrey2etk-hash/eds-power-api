@@ -6,7 +6,7 @@ Stage 4C verified operator shell
 
 CALC skeleton = governed foundation complete.
 
-KZO MVP implementation baseline has reached Stage 5A unlock:
+KZO MVP implementation baseline has reached Stage 5A task definition:
 
 - Stage 3A — KZO Calculation Object Contract committed
 - Stage 3B — API validation skeleton committed
@@ -17,7 +17,7 @@ KZO MVP implementation baseline has reached Stage 5A unlock:
 - Stage 4A — protected template shell verified as MVP-only baseline
 - Stage 4B — structural preflight verified
 - Stage 4C — operator shell verified
-- Stage 5A — unlocked as next primary gate
+- Stage 5A — deployment candidate pending Render verification
 
 Модуль ще не має статусу `draft_ready`.
 
@@ -69,11 +69,15 @@ KZO MVP implementation baseline has reached Stage 5A unlock:
 - Stage 4C operator flow verified through Render API
 - Stage 4C warm run confirmed no cold-start blocker
 - Stage 5A unlocked after Stage 4C operator shell verification
+- Stage 5A structural composition scope defined as API-side only
+- Stage 5A structural composition summary implemented in API
+- Stage 5A local smoke test passed
+- Stage 5A deployment candidate prepared because Render deploy is GitHub-based
 
 Для переходу далі потрібно:
 
-- define Stage 5A as a separate normalized execution task
-- keep Stage 5A limited to first narrow KZO logic
+- verify Stage 5A through deployed Render API after GitHub push/deploy
+- keep Stage 5A API-side only until separately expanded
 - explicit approval before UI / DB / business calculation expansion
 
 ## Що не входить у Stage 1

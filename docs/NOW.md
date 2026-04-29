@@ -6,7 +6,7 @@
 
 ## Поточний етап
 
-Stage 4C — KZO Usable Input Form. 29.04.2026
+Stage 5A — First Practical KZO Logic: Structural Composition. 29.04.2026
 
 ## Активний сервер
 
@@ -25,10 +25,10 @@ https://eds-power-api.onrender.com
 - Stage 4A = VERIFIED_MVP_ONLY
 - Stage 4B = VERIFIED_STRUCTURAL_PREFLIGHT
 - Stage 4C = VERIFIED_OPERATOR_SHELL
-- Stage 5A = UNLOCKED_NEXT_PRIMARY
+- Stage 5A = DEPLOYMENT_CANDIDATE_PENDING_RENDER_VERIFICATION
 - тримаємо `00-01_AUTH` frozen at MVP
 - тримаємо `00-02_CALC_CONFIGURATOR` у межах KZO MVP
-- тримаємо Stage 5A як наступний execution gate
+- тримаємо Stage 5A як поточний execution gate
 - підтримуємо синхронність GitHub / Cursor / Docs
 - Idea Normalizer = ACTIVE GOVERNANCE
 
@@ -62,12 +62,12 @@ https://eds-power-api.onrender.com
 - Stage 4A protected template shell verified as MVP-only baseline
 - Stage 4B structural preflight verified
 - Stage 4C operator shell verified manually; warm run confirmed no cold start blocker
-- Stage 5A unlocked as next-primary after Stage 4C
+- Stage 5A structural composition prepared as deployment candidate after local smoke verification
 - Idea Normalizer foundation created
 
 ## What remains next (plan)
 
-- define Stage 5A first practical KZO logic through a separate normalized execution task
-- keep Stage 5A narrow and dependent on the verified Stage 4C operator shell
+- push Stage 5A deployment candidate and verify deployed Render API
+- keep Stage 5A narrow: no design, BOM, pricing, DB, GAS logic, or Sheet redesign
 - keep GAS thin
 - avoid sidebar, buttons, menus, DB, Supabase, AUTH, costing, BOM, and production logic unless separately tasked

@@ -1014,6 +1014,143 @@ Stage 5A is unlocked as the next primary gate, but must be defined through a sep
 
 ---
 
+# 29.04.2026 — Stage 5A structural composition task defined
+
+## Причина
+
+After Stage 4C verified the operator shell, Stage 5A can start as the first narrow API-side engineering value layer.
+
+## Рішення
+
+Stage 5A = `ACTIVE_TASK_DEFINED_PENDING_IMPLEMENTATION`.
+
+The stage must introduce:
+
+- structural interpretation
+- lineup structural summary
+- cell-type composition summary
+- first structural flags
+- normalized output expansion
+
+## Narrow execution
+
+`Configured KZO Structural Composition Summary`
+
+Input:
+
+- total lineup
+- voltage class
+- busbar current
+- cell types and quantities
+
+Output:
+
+- total lineup structure
+- cell category breakdown
+- functional lineup composition
+- first structural flags
+
+## Обмеження
+
+- KZO only
+- API-side only
+- deterministic rules only
+- no pricing
+- no BOM
+- no costing
+- no CAD
+- no DB
+- no Supabase
+- no Sidebar
+- no GAS logic expansion
+- no Sheet redesign
+- no commercial logic
+- no procurement logic
+- no multi-product
+- no production transfer
+
+## Success condition
+
+Before Stage 5A:
+
+```text
+Payload valid.
+```
+
+After Stage 5A:
+
+```text
+KZO = 22-cell lineup, dual incoming, 16 outgoing, PT-equipped, 10kV / 630A structure.
+```
+
+## Anti-drift law
+
+Interpret structure. Do not engineer solutions yet.
+
+## Implementation result
+
+Stage 5A = `DEPLOYMENT_CANDIDATE_PENDING_RENDER_VERIFICATION`.
+
+Added in `main.py`:
+
+- `KZO_CELL_COMPOSITION_FIELDS`
+- `KZO_VOLTAGE_CLASS_LABELS`
+- `KZO_CONFIGURATION_SECTION_COUNTS`
+- `_build_kzo_structural_composition_summary()`
+- response field `data.structural_composition_summary`
+
+Local smoke result:
+
+- API direct function call returned `status = success`
+- `structural_composition_summary.summary_version` = `KZO_STAGE_5A_STRUCTURAL_COMPOSITION_V1`
+- `lineup_summary.total_cells` = `22`
+- `lineup_summary.sections` = `2`
+- `lineup_summary.primary_voltage_class` = `10kV`
+- `lineup_summary.busbar_current` = `1250A`
+- `cell_composition.incoming` = `2`
+- `cell_composition.outgoing` = `16`
+- `cell_composition.pt` = `2`
+- `cell_composition.sectionalizer` = `2`
+- `structural_flags` include:
+  - `dual_incoming`
+  - `high_outgoing_density`
+  - `pt_present`
+  - `sectionalized_lineup`
+
+Not changed:
+
+- endpoint path
+- request envelope
+- validation error envelope
+- GAS code
+- Sheet layout
+- pricing/BOM/DB/commercial logic
+
+## Deployment candidate
+
+Stage 5A deployment candidate prepared.
+
+Live Render pre-deploy check:
+
+- Render still returns Stage 3C / Stage 4B fields only
+- `structural_composition_summary` is not present yet
+
+Reason:
+
+- Render deploy is GitHub-based in the current setup
+- this commit is required to deploy Stage 5A to Render
+- this is not a verified release
+
+Verification still required after deploy:
+
+- `structural_composition_summary`
+- `lineup_summary`
+- `cell_composition`
+- `functional_lineup_composition`
+- `structural_flags`
+
+---
+
 # Майбутні етапи
 
 ## Етап 2 — CALC CONFIGURATOR MVP
