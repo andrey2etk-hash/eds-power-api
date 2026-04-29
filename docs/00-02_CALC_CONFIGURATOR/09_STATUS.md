@@ -2,11 +2,11 @@
 
 ## Поточний статус
 
-Stage 4B verified structural preflight
+Stage 4C verified operator shell
 
 CALC skeleton = governed foundation complete.
 
-KZO MVP implementation baseline has reached Stage 4B:
+KZO MVP implementation baseline has reached Stage 5A unlock:
 
 - Stage 3A — KZO Calculation Object Contract committed
 - Stage 3B — API validation skeleton committed
@@ -16,6 +16,8 @@ KZO MVP implementation baseline has reached Stage 4B:
 - Stage 3F — Sheet Writeback MVP verified
 - Stage 4A — protected template shell verified as MVP-only baseline
 - Stage 4B — structural preflight verified
+- Stage 4C — operator shell verified
+- Stage 5A — unlocked as next primary gate
 
 Модуль ще не має статусу `draft_ready`.
 
@@ -61,10 +63,17 @@ KZO MVP implementation baseline has reached Stage 4B:
 - verified Stage 4A template setup and output writeback
 - GAS preflight input normalization layer
 - local input error writeback
+- Stage 4C accepted as the sole current execution gate
+- Stage 4C grouped input shell and protected zone map prepared
+- Stage 4C telemetry tag `stage=4C` prepared
+- Stage 4C operator flow verified through Render API
+- Stage 4C warm run confirmed no cold-start blocker
+- Stage 5A unlocked after Stage 4C operator shell verification
 
 Для переходу далі потрібно:
 
-- next stage normalized task
+- define Stage 5A as a separate normalized execution task
+- keep Stage 5A limited to first narrow KZO logic
 - explicit approval before UI / DB / business calculation expansion
 
 ## Що не входить у Stage 1

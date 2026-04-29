@@ -877,7 +877,140 @@ Observation:
 
 ## Next
 
-Next stage must be defined through a separate normalized task.
+Stage 4C is the sole current execution gate.
+
+---
+
+# 29.04.2026 — Stage 4C / Stage 5A sequencing correction
+
+## Причина
+
+Idea Normalizer clarified that practical KZO logic must not start in parallel with shell usability hardening.
+
+## Рішення
+
+- Stage 4C = current execution gate
+- Stage 5A = `NEXT_PRIMARY / IMMEDIATE_POST_4C`
+- correct sequence = `4B -> 4C -> 5A`
+- old sequence rejected = `4B -> (4C + 5A)`
+
+## Governance principle
+
+First stable operator shell, then practical product logic.
+
+## Scope guard
+
+- no practical product calculations before Stage 4C is verified
+- no pricing
+- no commercial layer
+- no BOM
+- no DB
+- no sidebar
+- no architecture expansion
+
+## Статус
+
+- Stage 4C = `ACTIVE_OPERATOR_SHELL_GATE`
+- Stage 5A = `PARKED_UNTIL_STAGE_4C_VERIFIED`
+
+---
+
+# 29.04.2026 — Stage 4C operator shell implementation prepared
+
+## Причина
+
+Convert the verified Stage 4B structural preflight shell into a safer operator-grade KZO input shell before any practical product logic starts.
+
+## Що додано
+
+- `setupStage4COperatorShell()`
+- `runStage4CKzoOperatorShellFlow()`
+- grouped Stage 4C input sections:
+  - object identity
+  - electrical parameters
+  - cell distribution
+  - workflow status
+  - optional input
+- column C as the only operator input column
+- operator notes beside inputs
+- protected non-input zones
+- Stage 4C input map:
+  - `C4:C6`
+  - `C9:C10`
+  - `C13:C20`
+- Stage 4C output range: `E4:F14`
+- telemetry tag: `stage=4C`
+- Stage 4C audit record
+
+## Обмеження
+
+- no API changes
+- no API contract changes
+- no practical KZO formulas
+- no business calculations in GAS
+- no pricing
+- no BOM
+- no technical department output
+- no Sidebar
+- no buttons
+- no menus
+- no DB
+- no Supabase
+- no multi-product
+- no architecture expansion
+
+## Статус
+
+Stage 4C = `VERIFIED_OPERATOR_SHELL`.
+
+## Manual setup verification
+
+- `setupStage4COperatorShell()` completed
+- `Stage4A_MVP` rewritten as Stage 4C operator shell
+- telemetry tag `stage=4C` logged
+- input ranges logged:
+  - `C4:C6`
+  - `C9:C10`
+  - `C13:C20`
+- output range logged: `E4:F14`
+- operator flow improvements logged
+
+## Next
+
+Stage 5A is unlocked as the next primary gate, but must be defined through a separate normalized execution task.
+
+## Manual operator flow verification
+
+- `runStage4CKzoOperatorShellFlow()` completed
+- HTTP code = `200`
+- API response status = `success`
+- `local_input_status` = `OK`
+- writeback completed to `Stage4A_MVP!E4:F14`
+- protected zone map logged
+- visible output confirmed:
+  - `validation_status` = `VALIDATED`
+  - `object_number` = `7445-B`
+  - `product_type` = `KZO`
+  - `voltage_class` = `VC_10`
+  - `busbar_current` = `1250`
+  - `http_code` = `200`
+  - `stage` = `4C`
+  - `operator_shell_status` = `OPERATOR_SHELL_FLOW_COMPLETED`
+
+## Latency note
+
+- observed execution duration was about one minute
+- this is consistent with Render free-tier cold start / network latency
+- no API or writeback failure was observed
+
+## Warm run confirmation
+
+- repeated `runStage4CKzoOperatorShellFlow()` completed successfully
+- HTTP code = `200`
+- API response status = `success`
+- writeback completed to `Stage4A_MVP!E4:F14`
+- cold start was not reproduced
+- latency note remains infrastructure context only, not a Stage 4C blocker
 
 ---
 

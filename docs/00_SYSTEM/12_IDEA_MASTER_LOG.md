@@ -23,6 +23,8 @@ This file is the single source of truth for all normalized ideas in EDS Power.
 | IDEA-0003 | 2026-04-29 | Stage 3F Sheet Writeback MVP: Google Sheet -> GAS -> Render API -> basic_result_summary -> fixed test range writeback | `RIGHT_NOW` | `P1` | `TASK` | Stage 3F | Immediately after validated Stage 3E manual API handshake success | Implement minimal visible writeback loop from Render API response into Google Sheets test range | `ACTIVE` |
 | IDEA-0004 | 2026-04-29 | Stage 4A Google Sheet Core Template Protection and Structured Input Layer | `RIGHT_NOW` | `P1` | `TASK` | Stage 4A | Immediately after Stage 3F governance sync with VERIFIED_MVP_ONLY / verified writeback baseline | Transform Stage 3F test loop into protected Google Sheet MVP configurator shell with deterministic structure | `IMPLEMENTED` |
 | IDEA-0005 | 2026-04-29 | Stage 4B Input Normalization Layer for Google Sheet MVP Shell | `RIGHT_NOW` | `P1` | `TASK` | Stage 4B | After Stage 4A protected shell verified | Convert protected template shell into resilient human-operable MVP shell through deterministic GAS normalization | `IMPLEMENTED` |
+| IDEA-0006 | 2026-04-29 | Stage 4C KZO Usable Input Form | `RIGHT_NOW` | `P1` | `TASK` | Stage 4C | Immediately after Stage 4B `VERIFIED_STRUCTURAL_PREFLIGHT` | Stabilize the KZO operator-grade input shell before practical product logic | `IMPLEMENTED` |
+| IDEA-0007 | 2026-04-29 | Stage 5A First Practical KZO Logic | `RIGHT_NOW` | `P1` | `TASK` | Stage 5A | Only after Stage 4C `VERIFIED_OPERATOR_SHELL` | Inject first narrow practical KZO logic only after the operator shell is stable | `UNLOCKED_NEXT_PRIMARY` |
 
 ## Idea Notes
 
@@ -285,3 +287,98 @@ Scope guard:
 
 - Stage 4B = resilience layer only
 - not business logic migration
+
+### IDEA-0006 — Stage 4C KZO Usable Input Form
+
+Sequencing role:
+
+- sole current execution gate after Stage 4B
+
+Trigger condition:
+
+- immediately after Stage 4B `VERIFIED_STRUCTURAL_PREFLIGHT`
+
+Required scope:
+
+- KZO only
+- operator shell only
+- input ergonomics only
+- shell maturity gate before product logic
+
+Forbidden scope:
+
+- practical product calculations
+- pricing
+- BOM
+- technical output sheet
+- DB
+- sidebar
+- batch
+- architecture expansion
+
+Reason:
+
+- Stage 4B made the shell structurally stable.
+- Stage 4C must prove the shell is operator-grade before logic is built on top.
+- This prevents input redesign, logic remapping, rework, and shell/logic coupling.
+
+Success definition:
+
+- Stage 4C = `VERIFIED_OPERATOR_SHELL`
+- KZO operator shell is stable enough for first practical KZO logic to depend on it
+
+Implementation record:
+
+- `setupStage4COperatorShell()` prepared
+- `runStage4CKzoOperatorShellFlow()` prepared
+- grouped operator input sections prepared
+- protected zone map prepared
+- telemetry tag `stage=4C` prepared
+- manual setup verification passed at 14:30
+- operator flow verification passed at 14:32
+- warm run verification passed at 14:34 without cold-start blocker
+- final status = `VERIFIED_OPERATOR_SHELL`
+
+Scope guard:
+
+- no practical product logic before shell usability stabilizes
+
+### IDEA-0007 — Stage 5A First Practical KZO Logic
+
+Sequencing role:
+
+- `NEXT_PRIMARY / IMMEDIATE_POST_4C`
+- not parallel with Stage 4C
+
+Trigger condition:
+
+- only after Stage 4C `VERIFIED_OPERATOR_SHELL`
+
+Required scope:
+
+- first narrow KZO logic only
+- use stabilized operator shell only
+
+Forbidden scope:
+
+- pricing
+- commercial layer
+- BOM explosion
+- CAD
+- technical department overbuild
+- multi-product
+- DB foundation shift
+
+Reason:
+
+- Stage 5A is strategically immediate but must not run before shell maturity.
+- This protects architecture from premature coupling.
+- Correct sequence is `4B -> 4C -> 5A`, not `4B -> (4C + 5A)`.
+
+Key governance principle:
+
+- First stable operator shell, then practical product logic.
+
+Scope guard:
+
+- 5A remains parked until Stage 4C is verified as operator shell.

@@ -12,7 +12,7 @@ Rule:
 
 ## Latest audit
 
-- `2026-04-29_STAGE_4B_INPUT_NORMALIZATION.md`
+- `2026-04-29_STAGE_4C_OPERATOR_SHELL.md`
 
 ## Stage audits
 
@@ -32,6 +32,7 @@ Rule:
 - `2026-04-29_STAGE_3F_SHEET_WRITEBACK_MVP.md`
 - `2026-04-29_STAGE_4A_TEMPLATE_PROTECTION.md`
 - `2026-04-29_STAGE_4B_INPUT_NORMALIZATION.md`
+- `2026-04-29_STAGE_4C_OPERATOR_SHELL.md`
 
 ## Deprecated audits
 
@@ -39,6 +40,6 @@ Rule:
 
 ## Active blockers
 
-- next stage must be created through Idea Normalizer
+- Stage 5A requires a separate normalized execution task before implementation
 - no sidebar / buttons / menus before a separate normalized task
 - no DB / Supabase / AUTH / BOM / costing / production transfer expansion

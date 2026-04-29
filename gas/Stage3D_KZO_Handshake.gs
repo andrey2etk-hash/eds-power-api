@@ -7,6 +7,9 @@ const STAGE_4A_INPUT_RANGE_A1 = "B2:B14";
 const STAGE_4A_OUTPUT_RANGE_A1 = "D2:E8";
 const STAGE_4B_OUTPUT_RANGE_A1 = "D2:E11";
 const STAGE_4A_PROTECTION_DESCRIPTION = "Stage 4A protected MVP shell";
+const STAGE_4C_OUTPUT_RANGE_A1 = "E4:F14";
+const STAGE_4C_PROTECTION_DESCRIPTION = "Stage 4C operator-safe KZO shell";
+const STAGE_4C_INPUT_RANGES_A1 = ["C4:C6", "C9:C10", "C13:C20"];
 const STAGE_4A_CELL_MAP = {
   object_number: "B2",
   product_type: "B3",
@@ -21,6 +24,21 @@ const STAGE_4A_CELL_MAP = {
   cell_bus_section: "B12",
   status: "B13",
   breaker_type: "B14"
+};
+const STAGE_4C_CELL_MAP = {
+  object_number: "C4",
+  product_type: "C5",
+  logic_version: "C6",
+  voltage_class: "C9",
+  busbar_current: "C10",
+  configuration_type: "C13",
+  quantity_total: "C14",
+  cell_incomer: "C15",
+  cell_outgoing: "C16",
+  cell_pt: "C17",
+  cell_bus_section: "C18",
+  status: "C19",
+  breaker_type: "C20"
 };
 const STAGE_4B_REQUIRED_FIELDS = [
   "object_number",
@@ -564,10 +582,14 @@ function runStage4BKzoTemplateFlow() {
 }
 
 function buildStage4BPreflightPayload_(sheet) {
+  return buildStage4PreflightPayload_(sheet, STAGE_4A_CELL_MAP);
+}
+
+function buildStage4PreflightPayload_(sheet, cellMap) {
   const values = {};
 
-  Object.keys(STAGE_4A_CELL_MAP).forEach(function(fieldName) {
-    values[fieldName] = normalizeStage4BCellValue_(getStage4ACellValue_(sheet, fieldName));
+  Object.keys(cellMap).forEach(function(fieldName) {
+    values[fieldName] = normalizeStage4BCellValue_(getStage4CellValue_(sheet, fieldName, cellMap));
   });
 
   for (let i = 0; i < STAGE_4B_REQUIRED_FIELDS.length; i += 1) {
@@ -621,6 +643,10 @@ function buildStage4BPreflightPayload_(sheet) {
     ok: true,
     values: values
   };
+}
+
+function getStage4CellValue_(sheet, fieldName, cellMap) {
+  return sheet.getRange(cellMap[fieldName]).getValue();
 }
 
 function normalizeStage4BCellValue_(value) {
@@ -733,5 +759,266 @@ function writeStage4BOutput_(sheet, responseJson, httpCode, localStatus) {
     status: "writeback_completed",
     sheet: STAGE_4A_SHEET_NAME,
     range: STAGE_4B_OUTPUT_RANGE_A1
+  }));
+}
+
+/**
+ * Stage 4C operator-safe shell setup.
+ *
+ * This hardens the existing KZO shell for operator use:
+ * - grouped input sections
+ * - clearer labels and operator notes
+ * - protected zones around non-input cells
+ * - stable dropdowns and numeric cells
+ *
+ * It does not add sidebar, buttons, menus, formulas, pricing, BOM, DB,
+ * Supabase, multi-product flow, or business logic.
+ */
+function setupStage4COperatorShell() {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  if (!spreadsheet) {
+    Logger.log(JSON.stringify({
+      stage: "4C",
+      telemetry_tag: "stage=4C",
+      status: "setup_failed",
+      error: {
+        error_code: "SPREADSHEET_NOT_FOUND",
+        message: "Active spreadsheet is required for Stage 4C operator shell setup."
+      }
+    }));
+    return;
+  }
+
+  const sheet = getOrCreateStage4ASheet_(spreadsheet);
+  writeStage4COperatorShellLayout_(sheet);
+  applyStage4CInputValidation_(sheet);
+  protectStage4COperatorShell_(sheet);
+
+  Logger.log(JSON.stringify({
+    stage: "4C",
+    telemetry_tag: "stage=4C",
+    status: "operator_shell_prepared",
+    sheet: STAGE_4A_SHEET_NAME,
+    input_ranges: STAGE_4C_INPUT_RANGES_A1,
+    output_range: STAGE_4C_OUTPUT_RANGE_A1,
+    operator_flow_improvements: [
+      "grouped identity inputs",
+      "grouped electrical inputs",
+      "grouped cell distribution inputs",
+      "operator notes added",
+      "non-input zones protected"
+    ]
+  }));
+}
+
+/**
+ * Stage 4C operator shell flow.
+ *
+ * GAS remains a thin client:
+ * - reads the Stage 4C fixed cell map
+ * - performs only structural preflight inherited from Stage 4B
+ * - sends the request to the API
+ * - writes telemetry-tagged output
+ */
+function runStage4CKzoOperatorShellFlow() {
+  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = spreadsheet ? spreadsheet.getSheetByName(STAGE_4A_SHEET_NAME) : null;
+
+  if (!sheet) {
+    Logger.log(JSON.stringify({
+      stage: "4C",
+      telemetry_tag: "stage=4C",
+      status: "run_skipped",
+      error: {
+        error_code: "STAGE_4C_OPERATOR_SHELL_MISSING",
+        message: "Run setupStage4COperatorShell() before Stage 4C execution."
+      }
+    }));
+    return;
+  }
+
+  const preflight = buildStage4PreflightPayload_(sheet, STAGE_4C_CELL_MAP);
+
+  if (!preflight.ok) {
+    writeStage4CLocalInputError_(sheet, preflight.error);
+    Logger.log(JSON.stringify({
+      stage: "4C",
+      telemetry_tag: "stage=4C",
+      status: "local_input_error",
+      error: preflight.error
+    }));
+    return;
+  }
+
+  const requestBody = buildStage4BRequestBody_(preflight.values);
+  const options = {
+    method: "post",
+    contentType: "application/json",
+    payload: JSON.stringify(requestBody),
+    muteHttpExceptions: true
+  };
+
+  try {
+    const response = UrlFetchApp.fetch(API_URL, options);
+    const httpCode = response.getResponseCode();
+    const responseText = response.getContentText();
+    const responseJson = JSON.parse(responseText);
+
+    Logger.log(JSON.stringify({
+      stage: "4C",
+      telemetry_tag: "stage=4C",
+      http_code: httpCode,
+      local_input_status: "OK",
+      status: responseJson.status || null,
+      error: responseJson.error || null
+    }));
+
+    writeStage4COutput_(sheet, responseJson, httpCode, {
+      local_input_status: "OK",
+      error_code: null,
+      error_field: null
+    });
+  } catch (error) {
+    Logger.log(JSON.stringify({
+      stage: "4C",
+      telemetry_tag: "stage=4C",
+      status: "request_or_writeback_failed",
+      error: {
+        error_code: "GAS_STAGE_4C_FAILED",
+        message: error && error.message ? error.message : String(error),
+        note: MVP_TIMEOUT_NOTE
+      },
+      retry: false
+    }));
+  }
+}
+
+function writeStage4COperatorShellLayout_(sheet) {
+  sheet.clear();
+  sheet.getRange("A1:F22").clearDataValidations();
+  sheet.getRange("A1:F22").setValues([
+    ["Stage 4C KZO Operator Shell", "", "", "", "Stage 4C Outputs", ""],
+    ["Use only the input cells in column C. Protected zones define labels, notes, and results.", "", "", "", "", ""],
+    ["Section", "Field", "Operator input", "Operator note", "Output field", "Output value"],
+    ["Object identity", "object_number", "7445-B", "Required. API validates final format.", "validation_status", ""],
+    ["Object identity", "product_type", "KZO", "Dropdown locked to KZO.", "object_number", ""],
+    ["Object identity", "logic_version", "KZO_MVP_V1", "Dropdown locked to current MVP version.", "product_type", ""],
+    ["", "", "", "", "voltage_class", ""],
+    ["Electrical parameters", "", "", "", "busbar_current", ""],
+    ["Electrical parameters", "voltage_class", "VC_10", "Dropdown from MVP allowed values.", "http_code", ""],
+    ["Electrical parameters", "busbar_current", 1250, "Positive number only.", "stage", ""],
+    ["", "", "", "", "local_input_status", ""],
+    ["Cell distribution", "", "", "", "error_code", ""],
+    ["Cell distribution", "configuration_type", "CFG_SINGLE_BUS_SECTION", "Dropdown from MVP allowed values.", "error_field", ""],
+    ["Cell distribution", "quantity_total", 22, "Positive number only.", "operator_shell_status", ""],
+    ["Cell distribution", "CELL_INCOMER", 2, "Positive number only.", "", ""],
+    ["Cell distribution", "CELL_OUTGOING", 16, "Positive number only.", "", ""],
+    ["Cell distribution", "CELL_PT", 2, "Positive number only.", "", ""],
+    ["Cell distribution", "CELL_BUS_SECTION", 2, "Positive number only.", "", ""],
+    ["Workflow status", "status", "DRAFT", "Dropdown locked to DRAFT for MVP.", "", ""],
+    ["Optional input", "breaker_type", "", "Optional. Blank is allowed and sent as null.", "", ""],
+    ["Operator rule", "Run flow only after reviewing all column C inputs.", "", "Telemetry tag", "stage=4C", ""],
+    ["Scope guard", "No practical KZO logic, pricing, BOM, DB, sidebar, buttons, or menus in Stage 4C.", "", "", "", ""]
+  ]);
+
+  sheet.setFrozenRows(3);
+  sheet.getRange("A1:F1").setFontWeight("bold");
+  sheet.getRange("A3:F3").setFontWeight("bold");
+  sheet.getRange("C4:C20").setFontWeight("bold");
+  sheet.autoResizeColumns(1, 6);
+}
+
+function applyStage4CInputValidation_(sheet) {
+  setListValidation_(sheet.getRange(STAGE_4C_CELL_MAP.product_type), ["KZO"]);
+  setListValidation_(sheet.getRange(STAGE_4C_CELL_MAP.logic_version), ["KZO_MVP_V1"]);
+  setListValidation_(sheet.getRange(STAGE_4C_CELL_MAP.voltage_class), ["VC_06", "VC_10", "VC_20", "VC_35"]);
+  setListValidation_(sheet.getRange(STAGE_4C_CELL_MAP.configuration_type), ["CFG_SINGLE_BUS", "CFG_SINGLE_BUS_SECTION"]);
+  setListValidation_(sheet.getRange(STAGE_4C_CELL_MAP.status), ["DRAFT"]);
+
+  const positiveNumberRule = SpreadsheetApp.newDataValidation()
+    .requireNumberGreaterThan(0)
+    .setAllowInvalid(false)
+    .build();
+
+  [
+    STAGE_4C_CELL_MAP.busbar_current,
+    STAGE_4C_CELL_MAP.quantity_total,
+    STAGE_4C_CELL_MAP.cell_incomer,
+    STAGE_4C_CELL_MAP.cell_outgoing,
+    STAGE_4C_CELL_MAP.cell_pt,
+    STAGE_4C_CELL_MAP.cell_bus_section
+  ].forEach(function(cellA1) {
+    sheet.getRange(cellA1).setDataValidation(positiveNumberRule);
+  });
+}
+
+function protectStage4COperatorShell_(sheet) {
+  const existingProtections = sheet.getProtections(SpreadsheetApp.ProtectionType.SHEET);
+  existingProtections.forEach(function(protection) {
+    const description = protection.getDescription();
+    if (
+      protection.canEdit()
+      && (description === STAGE_4A_PROTECTION_DESCRIPTION || description === STAGE_4C_PROTECTION_DESCRIPTION)
+    ) {
+      protection.remove();
+    }
+  });
+
+  const unprotectedRanges = STAGE_4C_INPUT_RANGES_A1.map(function(rangeA1) {
+    return sheet.getRange(rangeA1);
+  });
+  const protection = sheet.protect().setDescription(STAGE_4C_PROTECTION_DESCRIPTION);
+  protection.setWarningOnly(false);
+  protection.setUnprotectedRanges(unprotectedRanges);
+}
+
+function writeStage4CLocalInputError_(sheet, error) {
+  const rows = [
+    ["validation_status", null],
+    ["object_number", null],
+    ["product_type", null],
+    ["voltage_class", null],
+    ["busbar_current", null],
+    ["http_code", null],
+    ["stage", "4C"],
+    ["local_input_status", "ERROR"],
+    ["error_code", error.error_code],
+    ["error_field", error.error_field],
+    ["operator_shell_status", "STRUCTURAL_INPUT_BLOCKED"]
+  ];
+
+  sheet.getRange(STAGE_4C_OUTPUT_RANGE_A1).setValues(rows);
+}
+
+function writeStage4COutput_(sheet, responseJson, httpCode, localStatus) {
+  const data = responseJson.data || {};
+  const summary = data.basic_result_summary || {};
+  const normalizedPayload = data.normalized_payload || {};
+  const rows = [
+    ["validation_status", firstDefined(data.validation_status, summary.validation_status)],
+    ["object_number", firstDefined(normalizedPayload.object_number, null)],
+    ["product_type", firstDefined(summary.product_type, normalizedPayload.product_type)],
+    ["voltage_class", firstDefined(summary.voltage_class, normalizedPayload.voltage_class)],
+    ["busbar_current", firstDefined(summary.busbar_current, normalizedPayload.busbar_current)],
+    ["http_code", httpCode],
+    ["stage", "4C"],
+    ["local_input_status", localStatus.local_input_status],
+    ["error_code", localStatus.error_code],
+    ["error_field", localStatus.error_field],
+    ["operator_shell_status", "OPERATOR_SHELL_FLOW_COMPLETED"]
+  ];
+
+  sheet.getRange(STAGE_4C_OUTPUT_RANGE_A1).setValues(rows);
+
+  Logger.log(JSON.stringify({
+    stage: "4C",
+    telemetry_tag: "stage=4C",
+    status: "writeback_completed",
+    sheet: STAGE_4A_SHEET_NAME,
+    range: STAGE_4C_OUTPUT_RANGE_A1,
+    protected_zone_map: {
+      sheet_protection: STAGE_4C_PROTECTION_DESCRIPTION,
+      editable_input_ranges: STAGE_4C_INPUT_RANGES_A1
+    }
   }));
 }

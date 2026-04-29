@@ -6,7 +6,7 @@
 
 ## Поточний етап
 
-Stage 4B — Input Normalization Layer. 29.04.2026
+Stage 4C — KZO Usable Input Form. 29.04.2026
 
 ## Активний сервер
 
@@ -15,8 +15,8 @@ https://eds-power-api.onrender.com
 ## Активні модулі
 
 1. 00-01_AUTH — авторизація (frozen MVP / draft_ready)
-2. 00-02_CALC_CONFIGURATOR — конфігуратор розрахунків (Stage 4B verified structural preflight)
-3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (Stage 4B verified structural preflight)
+2. 00-02_CALC_CONFIGURATOR — конфігуратор розрахунків (Stage 5A next gate)
+3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (Stage 5A next gate)
 
 ## Що робимо зараз
 
@@ -24,9 +24,11 @@ https://eds-power-api.onrender.com
 - Stage 3F = VERIFIED
 - Stage 4A = VERIFIED_MVP_ONLY
 - Stage 4B = VERIFIED_STRUCTURAL_PREFLIGHT
+- Stage 4C = VERIFIED_OPERATOR_SHELL
+- Stage 5A = UNLOCKED_NEXT_PRIMARY
 - тримаємо `00-01_AUTH` frozen at MVP
 - тримаємо `00-02_CALC_CONFIGURATOR` у межах KZO MVP
-- готуємо наступний етап тільки через окрему normalized task
+- тримаємо Stage 5A як наступний execution gate
 - підтримуємо синхронність GitHub / Cursor / Docs
 - Idea Normalizer = ACTIVE GOVERNANCE
 
@@ -59,11 +61,13 @@ https://eds-power-api.onrender.com
 - Stage 3F Sheet Writeback MVP verified
 - Stage 4A protected template shell verified as MVP-only baseline
 - Stage 4B structural preflight verified
+- Stage 4C operator shell verified manually; warm run confirmed no cold start blocker
+- Stage 5A unlocked as next-primary after Stage 4C
 - Idea Normalizer foundation created
 
 ## What remains next (plan)
 
-- define next stage only through Idea Normalizer
-- keep Stage 4B as structural preflight baseline
+- define Stage 5A first practical KZO logic through a separate normalized execution task
+- keep Stage 5A narrow and dependent on the verified Stage 4C operator shell
 - keep GAS thin
 - avoid sidebar, buttons, menus, DB, Supabase, AUTH, costing, BOM, and production logic unless separately tasked

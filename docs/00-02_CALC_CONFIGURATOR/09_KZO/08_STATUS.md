@@ -20,21 +20,25 @@ Stage 4A = verified MVP only
 
 Stage 4B = verified structural preflight
 
+Stage 4C = verified operator shell
+
+Stage 5A = unlocked next primary
+
 ## Gate
 
-Next = normalized task for next stage
+Current = Stage 5A first practical KZO logic task definition
 
 ## Current status
 
-Stage 4B structural preflight verified
+Stage 4C operator shell verified after successful setup, Render API flow, output writeback, and warm run confirmation
 
 ## Blockers
 
-- none for Stage 4B
+- Stage 5A still requires a separate normalized execution task before implementation
 
 ## Next
 
-Next stage must be created through Idea Normalizer
+Define Stage 5A first practical KZO logic through Idea Normalizer and keep scope narrow
 
 ## Global status link
 
@@ -53,3 +57,4 @@ KZO may define local implementation progress, but business object lifecycle is g
 - no Sidebar / UI polish / buttons / menus without a separate normalized task
 - no KZO deep algorithm
 - no product expansion beyond KZO MVP
+- no practical product logic before Stage 4C verification
