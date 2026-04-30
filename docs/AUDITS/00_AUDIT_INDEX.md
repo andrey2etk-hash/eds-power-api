@@ -12,7 +12,10 @@ Rule:
 
 ## Latest audit
 
-- **Stage 8B — Client-agnostic persistence governance (`STAGE_8B_GOVERNANCE_FIXED`)** — registry: **`docs/TASKS.md`** (**`TASK-2026-08B-001`**, **`TASK-2026-08B-011`** shell), **`docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`**, **`IDEA-0023`** in **`12_IDEA_MASTER_LOG.md`**; **`NEXT_GATE_READY: STAGE_8B.1`**
+- **Stage 8B.1A — Gemini pre-live audit (`STAGE_8B_1A_PRELIVE_AUDIT_READY`)** — **`2026-04-30_STAGE_8B_1A_GEMINI_PRELIVE_AUDIT.md`** (**before LIVE deploy / E5**); implementation ref **`2026-04-30_STAGE_8B_1A_API_CONTRACT_IMPLEMENTATION.md`**
+- **Stage 8B.1A — API `save_snapshot` hardening IMPLEMENTED (`STAGE_8B_1A_API_CONTRACT_IMPLEMENTED`)** — **`2026-04-30_STAGE_8B_1A_API_CONTRACT_IMPLEMENTATION.md`** · plan **`2026-04-30_STAGE_8B_1A_API_SAVE_CONTRACT_GOVERNANCE_PLAN.md`** · **`TASK-2026-08B-012`**
+- **Stage 8B.1 — Gemini preflight (`STAGE_8B_1_AUDIT_REQUEST_READY`)** — **`2026-04-30_STAGE_8B_1_GEMINI_PREFLIGHT_REQUEST.md`** (**`TASK-2026-08B-011`**)
+- **Stage 8B — Client-agnostic persistence governance (`STAGE_8B_GOVERNANCE_FIXED`)** — registry: **`docs/TASKS.md`** (**`TASK-2026-08B-001`**, **`TASK-2026-08B-012`**, **`TASK-2026-08B-011`**), **`docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`**, **`IDEA-0023`** in **`12_IDEA_MASTER_LOG.md`**; next gate sequence: **8B.1A** (API) → **8B.1B** (GAS)
 - **Stage 8A.2.1 — Live deploy `calculation_snapshots` closeout (`STAGE_8A_COMPLETE`)** — `2026-04-30_STAGE_8A_2_1_LIVE_DEPLOY_CALCULATION_SNAPSHOTS.md` — **`IDEA-0017` `IMPLEMENTED`**; next: operator-orchestrated thin GAS write path (**new IDEA/TASK**)
 - **Stage 8A live verification gate — PASS** — `2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md` (**LIVE PASS** **2026-04-30**; prior automated probe **404** superseded)
 - **Stage 8A.2.0 — Remote migration history alignment preflight** — `2026-04-30_STAGE_8A_2_0_REMOTE_MIGRATION_HISTORY_PREFLIGHT.md` (**`READY_FOR_OPERATOR_REMOTE_HISTORY_REPAIR`** playbook)
@@ -95,5 +98,6 @@ Rule:
 
 ## Post–Stage 8A (explicit non-goals until tasked)
 
-- **STAGE_8B.1** — **`TASK-2026-08B-011`**: GAS **Thin Client Adapter V1** (`prepare_calculation` + `save_snapshot` + display only; **no** direct DB; **no** orchestration core)
+- **STAGE_8B.1A** — **`TASK-2026-08B-012`**: **`save_snapshot`** hardened (**`2026-04-30_STAGE_8B_1A_API_CONTRACT_IMPLEMENTATION.md`** — **`STAGE_8B_1A_API_CONTRACT_IMPLEMENTED`**)
+- **STAGE_8B.1B** — **`TASK-2026-08B-011`**: GAS **Thin Client Adapter V1** (**`prepare_calculation` + `save_snapshot` + display**; **no** direct DB; **no** orchestration core)
 - Retrieval / history / analytics UI — **out of Stage 8B** scope until separate IDEA

@@ -6,11 +6,51 @@
 
 ---
 
+# 30.04.2026 — Stage **8B.1A** — `save_snapshot` API hardened (**`STAGE_8B_1A_API_CONTRACT_IMPLEMENTED`**)
+
+## Ціль
+
+Реалізувати план **`2026-04-30_STAGE_8B_1A_API_SAVE_CONTRACT_GOVERNANCE_PLAN.md`** у **`main.py`** / **`kzo_snapshot_persist.py`** (**без** GAS/Sheet/UI).
+
+## Факт
+
+- **L3 + L4** в **`validate_kzo_mvp_snapshot_v1`** (непорожні шари SUCCESS; **`request_metadata`** з обовʼязковими підполями; **`logic_version` ↔ metadata** узгодженість)
+- **FAILED**: мінімальний **`failure.error_code`** + **`failure.message`**
+- **Уніфікована відповідь**: **`created_at`** (з БД або read-back), **`client_type`** (echo **`X-EDS-Client-Type`**), **`failure`** object; топ-рівневий **`error_code`** — legacy mirror
+- DDL **без змін**
+- **`docs/AUDITS/2026-04-30_STAGE_8B_1A_API_CONTRACT_IMPLEMENTATION.md`**, **`13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`** §4
+- **E5** (LIVE smoke) — оператор після deploy
+
+## Статус
+
+**`STAGE_8B_1A_API_CONTRACT_IMPLEMENTED`**
+
+---
+
+# 30.04.2026 — Stage **8B.1** split: **8B.1A** / **8B.1B** (**`STAGE_8B_DOC_STATE_ALIGNED`**)
+
+## Ціль
+
+Узгодити **`docs/NOW.md`**, **`CHANGELOG.md`**, **`12_IDEA_MASTER_LOG.md`** з формальним розщепленням gate **8B.1** (без зміни **TASK** IDs чи коду).
+
+## Факт
+
+- **Stage 8B.1** розділено на **8B.1A** — **`TASK-2026-08B-012`** (**API Save Contract Hardening**) та **8B.1B** — **`TASK-2026-08B-011`** (**GAS Thin Client Adapter V1**)
+- Gemini preflight (**`docs/AUDITS/2026-04-30_STAGE_8B_1_GEMINI_PREFLIGHT_REQUEST.md`**) узгоджує **API-first** посилення контракту перед thin GAS
+- Імплементацію GAS (**8B.1B**) **відкладено** до завершення **8B.1A** (посилення **`save_snapshot`** / відповіді / anti-orchestration leak на **API**)
+- Stage **8B.1A** governance plan: **`docs/AUDITS/2026-04-30_STAGE_8B_1A_API_SAVE_CONTRACT_GOVERNANCE_PLAN.md`**
+
+## Статус
+
+**`STAGE_8B_DOC_STATE_ALIGNED`**
+
+---
+
 # 30.04.2026 — Stage 8B governance foundation + gate prep (**`STAGE_8B_GOVERNANCE_FIXED`**)
 
 ## Ціль
 
-Закріпити **client-agnostic persistence** у репозиторії і підготувати **STAGE_8B.1** (Thin GAS adapter) без зміни API/DB дизайну.
+Закріпити **client-agnostic persistence** у репозиторії і підготувати наступний gate (**8B.1**, згодом формально **8B.1A → 8B.1B** — див. новіший запис CHANGELOG) без зміни API/DB дизайну.
 
 ## Факт
 
@@ -19,12 +59,12 @@
 - Додано **`docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`** — канонічний шлях **Any client → `prepare_calculation` → snapshot → `save_snapshot` → `snapshot_id`**
 - **API** зафіксовано як **єдиний оркестратор** persistence; **Supabase** = memory only
 - **GAS** обмежено роллю **thin client adapter** (не orchestration core)
-- **`TASK-2026-08B-011`** — shell **STAGE_8B.1** Thin Client Adapter V1 (implementation path only)
+- **`TASK-2026-08B-011`** — shell Thin Client Adapter V1 (implementation path only; пізніше формально **8B.1B**, після **8B.1A** — **`STAGE_8B_DOC_STATE_ALIGNED`**)
 - Оновлено **`docs/NOW.md`**, **`docs/AUDITS/00_AUDIT_INDEX.md`**
 
 ## Статус
 
-**`STAGE_8B_GOVERNANCE_FIXED`** · **`NEXT_GATE_READY: STAGE_8B.1`**
+**`STAGE_8B_GOVERNANCE_FIXED`** · **`NEXT_GATE_READY`** еволюціонував: **8B.1A** (API) → **8B.1B** (GAS) — див. запис **`STAGE_8B_DOC_STATE_ALIGNED`**
 
 ---
 

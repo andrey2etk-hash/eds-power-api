@@ -52,25 +52,31 @@ Clients **must** tolerate additive fields; producers **must** supply the require
 
 | Field | Type / notes |
 | --- | --- |
-| `status` | e.g. **`SUCCESS`** |
+| `status` | **`SUCCESS`** |
 | `snapshot_id` | UUID string |
-| `persistence_status` | e.g. **`STORED`** |
-| `snapshot_version` | e.g. **`KZO_MVP_SNAPSHOT_V1`** |
-| `created_at` | ISO-8601 timestamp (DB or API echo) |
+| `persistence_status` | **`STORED`** |
+| `snapshot_version` | **`KZO_MVP_SNAPSHOT_V1`** |
+| `created_at` | ISO-8601 timestamp (DB row, with API fallback only if read-back fails) |
+| `client_type` | Echo of HTTP header **`X-EDS-Client-Type`** (`GAS`, `WEB`, `MOBILE`, `AGENT`, or **`UNKNOWN`**) |
 | `failure` | **`null`** |
+| `error_code` | **`null`** (reserved; optional top-level mirror for forward compatibility) |
+
+**Request header (optional):** **`X-EDS-Client-Type`** — allow-list above; invalid/absent → **`UNKNOWN`**. Not persisted in the snapshot JSON blob (Stage **8B.1A**).
 
 ### 4.2 Failure / reject
 
 | Field | Type / notes |
 | --- | --- |
-| `status` | e.g. **`FAILED`** |
-| `persistence_status` | e.g. **`REJECTED`** |
-| `snapshot_id` | **`null`** or absent |
-| `snapshot_version` | present if body reached version check |
-| `created_at` | **`null`** or absent |
-| `failure` | structured object or **`error_code`** + message per existing API pattern — **one** reject envelope; document in **`04_DATA_CONTRACTS.md`** when stabilized |
+| `status` | **`FAILED`** |
+| `persistence_status` | **`REJECTED`** (validation) or **`ERROR`** (insert / infrastructure) |
+| `snapshot_id` | **`null`** |
+| `snapshot_version` | **`KZO_MVP_SNAPSHOT_V1`** if **`snapshot_version`** in the request body matched the canonical label before reject; otherwise **`null`** |
+| `created_at` | **`null`** |
+| `client_type` | Echo of **`X-EDS-Client-Type`** (same allow-list as success) |
+| `failure` | Single object **`{ error_code, message, details }`** — canonical reject envelope |
+| `error_code` | **Legacy mirror** of **`failure.error_code`** (Stage **8B.1A**); consumers should prefer **`failure`**. |
 
-**Implementation note:** Current **`POST /api/kzo/save_snapshot`** MUST be extended in a focused TASK to match this table (e.g. **`created_at`**, unified **`failure`**). Until then, this file is **normative target**; runtime may lag **one** minor API revision.
+**Implementation:** Stage **8B.1A** (**`TASK-2026-08B-012`**) implemented this shape in **`main.py`** · audit **`docs/AUDITS/2026-04-30_STAGE_8B_1A_API_CONTRACT_IMPLEMENTATION.md`**.
 
 ## 5. References
 

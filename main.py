@@ -1,8 +1,9 @@
+from datetime import UTC, datetime
 from time import perf_counter
 from typing import Any
 from uuid import uuid4
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Header
 from fastapi.responses import JSONResponse
 
 from kzo_snapshot_persist import insert_snapshot_row, validate_kzo_mvp_snapshot_v1
@@ -56,6 +57,95 @@ KZO_OBJECT_STATUSES = {
     "ARCHIVED",
     "ERROR",
 }
+
+EDS_CLIENT_TYPES = frozenset({"GAS", "WEB", "MOBILE", "AGENT", "UNKNOWN"})
+
+_SNAPSHOT_ERROR_MESSAGES: dict[str, str] = {
+    "SNAPSHOT_BODY_NOT_OBJECT": "Request body must be a JSON object.",
+    "SNAPSHOT_UNKNOWN_FIELDS": "Snapshot JSON contains unsupported top-level fields.",
+    "SNAPSHOT_VERSION_INVALID": "snapshot_version must be KZO_MVP_SNAPSHOT_V1.",
+    "SNAPSHOT_RUN_STATUS_INVALID": "run_status must be SUCCESS or FAILED.",
+    "SNAPSHOT_MISSING_TIMESTAMP": "timestamp_basis is required.",
+    "SNAPSHOT_TIMESTAMP_INVALID": "timestamp_basis is not a valid ISO-8601 timestamp.",
+    "SNAPSHOT_SUCCESS_LAYER_INVALID": "SUCCESS snapshots require non-empty engineering layer objects.",
+    "SNAPSHOT_LOGIC_VERSION_REQUIRED": "logic_version is required for SUCCESS snapshots.",
+    "SNAPSHOT_REQUEST_METADATA_REQUIRED": "request_metadata must be an object.",
+    "SNAPSHOT_REQUEST_METADATA_TYPE_INVALID": "FAILED snapshots require request_metadata to be an object or omitted.",
+    "SNAPSHOT_NORMALIZED_INPUT_TYPE_INVALID": "FAILED snapshots require normalized_input to be an object or null.",
+    "SNAPSHOT_REQUEST_METADATA_SUBKEY_MISSING": "request_metadata must include request_id, api_version, logic_version, execution_time_ms.",
+    "SNAPSHOT_REQUEST_METADATA_REQUEST_ID_INVALID": "request_metadata.request_id must be a non-empty string.",
+    "SNAPSHOT_REQUEST_METADATA_API_VERSION_INVALID": "request_metadata.api_version must be a non-empty string.",
+    "SNAPSHOT_REQUEST_METADATA_LOGIC_VERSION_INVALID": "request_metadata.logic_version must be a non-empty string.",
+    "SNAPSHOT_REQUEST_METADATA_EXECUTION_TIME_INVALID": "request_metadata.execution_time_ms must be a non-negative integer.",
+    "SNAPSHOT_NORMALIZED_INPUT_REQUIRED": "SUCCESS snapshots require normalized_input object.",
+    "SNAPSHOT_SUCCESS_MUST_NOT_HAVE_FAILURE": "SUCCESS snapshots must not include failure.",
+    "SNAPSHOT_FAILURE_DETAIL_REQUIRED": "FAILED snapshots require a failure object.",
+    "SNAPSHOT_FAILURE_ERROR_CODE_REQUIRED": "failure.error_code is required for FAILED snapshots.",
+    "SNAPSHOT_FAILURE_MESSAGE_REQUIRED": "failure.message is required for FAILED snapshots.",
+    "SNAPSHOT_LOGIC_VERSION_METADATA_MISMATCH": "logic_version must match request_metadata.logic_version.",
+    "SNAPSHOT_INSERT_FAILED": "Snapshot row could not be stored.",
+    "SNAPSHOT_PERSISTENCE_UNAVAILABLE": "Persistence service is not configured.",
+}
+
+
+def normalize_eds_client_type(raw: str | None) -> str:
+    if raw is None or str(raw).strip() == "":
+        return "UNKNOWN"
+    cand = str(raw).strip().upper()
+    return cand if cand in EDS_CLIENT_TYPES else "UNKNOWN"
+
+
+def _failure_envelope(code: str) -> dict[str, Any]:
+    return {
+        "error_code": code,
+        "message": _SNAPSHOT_ERROR_MESSAGES.get(code, "Snapshot request rejected."),
+        "details": {},
+    }
+
+
+def save_snapshot_http_response_success(
+    *,
+    snapshot_id: str,
+    client_type: str,
+    created_at: str | None,
+) -> dict[str, Any]:
+    created = created_at
+    if not created:
+        created = datetime.now(UTC).isoformat()
+    return {
+        "status": "SUCCESS",
+        "snapshot_id": snapshot_id,
+        "persistence_status": "STORED",
+        "snapshot_version": "KZO_MVP_SNAPSHOT_V1",
+        "created_at": created,
+        "client_type": client_type,
+        "failure": None,
+        "error_code": None,
+    }
+
+
+def save_snapshot_http_response_failure(
+    *,
+    client_type: str,
+    persistence_status: str,
+    response_snapshot_version: str | None,
+    error_code: str,
+    legacy_flat_error: bool = True,
+) -> dict[str, Any]:
+    """validation → REJECTED; insert/infrastructure → ERROR."""
+    fb = _failure_envelope(error_code)
+    out: dict[str, Any] = {
+        "status": "FAILED",
+        "snapshot_id": None,
+        "persistence_status": persistence_status,
+        "snapshot_version": response_snapshot_version,
+        "created_at": None,
+        "client_type": client_type,
+        "failure": fb,
+    }
+    if legacy_flat_error:
+        out["error_code"] = error_code
+    return out
 
 
 def _response_metadata(meta: dict[str, Any] | None, logic_version: str | None, started_at: float) -> dict[str, Any]:
@@ -494,30 +584,40 @@ def prepare_calculation(request: dict[str, Any]):
 
 
 @app.post("/api/kzo/save_snapshot")
-def save_snapshot(body: dict[str, Any]):
-    """Insert-only persistence for frozen ``KZO_MVP_SNAPSHOT_V1`` (Stage 8A).
+def save_snapshot(
+    body: dict[str, Any],
+    x_eds_client_type: str | None = Header(default=None, alias="X-EDS-Client-Type"),
+):
+    """Insert-only persistence for frozen ``KZO_MVP_SNAPSHOT_V1`` (Stage 8A / hardened 8B.1A).
 
     Does **not** recalculate engineering truth — validates contract shape and stores one row.
-    Configure ``SUPABASE_URL`` + ``SUPABASE_SERVICE_ROLE_KEY`` + table ``calculation_snapshots`` (``product_type`` = KZO for MVP)."""
-    normalized, validate_code = validate_kzo_mvp_snapshot_v1(body)
+    Configure ``SUPABASE_URL`` + ``SUPABASE_SERVICE_ROLE_KEY`` + table ``calculation_snapshots``.
+    Canonical response includes ``created_at``, ``client_type`` (echo of ``X-EDS-Client-Type``), unified ``failure``."""
+    client_type = normalize_eds_client_type(x_eds_client_type)
+
+    normalized, validate_code, aux = validate_kzo_mvp_snapshot_v1(body)
+    sv_response: str | None = "KZO_MVP_SNAPSHOT_V1" if aux.get("l1_snapshot_version_ok") else None
+
     if validate_code:
-        return {
-            "status": "FAILED",
-            "persistence_status": "REJECTED",
-            "error_code": validate_code,
-        }
+        return save_snapshot_http_response_failure(
+            client_type=client_type,
+            persistence_status="REJECTED",
+            response_snapshot_version=sv_response,
+            error_code=validate_code,
+        )
 
-    snapshot_id, insert_code = insert_snapshot_row(normalized)
+    snapshot_id, created_at_iso, insert_code = insert_snapshot_row(normalized)
     if insert_code:
-        return {
-            "status": "FAILED",
-            "persistence_status": "REJECTED",
-            "error_code": insert_code,
-        }
+        return save_snapshot_http_response_failure(
+            client_type=client_type,
+            persistence_status="ERROR",
+            response_snapshot_version=sv_response,
+            error_code=insert_code,
+        )
 
-    return {
-        "status": "SUCCESS",
-        "snapshot_id": snapshot_id,
-        "snapshot_version": "KZO_MVP_SNAPSHOT_V1",
-        "persistence_status": "STORED",
-    }
+    assert snapshot_id is not None
+    return save_snapshot_http_response_success(
+        snapshot_id=snapshot_id,
+        client_type=client_type,
+        created_at=created_at_iso,
+    )

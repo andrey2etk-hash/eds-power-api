@@ -903,7 +903,7 @@ Implementation record:
 - Thin GAS **`saveKzoSnapshotV1()`** — transport only
 - Master table **Status**: **`IMPLEMENTED`** (**2026-04-30**)
 
-**Recommended next IDEA (outside IDEA-0017):** Thin GAS orchestration — **`runKzoMvpFlow()`** → assemble **`KZO_MVP_SNAPSHOT_V1`** → **`saveKzoSnapshotV1()`** for repeatable operator production writes (**no** automatic expansion to retrieval/history/analytics APIs).
+**Recommended next operational slice (post–IDEA-0017, under IDEA-0023):** **`TASK-2026-08B-012`** (**Stage 8B.1A**) — canonical **`save_snapshot`** contract hardening on the **API** first; then **`TASK-2026-08B-011`** (**Stage 8B.1B**) — thin **GAS** transport (**`prepare_calculation`** → **`KZO_MVP_SNAPSHOT_V1`** envelope → **`saveKzoSnapshotV1()`** / **`save_snapshot`**), **without** retrieval/history/analytics expansion. Gemini preflight (**`docs/AUDITS/2026-04-30_STAGE_8B_1_GEMINI_PREFLIGHT_REQUEST.md`**) reinforces **API-first** order — **no** “GAS as orchestrator” wording.
 
 ### IDEA-0018 — Stage 8A.0 EDS Power Supabase root governance foundation
 
@@ -1099,6 +1099,13 @@ Current API may require additive fields in a sub-TASK — contract is **normativ
 
 - **`docs/AUDITS/YYYY-MM-DD_STAGE_8B_PLATFORM_PERSISTENCE_NOT_GAS_PERSISTENCE.md`** — “Platform persistence, not GAS persistence”.
 
+##### Sequencing (Stage **8B.1** split — **`STAGE_8B_DOC_STATE_ALIGNED`**)
+
+1. **`TASK-2026-08B-012`** — **8B.1A** **`save_snapshot`** API contract hardening (validation / response / anti-orchestration leak) — plan **`docs/AUDITS/2026-04-30_STAGE_8B_1A_API_SAVE_CONTRACT_GOVERNANCE_PLAN.md`**.
+2. **`TASK-2026-08B-011`** — **8B.1B** Thin GAS adapter (**blocked** until **8B.1A** implementation exit).
+
+Gemini critic preflight (**`docs/AUDITS/2026-04-30_STAGE_8B_1_GEMINI_PREFLIGHT_REQUEST.md`**) audits the **thin-GAS plan** **before** coding and aligns stakeholders on **API-first** reinforcement.
+
 ##### FORBIDDEN (Stage 8B scope guard)
 
 - GAS as orchestration core; Sheet as permanent truth; direct DB from clients; web/mobile divergence in persistence path; BOM; pricing; production transfer; analytics; auth overexpansion.
@@ -1113,8 +1120,9 @@ No client may redefine system persistence without **IDEA → TASK** and contract
 
 **Implementation record (when started):**
 
-- TASK: **`docs/TASKS.md`** — **`TASK-2026-08B-001`**
+- TASK: **`docs/TASKS.md`** — **`TASK-2026-08B-001`** (master); **`TASK-2026-08B-012`** (**8B.1A**); **`TASK-2026-08B-011`** (**8B.1B**)
 - Contract: **`docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`**
+- **8B.1** split + doc alignment: **`STAGE_8B_DOC_STATE_ALIGNED`** (**`CHANGELOG`**, **`NOW`**, **`12_IDEA_MASTER_LOG`**)
 
 Master table **Status**: **`ACTIVE`** until **8B** governance + audit **PASS** — then **`IMPLEMENTED`**.
 
