@@ -6,7 +6,27 @@
 
 ---
 
-# 30.04.2026 — Stage **8B.1A** Render / Supabase env unblock dossier (**`LIVE_HOST_SYNCED_PENDING_SUPABASE_ENV`**)
+# 30.04.2026 — Stage **8B.1A** LIVE verification **CLOSEOUT** (**`STAGE_8B_1A_LIVE_VERIFIED`** / **`STAGE_8B_1A_CLOSEOUT_LOGGED`**)
+
+## Ціль
+
+Зафіксувати в журналах репозиторію успішну **операторську LIVE** перевірку **E5** (**Smoke A** + **DB E**) та Gemini final **PASS** перед **`TASK-2026-08B-011`** (**Stage 8B.1B**).
+
+## Факт (**без секретів**)
+
+- Gemini pre-live dossier (**`docs/AUDITS/2026-04-30_STAGE_8B_1A_GEMINI_PRELIVE_AUDIT.md`**) — **PASS** (**human attestation**)
+- **`POST /api/kzo/save_snapshot` (Render):** **`SUCCESS`**, **`persistence_status`** **`STORED`**, **`client_type`** **`GAS`**
+- **`snapshot_id`** (оператор): **`300d18c3-f8fe-4411-8dce-a4b698b6f5e3`** — узгоджений з **`public.calculation_snapshots`**; **`snapshot_version`** **`KZO_MVP_SNAPSHOT_V1`**; **`logic_version`** **`KZO_MVP_V1`**; **`created_at`** **`2026-04-30 17:00:28.809012+00`**
+- **`TASK-2026-08B-012`** → **CLOSED** / **LIVE VERIFIED**; **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`** — closeout + Gemini summary + guardrails (GAS thin client only; прозора **`failure`**; **`snapshot_id`** як audit token)
+- **Наступний gate:** **`NEXT_GATE_READY: STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER`**
+
+## Статус
+
+**`STAGE_8B_1A_LIVE_VERIFIED`** · **`STAGE_8B_1A_CLOSEOUT_LOGGED`** · **коду / DDL / секретів у цьому closeout немає**
+
+---
+
+# 30.04.2026 — Stage **8B.1A** Render / Supabase env dossier (**`LIVE_HOST_SYNCED_PENDING_SUPABASE_ENV`** — *історична проміжна мітка*)
 
 ## Ціль
 
@@ -15,12 +35,12 @@
 ## Факт
 
 - **Live:** **L3** negative → **`SNAPSHOT_SUCCESS_LAYER_INVALID`** + **`client_type`** + **`failure`**
-- **Live:** Valid **SUCCESS** → **`SNAPSHOT_PERSISTENCE_UNAVAILABLE`** → очікувано через **Render env**
-- **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`** оновлено: статус **`LIVE_HOST_SYNCED_PENDING_SUPABASE_ENV`**, secret hygiene, retest checklist
+- **Live:** до unblock: Valid **SUCCESS** → **`SNAPSHOT_PERSISTENCE_UNAVAILABLE`** (**Render env**)
+- **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`** включав статус **`LIVE_HOST_SYNCED_PENDING_SUPABASE_ENV`** до операторського **PASS** (**закрито** при **`STAGE_8B_1A_LIVE_VERIFIED`** — див. closeout секцію того ж dossier та запис вище в **`CHANGELOG`**)
 
 ## Статус
 
-**`LIVE_HOST_SYNCED_PENDING_SUPABASE_ENV`** · **`STAGE_8B_1A_LIVE_VERIFIED`** — **після** Supabase unblock + Smoke **A**/ **E**
+**Superseded** **`STAGE_8B_1A_LIVE_VERIFIED`** (**2026-04-30**)
 
 ---
 

@@ -47,7 +47,7 @@ GAS as orchestration core; Sheet as system truth store; client-side persistence 
 | **ID** | TASK-2026-08B-012 |
 | **IDEA** | **IDEA-0023** (API authority slice) |
 | **Module** | `main.py`, `kzo_snapshot_persist.py`, `docs/00_SYSTEM/` (contracts) |
-| **Status** | **`LIVE_HOST_SYNCED_PENDING_SUPABASE_ENV`** — API на Render відповідає **8B.1A**; додати **`SUPABASE_URL`** + **`SUPABASE_SERVICE_ROLE_KEY`** у **Render** (див. **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`**) → потім **`STAGE_8B_1A_LIVE_VERIFIED`** |
+| **Status** | **`CLOSED`** · **`STAGE_8B_1A_LIVE_VERIFIED`** (**2026-04-30**) — closeout **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`** |
 
 ### Purpose
 
@@ -66,8 +66,8 @@ GAS/UI/Sheet coupling; **`prepare_calculation`** calls inside **`save_snapshot`*
 | **ID** | TASK-2026-08B-011 |
 | **IDEA** | **IDEA-0023** (operational slice) |
 | **Module** | `gas/` + `00-02_CALC_CONFIGURATOR` (KZO transport only) |
-| **Status** | `SHELL` — API hardening (**`TASK-2026-08B-012`**) **landed**; implement GAS path when tasked (**`X-EDS-Client-Type: GAS`**) |
-| **Prerequisite** | **`551ce87`** deployed on Render · LIVE **A–E** **PASS** per **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`** (**`STAGE_8B_1A_LIVE_VERIFIED`**) перед широким GAS rollout |
+| **Status** | **`NEXT_GATE_READY: STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER`** — implement thin GAS path (**`X-EDS-Client-Type: GAS`**); **ще без** rollout у коді до окремої імплементації TASK |
+| **Prerequisite** | **`TASK-2026-08B-012`** **`STAGE_8B_1A_LIVE_VERIFIED`** (**satisfied** — **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`**) |
 
 ### Purpose
 
@@ -101,4 +101,4 @@ First **real** client adapter: **GAS** calls the **same** API persistence pathwa
 
 ## Completed
 
-- *(none listed here yet — archive closed TASKS below when introduced)*
+- **TASK-2026-08B-012** — Stage **8B.1A** API **`save_snapshot`** hardening + LIVE **E5** — **`STAGE_8B_1A_LIVE_VERIFIED`** · **`STAGE_8B_1A_CLOSEOUT_LOGGED`** (**`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`**)

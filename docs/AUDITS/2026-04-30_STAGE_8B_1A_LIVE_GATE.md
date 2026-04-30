@@ -1,15 +1,34 @@
 # Stage **8B.1A** — LIVE verification gate (`save_snapshot`)
 
-## Gate status (**2026-04-30 update**)
+## Gate status (**closeout — 2026-04-30**)
 
-**`LIVE_HOST_SYNCED_PENDING_SUPABASE_ENV`**
+**`STAGE_8B_1A_LIVE_VERIFIED`** · **`STAGE_8B_1A_CLOSEOUT_LOGGED`** · **`NEXT_GATE_READY: STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER`** (**`TASK-2026-08B-011`**)
 
-| Fact | Meaning |
+Operator LIVE verification **PASS**; **`TASK-2026-08B-012`** **CLOSED**. Historical interim label **`LIVE_HOST_SYNCED_PENDING_SUPABASE_ENV`** superseded once **`SUPABASE_*`** was correct and Smoke **A**/**E** passed.
+
+---
+
+## Closeout evidence (operator-recorded — **no secrets**)
+
+| Checkpoint | Result |
 | --- | --- |
-| **API bundle** | Public Render host behaves like **Stage 8B.1A** hardened **`save_snapshot`**: **`client_type`** echo, **`failure`** envelope, **`SNAPSHOT_SUCCESS_LAYER_INVALID`** on L3 negative probes |
-| **Persistence** | Valid **SUCCESS** body returns **`SNAPSHOT_PERSISTENCE_UNAVAILABLE`** → **`SUPABASE_URL`** / **`SUPABASE_SERVICE_ROLE_KEY`** missing, empty, or wrong on **Render** (operator must set **Dashboard env** only — **never** in repo/chat) |
+| **G1 Gemini pre-live** (**`2026-04-30_STAGE_8B_1A_GEMINI_PRELIVE_AUDIT.md`**) | **PASS** (human attestation) |
+| **`POST /api/kzo/save_snapshot` (Render)** | **`status`** **`SUCCESS`**, **`persistence_status`** **`STORED`**, **`client_type`** **`GAS`**, **`failure`** **`null`** |
+| **`snapshot_id` (HTTP)** | **`300d18c3-f8fe-4411-8dce-a4b698b6f5e3`** |
+| **DB** **`public.calculation_snapshots`** | Same **`id`** present; **`snapshot_version`** **`KZO_MVP_SNAPSHOT_V1`**; **`logic_version`** **`KZO_MVP_V1`**; **`created_at`** **`2026-04-30 17:00:28.809012+00`** (**operator-confirmed** alignment with API **`created_at`** echo) |
 
-**Do not claim `STAGE_8B_1A_LIVE_VERIFIED`** until Smoke **A** returns **`SUCCESS`** / **`STORED`** **and** **E** (DB row + **`created_at`**) passes.
+---
+
+## Gemini final audit summary (operator-recorded)
+
+| Item | Note |
+| --- | --- |
+| **Verdict** | **PASS** |
+| **Platform posture** | Persistence path treated as **platform/API-owned** (not client-owned); operator records crossing into **mature platform** execution for this slice |
+| **Proceed** | **`TASK-2026-08B-011`** — **Stage 8B.1B** GAS Thin Client Adapter **V1** |
+| **Guardrails** | **GAS = thin client only**; **transparent API errors** via unified **`failure`** + legacy **`error_code`** mirror; treat **`snapshot_id`** as **audit / correlation token**; **no** GAS orchestration core; **no** direct client Supabase writes |
+
+**No** service-role key or other secrets recorded in this dossier.
 
 ---
 
@@ -179,23 +198,24 @@ Chronology (summarized):
 | **Render sync verified** | **L3** negative (**`physical_topology_summary: null`**, **`X-EDS-Client-Type: GAS`**) returns **`SNAPSHOT_SUCCESS_LAYER_INVALID`**, **`client_type`**, structured **`failure`** → **`LIVE_HOST_SYNCED`** for **handler** behavior |
 | **Persistence** | **Smoke A**-style valid **SUCCESS** still returns **`SNAPSHOT_PERSISTENCE_UNAVAILABLE`** (**`persistence_status`** **`ERROR`**) → **Supabase env** not configured on Render service |
 
-**Resolved label:** **`LIVE_HOST_SYNCED_PENDING_SUPABASE_ENV`** (**not** **`STALE_RENDER_DEPLOY`** for current API semantics).
+**Resolved label (interim):** **`LIVE_HOST_SYNCED_PENDING_SUPABASE_ENV`** — **closed** upon operator LIVE **PASS** (see **Closeout evidence** above).
 
 ---
-
 
 ## Final status registry
 
 | Label | Meaning |
 | --- | --- |
-| **`STAGE_8B_1A_LIVE_VERIFIED`** | Operator signed **A–E** **PASS** on live host + Gemini **G1** (**Supabase OK**, insert path proven) |
-| **`LIVE_HOST_SYNCED_PENDING_SUPABASE_ENV`** | **Current (2026-04-30):** hardened **`save_snapshot`** on public host **confirmed**; **`SUPABASE_*`** missing/invalid on Render blocks Smoke **A** / **E** |
-| **`STAGE_8B_1A_LIVE_VERIFICATION_PENDING`** | Superset: gate open until **`STAGE_8B_1A_LIVE_VERIFIED`** (**includes** Supabase unblock) |
+| **`STAGE_8B_1A_LIVE_VERIFIED`** | **ACHIEVED (2026-04-30)** — operator Smoke **A** + DB **E** + Gemini **PASS** (**this dossier closeout**) |
+| **`STAGE_8B_1A_CLOSEOUT_LOGGED`** | Repository logs (**NOW**, **CHANGELOG**, **TASKS**, **IDEA_MASTER_LOG**, **AUDIT_INDEX**) synced to **`STAGE_8B_1A_LIVE_VERIFIED`** |
+| **`NEXT_GATE_READY: STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER`** | **`TASK-2026-08B-011`** — GAS-only transport/UI; **`X-EDS-Client-Type: GAS`** |
+| **`LIVE_HOST_SYNCED_PENDING_SUPABASE_ENV`** | *(historical)* superseded once **`SUPABASE_*`** restored and Smoke **A**/**E** **PASS** |
+| **`STAGE_8B_1A_LIVE_VERIFICATION_PENDING`** | *(historical)* open gate before closeout |
 
 ---
 
 ## Next
 
-**Stage 8B.1B** — **`TASK-2026-08B-011`** Thin GAS Client Adapter (**`X-EDS-Client-Type: GAS`** mandatory on saves).
+**Stage 8B.1B** — **`TASK-2026-08B-011`** Thin GAS Client Adapter (**`X-EDS-Client-Type: GAS`** mandatory on saves). **No** broad GAS implementation in **8B.1A** closeout TASK.
 
 _End of Stage 8B.1A LIVE gate dossier._
