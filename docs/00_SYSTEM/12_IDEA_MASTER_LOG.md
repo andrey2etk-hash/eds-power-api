@@ -42,6 +42,7 @@ Operative **sub-state** strings (such as **`PENDING_SUPABASE_VERIFICATION`**) ap
 | IDEA-0020 | 2026-04-29 | Stage 8A.0.2 Supabase remote baseline alignment — legacy remote `public` (`legacy_baseline`); **`calculation_snapshots` DDL** ordered after baseline import | `IMMEDIATE_CRITICAL` | `P0` | `URGENT_TASK` | Stage 8A.0.2 | Declared non-empty **`public`** (objects, bom_links, ncr, production_status, **`v_*`**) | **`LEGACY_REMOTE_BASELINE.md`** + **`_pending_after_remote_baseline/`** hold pattern — zero destructive DB action in TASK | `IMPLEMENTED` |
 | IDEA-0021 | 2026-04-29 | Role-adaptive operational shell doctrine (“self-checkout principle”): guided role-specific UI above, system truth / ERP / DB underneath | `NORMAL_LONG_TERM` | `P3` | `FUTURE` | Post–core platform architecture / multi-module UX doctrine | After stable CALC + persistence + first operational modules | One truth layer below; many governed operational shells above — users do not operate core accounting/ERP unless role requires it | `FUTURE` |
 | IDEA-0022 | 2026-04-29 | Stage 8A.0.3 Supabase remote baseline capture — authoritative migration slot ordering before `calculation_snapshots`; schema-only DDL from remote (no prod `db push`) | `IMMEDIATE_CRITICAL` | `P0` | `URGENT_TASK` | Stage 8A.0.3 → **8A.1** | After **IDEA-0020** **`IMPLEMENTED`**; local replay + promotion per **8A.0.8** / **8A.1** | **`20260429110000`** \< **`20260429120000_calculation_snapshots_v1`**; verified **`supabase db reset`** non-prod | `IMPLEMENTED` |
+| IDEA-0023 | 2026-04-30 | Stage 8B Client-Agnostic Persistence Flow — platform persistence architecture (not GAS orchestration) | `RIGHT_NOW` | `P1` | `TASK` | Stage 8B | After **`IDEA-0017`** **`IMPLEMENTED`** / **`STAGE_8A_COMPLETE`**; **before** web/mobile/portals/multi-client UX expansion without this freeze | **Client ≠ core; API = orchestrator; Supabase = memory** — identical persistence path from any adapter | `ACTIVE` |
 
 ## Idea Notes
 
@@ -1021,6 +1022,101 @@ Artifacts:
 - **`docs/AUDITS/2026-04-30_STAGE_8A_1_CALCULATION_SNAPSHOTS_PROMOTION_TEST.md`**
 
 Master table **Status**: **`IMPLEMENTED`** (**2026-04-30** — non-prod promotion test closes ordering + replay chain)
+
+### IDEA-0023 — Stage **8B** Client-Agnostic Persistence Flow Governance
+
+**ID note:** Draft text suggested **`IDEA-0022`** — conflicts with **`IDEA-0022`** (baseline capture). Assigned **`IDEA-0023`**.
+
+**One-line strategy:** Persistence is **saved by platform architecture**, not by “GAS persistence”.
+
+**Core law:**
+
+- **Client ≠ system core.**
+- **API = orchestrator** (calc truth, snapshot validation, envelope, persistence calls).
+- **Supabase = memory** (immutable rows; no orchestration engineering).
+
+---
+
+#### CURSOR TASK: **STAGE 8B** — CLIENT-AGNOSTIC PERSISTENCE FLOW GOVERNANCE
+→ Tracked as **`TASK-2026-08B-001`** in **`docs/TASKS.md`**.
+
+##### STEP 1 — Canonical persistence flow
+
+```text
+Any Client
+  → POST /api/calc/prepare_calculation (calculation truth)
+  → verified snapshot object (e.g. KZO_MVP_SNAPSHOT_V1 envelope)
+  → POST /api/kzo/save_snapshot
+  → snapshot_id + persistence response
+```
+
+No alternative “write path” for production snapshot rows.
+
+##### STEP 2 — Client role (GAS / Web / Mobile / Agents / future)
+
+**Allowed**
+
+- Call API only.
+- Send normalized payloads; display API + persistence outcomes.
+- Surface **`snapshot_id`**, **`persistence_status`**, **`failure`** / error codes.
+
+**Forbidden**
+
+- Direct Supabase / DB writes from clients.
+- Client-owned persistence semantics (“saved in Sheet” as system truth).
+- Client-side business or engineering logic (beyond pre-flight **form** checks per **`02_GLOBAL_RULES`**).
+- Mutating **`KZO_MVP_SNAPSHOT_V1`** outside API-owned versioning policy.
+- **GAS-only** orchestration dependency (GAS **must not** become the implicit system brain).
+- Sheet-first architecture bias (Sheet displays; API decides).
+
+##### STEP 3 — API role (owns)
+
+- Calculation truth (**`prepare_calculation`** lineage).
+- Snapshot validation (**`validate_kzo_mvp_snapshot_v1`**).
+- Persistence contract (**`save_snapshot`**).
+- Unified response envelopes.
+- Sole Supabase **`calculation_snapshots`** interaction for MVP path.
+
+##### STEP 4 — Supabase role
+
+- Storage of snapshot rows **only** (immutable insert policy as per Stage 8A).
+- No client logic; no recomputation / BOM / pricing orchestration.
+
+##### STEP 5 — Canonical **`save_snapshot` response** (CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1)
+
+Required fields (**document + converge implementation**): **`status`**, **`snapshot_id`**, **`persistence_status`**, **`snapshot_version`**, **`created_at`**, **`failure`** (or equivalent structured error on reject path).
+Current API may require additive fields in a sub-TASK — contract is **normative target**.
+
+##### STEP 6 — Document
+
+- **`docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`** — normative contract.
+
+##### STEP 7 — GAS rule
+
+- **Thin Client Adapter V1** only: transport + display; **no** orchestration core.
+
+##### STEP 8 — Audit
+
+- **`docs/AUDITS/YYYY-MM-DD_STAGE_8B_PLATFORM_PERSISTENCE_NOT_GAS_PERSISTENCE.md`** — “Platform persistence, not GAS persistence”.
+
+##### FORBIDDEN (Stage 8B scope guard)
+
+- GAS as orchestration core; Sheet as permanent truth; direct DB from clients; web/mobile divergence in persistence path; BOM; pricing; production transfer; analytics; auth overexpansion.
+
+##### SUCCESS
+
+After **8B**: Google Sheets, Web, Mobile, Agents, and future clients use the **same** API persistence pathway end-to-end.
+
+##### ANTI-DRIFT
+
+No client may redefine system persistence without **IDEA → TASK** and contract version bump.
+
+**Implementation record (when started):**
+
+- TASK: **`docs/TASKS.md`** — **`TASK-2026-08B-001`**
+- Contract: **`docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`**
+
+Master table **Status**: **`ACTIVE`** until **8B** governance + audit **PASS** — then **`IMPLEMENTED`**.
 
 ### IDEA-0021 — EDS Power role-adaptive operational shell doctrine (“self-checkout principle”)
 

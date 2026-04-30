@@ -6,6 +6,28 @@
 
 ---
 
+# 30.04.2026 — Stage 8B governance foundation + gate prep (**`STAGE_8B_GOVERNANCE_FIXED`**)
+
+## Ціль
+
+Закріпити **client-agnostic persistence** у репозиторії і підготувати **STAGE_8B.1** (Thin GAS adapter) без зміни API/DB дизайну.
+
+## Факт
+
+- **`IDEA-0023`** зареєстровано (**Stage 8B**); master log + нормалізатор-узгоджені поля
+- **`TASK-2026-08B-001`** у **`docs/TASKS.md`**
+- Додано **`docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`** — канонічний шлях **Any client → `prepare_calculation` → snapshot → `save_snapshot` → `snapshot_id`**
+- **API** зафіксовано як **єдиний оркестратор** persistence; **Supabase** = memory only
+- **GAS** обмежено роллю **thin client adapter** (не orchestration core)
+- **`TASK-2026-08B-011`** — shell **STAGE_8B.1** Thin Client Adapter V1 (implementation path only)
+- Оновлено **`docs/NOW.md`**, **`docs/AUDITS/00_AUDIT_INDEX.md`**
+
+## Статус
+
+**`STAGE_8B_GOVERNANCE_FIXED`** · **`NEXT_GATE_READY: STAGE_8B.1`**
+
+---
+
 # 30.04.2026 — Stage 8A closure: LIVE PASS + документація **`STAGE_8A_COMPLETE`**
 
 ## Ціль етапу

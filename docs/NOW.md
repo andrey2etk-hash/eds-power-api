@@ -4,6 +4,13 @@
 
 Створити системний фундамент EDS Power для подальшої розробки модулів, API, БД, UI та AI-агентів.
 
+## Поточний Stage (8B governance)
+
+- **Current Stage:** **`STAGE_8B_GOVERNANCE_READY`**
+- **Current Focus:** Client-agnostic persistence contract (**API-centered**) — **`docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`**, **`IDEA-0023`**, **`TASK-2026-08B-001`**
+- **Next:** Thin Client Adapter **V1** (GAS як перший адаптер; API — канонічний оркестратор) — **`TASK-2026-08B-011`** (**`NEXT_GATE_READY: STAGE_8B.1`**)
+- **Final posture (після цього PR):** **`STAGE_8B_GOVERNANCE_FIXED`**
+
 ## Завершено — KZO MVP Stage 5C (факт перевірки, 29.04.2026)
 
 - **Stage 5C** = **VERIFIED**: API `physical_topology_summary` (**Render**) + топологія на Sheet (**`Stage4A_MVP!E21:F26`**, thin GAS — `runStage5CSheetOutputIntegrationFlow()`).
@@ -44,9 +51,9 @@
 - Thin GAS **`saveKzoSnapshotV1()`** — лише транспорт JSON.
 - Інші аудити траєкторії: **8A.1** **`FIRST_PERSISTENCE_READY_NON_PROD`**; **8A.0.8** **`CURSOR_LOCAL_STACK_VERIFIED`**; mapping **`13_KZO_MVP_SNAPSHOT_V1_SQL_MAPPING.md`**.
 
-## Рекомендований наступний етап (окремий **IDEA/TASK**, не scope 8A)
+## Рекомендований операційний gate (8B.1)
 
-- **Операційний перший write path:** після **`runKzoMvpFlow()`** (або еквівалент збирання **`KZO_MVP_SNAPSHOT_V1`**) виклик **`saveKzoSnapshotV1()`** за замовчуванням для оператора, з передбачуваним логом (**`logic_version`**, **`request_id`**) — щоб рядки в **`calculation_snapshots`** були прив’язані до Sheet workflow, не лише до ручних HTTP probe.
+- Реалізація **Thin Client Adapter V1** у GAS за **`docs/TASKS.md`** — **`TASK-2026-08B-011`** (без orchestration core, без прямого Supabase).
 - Retrieval / snapshot history / analytics UI — **окремий** **IDEA** (як і раніше).
 
 ## Як узгоджено з Gemini doc-pass (Зовнішній аудит)
@@ -61,7 +68,7 @@ https://eds-power-api.onrender.com
 
 1. 00-01_AUTH — авторизація (frozen MVP / draft_ready)
 2. 00-02_CALC_CONFIGURATOR — конфігуратор (KZO Stage 5A–5C operator-visible path для structural / footprint API / topology API + топологія на Sheet верифіковані)
-3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (**7A/** **7B** **`IMPLEMENTED`**); **Stage 8A** **`COMPLETE`** (**`IDEA-0017`** **`IMPLEMENTED`**); retrieval/history/analytics та **операційний orchestrated save path** — окремі IDEA
+3. 00-02_CALC_CONFIGURATOR/09_KZO — **8A** **`COMPLETE`**; **8B** **`STAGE_8B_GOVERNANCE_READY`** (**`IDEA-0023`** **`ACTIVE`**); **NEXT** **`STAGE_8B.1`** Thin GAS adapter (**`TASK-2026-08B-011`**)
 
 ## Що робимо зараз
 
@@ -125,7 +132,7 @@ https://eds-power-api.onrender.com
 
 ## What remains next (plan)
 
-- Рекомендовано: **IDEA/TASK** на **thin GAS orchestration** — **`runKzoMvpFlow()`** → збір **`KZO_MVP_SNAPSHOT_V1`** → **`saveKzoSnapshotV1()`** (перший стабільний operator production write).
-- Окремі **IDEAs:** retrieval API, snapshot history UI, analytics (не змішувати без нормалізації).
+- **STAGE_8B.1** — execute **`TASK-2026-08B-011`** (GAS thin adapter: **`prepare_calculation`** + **`save_snapshot`** + display; **no** Supabase direct, **no** orchestration core).
+- Окремі **IDEAs:** retrieval API, snapshot history UI, analytics.
 - keep Stage narrow: no BOM, pricing, retrieval dashboard, or unmanaged Sheet expansion unless separately tasked
 - keep GAS thin on future operator-visible transports
