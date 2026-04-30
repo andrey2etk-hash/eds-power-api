@@ -216,3 +216,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Stage 8A — operator staging for pg_dump output before sanitized baseline merge (optional)
+remote_schema.sql

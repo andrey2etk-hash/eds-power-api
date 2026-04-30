@@ -13,6 +13,8 @@ This file is the single source of truth for all normalized ideas in EDS Power.
 - `REJECTED`
 - `RENORMALIZED`
 
+Operative **sub-state** strings (such as **`PENDING_SUPABASE_VERIFICATION`**) appear only in Idea Notes until a live gate PASS; they are **not** additional master **`Status`** column tokens unless formally added here.
+
 ## Master Table
 
 | Idea_ID | Date | Raw Idea | Classification | Priority | Decision | Stage Target | Trigger Condition | Key Thesis | Status |
@@ -34,6 +36,12 @@ This file is the single source of truth for all normalized ideas in EDS Power.
 | IDEA-0014 | 2026-04-29 | Stage 6C KZO Engineering Burden Foundation MVP: planning-grade production burden from classification + topology (not kg/BOM/price) | `RIGHT_NOW` | `P1` | `TASK` | Stage 6C | After Stage 6B closed with Gemini SAFE TO PROCEED TO STAGE 6C | Planning burden before precision — burden tiers only — no BOM/CAD procurement | `IMPLEMENTED` |
 | IDEA-0015 | 2026-04-29 | Stage 7A KZO end-to-end MVP stabilization: unified operator-grade flow (single API call + orchestrated Sheet writeback) | `IMMEDIATE_CRITICAL` | `P0` | `URGENT_TASK` | Stage 7A | After Stage 6C operator-visible **`IMPLEMENTED`** closes layered stack | **Stabilize before deepen** — one scenario (5A+5C+6B/6C layers) — no BOM/DB/pricing/new API math until MVP cohesion validated | `IMPLEMENTED` |
 | IDEA-0016 | 2026-04-29 | Stage 7B KZO MVP snapshot contract freeze: canonical `KZO_MVP_SNAPSHOT_V1` before persistence | `IMMEDIATE_CRITICAL` | `P0` | `URGENT_TASK` | Stage 7B | After **IDEA-0015** `IMPLEMENTED` (7A operational PASS) | **Freeze before persistence** — one trusted object for Stage 8A — no Supabase/SQL in 7B | `IMPLEMENTED` |
+| IDEA-0017 | 2026-04-29 | Stage 8A Supabase first persistence MVP: insert-only `calculation_snapshots` (`product_type` KZO), `POST /api/kzo/save_snapshot` | `RIGHT_NOW` | `P1` | `TASK` | Stage 8A.1 | After **IDEA-0016** `IMPLEMENTED`; **IDEA-0018** + **IDEA-0019** `IMPLEMENTED`; **IDEA-0020** + **legacy baseline DDL** (**IDEA-0022**/operator) verified on staging before **`db push`** | **Persist frozen truth** — one row per snapshot; no calc/BOM/auth expansion in Stage 8A | `ACTIVE` |
+| IDEA-0018 | 2026-04-29 | Stage 8A.0 EDS Power Supabase root governance foundation — central DB memory, not KZO-root architecture | `IMMEDIATE_CRITICAL` | `P0` | `URGENT_TASK` | Stage 8A.0 | Before expanding live persistence footprint beyond ad-hoc module naming | Folder + naming + migration registry rules — **docs only** — no ERP/BOM/analytics DDL | `IMPLEMENTED` |
+| IDEA-0019 | 2026-04-29 | Stage 8A.0.1 Root migration naming correction — `calculation_snapshots` replaces KZO-biased table name (`TABLE=SYSTEM`, `ROW=PRODUCT`) | `IMMEDIATE_CRITICAL` | `P0` | `URGENT_TASK` | Stage 8A.0.1 | After **IDEA-0018** (**8A.0**); **before** first live push using root governance | Canonical migration + archive superseded DDL; **`KZO_MVP_SNAPSHOT_V1`** unchanged | `IMPLEMENTED` |
+| IDEA-0020 | 2026-04-29 | Stage 8A.0.2 Supabase remote baseline alignment — legacy remote `public` (`legacy_baseline`); **`calculation_snapshots` DDL hold** pending baseline import | `IMMEDIATE_CRITICAL` | `P0` | `URGENT_TASK` | Stage 8A.0.2 | Declared non-empty **`public`** (objects, bom_links, ncr, production_status, **`v_*`**) | **`LEGACY_REMOTE_BASELINE.md`** + **`_pending_after_remote_baseline/`** — zero destructive DB action in TASK | `IMPLEMENTED` |
+| IDEA-0021 | 2026-04-29 | Role-adaptive operational shell doctrine (“self-checkout principle”): guided role-specific UI above, system truth / ERP / DB underneath | `NORMAL_LONG_TERM` | `P3` | `FUTURE` | Post–core platform architecture / multi-module UX doctrine | After stable CALC + persistence + first operational modules | One truth layer below; many governed operational shells above — users do not operate core accounting/ERP unless role requires it | `FUTURE` |
+| IDEA-0022 | 2026-04-29 | Stage 8A.0.3 Supabase remote baseline capture — authoritative migration slot ordering before `calculation_snapshots`; schema-only DDL from remote (no prod `db push`) | `IMMEDIATE_CRITICAL` | `P0` | `URGENT_TASK` | Stage 8A.0.3 | After **IDEA-0020** **`IMPLEMENTED`** | **`20260429110000_remote_legacy_baseline.sql`** \< held snapshot DDL; **`8A.0.4`** staging replay | `ACTIVE` |
 
 ## Idea Notes
 
@@ -858,4 +866,204 @@ Implementation record:
 - Audit: `docs/AUDITS/2026-04-29_STAGE_7B_KZO_MVP_SNAPSHOT_CONTRACT_FREEZE.md` (**freeze before persistence**)
 - Forbidden in Stage 7B: Supabase tables, SQL, DB deployment, new engineering fields beyond validated MVP layers
 - Master table **Status**: **`IMPLEMENTED`** (documentation contract only; **Stage 8A** references this object as persistence source)
-- **Formal closure (Gemini doc-pass):** Stage **7B** **CLOSED** after external Gemini **`SAFE TO PROCEED TO STAGE 8A`** — **`KZO_MVP_SNAPSHOT_V1`** remains **frozen** as sole persistence-shape baseline (**no V1 contract edits** outside a new snapshot version + IDEA); **Stage 8A** **NOT STARTED** until separate normalized **IDEA + TASK**.
+- **Formal closure (Gemini doc-pass):** Stage **7B** **CLOSED** after external Gemini **`SAFE TO PROCEED TO STAGE 8A`** — **`KZO_MVP_SNAPSHOT_V1`** remains **frozen** as sole persistence-shape baseline (**no V1 contract edits** outside a new snapshot version + IDEA). Controlled persistence implementation tracked as **IDEA-0017**.
+
+### IDEA-0017 — Stage 8A Supabase first persistence MVP
+
+Classification / priority / decision:
+
+- `RIGHT_NOW` / `P1` / `TASK`
+
+Stage target:
+
+- Stage **8A.1** (first persistence under root DB governance)
+
+Trigger condition:
+
+- After **IDEA-0016** `IMPLEMENTED` (**`KZO_MVP_SNAPSHOT_V1`** frozen).
+- After **IDEA-0018** **`IMPLEMENTED`** (Supabase central-memory governance — **non-KZO-root** naming and registry discipline).
+
+Key thesis:
+
+- **Persist frozen truth.** System table **`calculation_snapshots`**, **`product_type`** **`KZO`** at insert, insert-only, JSONB contract columns; **`prepare_calculation`** unchanged; **`POST /api/kzo/save_snapshot`** validates V1 + INSERT only.
+
+Implementation record:
+
+- `kzo_snapshot_persist.py` — **`validate_kzo_mvp_snapshot_v1`**, **`insert_snapshot_row`** (Supabase REST; env **`SUPABASE_URL`**, **`SUPABASE_SERVICE_ROLE_KEY`**)
+- `main.py` — **`POST /api/kzo/save_snapshot`**
+- `supabase/migrations/_pending_after_remote_baseline/20260429120000_calculation_snapshots_v1.sql` — DDL **held** (**IDEA-0020**); restore to **`migrations/`** after baseline migrations — registered **`schema_registry/REGISTRY_INDEX.md`** (**IDEA-0019** naming); superseded DDL **`migrations/_archive_pre_8a0_1_kzo_tables/`**
+- Root DB topology (not KZO-as-root): **`supabase/README.md`**, **`schema_registry/`**, **`domains/`**
+- Mapping: `docs/00-02_CALC_CONFIGURATOR/09_KZO/13_KZO_MVP_SNAPSHOT_V1_SQL_MAPPING.md`
+- Governance: `docs/00-02_CALC_CONFIGURATOR/09_KZO/14_CALC_TRUTH_VS_PERSISTENCE_STAGE_8A.md`
+- Audit: `docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_FIRST_PERSISTENCE_MVP.md`
+- Live verification gate: `docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md` — **LIVE PASS pending** (operative sub-state **`PENDING_SUPABASE_VERIFICATION`**) until migration + env + redeploy + POST + row proof are recorded there
+- Forbidden: BOM, pricing, retrieval APIs, dashboards, **`prepare_calculation`** mutations, contract field inflation without V2
+- Thin GAS **`saveKzoSnapshotV1()`** — transport only
+- Master table **Status**: **`ACTIVE`** — set to **`IMPLEMENTED`** only after **live** Supabase + API verification recorded in **`2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md`**
+
+### IDEA-0018 — Stage 8A.0 EDS Power Supabase root governance foundation
+
+Classification / priority / decision:
+
+- `IMMEDIATE_CRITICAL` / `P0` / `URGENT_TASK`
+
+Stage target:
+
+- Stage **8A.0**
+
+Trigger condition:
+
+- Required **before** assuming Supabase DDL is scoped only to **KZO**; aligns **`00_SYSTEM`** principle that DB is **system memory**, gated by maturity and frozen contracts (**7B** freeze precedes persistence).
+
+Key thesis:
+
+- **Prevent KZO-centric database architecture.** Supabase = central memory; **KZO** = first validated **consumer** of **`snapshots`**; general tables eschew product-coded names without **`product_type`** / domain rules.
+
+Implementation record (documentation + folder scaffolding **only** — **no new migration** authored under **8A.0** for governance):
+
+- `supabase/README.md` — global rules; **8A.0** vs **8A.1** gates
+- `supabase/migrations/README.md` — migration discipline; cites existing DDL
+- `supabase/schema_registry/README.md`, `supabase/schema_registry/LEGACY_REMOTE_BASELINE.md`, `supabase/schema_registry/REGISTRY_INDEX.md` — **`calculation_snapshots`** (**8A.0.1**); **`LEGACY_REMOTE_SCHEMA_DETECTED`** (**8A.0.2**); superseded **`kzo_mvp_snapshots_v1`** draft documented in **`migrations/_archive_pre_8a0_1_kzo_tables/`**
+- `supabase/domains/README.md` — domain map + **`product_type`** discriminator
+- Stub domains: `auth/`, `users/`, `roles/`, `products/`, `calculations/`, `snapshots/`, `production/`, `supply/`, `employee_skills/`, `analytics/` — placeholders only
+- Forbidden in **8A.0**: live migration execution mandate, ERP schema, BOM/pricing/analytics DDL, auth expansion
+
+Master table **Status**: **`IMPLEMENTED`**
+
+### IDEA-0019 — Stage 8A.0.1 Root migration governance correction
+
+Classification / priority / decision:
+
+- `IMMEDIATE_CRITICAL` / `P0` / `URGENT_TASK`
+
+Stage target:
+
+- Stage **8A.0.1**
+
+Key thesis:
+
+- **`TABLE = SYSTEM`**, **`ROW = PRODUCT`**. Replace KZO-biased root name with **`public.calculation_snapshots`** and **`product_type = 'KZO'`**. **`KZO_MVP_SNAPSHOT_V1`** remains the contract id (Stage **7B**).
+
+Implementation record:
+
+- `supabase/migrations/_pending_after_remote_baseline/20260429120000_calculation_snapshots_v1.sql`
+- `supabase/migrations/_archive_pre_8a0_1_kzo_tables/` — superseded draft DDL
+- `docs/AUDITS/2026-04-29_STAGE_8A_0_1_ROOT_MIGRATION_GOVERNANCE_CORRECTION.md`
+- `kzo_snapshot_persist.py` — **`product_type`** on INSERT
+
+Master table **Status**: **`IMPLEMENTED`**
+
+### IDEA-0020 — Stage 8A.0.2 Supabase remote baseline alignment
+
+Classification / priority / decision:
+
+- `IMMEDIATE_CRITICAL` / `P0` / `URGENT_TASK`
+
+Stage target:
+
+- Stage **8A.0.2**
+
+Key thesis:
+
+- Non-empty **`public`** on Supabase (**`LEGACY_REMOTE_SCHEMA_DETECTED`**). **`calculation_snapshots`** DDL **held** (**`_pending_after_remote_baseline/`**) until authoritative **baseline** migrations precede **`db push`**. No destructive DDL in this IDEA.
+
+Implementation record (**docs + hold**; **no** live DB / **no **`db push`**):
+
+- **`supabase/schema_registry/LEGACY_REMOTE_BASELINE.md`**
+- **`supabase/migrations/_pending_after_remote_baseline/`** + root **`migrations/README.md`** update
+- **`docs/AUDITS/2026-04-29_STAGE_8A_0_2_SUPABASE_REMOTE_BASELINE_ALIGNMENT.md`**
+
+Master table **Status**: **`IMPLEMENTED`**
+
+### IDEA-0022 — Stage **8A.0.3** Remote baseline capture (ordering + operator DDL paste)
+
+Stage target:
+
+- Stage **8A.0.3** (**capture-only**)
+
+Key thesis:
+
+- Repo migration ordering must **trail** authoritative remote legacy **`public`**: **`20260429110000_remote_legacy_baseline.sql`** strictly **before** **`20260429120000_calculation_snapshots_v1.sql`** (**held** in **`_pending_after_remote_baseline/`**).
+
+Strict:
+
+- **No** **`db push`** / apply to prod inside this IDEA’s TASK framing; staging replay is **Stage 8A.0.4**.
+- Factual DDL is committed from **`remote_schema.sql`** only — **never** fabricated in repo.
+
+Freeze:
+
+- **`LEGACY_REMOTE_BASELINE.md`** — no Dashboard DDL on listed legacy **`public`** during capture window.
+
+Operative (until **8A.0.4** PASS):
+
+- **`PENDING_STAGING_REPLAY_804`** — factual baseline DDL committed; verify with disposable DB **`migrate` / db reset**.
+- **8A.0.6 (2026-04-29):** **`REAL_BASELINE_CAPTURED_PENDING_REPLAY`** — **`remote_schema.sql`** merged into **`20260429110000_remote_legacy_baseline.sql`**; audit **8A.0.6**.
+- **8A.0.7 (2026-04-29):** **`BLOCKED_BY_DOCKER`** — no local **`db reset`** run; see audit **8A.0.7**.
+
+Artifacts:
+
+- **`supabase/migrations/20260429110000_remote_legacy_baseline.sql`**
+- **`docs/AUDITS/2026-04-29_STAGE_8A_0_3_REMOTE_BASELINE_CAPTURE.md`**
+- **`docs/AUDITS/2026-04-29_STAGE_8A_0_4_BASELINE_REPLAY_TEST.md`**
+- **`docs/AUDITS/2026-04-29_STAGE_8A_0_5_LOCAL_TOOLING_PRECHECK.md`**
+- **`docs/AUDITS/2026-04-29_STAGE_8A_0_6_ACTUAL_REMOTE_BASELINE_CAPTURE.md`**
+- **`docs/AUDITS/2026-04-29_STAGE_8A_0_7_BASELINE_REPLAY_VERIFICATION.md`**
+
+Master table **Status**: **`ACTIVE`**
+
+### IDEA-0021 — EDS Power role-adaptive operational shell doctrine (“self-checkout principle”)
+
+**Strategic one-liner:** Industrial **self-checkout architecture** — **simple for each worker, deep underneath.**
+
+Classification / priority / decision:
+
+- `NORMAL_LONG_TERM` / `P3` / `FUTURE`
+
+Stage target:
+
+- Post–**core platform architecture** / multi-module **UX doctrine** (broader than KZO or Google Sheets alone)
+
+Trigger condition:
+
+- After **stable CALC + persistence + first operational modules** — reopen for product strategy review
+
+Review stage:
+
+- **Re-evaluate** when moving from MVP tooling to company-wide **operator ecosystem**
+
+Core design law:
+
+- **Complexity below.** **Operational simplicity above.**
+
+Key thesis:
+
+- **Users should not operate core accounting / ERP / DB directly** unless their role truly requires it.
+- **EDS Power** should expose only the **minimal operational layer** each participant needs; **truth**, **rules**, **analytics**, **governance** remain **under** that layer.
+- **1C / ERP / DB ≠ operator interface** — they may be the **truth layer**, while participants work through **governed adaptive shells**.
+
+Self-checkout analogy:
+
+- Cashier / shopper does **not** work in the bookkeeping DB; they see a **guided flow** and **next required action** — warehouse, postings, analytics run **underneath**.
+
+EDS Power role sketch (illustrative — **not** execution scope now):
+
+- Майстер — only their operation  
+- Конструктор — only required engineering inputs  
+- Менеджер — commercial flow  
+- Комплектувальник — pick task  
+- Керівник — analytics / bottlenecks  
+- Бухгалтерія — accounting truth **when role requires exposure to it**
+
+Possible future implications (**no** TASK until renormalized):
+
+- Role dashboards; guided flows; kiosk / station / mobile task views; department shells; API-first orchestration; **1C integration as backend truth**, not mandatory front desk for every user.
+
+Forbidden **now**:
+
+- UI overbuild; app-ecosystem sprawl; auth redesign; ERP rewrite; premature dedicated mobile platform.
+
+Anti-drift:
+
+- **Doctrine only** — no automatic expansion of current build stages without a new **IDEA → TASK** chain.
+
+Master table **Status**: **`FUTURE`**

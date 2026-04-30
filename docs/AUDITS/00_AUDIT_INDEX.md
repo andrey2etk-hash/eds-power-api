@@ -12,7 +12,16 @@ Rule:
 
 ## Latest audit
 
-- **Stage 7B — final closure (Gemini `SAFE TO PROCEED TO STAGE 8A` + governance doc-pass)** — `2026-04-29_STAGE_7B_KZO_MVP_SNAPSHOT_CONTRACT_FREEZE.md` (**`KZO_MVP_SNAPSHOT_V1` frozen**; **IDEA-0016 `IMPLEMENTED`**; Stage **8A NOT STARTED** until separate IDEA+TASK)
+- **Stage 8A.0.7 — Baseline replay verification** — `2026-04-29_STAGE_8A_0_7_BASELINE_REPLAY_VERIFICATION.md` (**`BLOCKED_BY_DOCKER`**; **no** `db reset` run; **`calculation_snapshots`** still **held**)
+- **Stage 8A.0.6 — Actual remote baseline DDL import** — `2026-04-29_STAGE_8A_0_6_ACTUAL_REMOTE_BASELINE_CAPTURE.md` (**`REAL_BASELINE_CAPTURED_PENDING_REPLAY`**; merged **`remote_schema.sql`** · **no** `db push`; **`calculation_snapshots`** still **held**)
+- **Stage 8A.0.5 — Local tooling precheck** — `2026-04-29_STAGE_8A_0_5_LOCAL_TOOLING_PRECHECK.md` (**`READY_FOR_OPERATOR_TOOLING_INSTALL`**)
+- **Stage 8A.0.4 — Baseline DDL + local replay test** — `2026-04-29_STAGE_8A_0_4_BASELINE_REPLAY_TEST.md` (**`BLOCKED_BY_LOCAL_TOOLING`**; **no** DDL captured; **no** `db push`; **no** **`calculation_snapshots`** promotion)
+- **Stage 8A.0.3 — Remote baseline capture (ordering slot + scaffold / operator DDL)** — `2026-04-29_STAGE_8A_0_3_REMOTE_BASELINE_CAPTURE.md` (**`BASELINE_CAPTURED_PENDING_REPLAY_TEST`**; **no** `db push`; **`calculation_snapshots`** still **held**; **`IDEA-0022` `ACTIVE`** / operative **`PENDING_STAGING_REPLAY_804`**)
+- **Stage 8A.0.2 — Supabase remote baseline alignment (governance + DDL hold)** — `2026-04-29_STAGE_8A_0_2_SUPABASE_REMOTE_BASELINE_ALIGNMENT.md` (**`LEGACY_REMOTE_SCHEMA_DETECTED`**; additive only; **`IDEA-0020` `IMPLEMENTED`**; **no** `db push` in TASK)
+- **Stage 8A.0.1 — Root migration governance correction** — `2026-04-29_STAGE_8A_0_1_ROOT_MIGRATION_GOVERNANCE_CORRECTION.md` (**`calculation_snapshots`** + **`product_type`** — **`TABLE=SYSTEM`, `ROW=PRODUCT`**; **`IDEA-0019` `IMPLEMENTED`**)
+- **Stage 8A — Supabase live verification gate** — `2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md` (**LIVE PASS PENDING**; **`IDEA-0017` `ACTIVE` / `PENDING_SUPABASE_VERIFICATION`**; automated probe **`404`** on `eds-power-api.onrender.com` **`/api/kzo/save_snapshot`** at 2026-04-29 — redeploy + env + migration required)
+- **Stage 8A — Supabase first persistence MVP (implementation audit)** — `2026-04-29_STAGE_8A_SUPABASE_FIRST_PERSISTENCE_MVP.md` (insert-only **`calculation_snapshots`**; **`IDEA-0017` `IMPLEMENTED`** only after live PASS in live gate audit)
+- **Stage 7B — final closure (Gemini `SAFE TO PROCEED TO STAGE 8A` + governance doc-pass)** — `2026-04-29_STAGE_7B_KZO_MVP_SNAPSHOT_CONTRACT_FREEZE.md` (**`KZO_MVP_SNAPSHOT_V1` frozen**; **IDEA-0016 `IMPLEMENTED`**)
 - **Gemini external audit request — Stage 7B** — `2026-04-29_STAGE_7B_GEMINI_EXTERNAL_AUDIT_REQUEST.md`
 - **Gemini external audit request — Stage 7A final closure** — `2026-04-29_STAGE_7A_GEMINI_EXTERNAL_AUDIT_REQUEST.md`
 - **Stage 7A — operator verification PASS + MVP cohesion dossier** — `2026-04-29_STAGE_7A_KZO_END_TO_END_MVP_STABILIZATION.md` (**manual `runKzoMvpFlow()`**, **`mvp_run_outcome` `MVP_RUN_SUCCESS`**, Sheet **`E4:F19`/`E20:F20`**, **`E21:F26`**, **`E27:F40`**; **IDEA-0015 `IMPLEMENTED`**)
@@ -61,6 +70,10 @@ Rule:
 - `2026-04-29_STAGE_7A_KZO_END_TO_END_MVP_STABILIZATION.md`
 - `2026-04-29_STAGE_7A_GEMINI_EXTERNAL_AUDIT_REQUEST.md`
 - `2026-04-29_STAGE_7B_KZO_MVP_SNAPSHOT_CONTRACT_FREEZE.md`
+- `2026-04-29_STAGE_8A_0_2_SUPABASE_REMOTE_BASELINE_ALIGNMENT.md`
+- `2026-04-29_STAGE_8A_0_1_ROOT_MIGRATION_GOVERNANCE_CORRECTION.md`
+- `2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md`
+- `2026-04-29_STAGE_8A_SUPABASE_FIRST_PERSISTENCE_MVP.md`
 - `2026-04-29_STAGE_7B_GEMINI_EXTERNAL_AUDIT_REQUEST.md`
 - `2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`
 - `2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`
@@ -72,4 +85,8 @@ Rule:
 ## Active blockers
 
 - no sidebar / buttons / menus before a separate normalized task
-- no DB / Supabase / AUTH / BOM / costing / production transfer expansion
+- no BOM / costing / production transfer expansion without separate TASK
+
+## Post–Stage 8A (explicit non-goals until tasked)
+
+- retrieval API / snapshot history UI / analytics — **out of Stage 8A scope**

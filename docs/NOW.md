@@ -36,17 +36,33 @@
 
 - **`KZO_MVP_SNAPSHOT_V1`** frozen — `docs/00-02_CALC_CONFIGURATOR/09_KZO/11_KZO_MVP_SNAPSHOT_V1_CONTRACT.md` (verified layers: **`structural_composition_summary`**, **`physical_summary`**, **`physical_topology_summary`**, **`engineering_class_summary`**, **`engineering_burden_summary`**; SUCCESS/FAILED envelopes; **`snapshot_version`** + **`logic_version`** policy).
 - Audit **`2026-04-29_STAGE_7B_KZO_MVP_SNAPSHOT_CONTRACT_FREEZE.md`** — external Gemini **`SAFE TO PROCEED TO STAGE 8A`**; Stage **7B** **CLOSED**; **`IDEA-0016`** **`IMPLEMENTED`** (unchanged Status Values).
-- **Stage 8A** (Supabase / first persistence MVP) — **NOT STARTED** until separate normalized **IDEA + TASK**; persistence must store **frozen V1 only** — no MVP contract redesign in 8A.
+
+## Stage 8A — код implementation (insert-only, 29.04.2026)
+
+- **`POST /api/kzo/save_snapshot`** у репозиторії (`kzo_snapshot_persist.py`; DDL **`supabase/migrations/_pending_after_remote_baseline/20260429120000_calculation_snapshots_v1.sql`** — **hold** до replay PASS; baseline **`20260429110000`** — **фактичний DDL імпортовано** (**8A.0.6** **`REAL_BASELINE_CAPTURED_PENDING_REPLAY`**)). **`TABLE=SYSTEM`**/**`ROW=PRODUCT`** — **8A.0.1**/**8A.0.2**. **`prepare_calculation`** без змін.
+- Thin GAS **`saveKzoSnapshotV1()`** — лише транспорт JSON.
+- Аудит імплементації: **`2026-04-29_STAGE_8A_SUPABASE_FIRST_PERSISTENCE_MVP.md`**; mapping **`13_KZO_MVP_SNAPSHOT_V1_SQL_MAPPING.md`**.
+
+## Активний gate — Stage 8A Supabase (**8A.0.7** replay **BLOCKED_BY_DOCKER**)
+
+- **8A.0.7:** локальний **`supabase db reset`** — **не виконано**: **немає** Docker / Supabase CLI на PATH у агент-сесії. Статус: **`BLOCKED_BY_DOCKER`** — **`docs/AUDITS/2026-04-29_STAGE_8A_0_7_BASELINE_REPLAY_VERIFICATION.md`**. **`calculation_snapshots`** — **лише** **`_pending_after_remote_baseline/`**; **не переносити** до **8A.0.8**. Ціль **`BASELINE_REPLAY_VERIFIED`** — після replay на машині оператора або disposable DB.
+- **8A.0.6:** baseline DDL у **`20260429110000_remote_legacy_baseline.sql`** — **DONE** (**`REAL_BASELINE_CAPTURED_PENDING_REPLAY`**). Аудит **`docs/AUDITS/2026-04-29_STAGE_8A_0_6_ACTUAL_REMOTE_BASELINE_CAPTURE.md`**.
+- **8A.0.5:** tooling precheck — **`docs/AUDITS/2026-04-29_STAGE_8A_0_5_LOCAL_TOOLING_PRECHECK.md`**.
+- **8A.0.3 (ordering):** файл **`supabase/migrations/20260429110000_remote_legacy_baseline.sql`** у root (**порядок \<** hold **`20260429120000_calculation_snapshots_v1.sql`**); тепер містить **фактичний** DDL (**8A.0.6**). **`LEGACY_REMOTE_BASELINE.md`** freeze залишається доки replay не **`PASS`** — аудити **8A.0.3**/**8A.0.6**.
+- **8A.0.2 (governance, closed):** remote **`public`** не порожній — **`LEGACY_REMOTE_SCHEMA_DETECTED`**; **`IDEA-0020`** **`IMPLEMENTED`**.
+- **Live gate:** `docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md` — після baseline: застосувати міграції, env на Render, redeploy, **POST** живий → рядок у **`calculation_snapshots`** (`product_type` = **`KZO`**).
+- Automated probe **`eds-power-api.onrender.com`** (2026-04-29): **`404`** на **`/api/kzo/save_snapshot`** → **live PASS ще не зафіксований** (ймовірно stale deploy без Stage 8A route або інший сервіс).
+- **IDEA-0017** = **`ACTIVE`** (**operative:** **`PENDING_SUPABASE_VERIFICATION`**) до запису **LIVE PASS** у live gate аудиті → тоді **`IMPLEMENTED`**.
 
 ## Поточний етап і наступний gate
 
-- **Наступний gate:** **Stage 8A — Supabase First Persistence MVP** — **або еквівалент першого DB шару** (**NOT STARTED**): дозволено лише після **окремої нормалізованої IDEA + TASK**. Реалізація зберігання лише **`KZO_MVP_SNAPSHOT_V1`** як frozen object — **не** розширення MVP-контракту через persistence.
+- Після **LIVE PASS** Stage 8A: **IDEA-0017** → **`IMPLEMENTED`**; окремий **IDEA/TASK** на retrieval / історію UI / analytics (поза **8A** verification scope).
 
 ## Як узгоджено з Gemini doc-pass (Зовнішній аудит)
 
 - Gemini Stage 5C Sheet operator verification: **`PASS WITH DOC FIXES`** → застосовано лише синхронізація доків (без змін API/GAS). Використано статус IDEA **`IMPLEMENTED`**, без нових міток у master table beyond `Status Values`.
 - Stage 6B external Gemini audits: **`SAFE TO PROCEED TO STAGE 6C`** — **Stage 6C** (**`IDEA-0014`**) потім закритий імплементацією `engineering_burden_summary`.
-- Stage **7B** snapshot contract — external Gemini **`SAFE TO PROCEED TO STAGE 8A`**; **`KZO_MVP_SNAPSHOT_V1`** frozen (**`IDEA-0016`** **`IMPLEMENTED`**); Stage **8A NOT STARTED** until separate IDEA+TASK.
+- Stage **7B** snapshot contract — external Gemini **`SAFE TO PROCEED TO STAGE 8A`**; **`KZO_MVP_SNAPSHOT_V1`** frozen (**`IDEA-0016`** **`IMPLEMENTED`**). Stage **8A** code shipped; **live Supabase verification** — **`ACTIVE`** (**`IDEA-0017`**, **`PENDING_SUPABASE_VERIFICATION`** до live PASS).
 
 https://eds-power-api.onrender.com
 
@@ -54,7 +70,7 @@ https://eds-power-api.onrender.com
 
 1. 00-01_AUTH — авторизація (frozen MVP / draft_ready)
 2. 00-02_CALC_CONFIGURATOR — конфігуратор (KZO Stage 5A–5C operator-visible path для structural / footprint API / topology API + топологія на Sheet верифіковані)
-3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (**7A/** **7B** **`IMPLEMENTED`**; **Stage 8A** — **NEXT GATE**, **NOT STARTED** until normalized IDEA+TASK — persist **frozen `KZO_MVP_SNAPSHOT_V1` only**)
+3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (**7A/** **7B** **`IMPLEMENTED`**; **8A** persistence code + **live gate OPEN** — **`IDEA-0017`** **`ACTIVE`** / **`PENDING_SUPABASE_VERIFICATION`** until live PASS; retrieval/history/analytics — окремий IDEA)
 
 ## Що робимо зараз
 
@@ -78,7 +94,8 @@ https://eds-power-api.onrender.com
 - не змінюємо архітектуру без TASK
 - не порушуємо data contracts
 - не переходимо до full CALC implementation без окремого TASK
-- не додаємо Supabase / DB / AUTH / costing / BOM / production logic
+- не додаємо Supabase/DB/AUTH без окремого TASK; retrieval/history/dashboard — те саме
+- не додаємо BOM / costing / expansion до live gate (**live PASS** оператор робить лише перевірку по **`docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md`**, без нової продукт-логіки)
 
 ## What was completed today (fact)
 
@@ -114,6 +131,7 @@ https://eds-power-api.onrender.com
 
 ## What remains next (plan)
 
-- **Stage 8A** — Supabase (or equivalent) **first persistence MVP** — **NOT STARTED** until **separate normalized IDEA + TASK**; store **only** **`KZO_MVP_SNAPSHOT_V1`** — **no contract expansion** inside persistence scope
-- keep Stage narrow: no BOM, pricing, DB, CAD, or unmanaged Sheet expansion unless separately tasked
+- **Stage 8A.0.2 technical follow-up (operator):** import/generate **baseline** migrations for remote legacy **`public`** (see **`supabase/schema_registry/LEGACY_REMOTE_BASELINE.md`**, audit **`2026-04-29_STAGE_8A_0_2_SUPABASE_REMOTE_BASELINE_ALIGNMENT.md`**) → **then** restore **`calculation_snapshots`** DDL from **`_pending_after_remote_baseline/`** into **`migrations/`** before any **`db push`**
+- **Stage 8A live gate** — **`docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md`**: after baseline, apply migrations, env on Render, redeploy, **`POST /api/kzo/save_snapshot`**, verify row — then **`IDEA-0017`** → **`IMPLEMENTED`**
+- keep Stage narrow: no BOM, pricing, retrieval dashboard, or unmanaged Sheet expansion unless separately tasked
 - keep GAS thin on future operator-visible transports

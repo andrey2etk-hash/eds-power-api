@@ -42,6 +42,8 @@ Stage 7A = **IMPLEMENTED / operator-verified** (unified **`runKzoMvpFlow()`** �
 
 Stage 7B = **VERIFIED / IMPLEMENTED / formally closed** (canonical **`KZO_MVP_SNAPSHOT_V1`** — `docs/00-02_CALC_CONFIGURATOR/09_KZO/11_KZO_MVP_SNAPSHOT_V1_CONTRACT.md`; external Gemini **`SAFE TO PROCEED TO STAGE 8A`**; **`2026-04-29_STAGE_7B_KZO_MVP_SNAPSHOT_CONTRACT_FREEZE.md` formal closure section; **IDEA-0016** **`IMPLEMENTED`**)
 
+Stage 8A = **code IMPLEMENTED / live PASS PENDING** (DDL **`calculation_snapshots` + `product_type` KZO — **hold** **8A.0.2** у **`_pending_after_remote_baseline/`** pending legacy baseline per **`LEGACY_REMOTE_BASELINE.md`**; **`POST /api/kzo/save_snapshot`**, thin GAS **`saveKzoSnapshotV1`** — **IDEA-0017** **`ACTIVE`**, **`IDEA-0020`** baseline alignment notes; **8A.0.1** **`IDEA-0019`**; audits **8A FIRST PERSISTENCE**, **8A.0.2**, live gate)
+
 ## Gate
 
 **Stage 5D** documentation MVP is **closed** — shell registry in **`10_OPERATOR_LAYOUT.md`** accepted after governance verification **PASS WITH DOC FIXES** (see `docs/AUDITS/2026-04-29_STAGE_5D_GOVERNANCE_VERIFICATION_GATE.md`).
@@ -54,7 +56,7 @@ Stage 7B = **VERIFIED / IMPLEMENTED / formally closed** (canonical **`KZO_MVP_SN
 
 **Stage 7B — `KZO_MVP_SNAPSHOT_V1`:** **CLOSED** — canonical snapshot frozen (**`IDEA-0016`** **`IMPLEMENTED`**); Gemini **`SAFE TO PROCEED TO STAGE 8A`**. **`KZO_MVP_SNAPSHOT_V1`** — **immutable** until new snapshot version + IDEA; **no contract edits** outside that process.
 
-**Stage 8A:** **NOT STARTED**. First persistence (e.g. Supabase) only as **normalized IDEA + TASK**; implement **persist frozen V1 only** — no MVP redesign.
+**Stage 8A:** **`ACTIVE`** — **IDEA-0017** — insert-only snapshot row код у repo; live Supabase верифікація — **`docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md`**; retrieval/history UI — окремий TASK.
 **Stage 7A unified MVP Runner:** **`runKzoMvpFlow()`** — cohesion gate (**IDEA-0015** **`IMPLEMENTED`**); operator verification **PASS** (manual **`MVP_RUN_SUCCESS`**, **`http_code`** **200**) — документовано **`docs/AUDITS/2026-04-29_STAGE_7A_KZO_END_TO_END_MVP_STABILIZATION.md`**.
 
 Previous closure: **Stage 5C MVP closed** for IDEA-0010 — Render topology gate **PASS**; operator-visible Sheet topology **PASS** (thin GAS `Stage4A_MVP!E21:F26`; IDEA-0010 **`IMPLEMENTED`** per master table `Status Values`).
@@ -63,7 +65,7 @@ Shell registry: **active** blocks (**`E4:F20`**, **`E21:F26`**, **`E27:F40`**). 
 
 ## Current status
 
-**Stage 7B — formally closed** (Gemini **`SAFE TO PROCEED TO STAGE 8A`**). **`KZO_MVP_SNAPSHOT_V1`** is the **only** approved persistence-shape baseline until a new snapshot **`IDEA`** — **IDEA-0016** **`IMPLEMENTED`**. **Stage 8A** remains **NOT STARTED**. **Stage 7A** remains operator-verified (**IDEA-0015**). **IDEA-0013** = **`IMPLEMENTED`**; **`estimated_mass_class`** = burden-tier (not kg).
+**Stage 7B — formally closed** (Gemini **`SAFE TO PROCEED TO STAGE 8A`**). **`KZO_MVP_SNAPSHOT_V1`** is the **only** approved persistence-shape baseline until a new snapshot **`IDEA`** — **IDEA-0016** **`IMPLEMENTED`**. **Stage 8A** persistence — **IDEA-0017** **`ACTIVE`** (**`PENDING_SUPABASE_VERIFICATION`**) до live gate **PASS**. **Stage 7A** remains operator-verified (**IDEA-0015**). **IDEA-0013** = **`IMPLEMENTED`**; **`estimated_mass_class`** = burden-tier (not kg).
 
 ## Blockers
 
@@ -71,7 +73,7 @@ Shell registry: **active** blocks (**`E4:F20`**, **`E21:F26`**, **`E27:F40`**). 
 
 ## Next
 
-- **Stage 8A** — Supabase (or other DB) **first persistence MVP** — **NEXT GATE**, **NOT STARTED** until separate **normalized IDEA + TASK**; **persist `KZO_MVP_SNAPSHOT_V1` only**
+- **Beyond Stage 8A live PASS** — snapshot retrieval API / history / analytics — **NOT STARTED** until separate TASK (out of Stage 8A verification scope)
 - **Commercial / precision** (BOM, kg, …) — **separate TASKs** beyond V1 snapshot — not part of Stage 8A unless explicitly scoped
 - **`E41:F54`** remains reserved untouched until tasked.
 

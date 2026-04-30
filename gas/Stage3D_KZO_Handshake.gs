@@ -1,4 +1,6 @@
 const API_URL = "https://eds-power-api.onrender.com/api/calc/prepare_calculation";
+/** Stage 8A — insert-only persistence of frozen ``KZO_MVP_SNAPSHOT_V1`` (thin transport; no calc in GAS). */
+const KZO_SAVE_SNAPSHOT_URL = "https://eds-power-api.onrender.com/api/kzo/save_snapshot";
 const MVP_TIMEOUT_NOTE = "Render free tier may cold-start; Stage 3E manual test may need rerun after wake-up.";
 const STAGE_3F_TEST_SHEET_NAME = "Stage3F_Test";
 const STAGE_3F_WRITEBACK_RANGE_A1 = "A1:B5";
@@ -1868,5 +1870,46 @@ function runKzoMvpFlow() {
       },
       retry: false
     }));
+  }
+}
+
+/**
+ * Stage 8A — persist one ``KZO_MVP_SNAPSHOT_V1`` object (INSERT only on server).
+ * Pass the full JSON snapshot; GAS does not build or alter contract fields here.
+ */
+function saveKzoSnapshotV1(snapshotObject) {
+  var options = {
+    method: "post",
+    contentType: "application/json",
+    payload: JSON.stringify(snapshotObject),
+    muteHttpExceptions: true
+  };
+  try {
+    var response = UrlFetchApp.fetch(KZO_SAVE_SNAPSHOT_URL, options);
+    var httpCode = response.getResponseCode();
+    var responseText = response.getContentText();
+    var responseJson = JSON.parse(responseText);
+    Logger.log(JSON.stringify({
+      stage: "8A_SAVE_SNAPSHOT",
+      telemetry_tag: "stage=8a-save-snapshot",
+      http_code: httpCode,
+      status: responseJson.status || null,
+      persistence_status: responseJson.persistence_status || null,
+      snapshot_id: responseJson.snapshot_id || null,
+      error_code: responseJson.error_code || null
+    }));
+    return responseJson;
+  } catch (error) {
+    Logger.log(JSON.stringify({
+      stage: "8A_SAVE_SNAPSHOT",
+      telemetry_tag: "stage=8a-save-snapshot",
+      status: "request_failed",
+      error: {
+        error_code: "GAS_STAGE_8A_SAVE_SNAPSHOT_FAILED",
+        message: error && error.message ? error.message : String(error),
+        note: MVP_TIMEOUT_NOTE
+      }
+    }));
+    return null;
   }
 }

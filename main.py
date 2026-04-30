@@ -5,6 +5,8 @@ from uuid import uuid4
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
+from kzo_snapshot_persist import insert_snapshot_row, validate_kzo_mvp_snapshot_v1
+
 app = FastAPI()
 
 
@@ -488,4 +490,34 @@ def prepare_calculation(request: dict[str, Any]):
         },
         "error": None,
         "metadata": _response_metadata(meta, normalized_payload["logic_version"], started_at),
+    }
+
+
+@app.post("/api/kzo/save_snapshot")
+def save_snapshot(body: dict[str, Any]):
+    """Insert-only persistence for frozen ``KZO_MVP_SNAPSHOT_V1`` (Stage 8A).
+
+    Does **not** recalculate engineering truth — validates contract shape and stores one row.
+    Configure ``SUPABASE_URL`` + ``SUPABASE_SERVICE_ROLE_KEY`` + table ``calculation_snapshots`` (``product_type`` = KZO for MVP)."""
+    normalized, validate_code = validate_kzo_mvp_snapshot_v1(body)
+    if validate_code:
+        return {
+            "status": "FAILED",
+            "persistence_status": "REJECTED",
+            "error_code": validate_code,
+        }
+
+    snapshot_id, insert_code = insert_snapshot_row(normalized)
+    if insert_code:
+        return {
+            "status": "FAILED",
+            "persistence_status": "REJECTED",
+            "error_code": insert_code,
+        }
+
+    return {
+        "status": "SUCCESS",
+        "snapshot_id": snapshot_id,
+        "snapshot_version": "KZO_MVP_SNAPSHOT_V1",
+        "persistence_status": "STORED",
     }

@@ -1521,13 +1521,139 @@ Reserved діапазон **`E27:F40`** має бути **операційним
 
 - Нормативний контракт **`KZO_MVP_SNAPSHOT_V1`**: `docs/00-02_CALC_CONFIGURATOR/09_KZO/11_KZO_MVP_SNAPSHOT_V1_CONTRACT.md` — обовʼязкові поля, версіонування, **`SUCCESS`** / **`FAILED`**, заборона розширення V1 без нового snapshot/IDEA
 - Аудит **«freeze before persistence»**: `docs/AUDITS/2026-04-29_STAGE_7B_KZO_MVP_SNAPSHOT_CONTRACT_FREEZE.md`
-- **IDEA-0016**: **`IMPLEMENTED`** — джерело об’єкта для майбутнього **Stage 8A** persistence (Supabase — окремий TASK після 7B)
+- **IDEA-0016**: **`IMPLEMENTED`** — нормативний об’єкт для persistence (**Stage 8A** реалізовано в **IDEA-0017**)
 
 ### Final closure (Gemini + governance doc-pass)
 
 - Зовнішній аудит Gemini: **`SAFE TO PROCEED TO STAGE 8A`** (persistence baseline accepted; **no** MVP contract change via DB work)
 - **`KZO_MVP_SNAPSHOT_V1`** — **frozen**; зміни лише через майбутній **`KZO_MVP_SNAPSHOT_V2`** (+ окрема **IDEA**)
-- **Stage 7B** = **CLOSED**. **Stage 8A** = **NOT STARTED** until окрема нормалізована **IDEA + TASK**; Stage **8A** implements persistence of **frozen V1 only**
+- **Stage 7B** = **CLOSED**. **Stage 8A** (first persistence — **код**): insert-only **`calculation_snapshots`** (`product_type` KZO), **`POST /api/kzo/save_snapshot`**; **DDL hold** (**8A.0.2**) — базовий **`public`** описано в **`LEGACY_REMOTE_BASELINE.md`** до **`db push`**; **live PASS** — **`IDEA-0017`** **`ACTIVE`**
+
+---
+
+# 29.04.2026 — Stage 8A Supabase first persistence MVP (insert-only)
+
+## Ціль
+
+Перший durable memory layer: зберегти заморожений **`KZO_MVP_SNAPSHOT_V1`** без зміни розрахункової істини.
+
+## Реалізація
+
+- **SQL:** `supabase/migrations/_pending_after_remote_baseline/20260429120000_calculation_snapshots_v1.sql` — таблиця **`calculation_snapshots`**, **`product_type`** (**`TABLE=SYSTEM`, `ROW=PRODUCT`** — **8A.0.1** **`IDEA-0019`**); **Hold** (**8A.0.2** **`IDEA-0020`**) до baseline міграцій у **`supabase/migrations/`** root; чернетковий **`kzo_*`**: **`supabase/migrations/_archive_pre_8a0_1_kzo_tables/`**
+- **Python:** `kzo_snapshot_persist.py` — allow-list валідація **`KZO_MVP_SNAPSHOT_V1`**, **`insert_snapshot_row`** через Supabase client (**`SUPABASE_URL`**, **`SUPABASE_SERVICE_ROLE_KEY`**)
+- **`main.py`:** **`POST /api/kzo/save_snapshot`** — окремо від **`prepare_calculation`**
+- **Документація:** `docs/00-02_CALC_CONFIGURATOR/09_KZO/13_KZO_MVP_SNAPSHOT_V1_SQL_MAPPING.md`, `14_CALC_TRUTH_VS_PERSISTENCE_STAGE_8A.md`; оновлено `11_KZO_MVP_SNAPSHOT_V1_CONTRACT.md`
+- **Аудит:** `docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_FIRST_PERSISTENCE_MVP.md`
+- **GAS:** `saveKzoSnapshotV1()` + **`KZO_SAVE_SNAPSHOT_URL`** у `gas/Stage3D_KZO_Handshake.gs` — thin transport
+
+## Обмеження (scope Stage 8A)
+
+- без retrieval / analytics / dashboard; без BOM / pricing / auth expansion; без multi-table ERP decomposition
+
+## Governance
+
+- **IDEA-0017**: master **`ACTIVE`** (**`PENDING_SUPABASE_VERIFICATION`**) until **LIVE PASS** in **`docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md`**
+
+## Live verification gate (doc + probe, 2026-04-29)
+
+- Аудит: **`docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md`** — чеклист migration / env / redeploy / POST / SQL row; успіх **`status`** **`SUCCESS`** + **`persistence_status`** **`STORED`** (**не** поле **`snapshot_saved`** у поточному API)
+- Прогін з Cursor середовища: **`POST`** `https://eds-power-api.onrender.com/api/kzo/save_snapshot` → **HTTP 404** — публічний deploy без маршруту або stale build; оператор записує **LIVE PASS** після застосування кроків у gate
+
+---
+
+# 29.04.2026 — Stage 8A.0.1 Root migration governance correction
+
+## Ціль
+
+Забрати KZO-biased кореневу назву першої таблиці snapshotів: **`TABLE=SYSTEM`**, **`ROW=PRODUCT`**.
+
+## Зміни
+
+- Таблиця **`public.calculation_snapshots`**, **`product_type`** = **`KZO`** для MVP; архів чернетки **`kzo_mvp_snapshots_v1`**: **`supabase/migrations/_archive_pre_8a0_1_kzo_tables/`**
+- **`IDEA-0019`**: **`IMPLEMENTED`**; аудит **`docs/AUDITS/2026-04-29_STAGE_8A_0_1_ROOT_MIGRATION_GOVERNANCE_CORRECTION.md`**
+
+---
+
+# 29.04.2026 — Stage **8A.0.2** Remote baseline alignment (**governance only**)
+
+## Ціль
+
+Узгодити репо з уже не порожнім remote **`public`** (legacy таблиці й погляди **`v_*`**, **без руйнування**) **перед** тим, як застосувати **`calculation_snapshots`** через **`db push`**.
+
+## Документи й hold
+
+- **`supabase/schema_registry/LEGACY_REMOTE_BASELINE.md`** — статус **`LEGACY_REMOTE_SCHEMA_DETECTED`** (`objects`, `bom_links`, `ncr`, `production_status`, **`v_*`**)
+- DDL **`calculation_snapshots`** перенесено в **`supabase/migrations/_pending_after_remote_baseline/`**
+- **`IDEA-0020`**: **`IMPLEMENTED`**; аудит **`docs/AUDITS/2026-04-29_STAGE_8A_0_2_SUPABASE_REMOTE_BASELINE_ALIGNMENT.md`**
+
+**Строго:** без змін у live БД під цей TASK — без **`db push`**.
+
+---
+
+# 29.04.2026 — Stage **8A.0.3** Remote baseline capture (**capture-only**)
+
+## Ціль
+
+Зафіксувати в репо **слот baseline-міграції** для live legacy **`public`** (**`objects`**, **`bom_links`**, **`ncr`**, **`production_status`**, **`v_*`**) **без** **`db push`** і без переносу **`calculation_snapshots`** з hold.
+
+## Зміни
+
+- **`supabase/migrations/20260429110000_remote_legacy_baseline.sql`** — **\<** **`20260429120000_calculation_snapshots_v1`**; тіло може лишатися scaffold (**`DO` noop**) доти, доки оператор не вставить **schema-only** DDL з **`pg_dump`** / Supabase dump (верифікація replay — **8A.0.4**).
+- DDL **`calculation_snapshots`** — **лишається** у **`supabase/migrations/_pending_after_remote_baseline/`**
+- Оновлення реєстру / README / аудит **`docs/AUDITS/2026-04-29_STAGE_8A_0_3_REMOTE_BASELINE_CAPTURE.md`**
+
+**Строго:** якщо CLI пропонує **apply** / **`push`** — **STOP** (**capture-only**).
+
+**Статус етапу:** **`BASELINE_CAPTURED_PENDING_REPLAY_TEST`**; **`IDEA-0022`**: **`ACTIVE`** (-operative у нотатці: **`PENDING_STAGING_REPLAY_804`**).
+
+---
+
+# 29.04.2026 — Stage **8A.0.4** Baseline DDL + local replay (**BLOCKED_BY_LOCAL_TOOLING**)
+
+## Ціль
+
+Замінити **`DO` noop** у **`20260429110000_remote_legacy_baseline.sql`** фактичним **schema-only** DDL з remote **`public`**; перевірити replay (**`supabase db reset`** локально / ізольовано). **Без** prod **`db push`**; **`calculation_snapshots`** лишається у **`_pending_after_remote_baseline/`**.
+
+## Факт
+
+- На машині агента **немає** **`pg_dump`**, **Supabase CLI**, **Docker**, **`npm`/`npx`** у PATH — **неможливо** зняти dump і запустити reset.
+- Тіло baseline **не змінено** під «вигаданий» DDL (уникнення **`manual table redesign`**).
+- Аудит: **`docs/AUDITS/2026-04-29_STAGE_8A_0_4_BASELINE_REPLAY_TEST.md`**.
+- У заголовку baseline SQL додано маркер **BLOCKED_BY_LOCAL_TOOLING**.
+
+**Статус етапу:** **`BLOCKED_BY_LOCAL_TOOLING`** (**не** **`BASELINE_REPLAY_VERIFIED`**).
+
+---
+
+# 29.04.2026 — Stage **8A.0.6** Import real baseline DDL (**REAL_BASELINE_CAPTURED_PENDING_REPLAY**)
+
+## Ціль
+
+Імпорт **sanitized** **`remote_schema.sql`** у **`supabase/migrations/20260429110000_remote_legacy_baseline.sql`**.
+
+## Факт
+
+- **`remote_schema.sql`** у root репозиторію; **sanitized**: прибрано **`\restrict` / `\unrestrict`**, **`CREATE SCHEMA IF NOT EXISTS public`**.
+- Перевірка: без **`COPY`/`INSERT`**; є **`objects`**, **`bom_links`**, **`ncr`**, **`production_status`**, **23 × `v_*`**, функції, тригери, FK, індекси.
+- **`calculation_snapshots_v1`** — **лише** **`_pending_after_remote_baseline/`**; **немає** **`db push`**.
+
+**Статус етапу:** **`REAL_BASELINE_CAPTURED_PENDING_REPLAY`**; наступний крок — **8A.0.7** replay → **`BASELINE_REPLAY_VERIFIED`** (**8A.0.4** логіка злита в gate **8A.0.7** документації).
+
+---
+
+# 29.04.2026 — Stage **8A.0.7** Baseline replay verification (**BLOCKED_BY_DOCKER**)
+
+## Ціль
+
+Перевірити replay **`supabase/migrations/20260429110000_remote_legacy_baseline.sql`** локально (**`supabase db reset`**). **Без** prod **`db push`**; **`calculation_snapshots`** без змін у hold.
+
+## Факт
+
+- На машині агента **немає** **`docker`** і **`supabase`** у PATH → **`supabase db reset`** **не запускався**.
+- Статус: **`BLOCKED_BY_DOCKER`**. Альтернатива — disposable Postgres / окремий staging Supabase-проект (див. аудит).
+- Об’єкти після replay **runtime не верифіковані** до появи tooling.
+
+Аудит: **`docs/AUDITS/2026-04-29_STAGE_8A_0_7_BASELINE_REPLAY_VERIFICATION.md`**. **Наступний gate:** після **`BASELINE_REPLAY_VERIFIED`** — **8A.0.8** promotion test **`calculation_snapshots`**.
 
 ---
 

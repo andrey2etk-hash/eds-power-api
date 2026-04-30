@@ -6,7 +6,7 @@ Freeze **one canonical JSON object** representing a **successful KZO MVP end-to-
 
 **Governance law:** *Freeze before persistence.* If a field is **not** declared in **`KZO_MVP_SNAPSHOT_V1`**, it **must not** appear as a **required** persisted column in Stage 8A unless a **new snapshot version** (see [Versioning](#versioning-policy)) introduces it through a **separate governed TASK**.
 
-This document is **normative** for Stage 7B / Stage 8A boundary; it does **not** add API routes, SQL, or database tables.
+This document is **normative** for Stage 7B / Stage 8A boundary — **Stage 7B** freezes the textual contract **only** (no mandatory DB implementation wording in 7B); **Stage 8A** provides the matching **insert-only** persistence.
 
 ---
 
@@ -138,8 +138,10 @@ They may arrive only under a **future** **`snapshot_version`** plus **IDEA** app
 
 Normative guidance:
 
-- Stage **8A** treats **`KZO_MVP_SNAPSHOT_V1`** as the **source logical object** for persistence (typically one JSON document per successful run plus indexing keys such as **`request_id`**, **`logic_version`**, **`timestamp_basis`**).
-- **No** Supabase DDL or deployment is part of **Stage 7B** — **7B freezes the contract only**.
+- **`POST /api/kzo/save_snapshot`** (see `main.py`) accepts a **full** **`KZO_MVP_SNAPSHOT_V1`** JSON body, validates allow-listed keys, and **INSERT**s one row into **`calculation_snapshots`** with **`product_type`** = **`KZO`** (DDL: `supabase/migrations/_pending_after_remote_baseline/20260429120000_calculation_snapshots_v1.sql` — held until **`LEGACY_REMOTE_BASELINE`** baseline migration precedes **`db push`**, Stage **8A.0.2**).
+- Persistence **stores contract JSON verbatim** (`JSONB` columns) — **no** BOM/pricing/engineering decomposition, **no** mutation endpoint.
+- **Environment:** **`SUPABASE_URL`** + **`SUPABASE_SERVICE_ROLE_KEY`** required on API host — see **`.env.example`**.
+- **IDEA:** **IDEA-0017** **`ACTIVE`** (operative **`PENDING_SUPABASE_VERIFICATION`** until **`docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md`** records **LIVE PASS**); mapping **`13_KZO_MVP_SNAPSHOT_V1_SQL_MAPPING.md`**; separation **`14_CALC_TRUTH_VS_PERSISTENCE_STAGE_8A.md`**.
 
 ---
 
