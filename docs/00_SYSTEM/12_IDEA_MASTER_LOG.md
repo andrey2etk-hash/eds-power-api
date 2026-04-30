@@ -1124,7 +1124,7 @@ No client may redefine system persistence without **IDEA → TASK** and contract
 - Contract: **`docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`**
 - **8B.1** split + doc alignment: **`STAGE_8B_DOC_STATE_ALIGNED`** (**`CHANGELOG`**, **`NOW`**, **`12_IDEA_MASTER_LOG`**)
 - **8B.1A** API hardening: **`551ce87`** (**`CHANGELOG`**) · **`STAGE_8B_1A_API_CONTRACT_IMPLEMENTED`**
-- **8B.1A** LIVE dossier **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`** — **`STAGE_8B_1A_LIVE_VERIFICATION_PENDING`** until operator signs **PASS** (**`STAGE_8B_1A_LIVE_VERIFIED`**)
+- **8B.1A** LIVE dossier **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`** — **`LIVE_HOST_SYNCED_PENDING_SUPABASE_ENV`** (**Render **`SUPABASE_*`** operator unblock**)
 
 Master table **Status**: **`ACTIVE`** until **8B** governance + audit **PASS** — then **`IMPLEMENTED`**.
 
