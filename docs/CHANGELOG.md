@@ -6,6 +6,24 @@
 
 ---
 
+# 30.04.2026 — Stage **8B.1A** LIVE verification gate dossier (**`STAGE_8B_1A_LIVE_VERIFICATION_PENDING`**)
+
+## Ціль
+
+Зафіксувати **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`**; залити **`551ce87`** (**`origin/main`**); описати операторські кроки **A–E** після Gemini pre-live **PASS**.
+
+## Факт
+
+- **Push:** **`551ce87`** (**`Implement Stage 8B.1A API save_snapshot hardening…`**) відправлено на **`origin/main`**
+- **Авто-probe Cursor** не підтвердив **hardened** JSON-envelope на публічному хості (див. probe log у LIVE dossier)
+- **`STAGE_8B_1A_LIVE_VERIFIED`** — **після** операторського **PASS** **A–E** на живому сервісі з актуальною збіркою + **`SUPABASE_*`**
+
+## Статус
+
+**`STAGE_8B_1A_LIVE_VERIFICATION_PENDING`** · **Цільова мітка після PASS:** **`STAGE_8B_1A_LIVE_VERIFIED`**
+
+---
+
 # 30.04.2026 — Stage **8B.1A** — `save_snapshot` API hardened (**`STAGE_8B_1A_API_CONTRACT_IMPLEMENTED`**)
 
 ## Ціль

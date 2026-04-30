@@ -47,7 +47,7 @@ GAS as orchestration core; Sheet as system truth store; client-side persistence 
 | **ID** | TASK-2026-08B-012 |
 | **IDEA** | **IDEA-0023** (API authority slice) |
 | **Module** | `main.py`, `kzo_snapshot_persist.py`, `docs/00_SYSTEM/` (contracts) |
-| **Status** | **`STAGE_8B_1A_API_CONTRACT_IMPLEMENTED`** — **`main.py`**, **`kzo_snapshot_persist.py`**; operator **E5** LIVE smoke after deploy (see implementation audit) |
+| **Status** | **`STAGE_8B_1A_LIVE_VERIFICATION_PENDING`** — LIVE gate **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`**; після операторського **PASS** **`STAGE_8B_1A_LIVE_VERIFIED`** |
 
 ### Purpose
 
@@ -67,7 +67,7 @@ GAS/UI/Sheet coupling; **`prepare_calculation`** calls inside **`save_snapshot`*
 | **IDEA** | **IDEA-0023** (operational slice) |
 | **Module** | `gas/` + `00-02_CALC_CONFIGURATOR` (KZO transport only) |
 | **Status** | `SHELL` — API hardening (**`TASK-2026-08B-012`**) **landed**; implement GAS path when tasked (**`X-EDS-Client-Type: GAS`**) |
-| **Prerequisite** | **`STAGE_8B_1A_API_CONTRACT_IMPLEMENTED`** (code on `main`); **E5** LIVE smoke recommended before broad GAS rollout |
+| **Prerequisite** | **`551ce87`** deployed on Render · LIVE **A–E** **PASS** per **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`** (**`STAGE_8B_1A_LIVE_VERIFIED`**) перед широким GAS rollout |
 
 ### Purpose
 

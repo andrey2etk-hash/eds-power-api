@@ -12,6 +12,7 @@ Rule:
 
 ## Latest audit
 
+- **Stage 8B.1A — LIVE verification gate (`STAGE_8B_1A_LIVE_VERIFICATION_PENDING` → оператор **`STAGE_8B_1A_LIVE_VERIFIED`**)** — **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`** (**`TASK-2026-08B-012`** · deploy **`551ce87`**)
 - **Stage 8B.1A — Gemini pre-live audit (`STAGE_8B_1A_PRELIVE_AUDIT_READY`)** — **`2026-04-30_STAGE_8B_1A_GEMINI_PRELIVE_AUDIT.md`** (**before LIVE deploy / E5**); implementation ref **`2026-04-30_STAGE_8B_1A_API_CONTRACT_IMPLEMENTATION.md`**
 - **Stage 8B.1A — API `save_snapshot` hardening IMPLEMENTED (`STAGE_8B_1A_API_CONTRACT_IMPLEMENTED`)** — **`2026-04-30_STAGE_8B_1A_API_CONTRACT_IMPLEMENTATION.md`** · plan **`2026-04-30_STAGE_8B_1A_API_SAVE_CONTRACT_GOVERNANCE_PLAN.md`** · **`TASK-2026-08B-012`**
 - **Stage 8B.1 — Gemini preflight (`STAGE_8B_1_AUDIT_REQUEST_READY`)** — **`2026-04-30_STAGE_8B_1_GEMINI_PREFLIGHT_REQUEST.md`** (**`TASK-2026-08B-011`**)
@@ -98,6 +99,6 @@ Rule:
 
 ## Post–Stage 8A (explicit non-goals until tasked)
 
-- **STAGE_8B.1A** — **`TASK-2026-08B-012`**: **`save_snapshot`** hardened (**`2026-04-30_STAGE_8B_1A_API_CONTRACT_IMPLEMENTATION.md`** — **`STAGE_8B_1A_API_CONTRACT_IMPLEMENTED`**)
+- **STAGE_8B.1A** — **`TASK-2026-08B-012`**: **`save_snapshot`** hardened (**`2026-04-30_STAGE_8B_1A_API_CONTRACT_IMPLEMENTATION.md`**) · LIVE gate **`2026-04-30_STAGE_8B_1A_LIVE_GATE.md`** (**`STAGE_8B_1A_LIVE_VERIFICATION_PENDING`** / **`STAGE_8B_1A_LIVE_VERIFIED`** після оператора)
 - **STAGE_8B.1B** — **`TASK-2026-08B-011`**: GAS **Thin Client Adapter V1** (**`prepare_calculation` + `save_snapshot` + display**; **no** direct DB; **no** orchestration core)
 - Retrieval / history / analytics UI — **out of Stage 8B** scope until separate IDEA

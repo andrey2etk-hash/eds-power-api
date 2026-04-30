@@ -1102,7 +1102,7 @@ Current API may require additive fields in a sub-TASK — contract is **normativ
 ##### Sequencing (Stage **8B.1** split — **`STAGE_8B_DOC_STATE_ALIGNED`**)
 
 1. **`TASK-2026-08B-012`** — **8B.1A** **`save_snapshot`** API contract hardening (validation / response / anti-orchestration leak) — plan **`docs/AUDITS/2026-04-30_STAGE_8B_1A_API_SAVE_CONTRACT_GOVERNANCE_PLAN.md`**.
-2. **`TASK-2026-08B-011`** — **8B.1B** Thin GAS adapter (**blocked** until **8B.1A** implementation exit).
+2. **`TASK-2026-08B-011`** — **8B.1B** Thin GAS adapter after **LIVE gate** (**`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`** **PASS** → **`STAGE_8B_1A_LIVE_VERIFIED`**).
 
 Gemini critic preflight (**`docs/AUDITS/2026-04-30_STAGE_8B_1_GEMINI_PREFLIGHT_REQUEST.md`**) audits the **thin-GAS plan** **before** coding and aligns stakeholders on **API-first** reinforcement.
 
@@ -1123,6 +1123,8 @@ No client may redefine system persistence without **IDEA → TASK** and contract
 - TASK: **`docs/TASKS.md`** — **`TASK-2026-08B-001`** (master); **`TASK-2026-08B-012`** (**8B.1A**); **`TASK-2026-08B-011`** (**8B.1B**)
 - Contract: **`docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`**
 - **8B.1** split + doc alignment: **`STAGE_8B_DOC_STATE_ALIGNED`** (**`CHANGELOG`**, **`NOW`**, **`12_IDEA_MASTER_LOG`**)
+- **8B.1A** API hardening: **`551ce87`** (**`CHANGELOG`**) · **`STAGE_8B_1A_API_CONTRACT_IMPLEMENTED`**
+- **8B.1A** LIVE dossier **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`** — **`STAGE_8B_1A_LIVE_VERIFICATION_PENDING`** until operator signs **PASS** (**`STAGE_8B_1A_LIVE_VERIFIED`**)
 
 Master table **Status**: **`ACTIVE`** until **8B** governance + audit **PASS** — then **`IMPLEMENTED`**.
 
