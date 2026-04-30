@@ -900,7 +900,7 @@ Implementation record:
 - Audit: `docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_FIRST_PERSISTENCE_MVP.md`
 - Live verification gate: `docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md` — **LIVE PASS** (**2026-04-30**); closeout dossier **`docs/AUDITS/2026-04-30_STAGE_8A_2_1_LIVE_DEPLOY_CALCULATION_SNAPSHOTS.md`** (**`STAGE_8A_COMPLETE`**)
 - Forbidden: BOM, pricing, retrieval APIs, dashboards, **`prepare_calculation`** mutations, contract field inflation without V2
-- Thin GAS **`saveKzoSnapshotV1()`** — transport only
+- Thin GAS **`saveKzoSnapshotV1()`** / **`runStage8B1BGasThinClientAdapterFlow()`** — transport + **`KZO_MVP_SNAPSHOT_V1`** envelope from **`prepare`** output only (**`STAGE_8B_1B_PENDING_OPERATOR_TEST`**)
 - Master table **Status**: **`IMPLEMENTED`** (**2026-04-30**)
 
 **Recommended next operational slice (post–IDEA-0017, under IDEA-0023):** **`TASK-2026-08B-012`** (**Stage 8B.1A**) — canonical **`save_snapshot`** contract hardening on the **API** first; then **`TASK-2026-08B-011`** (**Stage 8B.1B**) — thin **GAS** transport (**`prepare_calculation`** → **`KZO_MVP_SNAPSHOT_V1`** envelope → **`saveKzoSnapshotV1()`** / **`save_snapshot`**), **without** retrieval/history/analytics expansion. Gemini preflight (**`docs/AUDITS/2026-04-30_STAGE_8B_1_GEMINI_PREFLIGHT_REQUEST.md`**) reinforces **API-first** order — **no** “GAS as orchestrator” wording.
@@ -1124,7 +1124,7 @@ No client may redefine system persistence without **IDEA → TASK** and contract
 - Contract: **`docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`**
 - **8B.1** split + doc alignment: **`STAGE_8B_DOC_STATE_ALIGNED`** (**`CHANGELOG`**, **`NOW`**, **`12_IDEA_MASTER_LOG`**)
 - **8B.1A** API hardening: **`551ce87`** (**`CHANGELOG`**) · **`STAGE_8B_1A_API_CONTRACT_IMPLEMENTED`**
-- **8B.1A** LIVE dossier **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`** — **`STAGE_8B_1A_LIVE_VERIFIED`** · **`STAGE_8B_1A_CLOSEOUT_LOGGED`** (**`TASK-2026-08B-012` CLOSED**); **`NEXT_GATE_READY: STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER`** (**`TASK-2026-08B-011`**)
+- **8B.1B** thin adapter — **`gas/Stage3D_KZO_Handshake.gs`** · **`runStage8B1BGasThinClientAdapterFlow()`** — **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`** (**`STAGE_8B_1B_PENDING_OPERATOR_TEST`**)
 
 Master table **Status**: **`ACTIVE`** until **8B** governance + audit **PASS** — then **`IMPLEMENTED`**.
 

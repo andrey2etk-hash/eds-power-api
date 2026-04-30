@@ -4,11 +4,11 @@
 
 Створити системний фундамент EDS Power для подальшої розробки модулів, API, БД, UI та AI-агентів.
 
-## Поточний Stage (8B → 8B.1B)
+## Поточний Stage (8B.1B)
 
-- **Current Stage:** **`STAGE_8B_1A_LIVE_VERIFIED`** · **`STAGE_8B_1A_CLOSEOUT_LOGGED`** — операторський **Smoke A** + **DB E** + Gemini pre-live **PASS**; деталі й evidence (**без секретів**) — **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`**
-- **`TASK-2026-08B-012`:** **CLOSED** / **LIVE VERIFIED** (**2026-04-30**)
-- **Next gate:** **`NEXT_GATE_READY: STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER`** — **`TASK-2026-08B-011`** (thin **`prepare_calculation`** → **`save_snapshot`** + display); **`X-EDS-Client-Type: GAS`**; **ще без** широкої GAS-імплементації в репо до окремого TASK
+- **Current Stage:** **`STAGE_8B_1B_PENDING_OPERATOR_TEST`** — thin GAS адаптер **`runStage8B1BGasThinClientAdapterFlow()`** у **`gas/Stage3D_KZO_Handshake.gs`** (**імплементовано**); **очікується** операторський ручний PASS — **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**
+- **`TASK-2026-08B-011`:** **`STAGE_8B_1B_PENDING_OPERATOR_TEST`** (**`TASK-2026-08B-012`** залишається **CLOSED** · **`STAGE_8B_1A_LIVE_VERIFIED`**)
+- **Попередній closeout:** **`STAGE_8B_1A_CLOSEOUT_LOGGED`** — **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`**
 - **Prior 8B posture (закріплено):** **`STAGE_8B_GOVERNANCE_FIXED`** · **`docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`**
 - **Doc alignment:** **`STAGE_8B_DOC_STATE_ALIGNED`**
 
@@ -49,14 +49,14 @@
 
 - **`POST /api/kzo/save_snapshot`** у репозиторії (`kzo_snapshot_persist.py`); **`prepare_calculation`** без змін; canonical DDL **`public.calculation_snapshots`** у **`supabase/migrations/20260429120000_calculation_snapshots_v1.sql`** (промоція **8A.1** + локальний **`db reset`** **PASS**).
 - **LIVE PASS** зафіксовано: **`docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md`** + closeout **`docs/AUDITS/2026-04-30_STAGE_8A_2_1_LIVE_DEPLOY_CALCULATION_SNAPSHOTS.md`**. **`IDEA-0017`** = **`IMPLEMENTED`**.
-- Thin GAS **`saveKzoSnapshotV1()`** — лише транспорт JSON.
+- Thin GAS **`saveKzoSnapshotV1()`** / **`runStage8B1BGasThinClientAdapterFlow()`** — транспорт + envelope з полів API (без Supabase із GAS).
 - Інші аудити траєкторії: **8A.1** **`FIRST_PERSISTENCE_READY_NON_PROD`**; **8A.0.8** **`CURSOR_LOCAL_STACK_VERIFIED`**; mapping **`13_KZO_MVP_SNAPSHOT_V1_SQL_MAPPING.md`**.
 
 ## Рекомендований операційний gate (8B.1A → 8B.1B)
 
 - **8B.1A (код):** hardened **`save_snapshot`** — **`2026-04-30_STAGE_8B_1A_API_CONTRACT_IMPLEMENTATION.md`**
 - **8B.1A (live — `STAGE_8B_1A_LIVE_VERIFIED`):** closeout + evidence — **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`** (історична проміжна мітка **`LIVE_HOST_SYNCED_PENDING_SUPABASE_ENV`** закрита після **`SUPABASE_*`** + Smoke **A**/ **E**)
-- **8B.1B:** **`TASK-2026-08B-011`** — **`X-EDS-Client-Type: GAS`** на **`save_snapshot`**
+- **8B.1B (`STAGE_8B_1B_PENDING_OPERATOR_TEST`):** **`runStage8B1BGasThinClientAdapterFlow()`** · Sheet **`Stage4A_MVP!H2:I9`** — **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**
 - Retrieval / snapshot history / analytics UI — **окремий** **IDEA** (як і раніше).
 
 ## Як узгоджено з Gemini doc-pass (Зовнішній аудит)
@@ -71,7 +71,7 @@ https://eds-power-api.onrender.com
 
 1. 00-01_AUTH — авторизація (frozen MVP / draft_ready)
 2. 00-02_CALC_CONFIGURATOR — конфігуратор (KZO Stage 5A–5C operator-visible path для structural / footprint API / topology API + топологія на Sheet верифіковані)
-3. 00-02_CALC_CONFIGURATOR/09_KZO — **8A** **`COMPLETE`**; **8B** **`STAGE_8B_GOVERNANCE_FIXED`** (**`IDEA-0023`** **`ACTIVE`**); **8B.1A** **`STAGE_8B_1A_LIVE_VERIFIED`** (**`TASK-2026-08B-012`** **CLOSED**) — **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`** · **NEXT** **`STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER`** (**`TASK-2026-08B-011`**)
+3. 00-02_CALC_CONFIGURATOR/09_KZO — **8A** **`COMPLETE`**; **8B** **`STAGE_8B_GOVERNANCE_FIXED`** (**`IDEA-0023`** **`ACTIVE`**); **8B.1A** **`STAGE_8B_1A_LIVE_VERIFIED`** (**`TASK-2026-08B-012`** **CLOSED**); **8B.1B** **`STAGE_8B_1B_PENDING_OPERATOR_TEST`** (**`TASK-2026-08B-011`**) — **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**
 
 ## Що робимо зараз
 
@@ -132,11 +132,12 @@ https://eds-power-api.onrender.com
 - **Stage 8A** **LIVE PASS** + **`STAGE_8A_COMPLETE`** (**`IDEA-0017`** **`IMPLEMENTED`** — **`2026-04-30_STAGE_8A_2_1`** + **`SUPABASE_LIVE_VERIFICATION_GATE`** **PASS**)
 - Trajectory **8A.0–8A.1**: **`IDEA-0022`** **`IMPLEMENTED`**, **`FIRST_PERSISTENCE_READY_NON_PROD`**, **`CURSOR_LOCAL_STACK_VERIFIED`** — див. відповідні аудити **30.04.2026**
 - Stage **8B.1A** — **`STAGE_8B_1A_LIVE_VERIFIED`** + **`STAGE_8B_1A_CLOSEOUT_LOGGED`** (**`TASK-2026-08B-012`** **CLOSED**; Gemini closeout **PASS**; evidence у **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`**)
+- Stage **8B.1B** — thin GAS adapter **`runStage8B1BGasThinClientAdapterFlow()`** у **`gas/Stage3D_KZO_Handshake.gs`** (**`STAGE_8B_1B_PENDING_OPERATOR_TEST`** — dossier **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**)
 
 
 ## What remains next (plan)
 
-- **`STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER`** — **`TASK-2026-08B-011`** (thin GAS; **ще не** розпочато в репозиторії)
+- **Оператор:** manual **`runStage8B1BGasThinClientAdapterFlow()`** → підтвердити **`STORED`** + **`client_type`** **`GAS`** у логах (**`TASK-2026-08B-011`** closeout після PASS)
 - Окремі **IDEAs:** retrieval API, snapshot history UI, analytics
 - keep Stage narrow: no BOM, pricing, retrieval dashboard, or unmanaged Sheet expansion unless separately tasked
 - keep GAS thin on future operator-visible transports

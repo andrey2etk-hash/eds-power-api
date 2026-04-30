@@ -24,6 +24,8 @@ const STAGE_6B_ENGINEERING_CLASSIFICATION_RANGE_A1 = STAGE_6A_RESERVED_OPERATOR_
 const STAGE_6C_ENGINEERING_BURDEN_RANGE_A1 = STAGE_6A_RESERVED_OPERATOR_BLOCK_RANGE_A1;
 /** Stage 7A — unified MVP writes `engineering_class_summary` + `engineering_burden_summary` in one `E27:F40` setValues (same band; no new API math). */
 const STAGE_7A_KZO_MVP_STAGE6_BAND_RANGE_A1 = STAGE_6A_RESERVED_OPERATOR_BLOCK_RANGE_A1;
+/** Stage 8B.1B — operator-visible persistence outcome only (thin adapter; labels col H, values col I). */
+const STAGE_8B_1B_ADAPTER_RANGE_A1 = "H2:I9";
 const STAGE_4A_CELL_MAP = {
   object_number: "B2",
   product_type: "B3",
@@ -1874,42 +1876,334 @@ function runKzoMvpFlow() {
 }
 
 /**
- * Stage 8A — persist one ``KZO_MVP_SNAPSHOT_V1`` object (INSERT only on server).
- * Pass the full JSON snapshot; GAS does not build or alter contract fields here.
+ * Build ``KZO_MVP_SNAPSHOT_V1`` envelope from one successful ``prepare_calculation`` JSON only.
+ * No engineering math; copies API ``data`` / ``metadata`` fields per contract.
  */
-function saveKzoSnapshotV1(snapshotObject) {
+function buildKzoMvpSnapshotV1EnvelopeFromPrepareResponse_(prepareJson, timestampBasisIso) {
+  var data = prepareJson.data || {};
+  var meta = prepareJson.metadata || {};
+  var lv =
+    data.logic_version != null ? data.logic_version : meta.logic_version != null ? meta.logic_version : null;
+  return {
+    snapshot_version: "KZO_MVP_SNAPSHOT_V1",
+    run_status: "SUCCESS",
+    timestamp_basis: timestampBasisIso,
+    logic_version: lv,
+    request_metadata: {
+      request_id: meta.request_id != null ? String(meta.request_id) : "",
+      api_version: meta.api_version != null ? String(meta.api_version) : "0.1.0",
+      logic_version: lv,
+      execution_time_ms: typeof meta.execution_time_ms === "number" ? meta.execution_time_ms : 0
+    },
+    normalized_input: data.normalized_payload != null ? data.normalized_payload : null,
+    structural_composition_summary: data.structural_composition_summary != null ? data.structural_composition_summary : null,
+    physical_summary: data.physical_summary != null ? data.physical_summary : null,
+    physical_topology_summary: data.physical_topology_summary != null ? data.physical_topology_summary : null,
+    engineering_class_summary: data.engineering_class_summary != null ? data.engineering_class_summary : null,
+    engineering_burden_summary: data.engineering_burden_summary != null ? data.engineering_burden_summary : null
+  };
+}
+
+function writeStage8B1BPersistenceSheet_(sheet, rowPairs) {
+  sheet.getRange(STAGE_8B_1B_ADAPTER_RANGE_A1).setValues(rowPairs);
+}
+
+function clearStage8B1BPersistenceSheet_(sheet) {
+  var blanks = [];
+  var i = 0;
+  for (i = 0; i < 8; i += 1) {
+    blanks.push(["", ""]);
+  }
+  writeStage8B1BPersistenceSheet_(sheet, blanks);
+}
+
+/** Display API rejection / transport outcome on Sheet (transparent mirror). */
+function stage8b1SaveResponseToPersistenceRows_(saveJson, saveHttpCode) {
+  if (!saveJson || typeof saveJson !== "object") {
+    return [
+      ["8B.1B thin adapter", "STAGE_8B_1B"],
+      ["snapshot_id", ""],
+      ["persistence_status", ""],
+      ["created_at", ""],
+      ["snapshot_version", ""],
+      ["save_http_code", saveHttpCode != null ? String(saveHttpCode) : ""],
+      ["error_code", "GAS_SAVE_RESPONSE_PARSE_FAILED"],
+      ["failure_message", "save_snapshot response missing or invalid JSON"]
+    ];
+  }
+  var fail = saveJson.failure && typeof saveJson.failure === "object" ? saveJson.failure : null;
+  var failMsg = fail && fail.message != null ? String(fail.message) : "";
+  var errTop = saveJson.error_code != null ? String(saveJson.error_code) : "";
+  var errFail = fail && fail.error_code != null ? String(fail.error_code) : "";
+  var errorShown = errTop || errFail;
+  return [
+    ["8B.1B thin adapter", "STAGE_8B_1B"],
+    ["snapshot_id", saveJson.snapshot_id != null ? String(saveJson.snapshot_id) : ""],
+    ["persistence_status", saveJson.persistence_status != null ? String(saveJson.persistence_status) : ""],
+    ["created_at", saveJson.created_at != null ? String(saveJson.created_at) : ""],
+    ["snapshot_version", saveJson.snapshot_version != null ? String(saveJson.snapshot_version) : ""],
+    ["save_http_code", saveHttpCode != null ? String(saveHttpCode) : ""],
+    ["error_code", errorShown],
+    ["failure_message", failMsg || (saveJson.status === "FAILED" && !failMsg ? String(saveJson.persistence_status || "FAILED") : "")]
+  ];
+}
+
+function prepareNonSuccessRows_(prepareJson, httpCode) {
+  var errObj = prepareJson && prepareJson.error ? prepareJson.error : null;
+  var code =
+    errObj && errObj.error_code != null
+      ? String(errObj.error_code)
+      : (prepareJson && prepareJson.status ? String(prepareJson.status) : "PREPARE_NON_SUCCESS");
+  var msg = errObj && errObj.message != null ? String(errObj.message) : "";
+  return [
+    ["8B.1B thin adapter", "STAGE_8B_1B"],
+    ["snapshot_id", ""],
+    ["persistence_status", "SKIPPED_PREPARE_NON_SUCCESS"],
+    ["created_at", ""],
+    ["snapshot_version", ""],
+    ["prepare_http_code", httpCode != null ? String(httpCode) : ""],
+    ["error_code", code],
+    ["failure_message", msg]
+  ];
+}
+
+function localPreflightPersistenceRows_(err) {
+  return [
+    ["8B.1B thin adapter", "STAGE_8B_1B"],
+    ["snapshot_id", ""],
+    ["persistence_status", "SKIPPED_LOCAL_INPUT"],
+    ["created_at", ""],
+    ["snapshot_version", ""],
+    ["prepare_http_code", ""],
+    ["error_code", err && err.error_code ? String(err.error_code) : "LOCAL_INPUT"],
+    ["failure_message", err && err.message ? String(err.message) : ""]
+  ];
+}
+
+/**
+ * Stage 8B.1B — thin GAS client adapter: prepare_calculation → build ``KZO_MVP_SNAPSHOT_V1`` from API fields only → save_snapshot (**X-EDS-Client-Type: GAS**).
+ * No DB/Supabase from GAS. On prepare non-success, **does not** call save_snapshot (FAILED persistence not implemented for this TASK).
+ */
+function runStage8B1BGasThinClientAdapterFlow() {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = spreadsheet ? spreadsheet.getSheetByName(STAGE_4A_SHEET_NAME) : null;
+
+  if (!sheet) {
+    Logger.log(JSON.stringify({
+      stage: "8B_1B_GAS_THIN_ADAPTER",
+      telemetry_tag: "stage=8b-1b-thin-client-adapter",
+      outcome: "ADAPTER_SKIPPED",
+      status: "run_skipped",
+      error: {
+        error_code: "STAGE_4A_TEMPLATE_SHEET_MISSING",
+        message: "Open Stage4A_MVP before runStage8B1BGasThinClientAdapterFlow()."
+      }
+    }));
+    return;
+  }
+
+  clearStage8B1BPersistenceSheet_(sheet);
+
+  var preflight = buildStage4PreflightPayload_(sheet, STAGE_4C_CELL_MAP);
+  if (!preflight.ok) {
+    writeStage8B1BPersistenceSheet_(sheet, localPreflightPersistenceRows_(preflight.error));
+    Logger.log(JSON.stringify({
+      stage: "8B_1B_GAS_THIN_ADAPTER",
+      telemetry_tag: "stage=8b-1b-thin-client-adapter",
+      outcome: "ADAPTER_BLOCKED_LOCAL_PREFLIGHT",
+      status: "local_input_error",
+      error: preflight.error
+    }));
+    return;
+  }
+
+  var requestBody = buildStage4BRequestBody_(preflight.values);
+  var options = {
+    method: "post",
+    contentType: "application/json",
+    payload: JSON.stringify(requestBody),
+    muteHttpExceptions: true
+  };
+
+  try {
+    var prepareResponse = UrlFetchApp.fetch(API_URL, options);
+    var prepareHttpCode = prepareResponse.getResponseCode();
+    var prepareText = prepareResponse.getContentText();
+    var prepareJson = JSON.parse(prepareText);
+
+    Logger.log(JSON.stringify({
+      stage: "8B_1B_GAS_THIN_ADAPTER",
+      telemetry_tag: "stage=8b-1b-thin-client-adapter",
+      phase: "prepare_calculation",
+      http_code: prepareHttpCode,
+      api_status: prepareJson.status || null,
+      snapshot_layers_present: prepareJson.status === "success"
+        ? {
+          structural_composition_summary: Boolean((prepareJson.data || {}).structural_composition_summary),
+          physical_summary: Boolean((prepareJson.data || {}).physical_summary),
+          physical_topology_summary: Boolean((prepareJson.data || {}).physical_topology_summary),
+          engineering_class_summary: Boolean((prepareJson.data || {}).engineering_class_summary),
+          engineering_burden_summary: Boolean((prepareJson.data || {}).engineering_burden_summary)
+        }
+        : null,
+      error: prepareJson.error || null
+    }));
+
+    if (prepareJson.status !== "success") {
+      writeStage8B1BPersistenceSheet_(sheet, prepareNonSuccessRows_(prepareJson, prepareHttpCode));
+      Logger.log(JSON.stringify({
+        stage: "8B_1B_GAS_THIN_ADAPTER",
+        telemetry_tag: "stage=8b-1b-thin-client-adapter",
+        outcome: "ADAPTER_STOPPED_PREPARE_NON_SUCCESS",
+        persistence_status_note: "save_snapshot_not_called",
+        api_status: prepareJson.status || null,
+        prepare_http_code: prepareHttpCode
+      }));
+      return;
+    }
+
+    var timestampBasis = new Date().toISOString();
+    var envelope = buildKzoMvpSnapshotV1EnvelopeFromPrepareResponse_(prepareJson, timestampBasis);
+
+    Logger.log(JSON.stringify({
+      stage: "8B_1B_GAS_THIN_ADAPTER",
+      telemetry_tag: "stage=8b-1b-thin-client-adapter",
+      phase: "envelope_ready",
+      request_id: envelope.request_metadata && envelope.request_metadata.request_id,
+      logic_version: envelope.logic_version
+    }));
+
+    var saveTransport = urlFetchKzoSaveSnapshot_(envelope);
+    var saveHttpCode = saveTransport.httpCode;
+    var saveJson = saveTransport.ok ? saveTransport.json : null;
+
+    Logger.log(JSON.stringify({
+      stage: "8B_1B_GAS_THIN_ADAPTER",
+      telemetry_tag: "stage=8b-1b-thin-client-adapter",
+      phase: "save_snapshot",
+      http_code: saveHttpCode,
+      transport_ok: saveTransport.ok,
+      status: saveJson && saveJson.status ? saveJson.status : null,
+      persistence_status: saveJson && saveJson.persistence_status ? saveJson.persistence_status : null,
+      client_type: saveJson && saveJson.client_type ? saveJson.client_type : null,
+      snapshot_id: saveJson && saveJson.snapshot_id ? saveJson.snapshot_id : null,
+      error_code: saveJson && saveJson.error_code != null ? saveJson.error_code : null
+    }));
+
+    if (!saveTransport.ok) {
+      writeStage8B1BPersistenceSheet_(sheet, [
+        ["8B.1B thin adapter", "STAGE_8B_1B"],
+        ["snapshot_id", ""],
+        ["persistence_status", "SAVE_TRANSPORT_ERROR"],
+        ["created_at", ""],
+        ["snapshot_version", ""],
+        ["save_http_code", saveHttpCode != null ? String(saveHttpCode) : ""],
+        ["error_code", "GAS_SAVE_TRANSPORT_FAILED"],
+        ["failure_message", saveTransport.error != null ? String(saveTransport.error) : ""]
+      ]);
+    } else {
+      writeStage8B1BPersistenceSheet_(sheet, stage8b1SaveResponseToPersistenceRows_(saveJson, saveHttpCode));
+    }
+
+    Logger.log(JSON.stringify({
+      stage: "8B_1B_GAS_THIN_ADAPTER",
+      telemetry_tag: "stage=8b-1b-thin-client-adapter",
+      outcome:
+        !saveTransport.ok
+          ? "ADAPTER_TRANSPORT_FAILURE"
+          : saveJson &&
+              saveJson.status === "SUCCESS" &&
+              saveJson.persistence_status === "STORED"
+            ? "ADAPTER_SUCCESS_STORED"
+            : "ADAPTER_SAVE_REJECTED_OR_ERROR",
+      client_type_logged: saveJson && saveJson.client_type ? saveJson.client_type : null,
+      persistence_status: saveJson && saveJson.persistence_status ? saveJson.persistence_status : null
+    }));
+
+  } catch (error) {
+    var safeMsg = error && error.message ? String(error.message) : String(error);
+    writeStage8B1BPersistenceSheet_(sheet, [
+      ["8B.1B thin adapter", "STAGE_8B_1B"],
+      ["snapshot_id", ""],
+      ["persistence_status", "TRANSPORT_EXCEPTION"],
+      ["created_at", ""],
+      ["snapshot_version", ""],
+      ["http_code_hint", ""],
+      ["error_code", "GAS_STAGE_8B_1B_ADAPTER_FAILED"],
+      ["failure_message", safeMsg]
+    ]);
+    Logger.log(JSON.stringify({
+      stage: "8B_1B_GAS_THIN_ADAPTER",
+      telemetry_tag: "stage=8b-1b-thin-client-adapter",
+      outcome: "ADAPTER_REQUEST_FAILED",
+      status: "request_or_parse_failed",
+      error: {
+        error_code: "GAS_STAGE_8B_1B_ADAPTER_FAILED",
+        message: safeMsg,
+        note: MVP_TIMEOUT_NOTE
+      },
+      retry: false
+    }));
+  }
+}
+
+/** Shared transport for ``POST /api/kzo/save_snapshot`` with mandatory **GAS** client header. */
+function urlFetchKzoSaveSnapshot_(snapshotObject) {
   var options = {
     method: "post",
     contentType: "application/json",
     payload: JSON.stringify(snapshotObject),
-    muteHttpExceptions: true
+    muteHttpExceptions: true,
+    headers: {
+      "X-EDS-Client-Type": "GAS"
+    }
   };
   try {
     var response = UrlFetchApp.fetch(KZO_SAVE_SNAPSHOT_URL, options);
     var httpCode = response.getResponseCode();
     var responseText = response.getContentText();
     var responseJson = JSON.parse(responseText);
-    Logger.log(JSON.stringify({
-      stage: "8A_SAVE_SNAPSHOT",
-      telemetry_tag: "stage=8a-save-snapshot",
-      http_code: httpCode,
-      status: responseJson.status || null,
-      persistence_status: responseJson.persistence_status || null,
-      snapshot_id: responseJson.snapshot_id || null,
-      error_code: responseJson.error_code || null
-    }));
-    return responseJson;
+    return { ok: true, httpCode: httpCode, json: responseJson };
   } catch (error) {
+    return {
+      ok: false,
+      httpCode: null,
+      json: null,
+      error: error && error.message ? error.message : String(error)
+    };
+  }
+}
+
+/**
+ * Stage 8A — persist one ``KZO_MVP_SNAPSHOT_V1`` object (INSERT only on server).
+ * Pass the full JSON snapshot; GAS does not build or alter contract fields here.
+ * Sends ``X-EDS-Client-Type: GAS`` (Stage 8B.1B / canonical adapter path).
+ */
+function saveKzoSnapshotV1(snapshotObject) {
+  var tr = urlFetchKzoSaveSnapshot_(snapshotObject);
+  if (!tr.ok) {
     Logger.log(JSON.stringify({
       stage: "8A_SAVE_SNAPSHOT",
       telemetry_tag: "stage=8a-save-snapshot",
       status: "request_failed",
       error: {
         error_code: "GAS_STAGE_8A_SAVE_SNAPSHOT_FAILED",
-        message: error && error.message ? error.message : String(error),
+        message: tr.error,
         note: MVP_TIMEOUT_NOTE
       }
     }));
     return null;
   }
+  var responseJson = tr.json;
+  Logger.log(JSON.stringify({
+    stage: "8A_SAVE_SNAPSHOT",
+    telemetry_tag: "stage=8a-save-snapshot",
+    http_code: tr.httpCode,
+    status: responseJson.status || null,
+    persistence_status: responseJson.persistence_status || null,
+    snapshot_id: responseJson.snapshot_id || null,
+    client_type: responseJson.client_type || null,
+    error_code: responseJson.error_code || null
+  }));
+  return responseJson;
 }

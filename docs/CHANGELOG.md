@@ -6,6 +6,24 @@
 
 ---
 
+# 30.04.2026 — Stage **8B.1B** GAS Thin Client Adapter **V1** (**`STAGE_8B_1B_PENDING_OPERATOR_TEST`**)
+
+## Ціль
+
+Перший **канонічний** GAS-адаптер для **`prepare_calculation` → `KZO_MVP_SNAPSHOT_V1` → `save_snapshot`** (**`X-EDS-Client-Type: GAS`**) без змін API/БД.
+
+## Факт
+
+- **`gas/Stage3D_KZO_Handshake.gs`:** **`runStage8B1BGasThinClientAdapterFlow()`**, envelope builder з полів **`prepare`** (**`data`** / **`metadata`**), **`urlFetchKzoSaveSnapshot_()`**; writeback **`Stage4A_MVP!H2:I9`**; **`saveKzoSnapshotV1()`** надсилає **`X-EDS-Client-Type: GAS`**
+- Аудит: **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**
+- **`TASK-2026-08B-011`** — код у репо; операторський ручний прогін **PENDING**
+
+## Статус
+
+**`STAGE_8B_1B_PENDING_OPERATOR_TEST`**
+
+---
+
 # 30.04.2026 — Stage **8B.1A** LIVE verification **CLOSEOUT** (**`STAGE_8B_1A_LIVE_VERIFIED`** / **`STAGE_8B_1A_CLOSEOUT_LOGGED`**)
 
 ## Ціль

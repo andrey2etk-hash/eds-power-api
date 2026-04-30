@@ -66,7 +66,7 @@ GAS/UI/Sheet coupling; **`prepare_calculation`** calls inside **`save_snapshot`*
 | **ID** | TASK-2026-08B-011 |
 | **IDEA** | **IDEA-0023** (operational slice) |
 | **Module** | `gas/` + `00-02_CALC_CONFIGURATOR` (KZO transport only) |
-| **Status** | **`NEXT_GATE_READY: STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER`** — implement thin GAS path (**`X-EDS-Client-Type: GAS`**); **ще без** rollout у коді до окремої імплементації TASK |
+| **Status** | **`STAGE_8B_1B_PENDING_OPERATOR_TEST`** — **`runStage8B1BGasThinClientAdapterFlow()`** in **`gas/Stage3D_KZO_Handshake.gs`**; operator manual PASS pending (**`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**) |
 | **Prerequisite** | **`TASK-2026-08B-012`** **`STAGE_8B_1A_LIVE_VERIFIED`** (**satisfied** — **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`**) |
 
 ### Purpose
@@ -86,16 +86,16 @@ First **real** client adapter: **GAS** calls the **same** API persistence pathwa
 - GAS as **orchestrator** (no new “brain” flows; sequence = API calls + display only)
 - API redesign; DB redesign; mobile/web fork
 
-### Implementation path (register only)
+### Implementation path (**landed — pending operator sign-off**)
 
-1. Entry: dedicated stub function name TBD (e.g. `runStage8B1ThinPersistenceAdapterFlow_`) next to existing KZO GAS flows in **`gas/Stage3D_KZO_Handshake.gs`** (or split file if separate TASK).
-2. Build **`KZO_MVP_SNAPSHOT_V1`** body from **`prepare_calculation`** success payload per **`11_KZO_MVP_SNAPSHOT_V1_CONTRACT.md`** (transport-level assembly only).
-3. Call **`saveKzoSnapshotV1()`** / equivalent `UrlFetchApp` to **`/api/kzo/save_snapshot`** with **`X-EDS-Client-Type: GAS`** (per **8B.1A** plan).
-4. Log **`snapshot_id`** + HTTP metadata for operator audit; writeback to Sheet **optional** and **display-only** (not system truth).
+1. Entry: **`runStage8B1BGasThinClientAdapterFlow()`** — **`gas/Stage3D_KZO_Handshake.gs`** (uses **Stage 4C** preflight → **`prepare_calculation`**).
+2. Envelope: **`buildKzoMvpSnapshotV1EnvelopeFromPrepareResponse_()`** — copies API **`data`** / **`metadata`** into **`KZO_MVP_SNAPSHOT_V1`** (no engineering math).
+3. Save: **`urlFetchKzoSaveSnapshot_()`** / **`saveKzoSnapshotV1()`** — **`POST /api/kzo/save_snapshot`** + **`X-EDS-Client-Type: GAS`**.
+4. Sheet: **`Stage4A_MVP!H2:I9`** — **`snapshot_id`**, **`persistence_status`**, **`created_at`**, **`snapshot_version`**, **`error_code`**, **`failure_message`** (display-only).
 
 ### Deliverable for closeout
 
-- Operator verification note + optional audit file **`docs/AUDITS/YYYY-MM-DD_STAGE_8B_1_THIN_CLIENT_ADAPTER_V1.md`**
+- Operator verification **PASS** on manual run + audit **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`** updated beyond **`PENDING`**
 
 ---
 
