@@ -6,7 +6,27 @@
 
 ---
 
-# 30.04.2026 — Stage **8B.1B** GAS Thin Client Adapter **V1** (**`STAGE_8B_1B_PENDING_OPERATOR_TEST`**)
+# 30.04.2026 — Stage **8B.1B** operator verification **CLOSEOUT** (**`STAGE_8B_1B_OPERATOR_VERIFIED`**)
+
+## Ціль
+
+Зафіксувати **SUCCESS** операторського ручного прогону Apps Script (**`TASK-2026-08B-011` CLOSED**); узгодити **наступний** doc-gate — **Stage 8B.2** (**Client-Agnostic Flow Stabilization / Error Handling**).
+
+## Факт (**без секретів**)
+
+- **`runStage8B1BGasThinClientAdapterFlow()`** — **PASS**; **`prepare_calculation`** **`success`**; усі п’ять MVP summary-шарів у лозі (**`snapshot_layers_present`**) **`true`**
+- **`envelope_ready`** **`request_id`:** **`aaeec349-bf24-4cfb-b0e2-b15590ae3972`**; **`logic_version`** **`KZO_MVP_V1`**
+- **`save_snapshot`** — **200**, **`SUCCESS`**, **`STORED`**, **`client_type`** **`GAS`**, **`snapshot_id`** **`b28b01e1-18bb-4e1a-858f-236e7b0a5416`**, **`error_code`** **`null`**; результат **`ADAPTER_SUCCESS_STORED`**
+- Sheet **`Stage4A_MVP!H2:I9`** — заповнено; **немає** прямих записів Supabase з GAS
+- **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`** — операторський closeout
+
+## Статус
+
+**`STAGE_8B_1B_OPERATOR_VERIFIED`** · **Next:** **Stage 8B.2** — **Client-Agnostic Flow Stabilization / Error Handling Gate** · лише журнали (**без** нового product scope)
+
+---
+
+# 30.04.2026 — Stage **8B.1B** GAS Thin Client Adapter **V1** (**implementation landmark**)
 
 ## Ціль
 
@@ -16,11 +36,10 @@
 
 - **`gas/Stage3D_KZO_Handshake.gs`:** **`runStage8B1BGasThinClientAdapterFlow()`**, envelope builder з полів **`prepare`** (**`data`** / **`metadata`**), **`urlFetchKzoSaveSnapshot_()`**; writeback **`Stage4A_MVP!H2:I9`**; **`saveKzoSnapshotV1()`** надсилає **`X-EDS-Client-Type: GAS`**
 - Аудит: **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**
-- **`TASK-2026-08B-011`** — код у репо; операторський ручний прогін **PENDING**
 
 ## Статус
 
-**`STAGE_8B_1B_PENDING_OPERATOR_TEST`**
+**Superseded** **`STAGE_8B_1B_OPERATOR_VERIFIED`** (**operator closeout** запис **вище**)
 
 ---
 

@@ -26,9 +26,10 @@ Stage **8A** proved persistence exists. Stage **8B** must establish **platform a
 1. **Normative contract:** `docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md` (**done** — refine if API delta TASK changes fields).
 2. **API alignment:** **`TASK-2026-08B-012`** (**Stage 8B.1A**) — **`STAGE_8B_1A_API_CONTRACT_IMPLEMENTED`** · **`docs/AUDITS/2026-04-30_STAGE_8B_1A_API_CONTRACT_IMPLEMENTATION.md`** (+ governance plan **`docs/AUDITS/2026-04-30_STAGE_8B_1A_API_SAVE_CONTRACT_GOVERNANCE_PLAN.md`**).
 3. **Data contracts:** patch `docs/00_SYSTEM/04_DATA_CONTRACTS.md` for persistence envelopes when API is final.
-4. **GAS:** document or implement **Thin Client Adapter V1** only (no orchestration core) — reference **IDEA-0023** notes in `12_IDEA_MASTER_LOG.md`.
+4. **GAS:** **Thin Client Adapter V1** (**`TASK-2026-08B-011`**) — **`STAGE_8B_1B_OPERATOR_VERIFIED`** · **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**.
 5. **Audit:** `docs/AUDITS/YYYY-MM-DD_STAGE_8B_PLATFORM_PERSISTENCE_NOT_GAS_PERSISTENCE.md` — thesis: **platform persistence**, not **GAS persistence**.
 6. **Closure:** **`IDEA-0023`** → `IMPLEMENTED` in `12_IDEA_MASTER_LOG.md` after audit PASS.
+7. **Next doc gate (post–8B.1):** **Stage 8B.2** — **Client-Agnostic Flow Stabilization / Error Handling** (**TASK** to be instituted before implementation — **no** product scope creep in governance text alone).
 
 ### Expected result
 
@@ -66,7 +67,7 @@ GAS/UI/Sheet coupling; **`prepare_calculation`** calls inside **`save_snapshot`*
 | **ID** | TASK-2026-08B-011 |
 | **IDEA** | **IDEA-0023** (operational slice) |
 | **Module** | `gas/` + `00-02_CALC_CONFIGURATOR` (KZO transport only) |
-| **Status** | **`STAGE_8B_1B_PENDING_OPERATOR_TEST`** — **`runStage8B1BGasThinClientAdapterFlow()`** in **`gas/Stage3D_KZO_Handshake.gs`**; operator manual PASS pending (**`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**) |
+| **Status** | **`CLOSED`** · **`STAGE_8B_1B_OPERATOR_VERIFIED`** — operator manual **PASS** (**`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**) |
 | **Prerequisite** | **`TASK-2026-08B-012`** **`STAGE_8B_1A_LIVE_VERIFIED`** (**satisfied** — **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`**) |
 
 ### Purpose
@@ -86,19 +87,21 @@ First **real** client adapter: **GAS** calls the **same** API persistence pathwa
 - GAS as **orchestrator** (no new “brain” flows; sequence = API calls + display only)
 - API redesign; DB redesign; mobile/web fork
 
-### Implementation path (**landed — pending operator sign-off**)
+### Implementation path (**landed — operator verified**)
 
 1. Entry: **`runStage8B1BGasThinClientAdapterFlow()`** — **`gas/Stage3D_KZO_Handshake.gs`** (uses **Stage 4C** preflight → **`prepare_calculation`**).
 2. Envelope: **`buildKzoMvpSnapshotV1EnvelopeFromPrepareResponse_()`** — copies API **`data`** / **`metadata`** into **`KZO_MVP_SNAPSHOT_V1`** (no engineering math).
 3. Save: **`urlFetchKzoSaveSnapshot_()`** / **`saveKzoSnapshotV1()`** — **`POST /api/kzo/save_snapshot`** + **`X-EDS-Client-Type: GAS`**.
 4. Sheet: **`Stage4A_MVP!H2:I9`** — **`snapshot_id`**, **`persistence_status`**, **`created_at`**, **`snapshot_version`**, **`error_code`**, **`failure_message`** (display-only).
 
-### Deliverable for closeout
+### Deliverable for closeout (**met**)
 
-- Operator verification **PASS** on manual run + audit **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`** updated beyond **`PENDING`**
+- Operator verification **PASS** + audit **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`** (**`STAGE_8B_1B_OPERATOR_VERIFIED`**).
+- **Next (governance narrative):** **Stage 8B.2** — **Client-Agnostic Flow Stabilization / Error Handling Gate** (separate TASK when instituted).
 
 ---
 
 ## Completed
 
+- **TASK-2026-08B-011** — Stage **8B.1B** Thin GAS Client Adapter **V1** — **`STAGE_8B_1B_OPERATOR_VERIFIED`** (**`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**)
 - **TASK-2026-08B-012** — Stage **8B.1A** API **`save_snapshot`** hardening + LIVE **E5** — **`STAGE_8B_1A_LIVE_VERIFIED`** · **`STAGE_8B_1A_CLOSEOUT_LOGGED`** (**`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`**)

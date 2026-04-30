@@ -900,10 +900,10 @@ Implementation record:
 - Audit: `docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_FIRST_PERSISTENCE_MVP.md`
 - Live verification gate: `docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md` — **LIVE PASS** (**2026-04-30**); closeout dossier **`docs/AUDITS/2026-04-30_STAGE_8A_2_1_LIVE_DEPLOY_CALCULATION_SNAPSHOTS.md`** (**`STAGE_8A_COMPLETE`**)
 - Forbidden: BOM, pricing, retrieval APIs, dashboards, **`prepare_calculation`** mutations, contract field inflation without V2
-- Thin GAS **`saveKzoSnapshotV1()`** / **`runStage8B1BGasThinClientAdapterFlow()`** — transport + **`KZO_MVP_SNAPSHOT_V1`** envelope from **`prepare`** output only (**`STAGE_8B_1B_PENDING_OPERATOR_TEST`**)
+- Thin GAS **`saveKzoSnapshotV1()`** / **`runStage8B1BGasThinClientAdapterFlow()`** — transport + **`KZO_MVP_SNAPSHOT_V1`** envelope from **`prepare`** fields only (**`STAGE_8B_1B_OPERATOR_VERIFIED`** — **`TASK-2026-08B-011` CLOSED**)
 - Master table **Status**: **`IMPLEMENTED`** (**2026-04-30**)
 
-**Recommended next operational slice (post–IDEA-0017, under IDEA-0023):** **`TASK-2026-08B-012`** (**Stage 8B.1A**) — canonical **`save_snapshot`** contract hardening on the **API** first; then **`TASK-2026-08B-011`** (**Stage 8B.1B**) — thin **GAS** transport (**`prepare_calculation`** → **`KZO_MVP_SNAPSHOT_V1`** envelope → **`saveKzoSnapshotV1()`** / **`save_snapshot`**), **without** retrieval/history/analytics expansion. Gemini preflight (**`docs/AUDITS/2026-04-30_STAGE_8B_1_GEMINI_PREFLIGHT_REQUEST.md`**) reinforces **API-first** order — **no** “GAS as orchestrator” wording.
+**Recommended next operational slice (post–IDEA-0017 / Stage 8B.1, under IDEA-0023):** **Stage 8B.2** — **Client-Agnostic Flow Stabilization / Error Handling Gate** (after **`STAGE_8B_1B_OPERATOR_VERIFIED`** **`TASK-2026-08B-011`**); **`TASK-2026-08B-012`** / **`TASK-2026-08B-011`** **CLOSED**. Gemini preflight (**`docs/AUDITS/2026-04-30_STAGE_8B_1_GEMINI_PREFLIGHT_REQUEST.md`**) remains historical context for API-first sequencing — **no** “GAS as orchestrator” wording.
 
 ### IDEA-0018 — Stage 8A.0 EDS Power Supabase root governance foundation
 
@@ -1102,7 +1102,8 @@ Current API may require additive fields in a sub-TASK — contract is **normativ
 ##### Sequencing (Stage **8B.1** split — **`STAGE_8B_DOC_STATE_ALIGNED`**)
 
 1. **`TASK-2026-08B-012`** — **8B.1A** **`save_snapshot`** API contract hardening (validation / response / anti-orchestration leak) — plan **`docs/AUDITS/2026-04-30_STAGE_8B_1A_API_SAVE_CONTRACT_GOVERNANCE_PLAN.md`**.
-2. **`TASK-2026-08B-011`** — **8B.1B** Thin GAS adapter after **LIVE gate** (**`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`** **PASS** → **`STAGE_8B_1A_LIVE_VERIFIED`**).
+2. **`TASK-2026-08B-011`** — **8B.1B** Thin GAS adapter (**`runStage8B1BGasThinClientAdapterFlow()`**) — **`STAGE_8B_1B_OPERATOR_VERIFIED`** (**operator closeout **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**).
+3. **Stage 8B.2 (next)** — **Client-Agnostic Flow Stabilization / Error Handling Gate** — **TASK** / audit shell **TBD** before coding.
 
 Gemini critic preflight (**`docs/AUDITS/2026-04-30_STAGE_8B_1_GEMINI_PREFLIGHT_REQUEST.md`**) audits the **thin-GAS plan** **before** coding and aligns stakeholders on **API-first** reinforcement.
 
@@ -1124,7 +1125,7 @@ No client may redefine system persistence without **IDEA → TASK** and contract
 - Contract: **`docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`**
 - **8B.1** split + doc alignment: **`STAGE_8B_DOC_STATE_ALIGNED`** (**`CHANGELOG`**, **`NOW`**, **`12_IDEA_MASTER_LOG`**)
 - **8B.1A** API hardening: **`551ce87`** (**`CHANGELOG`**) · **`STAGE_8B_1A_API_CONTRACT_IMPLEMENTED`**
-- **8B.1B** thin adapter — **`gas/Stage3D_KZO_Handshake.gs`** · **`runStage8B1BGasThinClientAdapterFlow()`** — **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`** (**`STAGE_8B_1B_PENDING_OPERATOR_TEST`**)
+- **8B.1B** thin adapter — **`gas/Stage3D_KZO_Handshake.gs`** · **`runStage8B1BGasThinClientAdapterFlow()`** — **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`** (**`STAGE_8B_1B_OPERATOR_VERIFIED`** **`TASK-2026-08B-011` CLOSED** · **next** **Stage 8B.2** stabilization / error-handling gate narrative)
 
 Master table **Status**: **`ACTIVE`** until **8B** governance + audit **PASS** — then **`IMPLEMENTED`**.
 

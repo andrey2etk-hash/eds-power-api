@@ -12,13 +12,13 @@ Rule:
 
 ## Latest audit
 
-- **Stage 8B.1B — GAS Thin Client Adapter V1 (**`STAGE_8B_1B_PENDING_OPERATOR_TEST`**) — **`TASK-2026-08B-011`** — **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`** (**`runStage8B1BGasThinClientAdapterFlow()`**, **`Stage4A_MVP!H2:I9`**)
+- **Stage 8B.1B — GAS Thin Client Adapter V1 (**`STAGE_8B_1B_OPERATOR_VERIFIED`**) — **`TASK-2026-08B-011` CLOSED** — **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**
 - **Stage 8B.1A — LIVE verification closeout (**`STAGE_8B_1A_LIVE_VERIFIED`** · **`STAGE_8B_1A_CLOSEOUT_LOGGED`**) — **`TASK-2026-08B-012` CLOSED** — **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`**
 - **Stage 8B.1A — Gemini pre-live audit (`STAGE_8B_1A_PRELIVE_AUDIT_READY`)** — **`2026-04-30_STAGE_8B_1A_GEMINI_PRELIVE_AUDIT.md`** (**before LIVE deploy / E5**); implementation ref **`2026-04-30_STAGE_8B_1A_API_CONTRACT_IMPLEMENTATION.md`**
 - **Stage 8B.1A — API `save_snapshot` hardening IMPLEMENTED (`STAGE_8B_1A_API_CONTRACT_IMPLEMENTED`)** — **`2026-04-30_STAGE_8B_1A_API_CONTRACT_IMPLEMENTATION.md`** · plan **`2026-04-30_STAGE_8B_1A_API_SAVE_CONTRACT_GOVERNANCE_PLAN.md`** · **`TASK-2026-08B-012`**
 - **Stage 8B.1 — Gemini preflight (`STAGE_8B_1_AUDIT_REQUEST_READY`)** — **`2026-04-30_STAGE_8B_1_GEMINI_PREFLIGHT_REQUEST.md`** (**`TASK-2026-08B-011`**)
-- **Stage 8B** — Client-agnostic persistence governance (`STAGE_8B_GOVERNANCE_FIXED`) — registry: **`docs/TASKS.md`** (**`TASK-2026-08B-001`**, **`TASK-2026-08B-012`**, **`TASK-2026-08B-011`**), **`docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`**, **`IDEA-0023`** in **`12_IDEA_MASTER_LOG.md`**; **8B.1A** **CLOSED** · **8B.1B** **`STAGE_8B_1B_PENDING_OPERATOR_TEST`**
-- **Stage 8A.2.1 — Live deploy `calculation_snapshots` closeout (`STAGE_8A_COMPLETE`)** — `2026-04-30_STAGE_8A_2_1_LIVE_DEPLOY_CALCULATION_SNAPSHOTS.md` — **`IDEA-0017` `IMPLEMENTED`**; next: operator-orchestrated thin GAS write path (**new IDEA/TASK**)
+- **Stage 8B** — Client-agnostic persistence governance (`STAGE_8B_GOVERNANCE_FIXED`) — registry: **`docs/TASKS.md`** (**`TASK-2026-08B-001`**, **`TASK-2026-08B-012`**, **`TASK-2026-08B-011`**), **`docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`**, **`IDEA-0023`** in **`12_IDEA_MASTER_LOG.md`**; **8B.1** **CLOSED** at operator layer · **next narrative gate:** **Stage 8B.2** (stabilization / error handling — **TASK** TBD)
+- **Stage 8A.2.1 — Live deploy `calculation_snapshots` closeout (`STAGE_8A_COMPLETE`)** — `2026-04-30_STAGE_8A_2_1_LIVE_DEPLOY_CALCULATION_SNAPSHOTS.md` — **`IDEA-0017` `IMPLEMENTED`**; thin GAS write path superseded narrative-wise by **`STAGE_8B_1B_OPERATOR_VERIFIED`** (**`TASK-2026-08B-011` CLOSED**)
 - **Stage 8A live verification gate — PASS** — `2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md` (**LIVE PASS** **2026-04-30**; prior automated probe **404** superseded)
 - **Stage 8A.2.0 — Remote migration history alignment preflight** — `2026-04-30_STAGE_8A_2_0_REMOTE_MIGRATION_HISTORY_PREFLIGHT.md` (**`READY_FOR_OPERATOR_REMOTE_HISTORY_REPAIR`** playbook)
 - **Stage 8A.0.8 — Cursor local Supabase connectivity** — `2026-04-30_STAGE_8A_0_8_CURSOR_LOCAL_CONNECTIVITY.md` (**`CURSOR_LOCAL_STACK_VERIFIED`**)
@@ -106,5 +106,6 @@ Rule:
 ## Post–Stage 8A (explicit non-goals until tasked)
 
 - **STAGE_8B.1A** — **`TASK-2026-08B-012`** **CLOSED** — **`2026-04-30_STAGE_8B_1A_LIVE_GATE.md`** (**`STAGE_8B_1A_LIVE_VERIFIED`** · **`STAGE_8B_1A_CLOSEOUT_LOGGED`**)
-- **STAGE_8B.1B** — **`TASK-2026-08B-011`**: Thin GAS (**`runStage8B1BGasThinClientAdapterFlow()`**) — **`STAGE_8B_1B_PENDING_OPERATOR_TEST`** (**`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**)
+- **STAGE_8B.1B** — **`TASK-2026-08B-011` CLOSED** — **`STAGE_8B_1B_OPERATOR_VERIFIED`** (**`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**)
+- **STAGE_8B.2** (next) — **Client-Agnostic Flow Stabilization / Error Handling Gate** — **TASK ID TBD**
 - Retrieval / history / analytics UI — **out of Stage 8B** scope until separate IDEA
