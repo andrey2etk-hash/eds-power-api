@@ -1,5 +1,18 @@
 # Stage **8B.1A** — LIVE verification gate (`save_snapshot`)
 
+## Gate status (**2026-04-30 update**)
+
+**`LIVE_HOST_SYNCED_PENDING_SUPABASE_ENV`**
+
+| Fact | Meaning |
+| --- | --- |
+| **API bundle** | Public Render host behaves like **Stage 8B.1A** hardened **`save_snapshot`**: **`client_type`** echo, **`failure`** envelope, **`SNAPSHOT_SUCCESS_LAYER_INVALID`** on L3 negative probes |
+| **Persistence** | Valid **SUCCESS** body returns **`SNAPSHOT_PERSISTENCE_UNAVAILABLE`** → **`SUPABASE_URL`** / **`SUPABASE_SERVICE_ROLE_KEY`** missing, empty, or wrong on **Render** (operator must set **Dashboard env** only — **never** in repo/chat) |
+
+**Do not claim `STAGE_8B_1A_LIVE_VERIFIED`** until Smoke **A** returns **`SUCCESS`** / **`STORED`** **and** **E** (DB row + **`created_at`**) passes.
+
+---
+
 **Purpose.** Close **`TASK-2026-08B-012`** **E5** operator gate after **Gemini pre-live PASS** (**`docs/AUDITS/2026-04-30_STAGE_8B_1A_GEMINI_PRELIVE_AUDIT.md`**) and **Render** deployment of **`main`** at **`551ce87`** (**Stage 8B.1A** API hardening).
 
 ## Preconditions
@@ -11,11 +24,40 @@
 | G3 | **No** DDL / migrations in this TASK; **`SUPABASE_URL`** + **`SUPABASE_SERVICE_ROLE_KEY`** configured on Render (same pattern as **`STAGE_8A`** live gate) |
 | G4 | **No** GAS / client orchestration tests in this dossier (**STRICT** scope) |
 
-## Deploy note
+## Deploy + Render (**Supabase env unblock**)
 
-**2026-04-30:** Changes **committed + pushed**: **`551ce87`** (`origin/main`).  
-**Automated Cursor smoke** immediately after push against **`https://eds-power-api.onrender.com`** did **not** yet show **8B.1A** HTTP envelope fields (**`client_type`**, **`failure`**, richer success body) → treat as **either** stale build / cold deploy latency **or** **`SNAPSHOT_PERSISTENCE_UNAVAILABLE`** (Supabase env on host).  
-**Operator must re-run Sections A–E** after Dashboard confirms deploy + env.
+**Commits (reference):** **`551ce87`** (**8B.1A** code) · **`fcfe04b`** (LIVE gate doc sync); **`origin/main`**.
+
+### Required Render environment variables (**names only**)
+
+Set in **Render Dashboard → Service → Environment** for the FastAPI worker:
+
+| Variable | Role |
+| --- | --- |
+| **`SUPABASE_URL`** | Project API URL (**Supabase Dashboard → Settings → API**) |
+| **`SUPABASE_SERVICE_ROLE_KEY`** | **Service role** secret used **only server-side** by **`kzo_snapshot_persist`** (never exposed to Sheets/clients) |
+
+Same variable names as **`STAGE_8A`** (**`docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md`**).
+
+### Secret hygiene (**STRICT**)
+
+- **Do not** commit secrets to Git (**no** **`service_role`** in **`\.env`** tracked files, **no** keys in **`\.env.example`**).
+- **Do not** paste **`SUPABASE_SERVICE_ROLE_KEY`** (or any bearer token) into **docs**, **PRs**, or **chat** / tickets.
+- **Do not** add real keys to **`\.env.example`** — placeholders only elsewhere if ever needed (**this TASK** touches **none**).
+
+If **`save_snapshot`** responses **still** omit **`client_type`** / **`failure`** after env setup, treat as **stale build**: Render **manual redeploy** or **Clear build cache** + redeploy; confirm Deploy **commit SHA** on **`origin/main`**.
+
+After saving env vars, **redeploy / restart** the Render service so the process inherits new variables.
+
+---
+
+## Operator retest checklist (after Supabase env set)
+
+1. **Render Dashboard** — confirm **`SUPABASE_URL`** + **`SUPABASE_SERVICE_ROLE_KEY`** present (values **not** copied into repo).
+2. **Manual deploy / restart** — trigger redeploy if env changed (per Render UX).
+3. **Smoke A** (**Section A** minimal **SUCCESS** + **`X-EDS-Client-Type: GAS`**) → expect **`status`** **`SUCCESS`**, **`persistence_status`** **`STORED`**, **`snapshot_id`**, **`created_at`**, **`client_type`** **`GAS`**, **`failure`** **`null`**.
+4. **DB E** — verify row in **`public.calculation_snapshots`** by **`snapshot_id`**; **`created_at`** aligns with response.
+5. **Regression negatives** — re-run **C** (L3 null layer) → **`SNAPSHOT_SUCCESS_LAYER_INVALID`** + full **`failure`**; **D** (logic mismatch) → **`SNAPSHOT_LOGIC_VERSION_METADATA_MISMATCH`**.
 
 ---
 
@@ -127,25 +169,28 @@ where  id = '<snapshot_id from response>';
 
 ---
 
-## Automated probe log (Cursor, **2026-04-30**)
+## Automated / manual probe log (Cursor, **2026-04-30**)
 
-| Probe | Observation |
+Chronology (summarized):
+
+| Phase | Observation |
 | --- | --- |
-| **Timing** | Within minutes of **`551ce87`** **`git push`** (Render redeploy latency not guaranteed saturated) |
-| **A/B shape** | Response body ** lacked** **`client_type`**, **`failure`**, **`created_at`** fields → **production did not yet expose **`8B.1A`** envelope** OR response path bypassed hardened handler |
-| **A** | **`SNAPSHOT_PERSISTENCE_UNAVAILABLE`** (flat **`error_code`**) — persisted env / deploy state **or** stale build |
-| **C** (null layer) | Legacy-style **`SNAPSHOT_SUCCESS_LAYER_MISSING`** string observed on first batch — inconsistent with **`551ce87`** codebase (**→ stale image**) |
+| Early post-push | Responses looked **legacy** (**flat** rejects; **`SNAPSHOT_SUCCESS_LAYER_MISSING`**) → **stale deploy** plausible |
+| **Render sync verified** | **L3** negative (**`physical_topology_summary: null`**, **`X-EDS-Client-Type: GAS`**) returns **`SNAPSHOT_SUCCESS_LAYER_INVALID`**, **`client_type`**, structured **`failure`** → **`LIVE_HOST_SYNCED`** for **handler** behavior |
+| **Persistence** | **Smoke A**-style valid **SUCCESS** still returns **`SNAPSHOT_PERSISTENCE_UNAVAILABLE`** (**`persistence_status`** **`ERROR`**) → **Supabase env** not configured on Render service |
 
-**Action:** Repeat **Sections A–E** after Render Dashboard shows successful deploy + **`SUPABASE_*`** healthy.
+**Resolved label:** **`LIVE_HOST_SYNCED_PENDING_SUPABASE_ENV`** (**not** **`STALE_RENDER_DEPLOY`** for current API semantics).
 
 ---
+
 
 ## Final status registry
 
 | Label | Meaning |
 | --- | --- |
-| **`STAGE_8B_1A_LIVE_VERIFIED`** | Operator signed **A–E** **PASS** on live host serving **551ce87** envelope + Gemini **G1** |
-| **`STAGE_8B_1A_LIVE_VERIFICATION_PENDING`** | Push complete; prod smoke incomplete or inconclusive (**this dossier baseline after Cursor probe**) |
+| **`STAGE_8B_1A_LIVE_VERIFIED`** | Operator signed **A–E** **PASS** on live host + Gemini **G1** (**Supabase OK**, insert path proven) |
+| **`LIVE_HOST_SYNCED_PENDING_SUPABASE_ENV`** | **Current (2026-04-30):** hardened **`save_snapshot`** on public host **confirmed**; **`SUPABASE_*`** missing/invalid on Render blocks Smoke **A** / **E** |
+| **`STAGE_8B_1A_LIVE_VERIFICATION_PENDING`** | Superset: gate open until **`STAGE_8B_1A_LIVE_VERIFIED`** (**includes** Supabase unblock) |
 
 ---
 

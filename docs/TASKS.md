@@ -47,7 +47,7 @@ GAS as orchestration core; Sheet as system truth store; client-side persistence 
 | **ID** | TASK-2026-08B-012 |
 | **IDEA** | **IDEA-0023** (API authority slice) |
 | **Module** | `main.py`, `kzo_snapshot_persist.py`, `docs/00_SYSTEM/` (contracts) |
-| **Status** | **`STAGE_8B_1A_LIVE_VERIFICATION_PENDING`** — LIVE gate **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`**; після операторського **PASS** **`STAGE_8B_1A_LIVE_VERIFIED`** |
+| **Status** | **`LIVE_HOST_SYNCED_PENDING_SUPABASE_ENV`** — API на Render відповідає **8B.1A**; додати **`SUPABASE_URL`** + **`SUPABASE_SERVICE_ROLE_KEY`** у **Render** (див. **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`**) → потім **`STAGE_8B_1A_LIVE_VERIFIED`** |
 
 ### Purpose
 

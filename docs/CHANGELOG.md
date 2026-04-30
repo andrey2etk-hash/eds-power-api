@@ -6,6 +6,24 @@
 
 ---
 
+# 30.04.2026 — Stage **8B.1A** Render / Supabase env unblock dossier (**`LIVE_HOST_SYNCED_PENDING_SUPABASE_ENV`**)
+
+## Ціль
+
+Зафіксувати **синхрон код ↔ публічний Render** (hardened **`save_snapshot`**) та **операторський чекліст** для **`SUPABASE_URL`** / **`SUPABASE_SERVICE_ROLE_KEY`** (**без** секретів у репозиторії).
+
+## Факт
+
+- **Live:** **L3** negative → **`SNAPSHOT_SUCCESS_LAYER_INVALID`** + **`client_type`** + **`failure`**
+- **Live:** Valid **SUCCESS** → **`SNAPSHOT_PERSISTENCE_UNAVAILABLE`** → очікувано через **Render env**
+- **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`** оновлено: статус **`LIVE_HOST_SYNCED_PENDING_SUPABASE_ENV`**, secret hygiene, retest checklist
+
+## Статус
+
+**`LIVE_HOST_SYNCED_PENDING_SUPABASE_ENV`** · **`STAGE_8B_1A_LIVE_VERIFIED`** — **після** Supabase unblock + Smoke **A**/ **E**
+
+---
+
 # 30.04.2026 — Stage **8B.1A** LIVE verification gate dossier (**`STAGE_8B_1A_LIVE_VERIFICATION_PENDING`**)
 
 ## Ціль
