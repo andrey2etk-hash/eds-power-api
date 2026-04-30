@@ -1,20 +1,13 @@
-# Pending: `calculation_snapshots` DDL (**hold** until remote baseline aligned)
+# Pending migrations folder (future holds)
 
-Stage **8A.0.2** freezes **`supabase db push`** on this DDL until **`LEGACY_REMOTE_BASELINE.md`** governance is honoured and a **`legacy_baseline` migration is generated/imported** into **`../`** (numbered **before** restoring this file).
+**Stage 8A.1:** canonical **`calculation_snapshots`** migration was **promoted** to **`supabase/migrations/20260429120000_calculation_snapshots_v1.sql`**. This directory no longer holds that file.
 
-## Contents
+## Purpose
 
-| File | Role |
-| --- | --- |
-| **`20260429120000_calculation_snapshots_v1.sql`** | Canonical **`calculation_snapshots`** migration from **Stage 8A.0.1** (unchanged DDL). |
+Reserve **`_pending_after_remote_baseline/`** for DDL that **must apply only after** a verified legacy **`public`** baseline migration sequence — same governance pattern as **8A.0.2** (additive, no destructive remote mutations from undocumented TASK).
 
-## Restore workflow (operators)
+## Restore workflow (when adding a new held file)
 
-1. **Do not skip baseline.** Generate or import authoritative baseline SQL for **`public`** including legacy tables/views (**no destructive DDL** unless separate IDEA explicitly approves remediation).
-2. Place baseline migration files in **`supabase/migrations/`** using timestamps **lower than** **`20260429120000`** (or reorganise timestamps so baseline clearly precedes **`calculation_snapshots`** — Supabase executes lexicographically by filename **version**).
-3. **Move or copy** this SQL file **back into** **`supabase/migrations/`** (same name or **`YYYYMMDD…_calculation_snapshots_v1.sql`** strictly **after** baseline files).
-4. Only then **`supabase db push`** against a non-production verification project or after dry-run checklist.
-
----
-
-**Strict Stage 8A.0.2:** repo-only governance + hold — **zero** destructive remote mutations from this TASK.
+1. Land authoritative baseline migrations in **`supabase/migrations/`** with timestamps strictly **before** the held migration.
+2. Move or commit the held SQL into **`migrations/`** with a timestamp **after** baseline files.
+3. Verify with **`supabase db reset`** (local/disposable) before any production-linked apply.

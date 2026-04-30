@@ -37,22 +37,19 @@
 - **`KZO_MVP_SNAPSHOT_V1`** frozen — `docs/00-02_CALC_CONFIGURATOR/09_KZO/11_KZO_MVP_SNAPSHOT_V1_CONTRACT.md` (verified layers: **`structural_composition_summary`**, **`physical_summary`**, **`physical_topology_summary`**, **`engineering_class_summary`**, **`engineering_burden_summary`**; SUCCESS/FAILED envelopes; **`snapshot_version`** + **`logic_version`** policy).
 - Audit **`2026-04-29_STAGE_7B_KZO_MVP_SNAPSHOT_CONTRACT_FREEZE.md`** — external Gemini **`SAFE TO PROCEED TO STAGE 8A`**; Stage **7B** **CLOSED**; **`IDEA-0016`** **`IMPLEMENTED`** (unchanged Status Values).
 
-## Stage 8A — код implementation (insert-only, 29.04.2026)
+## Stage 8A — persistence path (локальна готовність, 30.04.2026)
 
-- **`POST /api/kzo/save_snapshot`** у репозиторії (`kzo_snapshot_persist.py`; DDL **`supabase/migrations/_pending_after_remote_baseline/20260429120000_calculation_snapshots_v1.sql`** — **hold** до replay PASS; baseline **`20260429110000`** — **фактичний DDL імпортовано** (**8A.0.6** **`REAL_BASELINE_CAPTURED_PENDING_REPLAY`**)). **`TABLE=SYSTEM`**/**`ROW=PRODUCT`** — **8A.0.1**/**8A.0.2**. **`prepare_calculation`** без змін.
-- Thin GAS **`saveKzoSnapshotV1()`** — лише транспорт JSON.
-- Аудит імплементації: **`2026-04-29_STAGE_8A_SUPABASE_FIRST_PERSISTENCE_MVP.md`**; mapping **`13_KZO_MVP_SNAPSHOT_V1_SQL_MAPPING.md`**.
+- **`POST /api/kzo/save_snapshot`** у репозиторії (`kzo_snapshot_persist.py`); **`prepare_calculation`** без змін.
+- canonical DDL **`public.calculation_snapshots`** знаходиться в **`supabase/migrations/20260429120000_calculation_snapshots_v1.sql`** (перенесено з **`_pending_after_remote_baseline/`** після **8A.0.8**).
+- Thin GAS **`saveKzoSnapshotV1()`** — лише транспорт JSON. **`supabase db reset`** **PASS** після промоції — legacy **`objects`/`bom_links`/`ncr`/`production_status`** + **23 × `v_*`** + **`calculation_snapshots`** (див. **8A.1** аудит).
+- Аудити: **`docs/AUDITS/2026-04-30_STAGE_8A_1_CALCULATION_SNAPSHOTS_PROMOTION_TEST.md`** (**`FIRST_PERSISTENCE_READY_NON_PROD`**); connectivity **`docs/AUDITS/2026-04-30_STAGE_8A_0_8_CURSOR_LOCAL_CONNECTIVITY.md`**; перша імплементація **`docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_FIRST_PERSISTENCE_MVP.md`**; mapping **`13_KZO_MVP_SNAPSHOT_V1_SQL_MAPPING.md`**.
 
-## Активний gate — Stage 8A Supabase (**8A.0.7** replay **BLOCKED_BY_DOCKER**)
+## Активний gate — Stage 8A live (рендер/hosted Supabase, без змін задачі prod apply)
 
-- **8A.0.7:** локальний **`supabase db reset`** — **не виконано**: **немає** Docker / Supabase CLI на PATH у агент-сесії. Статус: **`BLOCKED_BY_DOCKER`** — **`docs/AUDITS/2026-04-29_STAGE_8A_0_7_BASELINE_REPLAY_VERIFICATION.md`**. **`calculation_snapshots`** — **лише** **`_pending_after_remote_baseline/`**; **не переносити** до **8A.0.8**. Ціль **`BASELINE_REPLAY_VERIFIED`** — після replay на машині оператора або disposable DB.
-- **8A.0.6:** baseline DDL у **`20260429110000_remote_legacy_baseline.sql`** — **DONE** (**`REAL_BASELINE_CAPTURED_PENDING_REPLAY`**). Аудит **`docs/AUDITS/2026-04-29_STAGE_8A_0_6_ACTUAL_REMOTE_BASELINE_CAPTURE.md`**.
-- **8A.0.5:** tooling precheck — **`docs/AUDITS/2026-04-29_STAGE_8A_0_5_LOCAL_TOOLING_PRECHECK.md`**.
-- **8A.0.3 (ordering):** файл **`supabase/migrations/20260429110000_remote_legacy_baseline.sql`** у root (**порядок \<** hold **`20260429120000_calculation_snapshots_v1.sql`**); тепер містить **фактичний** DDL (**8A.0.6**). **`LEGACY_REMOTE_BASELINE.md`** freeze залишається доки replay не **`PASS`** — аудити **8A.0.3**/**8A.0.6**.
-- **8A.0.2 (governance, closed):** remote **`public`** не порожній — **`LEGACY_REMOTE_SCHEMA_DETECTED`**; **`IDEA-0020`** **`IMPLEMENTED`**.
-- **Live gate:** `docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md` — після baseline: застосувати міграції, env на Render, redeploy, **POST** живий → рядок у **`calculation_snapshots`** (`product_type` = **`KZO`**).
-- Automated probe **`eds-power-api.onrender.com`** (2026-04-29): **`404`** на **`/api/kzo/save_snapshot`** → **live PASS ще не зафіксований** (ймовірно stale deploy без Stage 8A route або інший сервіс).
-- **IDEA-0017** = **`ACTIVE`** (**operative:** **`PENDING_SUPABASE_VERIFICATION`**) до запису **LIVE PASS** у live gate аудиті → тоді **`IMPLEMENTED`**.
+- **Не виконується в TASK 8A.1:** production **`db push`**, будь-який non-local apply — заборонено.
+- **Live gate:** `docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md` — env на Render/hosted проєкті, redeploy **`eds-power-api`**, живий **`POST /api/kzo/save_snapshot`**, запис у **`calculation_snapshots`** (`product_type` = **`KZO`**).
+- Automated probe (**2026-04-29**) **`404`** на **`/api/kzo/save_snapshot`** — оператор робить лише живу перевірку за live gate аудитом (нема автоматичного PASS з епохи 29.04).
+- **IDEA-0017** = **`ACTIVE`** (**operative:** **`PENDING_SUPABASE_VERIFICATION`**) доки немає **LIVE PASS** запису у live gate → тоді **`IMPLEMENTED`**.
 
 ## Поточний етап і наступний gate
 
@@ -70,7 +67,7 @@ https://eds-power-api.onrender.com
 
 1. 00-01_AUTH — авторизація (frozen MVP / draft_ready)
 2. 00-02_CALC_CONFIGURATOR — конфігуратор (KZO Stage 5A–5C operator-visible path для structural / footprint API / topology API + топологія на Sheet верифіковані)
-3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (**7A/** **7B** **`IMPLEMENTED`**; **8A** persistence code + **live gate OPEN** — **`IDEA-0017`** **`ACTIVE`** / **`PENDING_SUPABASE_VERIFICATION`** until live PASS; retrieval/history/analytics — окремий IDEA)
+3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (**7A/** **7B** **`IMPLEMENTED`**; **IDEA-0022** **`IMPLEMENTED`**; repo **`calculation_snapshots`** активна міграція + локальний **`db reset`** **PASS** — **`FIRST_PERSISTENCE_READY_NON_PROD`**; **`IDEA-0017`** **`ACTIVE`** до **live PASS**; retrieval/history/analytics — окремий IDEA)
 
 ## Що робимо зараз
 
@@ -128,10 +125,11 @@ https://eds-power-api.onrender.com
 - Stage 6C Render + **`runStage6CEngineeringBurdenFlow()`** operator **PASS** (**IDEA-0014** **`IMPLEMENTED`**; **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`**)
 - Stage 7A **`runKzoMvpFlow()`** manual operator **PASS** — **`mvp_run_outcome`** **`MVP_RUN_SUCCESS`**, **`http_code`** **200**, zones **`E4:F19`/`E20:F20`**, **`E21:F26`**, **`E27:F40`**, summaries present (**IDEA-0015** **`IMPLEMENTED`**; doc-pass **`2026-04-29_STAGE_7A_KZO_END_TO_END_MVP_STABILIZATION.md`**)
 - Stage **7B** **`KZO_MVP_SNAPSHOT_V1`** — formal closure (**Gemini** **`SAFE TO PROCEED TO STAGE 8A`**; **`2026-04-29_STAGE_7B_KZO_MVP_SNAPSHOT_CONTRACT_FREEZE.md`** updated; **`IDEA-0016`** **`IMPLEMENTED`**)
+- **IDEA-0022** **`IMPLEMENTED`** — baseline ordering + локальний **`supabase db reset`** + промоція **`calculation_snapshots`** (**`docs/AUDITS/2026-04-30_STAGE_8A_1_CALCULATION_SNAPSHOTS_PROMOTION_TEST.md`** — **`FIRST_PERSISTENCE_READY_NON_PROD`**); **8A.0.8** **`CURSOR_LOCAL_STACK_VERIFIED`**
 
 ## What remains next (plan)
 
-- **Stage 8A.0.2 technical follow-up (operator):** import/generate **baseline** migrations for remote legacy **`public`** (see **`supabase/schema_registry/LEGACY_REMOTE_BASELINE.md`**, audit **`2026-04-29_STAGE_8A_0_2_SUPABASE_REMOTE_BASELINE_ALIGNMENT.md`**) → **then** restore **`calculation_snapshots`** DDL from **`_pending_after_remote_baseline/`** into **`migrations/`** before any **`db push`**
-- **Stage 8A live gate** — **`docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md`**: after baseline, apply migrations, env on Render, redeploy, **`POST /api/kzo/save_snapshot`**, verify row — then **`IDEA-0017`** → **`IMPLEMENTED`**
+- **Stage 8A live gate** — **`docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md`**: hosted/staging проєкт (не TASK 8A.1 без окремої явної задачі prod apply), env **`SUPABASE_*`** на **`eds-power-api`**, redeploy, **`POST /api/kzo/save_snapshot`**, рядок у **`calculation_snapshots`** → тоді **`IDEA-0017`** → **`IMPLEMENTED`**
+- Retrieval / snapshot history / analytics UI — окремий **IDEA/TASK** (поза **live gate** перевірки)
 - keep Stage narrow: no BOM, pricing, retrieval dashboard, or unmanaged Sheet expansion unless separately tasked
 - keep GAS thin on future operator-visible transports

@@ -12,11 +12,12 @@ Rule:
 
 ## Latest audit
 
-- **Stage 8A.0.7 — Baseline replay verification** — `2026-04-29_STAGE_8A_0_7_BASELINE_REPLAY_VERIFICATION.md` (**`BLOCKED_BY_DOCKER`**; **no** `db reset` run; **`calculation_snapshots`** still **held**)
-- **Stage 8A.0.6 — Actual remote baseline DDL import** — `2026-04-29_STAGE_8A_0_6_ACTUAL_REMOTE_BASELINE_CAPTURE.md` (**`REAL_BASELINE_CAPTURED_PENDING_REPLAY`**; merged **`remote_schema.sql`** · **no** `db push`; **`calculation_snapshots`** still **held**)
+- **Stage 8A.1 — `calculation_snapshots` migration promotion test (local)** — `2026-04-30_STAGE_8A_1_CALCULATION_SNAPSHOTS_PROMOTION_TEST.md` (**`FIRST_PERSISTENCE_READY_NON_PROD`** — promoted DDL to **`supabase/migrations/`** + **`supabase db reset`** PASS; legacy tables/views + **`calculation_snapshots`** present; **no** prod `db push`)
+- **Stage 8A.0.8 — Cursor local Supabase connectivity** — `2026-04-30_STAGE_8A_0_8_CURSOR_LOCAL_CONNECTIVITY.md` (**`CURSOR_LOCAL_STACK_VERIFIED`**)
+- **Stage 8A.0.6 — Actual remote baseline DDL import** — `2026-04-29_STAGE_8A_0_6_ACTUAL_REMOTE_BASELINE_CAPTURE.md` (**`REAL_BASELINE_CAPTURED_PENDING_REPLAY`**; merged **`remote_schema.sql`** · **no** `db push`; **`calculation_snapshots`** promoted locally in **8A.1**)
 - **Stage 8A.0.5 — Local tooling precheck** — `2026-04-29_STAGE_8A_0_5_LOCAL_TOOLING_PRECHECK.md` (**`READY_FOR_OPERATOR_TOOLING_INSTALL`**)
 - **Stage 8A.0.4 — Baseline DDL + local replay test** — `2026-04-29_STAGE_8A_0_4_BASELINE_REPLAY_TEST.md` (**`BLOCKED_BY_LOCAL_TOOLING`**; **no** DDL captured; **no** `db push`; **no** **`calculation_snapshots`** promotion)
-- **Stage 8A.0.3 — Remote baseline capture (ordering slot + scaffold / operator DDL)** — `2026-04-29_STAGE_8A_0_3_REMOTE_BASELINE_CAPTURE.md` (**`BASELINE_CAPTURED_PENDING_REPLAY_TEST`**; **no** `db push`; **`calculation_snapshots`** still **held**; **`IDEA-0022` `ACTIVE`** / operative **`PENDING_STAGING_REPLAY_804`**)
+- **Stage 8A.0.3 — Remote baseline capture (ordering slot + scaffold / operator DDL)** — `2026-04-29_STAGE_8A_0_3_REMOTE_BASELINE_CAPTURE.md` (**`BASELINE_CAPTURED_PENDING_REPLAY_TEST`**; **no** `db push`; **`IDEA-0022` `IMPLEMENTED`** after **8A.1** local promotion test)
 - **Stage 8A.0.2 — Supabase remote baseline alignment (governance + DDL hold)** — `2026-04-29_STAGE_8A_0_2_SUPABASE_REMOTE_BASELINE_ALIGNMENT.md` (**`LEGACY_REMOTE_SCHEMA_DETECTED`**; additive only; **`IDEA-0020` `IMPLEMENTED`**; **no** `db push` in TASK)
 - **Stage 8A.0.1 — Root migration governance correction** — `2026-04-29_STAGE_8A_0_1_ROOT_MIGRATION_GOVERNANCE_CORRECTION.md` (**`calculation_snapshots`** + **`product_type`** — **`TABLE=SYSTEM`, `ROW=PRODUCT`**; **`IDEA-0019` `IMPLEMENTED`**)
 - **Stage 8A — Supabase live verification gate** — `2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md` (**LIVE PASS PENDING**; **`IDEA-0017` `ACTIVE` / `PENDING_SUPABASE_VERIFICATION`**; automated probe **`404`** on `eds-power-api.onrender.com` **`/api/kzo/save_snapshot`** at 2026-04-29 — redeploy + env + migration required)
@@ -77,6 +78,8 @@ Rule:
 - `2026-04-29_STAGE_7B_GEMINI_EXTERNAL_AUDIT_REQUEST.md`
 - `2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`
 - `2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`
+- `2026-04-30_STAGE_8A_0_8_CURSOR_LOCAL_CONNECTIVITY.md`
+- `2026-04-30_STAGE_8A_1_CALCULATION_SNAPSHOTS_PROMOTION_TEST.md`
 
 ## Deprecated audits
 

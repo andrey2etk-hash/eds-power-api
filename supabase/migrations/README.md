@@ -1,28 +1,26 @@
 # SQL migrations — rules
 
-## Stage **8A.0.6** baseline (root file — factual DDL)
+## Stage **8A.1** active chain (local verified)
 
 | File | Role |
 | --- | --- |
-| **`20260429110000_remote_legacy_baseline.sql`** | **Legacy baseline migration** — **merged** from **`remote_schema.sql`** (**8A.0.6**). **Schema-only**. **Replay:** **8A.0.7** (`supabase db reset` local/disposable); **2026-04-29** agent session **`BLOCKED_BY_DOCKER`** — **`BASELINE_REPLAY_VERIFIED`** **not** yet (audit **8A.0.7**). **`calculation_snapshots`** still **`_pending_after_remote_baseline/`** only. |
+| **`20260429110000_remote_legacy_baseline.sql`** | Legacy **`public`** baseline (factual DDL from remote capture — **8A.0.6**). Applies **first**. |
+| **`20260429120000_calculation_snapshots_v1.sql`** | **`public.calculation_snapshots`** — KZO-first row discriminator (`product_type = 'KZO'`); contract id **`KZO_MVP_SNAPSHOT_V1`**. Promoted from **`_pending_after_remote_baseline/`** after baseline replay (**8A.1** audit). Applies **second**. |
 
-**Freeze:** no Dashboard DDL edits to listed legacy **`public`** objects during capture window — **`LEGACY_REMOTE_BASELINE.md`**.
+Lexicographic order (`YYYYMMDDHHMMSS`) = apply order (`110000` then `120000`).
 
-## Held — `calculation_snapshots` (**until `BASELINE_REPLAY_VERIFIED`**)
-
-Canonical DDL **`_pending_after_remote_baseline/20260429120000_calculation_snapshots_v1.sql`** — **still not** promoted to **`migrations/`** root until **8A.0.7** achieves **`BASELINE_REPLAY_VERIFIED`** (currently **`BLOCKED_BY_DOCKER`** at 2026-04-29 — audit **8A.0.7**).
-
-| Location | Purpose |
-| --- | --- |
-| **`_pending_after_remote_baseline/`** | Held **`calculation_snapshots`** + checklist |
-| **`LEGACY_REMOTE_BASELINE.md`** | Legacy tables / **`v_*`** + freeze rules |
+**Freeze window:** no ad-hoc Dashboard edits to legacy objects listed in **`supabase/schema_registry/LEGACY_REMOTE_BASELINE.md`** during baseline governance unless a new IDEA/TASK explicitly remediates capture.
 
 ---
+
+## Folder `_pending_after_remote_baseline/`
+
+**`calculation_snapshots`** DDL — **promoted (8A.1)**. This folder remains for future **held** migrations that must trail an authoritative baseline — see **`README.md`** inside that folder.
 
 ## Conventions
 
 - **Timestamp lexicographic order** dictates apply order (**`YYYYMMDDHHMMSS_*.sql`**).
-- Baseline (**`110000`**) strictly **before** snapshot (**`120000`**).
+- **`README.md`** files in **`migrations/`** are skipped by CLI (no timestamp prefix).
 
 ## Archive
 

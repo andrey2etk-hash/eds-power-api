@@ -6,6 +6,47 @@
 
 ---
 
+# 30.04.2026 — Stage 8A.1: `calculation_snapshots` promotion test (локально, без prod apply)
+
+## Ціль етапу
+
+Підняти canonical DDL **`calculation_snapshots`** з карантину **`_pending_after_remote_baseline/`** до активної черги **`supabase/migrations/`** і довести чистий повний **`supabase db reset`** після **8A.0.8** **`CURSOR_LOCAL_STACK_VERIFIED`**.
+
+## План
+
+- перемістити **`20260429120000_calculation_snapshots_v1.sql`** поруч із **`20260429110000_remote_legacy_baseline.sql`**
+- підтвердити порядок **`110000` → `120000`**
+- виконати **`supabase db reset`** локально (**без** `db push` на production)
+- каталог перевірити: legacy таблиці + **`v_*`** + **`calculation_snapshots`**
+
+## Факт
+
+- файл перенесено в **`supabase/migrations/`** (git **`mv`**), коментарі заголовку оновлено під **8A.1**
+- локальний **`supabase db reset`** завершився успішно: baseline, потім snapshots; помилок міграцій немає
+- перевірено: **`objects`**, **`bom_links`**, **`ncr`**, **`production_status`** — **`EXISTS`**; **`v_*`** — **23**; **`calculation_snapshots`** — **`EXISTS`**
+- два рядки в **`supabase_migrations.schema_migrations`**: **`remote_legacy_baseline`**, **`calculation_snapshots_v1`**
+- аудит: **`docs/AUDITS/2026-04-30_STAGE_8A_1_CALCULATION_SNAPSHOTS_PROMOTION_TEST.md`** — **`FIRST_PERSISTENCE_READY_NON_PROD`**
+
+## Продуктивність
+
+| План | Факт |
+|------|------|
+| Один робочий цикл локальної верифікації | Виконано в одній builder-сесії |
+
+## Ризики
+
+- **Не знімаються** за цим епізодом: **live** верифікація Render + remote Supabase (**`IDEA-0017`** лишається **`ACTIVE`** / **`PENDING_SUPABASE_VERIFICATION`** до запису LIVE PASS у **`SUPABASE_LIVE_VERIFICATION_GATE`**).
+
+## Ключовий прорив
+
+Persistable DDL у репозиторії синхронізовано з тим, що реально **`migrate`** на локальному стеку — без remote mutation.
+
+## Статус
+
+**`FIRST_PERSISTENCE_READY_NON_PROD`** (prod **`db push` / apply** поза межами TASK)
+
+---
+
 # 25.04.2026 — Етап 0: Архітектурний скелет
 
 ## Ціль етапу
@@ -1653,7 +1694,7 @@ Reserved діапазон **`E27:F40`** має бути **операційним
 - Статус: **`BLOCKED_BY_DOCKER`**. Альтернатива — disposable Postgres / окремий staging Supabase-проект (див. аудит).
 - Об’єкти після replay **runtime не верифіковані** до появи tooling.
 
-Аудит: **`docs/AUDITS/2026-04-29_STAGE_8A_0_7_BASELINE_REPLAY_VERIFICATION.md`**. **Наступний gate:** після **`BASELINE_REPLAY_VERIFIED`** — **8A.0.8** promotion test **`calculation_snapshots`**.
+Аудит: **`docs/AUDITS/2026-04-29_STAGE_8A_0_7_BASELINE_REPLAY_VERIFICATION.md`**. Подальші кроки: **8A.0.8** локальний connectivity dossier (**`CURSOR_LOCAL_STACK_VERIFIED`**); **8A.1** промоція **`calculation_snapshots`** (**`FIRST_PERSISTENCE_READY_NON_PROD`** — аудит **`2026-04-30_STAGE_8A_1_CALCULATION_SNAPSHOTS_PROMOTION_TEST.md`**).
 
 ---
 

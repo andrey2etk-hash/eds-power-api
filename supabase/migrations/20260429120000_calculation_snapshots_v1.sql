@@ -1,5 +1,5 @@
--- HELD in _pending_after_remote_baseline/ pending Stage 8A.0.2 remote baseline alignment.
--- Move to supabase/migrations/ AFTER baseline migration imports (see README in this folder).
+-- Stage 8A.1 — active migration after local baseline replay (see audit STAGE_8A_1).
+-- Ordering: MUST run strictly after `20260429110000_remote_legacy_baseline.sql`.
 --
 -- Stage 8A.0.1 — root migration governance: system table, product on row.
 -- TABLE = SYSTEM (neutral name). ROW = PRODUCT via product_type.
