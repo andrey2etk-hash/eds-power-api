@@ -1,59 +1,81 @@
 # STAGE 8B.2 PRE-GATE SCOPE
 
-**Governance label:** **`STAGE_8B_2_PRE_GATE_SCOPE_REGISTERED`**
+**Normative IDEA handle (**Idea Normalizer**):** **`STAGE_8B_2_CLIENT_AGNOSTIC_FLOW_STABILIZATION`**
 
-Canonical TASK framing: **`TASK-2026-08B-013`** (**`docs/TASKS.md`**). (**Note:** **`TASK-2026-08B-012`** is **closed** Stage **8B.1A** — IDs must not collide.)
+**Labels:** **`STAGE_8B_2_PRE_GATE_SCOPE_REGISTERED`** · **`STAGE_8B_2_NORMALIZED_ACTIVE_GATE`**
+
+**Canonical TASK (**Stage 8B.2 **only**)**:** **`TASK-2026-08B-013`** (**`ACTIVE`**) — **`docs/TASKS.md`**
+
+**ID integrity:** **`TASK-2026-08B-012`** = **CLOSED** **Stage 8B.1A** — **do not reuse** **`012`** for **8B.2**.
 
 ---
 
 ## SOURCE
 
-Gemini Stage **8B.1B** → **8B.2** Readiness Audit (accepted findings framing only). **No** implementation asserted by this dossier.
+**Approved Idea Normalization Report** — **`STAGE_8B_2_CLIENT_AGNOSTIC_FLOW_STABILIZATION`** (converted to repository governance **only**; **no** implementation in this dossier revision).
+
+Historical context preserved: prior Gemini readiness notes remain background; **this** dossier is the **normalizer-aligned** freeze.
+
+---
+
+## PURPOSE
+
+Persistence **governance** hardening: contracts, doctrines, audits, and **scope freeze** prior to **`TASK-2026-08B-013`** execution work.
 
 ---
 
 ## ACCEPTED
 
-- **Idempotency** / duplicate-protection policy (govern duplicate snapshot / duplicate request semantics before coding)
-- **Partial success contract** (**`prepare`** success / **`save`** fail — bounded outcome for operators and adapters)
-- **Error contract hardening** — machine-readable, **client-neutral** persistence error surface (**API-owned** envelope; no client orchestration leakage)
-- **Snapshot integrity validation** governance (canonical checks against **`KZO_MVP_SNAPSHOT_V1`** posture without product logic expansion)
-- **Client neutrality** — drift checks so **WEB** / **GAS** / future adapters stay on the **same** persistence pathway contractually
+- **Idempotency** (governance + policy framing)
+- **Duplicate governance** (**duplicate-request / duplicate-snapshot doctrine** — **policy-first**)
+- **Split outcome governance** (**prepare** vs **save** outcomes; bounded partial paths)
+- **Machine-readable errors** (**persistence path** stays **parseable**, **neutral** across clients at the contract boundary)
+- **Integrity validation** (**snapshot** governance aligned to **`KZO_MVP_SNAPSHOT_V1`** — **without** widening product semantics)
+- **Client neutrality** (**adapter-agnostic rules** vs **thin GAS**/future clients)
 
 ---
 
-## DEFERRED
+## FORBIDDEN
 
-- Full failed-attempt persistence subsystem
-- Async queue / background retry fabric
-- Web / mobile client expansion as **new platforms**
-- Advanced client privilege / rate-limit systems
-- DB redesign unrelated to stabilization scope
+- **Persistence rebuild** (no “rewrite the subsystem” disguised as stabilization)
+- **Async** / queue fabrics
+- **Failed persistence subsystem** (full archival / failed-row product — **deferred**)
+- **DB redesign**
+- **Client rollout** (new platforms / widening client matrix under **8B.2**)
+- **Product logic expansion** / KZO semantics inflation
 
----
-
-## STAGE OBJECTIVE
-
-Stabilize persistence **architecture contracts** (**governance**) without scope expansion — **duplicate drift**, **orphan risk**, and **opaque persistence failure** lanes are narrowed **by policy and audit** first; coding follows **`TASK-2026-08B-013`** lifecycle.
+(Auth / UI expansions likewise **off-lane** for **Stage 8B.2 stabilization** wording.)
 
 ---
 
-## SUCCESS CONDITION
+## SUCCESS
 
-The system governance set can **safely** aim to prevent **duplicate/orphaned snapshot drift** while preserving **thin-client neutrality** (**API = orchestrator**; adapters remain transport + display).
-
----
-
-## FAILURE CONDITION
-
-Any **Stage 8.2** drift into **feature expansion**, **new client platforms**, **UI expansion**, **queue systems**, **auth expansion**, **product/KZO logic expansion**, or **schema redesign** under the **8B.2 stabilization** banner — **reject** unless re-scoped via **IDEA → TASK**.
+Trusted persistence expectations under **repetition and replay**: duplicate/orphan drift **narrowed by governance**, **thin-client neutrality** retained (**API orchestrates** persistence truth).
 
 ---
 
-## ARCHITECTURE RULE
+## FAILURE
 
-**Governance hardening only** in this registry step — **no** implementation drift, **no** API/GAS/DB edits implied by adopting this dossier.
+Scope **drift** beyond **governance stabilization** (features, queues, Auth, UI, platforms, DDL redesign, persistence subsystem expansion).
 
 ---
 
-_End of Stage 8B.2 pre-gate scope — documentation registry._
+## STAGE RULE
+
+**8B.2 = Governance hardening only** — **`TASK-2026-08B-013`** (**`ACTIVE`**) означає **відкриту** governance-виконавчість по слайсах **2A–2E**, **не** автоматичне право на імплементацію. **`COMPLETE`** лише коли документально закритий увесь набір deliverables **`TASK-013`**; **немає** навіюваних **`main` / gas / DDL`** із цього pre-gate досьє **саме по собі**.
+
+---
+
+## GOVERNANCE SUB-STAGE EXECUTION (**Normalizer decomposition — doc-only**)
+
+**Label:** **`STAGE_8B_2_GOVERNANCE_SUBSTAGES_DECOMPOSED`**
+
+Canonical bounded slices (**2A–2E**), sequencing, overlap rules:
+
+- **`docs/AUDITS/2026-04-30_STAGE_8B_2_GOVERNANCE_SUBSTAGES_DECOMPOSITION.md`**
+
+**Order:** **`2A` → `2B` → `2C` → `2D` → `2E`** (**independent slices** inside **`TASK-2026-08B-013`** — **not** separate TASK IDs until explicitly registered).
+
+---
+
+_End of Stage 8B.2 pre-gate scope — normalized active gate registry._

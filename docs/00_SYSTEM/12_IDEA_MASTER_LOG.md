@@ -903,7 +903,7 @@ Implementation record:
 - Thin GAS **`saveKzoSnapshotV1()`** / **`runStage8B1BGasThinClientAdapterFlow()`** — transport + **`KZO_MVP_SNAPSHOT_V1`** envelope from **`prepare`** fields only (**`STAGE_8B_1B_OPERATOR_VERIFIED`** — **`TASK-2026-08B-011` CLOSED**)
 - Master table **Status**: **`IMPLEMENTED`** (**2026-04-30**)
 
-**Recommended next operational slice (post–IDEA-0017 / Stage 8B.1, under IDEA-0023):** **Stage 8B.2** — **`TASK-2026-08B-013`** (**`PLANNED`**) — **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`** — Client-Agnostic Flow Stabilization / Error Handling — **`TASK-2026-08B-012`** / **`TASK-2026-08B-011`** **CLOSED**. Gemini readiness **accepted fixes** enumerated in dossier (**idempotency** / **duplicate** policy, **prepare/save partial outcome**, machine-readable persistence **errors**, **snapshot integrity**, **client-neutral drift**) — implementation **explicitly deferred** until TASK leaves **`PLANNED`**.
+**Recommended next operational slice (post–IDEA-0017 / Stage 8B.1, under IDEA-0023):** **Stage 8B.2** — **`TASK-2026-08B-013`** (**`ACTIVE`**) · **canonical slice / gate narrative:** **`docs/TASKS.md`** **`§ TASK-2026-08B-013`** (**`STAGE_8B_2_CLIENT_AGNOSTIC_FLOW_STABILIZATION`**) **`·`** **`2A`/`2B` CLOSED** **`·`** **`2C`:** **`STAGE_8B_2C_DOCTRINE_PUBLISHED`** — **`docs/AUDITS/2026-04-30_STAGE_8B_2C_MACHINE_READABLE_PERSISTENCE_ERROR_DOCTRINE.md`** · Gemini **8B.2C** closeout pending **`·`** **`TASK-2026-08B-012`/`011` CLOSED** **`·`** **implementation only when TASK allows beyond governance** (**`COMPLETE`** not before **2A–2E** + synthesis).
 
 ### IDEA-0018 — Stage 8A.0 EDS Power Supabase root governance foundation
 
@@ -1097,13 +1097,27 @@ Current API may require additive fields in a sub-TASK — contract is **normativ
 
 ##### STEP 8 — Audit
 
-- **`docs/AUDITS/YYYY-MM-DD_STAGE_8B_PLATFORM_PERSISTENCE_NOT_GAS_PERSISTENCE.md`** — “Platform persistence, not GAS persistence”.
+- **`docs/AUDITS/2026-04-30_STAGE_8B_PLATFORM_PERSISTENCE_NOT_GAS_PERSISTENCE.md`** — **“Platform persistence, not GAS persistence.”**
 
 ##### Sequencing (Stage **8B.1** split — **`STAGE_8B_DOC_STATE_ALIGNED`**)
 
 1. **`TASK-2026-08B-012`** — **8B.1A** **`save_snapshot`** API contract hardening (validation / response / anti-orchestration leak) — plan **`docs/AUDITS/2026-04-30_STAGE_8B_1A_API_SAVE_CONTRACT_GOVERNANCE_PLAN.md`**.
 2. **`TASK-2026-08B-011`** — **8B.1B** Thin GAS adapter (**`runStage8B1BGasThinClientAdapterFlow()`**) — **`STAGE_8B_1B_OPERATOR_VERIFIED`** (**operator closeout **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**).
-3. **`TASK-2026-08B-013`** — **Stage 8B.2** Client-Agnostic Flow Stabilization / Error Handling — **pre-gate scope** **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`** (**`STAGE_8B_2_PRE_GATE_SCOPE_REGISTERED`**) — **`PLANNED`** until governance deliverables authored.
+3. **`TASK-2026-08B-013`** — **Stage 8B.2** — **`ACTIVE`** — **canonical:** **`docs/TASKS.md`** **`§ TASK-013`** (**pre-gate **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`**) **`·`** **`2A`/`2B` CLOSED** **`·`** **`2C`:** **`STAGE_8B_2C_DOCTRINE_PUBLISHED`** (**`docs/AUDITS/2026-04-30_STAGE_8B_2C_MACHINE_READABLE_PERSISTENCE_ERROR_DOCTRINE.md`**) · Gemini **8B.2C** **pending** (**`COMPLETE`** only after **2A–2E** closed per TASK).
+
+##### Stage **8B.2** — **NORMALIZED ACTIVE GATE**
+
+- **Handles:** **`STAGE_8B_2_NORMALIZED_ACTIVE_GATE`** · **`STAGE_8B_2_CLIENT_AGNOSTIC_FLOW_STABILIZATION`** (**Idea Normalizer** provenance · **not** a master-table **IDEA-####** substitution)
+- **Canonical TASK:** **`TASK-2026-08B-013`** (**`TASK-2026-08B-012` is 8B.1A — frozen CLOSED ID**)
+
+**Key governance blockers (**8B.2 focus**)**
+
+- Duplicate drift (**idempotency** / doctrine debt)
+- Replay drift (**retries**, repeat operator runs — contractual ambiguity risk)
+- Orphan persistence (**prepare** succeeds, **save** fails — lineage clarity)
+- Weak **machine-readability** of persistence failures (**neutral** surface tension)
+- Shallow governance on **snapshot integrity** vs **`KZO_MVP_SNAPSHOT_V1`**
+- **GAS-centric drift** (**adapter creep** violates **thin client** law)
 
 Gemini critic preflight (**`docs/AUDITS/2026-04-30_STAGE_8B_1_GEMINI_PREFLIGHT_REQUEST.md`**) audits the **thin-GAS plan** **before** coding and aligns stakeholders on **API-first** reinforcement.
 
@@ -1121,14 +1135,29 @@ No client may redefine system persistence without **IDEA → TASK** and contract
 
 **Implementation record (when started):**
 
-- TASK: **`docs/TASKS.md`** — **`TASK-2026-08B-001`** (master); **`TASK-2026-08B-012`** (**8B.1A** **CLOSED**); **`TASK-2026-08B-011`** (**8B.1B** **CLOSED**); **`TASK-2026-08B-013`** (**Stage 8B.2**, **`PLANNED`**)
+- TASK: **`docs/TASKS.md`** — **`TASK-2026-08B-001`** (master); **`TASK-2026-08B-012`** (**8B.1A** **CLOSED**); **`TASK-2026-08B-011`** (**8B.1B** **CLOSED**); **`TASK-2026-08B-013`** (**Stage 8B.2**, **`ACTIVE`**)
 - Contract: **`docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`**
 - **8B.1** split + doc alignment: **`STAGE_8B_DOC_STATE_ALIGNED`** (**`CHANGELOG`**, **`NOW`**, **`12_IDEA_MASTER_LOG`**)
 - **8B.1A** API hardening: **`551ce87`** (**`CHANGELOG`**) · **`STAGE_8B_1A_API_CONTRACT_IMPLEMENTED`**
 - **8B.1B** thin adapter — **`gas/Stage3D_KZO_Handshake.gs`** · **`runStage8B1BGasThinClientAdapterFlow()`** — **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`** (**`STAGE_8B_1B_OPERATOR_VERIFIED`** · **`TASK-2026-08B-011` CLOSED**)
-- **8B.2** pre-gate scope (**Gemini readiness → governance registry**) — **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`** · **`TASK-2026-08B-013`** (**`PLANNED`**) — mitigates narratives: duplicate drift, orphan persistence ambiguity, persistence error neutrality, snapshot integrity doctrine (**without product expansion**)
+- **8B.2** (**ACTIVE GATE**) — **`TASK-2026-08B-013`** — **rollup / slice paths:** **`docs/TASKS.md`** (**`STAGE_8B_2_CLIENT_AGNOSTIC_FLOW_STABILIZATION`**) **`·`** **`STAGE_8B_2_NORMALIZED_ACTIVE_GATE`** · dossier **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`** **`·`** **`2A`/`2B` CLOSED** **`·`** **`2C` doctrine **`docs/AUDITS/2026-04-30_STAGE_8B_2C_MACHINE_READABLE_PERSISTENCE_ERROR_DOCTRINE.md`** (Gemini **8B.2C** pending) — residual **`2D`**, **`2E`**, thin-client creep
+- **Pre–8B.2A governance cleanup (**complete**):** **`STAGE_8B_PRE_8B2A_GOVERNANCE_CLEANUP_COMPLETE`** — **`docs/AUDITS/2026-04-30_STAGE_8B_PRE_8B2A_GOVERNANCE_CLEANUP.md`** — source **`docs/AUDITS/2026-04-30_GEMINI_MASTER_GOVERNANCE_AUDIT.md`**; **no** code/API/GAS/DB
+- **External Gemini MASTER RE-AUDIT — FINAL DAILY CLOSEOUT (**PASS — READY FOR 8B.2A**):** **`docs/AUDITS/2026-04-30_GEMINI_MASTER_RE_AUDIT_FINAL_DAILY_CLOSEOUT.md`** (**`GEMINI_MASTER_RE_AUDIT_FINAL_DAILY_CLOSEOUT_2026_04_30`**) · **архітектору:** питання в кінці досьє (**локація 2A / Gemini після 2A / статус TASK-013**)
+- **Pre–8B.2A doc sanity (**complete**):** **`STAGE_8B_PRE_8B2A_DOC_SANITY_PATCH_COMPLETE`** — **`docs/AUDITS/2026-04-30_PRE_8B2A_DOC_SANITY_PATCH.md`** — Gemini RE-AUDIT **DOC FIXES**; **no** code/API/GAS/DB
 
 Master table **Status**: **`ACTIVE`** until **8B** governance + audit **PASS** — then **`IMPLEMENTED`**.
+
+Post-fix documentary consistency closeout (2026-04-30):
+
+- **`STAGE_GEMINI_POST_FIX_DOC_CONSISTENCY_PASS`** — **`PASS CLEAN`** logged in **`docs/AUDITS/2026-04-30_GEMINI_POST_FIX_DOCUMENTATION_CONSISTENCY_AUDIT.md`**
+- Post-fix gate closed for documentation consistency and split-brain wording alignment
+- Next gate for **`TASK-2026-08B-013`**: **`8B.2C` normalization only** (**no doctrine authoring / no implementation until explicit approval**)
+
+Stage 8B.2D normalization activation (2026-04-30):
+
+- **`8B.2C`** is treated as governance-closed for registry progression
+- **`8B.2D`** is **`NORMALIZATION_ACTIVE`** via **`docs/AUDITS/2026-04-30_STAGE_8B_2D_INTEGRITY_STANCE_V1_ENFORCEMENT_IDEA_NORMALIZATION.md`**
+- Boundary remains strict: **no `8B.2D` doctrine authoring yet**, **no implementation**, **no code/API/GAS/DB**
 
 ### IDEA-0021 — EDS Power role-adaptive operational shell doctrine (“self-checkout principle”)
 

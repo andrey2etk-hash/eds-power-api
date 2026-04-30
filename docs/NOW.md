@@ -6,29 +6,54 @@
 
 ## CURRENT STAGE
 
-**Stage 8B.2** — Client-Agnostic Flow Stabilization / Error Handling Gate
+**Parent gate:** **Stage 8B.2** — Client-Agnostic Flow Stabilization / Error Handling — **`TASK-2026-08B-013`** (**`ACTIVE`**) · implementation **not** started (**`COMPLETE`** only after slices **2A–2E** + synthesis · **`docs/TASKS.md`** **`§ TASK-2026-08B-013`**)
 
-**Governance registry:** **`STAGE_8B_2_PRE_GATE_SCOPE_REGISTERED`** · **`TASK-2026-08B-013`** (**`PLANNED`**) · **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`**
+**Normative handle (**Idea Normalizer**):** **`STAGE_8B_2_CLIENT_AGNOSTIC_FLOW_STABILIZATION`**
+
+**Registry shell:** **`STAGE_8B_2_PRE_GATE_SCOPE_REGISTERED`** · **`STAGE_8B_2_NORMALIZED_ACTIVE_GATE`** · **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`**
+
+**Slice status (**canonical detail — один канон**, **не** копіювати доріжки аудитів сюди**):** **`docs/TASKS.md`** **`§ TASK-2026-08B-013`** (**`ACTIVE`** **`·`** **`2A`/`2B`/`2C` CLOSED** **`·`** **`8B.2D` = `NORMALIZATION_ACTIVE`**) **`·`** декомпозиція **`docs/AUDITS/2026-04-30_STAGE_8B_2_GOVERNANCE_SUBSTAGES_DECOMPOSITION.md`**
+
+**Current execution rule:** **End-of-day freeze** (checkpoint only; no new stage work).
+
+**Next execution:** **`8B.2D` doctrine authoring** (**not started**).
+
+**Governance budget rule:** no master audits unless explicitly requested; one focused Gemini audit per doctrine; after `PASS`/`PASS WITH DOC FIXES` the slice is closed; no `8B.2E` opening without explicit user approval.
+
+**Pre–8B.2A hygiene (**complete**):** **`STAGE_8B_PRE_8B2A_GOVERNANCE_CLEANUP_COMPLETE`** — **`docs/AUDITS/2026-04-30_STAGE_8B_PRE_8B2A_GOVERNANCE_CLEANUP.md`**
+
+**External Gemini RE-AUDIT (**closeout intake**):** **`GEMINI_MASTER_RE_AUDIT_FINAL_DAILY_CLOSEOUT_2026_04_30`** — **PASS — READY FOR 8B.2A** — **`docs/AUDITS/2026-04-30_GEMINI_MASTER_RE_AUDIT_FINAL_DAILY_CLOSEOUT.md`**
+
+---
+
+## Архітектор (**рішення записано 2026-04-30**)
+
+**Operational truth:** один канон **`TASK-013`** — **`docs/TASKS.md`**; **не** дублювати розгортання слайсів тут (**зменшення дрейфу реєстру**).
+
+**Note:** **`TASK-2026-08B-012`** = **CLOSED** **Stage 8B.1A** — **`8B.2`** = **`TASK-2026-08B-013`** only.
 
 ---
 
 ## PRIMARY OBJECTIVES
 
 - Idempotency governance
-- Duplicate snapshot prevention (**policy-first** — implementation under **`TASK-2026-08B-013`** only after governance sign-off)
-- Prepare / Save split outcome contract (partial success / bounded failure narration)
-- Snapshot integrity contract (governed alignment to **`KZO_MVP_SNAPSHOT_V1`** without expanding product semantics)
-- Client-neutral contract verification (**no adapter-specific persistence truth**)
+- Duplicate request doctrine
+- Prepare/save split outcome governance
+- Machine-readable persistence errors
+- Snapshot integrity governance
+- Client-neutral contract validation
 
 ---
 
 ## OUT OF SCOPE
 
-- New client platforms
-- UI expansion
-- Auth expansion
-- Queue systems
-- Product logic expansion
+- async
+- web/mobile (**new platform rollout** — not **8B.2 stabilization** governance lane)
+- failed persistence subsystem (**full archival / subsystem** — **deferred**)
+- DB redesign
+- AUTH (**expansion beyond current MVP stance** under **8B.2** banner)
+- UI (**expansion / new surfaces**)
+- product expansion
 
 ---
 
@@ -83,7 +108,7 @@
 
 - **8B.1A:** **`STAGE_8B_1A_LIVE_VERIFIED`** — **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`**
 - **8B.1B:** **`STAGE_8B_1B_OPERATOR_VERIFIED`** — **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`** · **`TASK-2026-08B-011` CLOSED**
-- **Stage 8B.2 (active governance):** **`TASK-2026-08B-013`** · **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`** — **governance-only** registration (**no** code in this step)
+- **Stage 8B.2:** **`TASK-2026-08B-013`** **`ACTIVE`** (**rollup:** **`docs/TASKS.md`**) · **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`** · **2A/2B/2C** **CLOSED** · **2D** **`NORMALIZATION_ACTIVE`** (**normalization-only lane; no doctrine yet**)
 - Retrieval / snapshot history / analytics UI — **окремий** **IDEA** (як і раніше).
 
 ## Як узгоджено з Gemini doc-pass (Зовнішній аудит)
@@ -98,7 +123,7 @@ https://eds-power-api.onrender.com
 
 1. 00-01_AUTH — авторизація (frozen MVP / draft_ready)
 2. 00-02_CALC_CONFIGURATOR — конфігуратор (KZO Stage 5A–5C operator-visible path для structural / footprint API / topology API + топологія на Sheet верифіковані)
-3. 00-02_CALC_CONFIGURATOR/09_KZO — **8A** **`COMPLETE`**; **8B** **`STAGE_8B_GOVERNANCE_FIXED`** (**`IDEA-0023`** **`ACTIVE`**); **8B.1A** / **8B.1B** **CLOSED**; **8B.2** **`STAGE_8B_2_PRE_GATE_SCOPE_REGISTERED`** — **`TASK-2026-08B-013`** (**`PLANNED`**) · **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`**
+3. 00-02_CALC_CONFIGURATOR/09_KZO — **8A** **`COMPLETE`**; **8B** **`STAGE_8B_GOVERNANCE_FIXED`** (**`IDEA-0023`** **`ACTIVE`**); **8B.1** **CLOSED**; **8B.2** **`TASK-2026-08B-013`** **`ACTIVE`** — **канон `docs/TASKS.md`**; **`8B.2D` = `NORMALIZATION_ACTIVE`** (**normalization-only, no doctrine yet, no implementation**) · handle **`STAGE_8B_2_CLIENT_AGNOSTIC_FLOW_STABILIZATION`**
 
 ## Що робимо зараз
 

@@ -290,7 +290,7 @@ AUTH/session контекст є частиною `meta` і використов
 - токени, паролі та службові ключі не зберігаються в логах
 - AUTH є винятком: пароль передається тільки в `action: login`
 
-## 16. Base Calculation Object Contract
+## 16. Base Calculation Object Contract (**NON-CANONICAL / LEGACY**)
 
 Цей блок є базовим placeholder для підготовки `00-02_CALC_CONFIGURATOR`.
 
@@ -334,7 +334,7 @@ AUTH/session контекст є частиною `meta` і використов
 - `updated_at` фіксує час останнього оновлення об’єкта
 - нові групи параметрів додаються тільки після опису в документації `00-02_CALC_CONFIGURATOR`
 
-## 17. Global Error Contract
+## 17. Global Error Contract (**NON-CANONICAL / LEGACY**)
 
 All API errors must follow this structure:
 
@@ -372,7 +372,7 @@ Rules:
 - `metadata.logic_version` is mandatory and may be `null`
 - `metadata.execution_time_ms` is mandatory
 
-## 18. MVP Timeout Rule
+## 18. MVP Timeout Rule (**NON-CANONICAL / LEGACY**)
 
 GAS client uses synchronous request for MVP.
 
@@ -392,7 +392,13 @@ Rule:
 
 - No async queue required for Stage 3 MVP
 
-## 19. Головне правило зміни контракту
+## 19. Головне правило зміни контракту (**process — не payload authority для persistence**)
+
+Цей розділ описує лише потік (workflow), структура даних регулюється виключно §20 та файлом **13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md** (**«13_» у реєстрах документації**).
+
+**Status:** **`ACTIVE`** for **workflow** only.
+
+**§19 = workflow governance only.** **Payload authority** для **`POST /api/kzo/save_snapshot`**, відповіді з **`persistence_status` / `failure` / `error_code`** та JSON **`KZO_MVP_SNAPSHOT_V1`** **визначається виключно** через маршрут **`§20`** + **`docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`** + **`docs/00-02_CALC_CONFIGURATOR/09_KZO/11_KZO_MVP_SNAPSHOT_V1_CONTRACT.md`**. **`§16`–`§18`** для цього шляху — **LEGACY / NON-CANONICAL** (історія / **`prepare_calculation`-band**), **не** джерело полів **`save_snapshot`**.
 
 Будь-яка зміна формату запиту або відповіді:
 
@@ -403,3 +409,27 @@ Rule:
 - Потім використовується в GAS/UI
 
 Заборонено змінювати контракт тільки в коді.
+
+**Non-split-brain clause:** Для **`POST /api/kzo/save_snapshot`**, **`persistence_status`**, **`failure` / `error_code`** та тіла **`KZO_MVP_SNAPSHOT_V1`** цей параграф **не** робить **`04_DATA_CONTRACTS.md`** джерелом полів — **канонічне визначення див. `§20`** і **`13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`**. Зміни туди йдуть **згідно з цим же процесом** (**IDEA → TASK**), але **текст правди** живе в **`13_` + `11_KZO_MVP_SNAPSHOT_V1_CONTRACT`**, а не в дзеркалі тут.
+
+## 20. KZO MVP persistence (`save_snapshot` / client-agnostic path) (**canonical routing — single active pointer**)
+
+### Canonical (**single active contract truth**)
+
+**Persistence response shape** (**success**, **failure**, **`failure`/`error_code`** mirror, **`X-EDS-Client-Type`**, **`persistence_status`**) і **canonical client flow**:
+
+- **`docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`**
+
+**Snapshot JSON body** (`KZO_MVP_SNAPSHOT_V1`):
+
+- **`docs/00-02_CALC_CONFIGURATOR/09_KZO/11_KZO_MVP_SNAPSHOT_V1_CONTRACT.md`**
+
+### This file (**`04_DATA_CONTRACTS.md`**) — DEFERRED mirror (**NON-CANONICAL for persistence payloads**)
+
+**`§16`–`§18`** = **baseline / historical patterns** (**`prepare_calculation` band**, timeouts, generic errors) — **`LEGACY / NON-SUPERSEDING`** relative to **`save_snapshot`**. They **must not** be read as defining persistence success/failure envelopes.
+
+Duplicate field-by-field persistence payloads **must not** grow here unsupervised (**split-brain risk**). **`§20`** is the **only** in-file routing pointer for persistence; **payload authority** = **`13_`** (+ **`11_`** snapshot body).
+
+**Until** an explicit **`TASK`** activates a merged section: persistence HTTP semantics are **canonical in `13_` only**.
+
+**`§19`** still governs **how** approved changes land (docs → agreement → API); it does **not** relocate canonical text into **`§16`–`§18`** for persistence.

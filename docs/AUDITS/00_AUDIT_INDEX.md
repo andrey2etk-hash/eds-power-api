@@ -12,14 +12,30 @@ Rule:
 
 ## Latest audit
 
-- **Stage 8B.2 — Pre-Gate Scope (`STAGE_8B_2_PRE_GATE_SCOPE_REGISTERED`)** — **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`** · **`TASK-2026-08B-013`** (**`PLANNED`**) — **governance / framing only**
-- Sequence: **`8B.1B`** **`STAGE_8B_1B_OPERATOR_VERIFIED`** (**`TASK-2026-08B-011` CLOSED**) → **`8B.2`** **PRE-GATE SCOPE REGISTERED**
+- **Stage 8B.2D normalization activation (**`NORMALIZATION_ACTIVE`**) — Integrity Stance & V1 Enforcement** — **`docs/AUDITS/2026-04-30_STAGE_8B_2D_INTEGRITY_STANCE_V1_ENFORCEMENT_IDEA_NORMALIZATION.md`** · doctrine not authored yet
+- **Stage 8B.2C machine-readable persistence error doctrine (**`CLOSED`**) — governance closeout acknowledged** — **`docs/AUDITS/2026-04-30_STAGE_8B_2C_MACHINE_READABLE_PERSISTENCE_ERROR_DOCTRINE.md`** + focused audit request **`docs/AUDITS/2026-04-30_GEMINI_STAGE_8B_2C_FOCUSED_AUDIT_REQUEST.md`**
+- **Gemini POST-FIX documentation consistency CLOSEOUT (**`STAGE_GEMINI_POST_FIX_DOC_CONSISTENCY_PASS`**) — **`PASS CLEAN`** — **`docs/AUDITS/2026-04-30_GEMINI_POST_FIX_DOCUMENTATION_CONSISTENCY_AUDIT.md`** · **8B.2C normalization authorized (no doctrine authoring / no implementation)**
+- **DOC FIX GATE (**`STAGE_GEMINI_POST_BULK_DOC_EDIT_CONSISTENCY_FIX`**) — precision patch lodged** — **`docs/AUDITS/2026-04-30_STAGE_GEMINI_POST_BULK_DOC_EDIT_CONSISTENCY_IDEA_NORMALIZATION.md`** (**targets:** **`04_DATA_CONTRACTS` §§16–19**, **`TASKS` `TASK-013` `Module`**) (**external Gemini closeout still pending via REQUEST below**)
+- **Gemini REQUEST — Post–bulk documentation edit consistency (**`GEMINI_POST_BULK_DOC_EDIT_CONSISTENCY_REQUEST`**) — **`docs/AUDITS/2026-04-30_GEMINI_POST_BULK_DOCUMENTATION_EDIT_CONSISTENCY_AUDIT_REQUEST.md`** (closeout lodged: **`docs/AUDITS/2026-04-30_GEMINI_POST_FIX_DOCUMENTATION_CONSISTENCY_AUDIT.md`**)
+- **POST–8B.2B TASK registry duplication fix (**`STAGE_POST_8B2B_REGISTRY_HYGIENE_PATCH`**) — doc-only** — **`docs/AUDITS/2026-04-30_POST_8B2B_TASK_REGISTRY_DUPLICATION_FIX.md`**
+- **Stage 8B.2C Idea normalization (**`STAGE_8B_2C_NORMALIZED_FOR_ACTIVE_SUBSTAGE`**) — **`docs/AUDITS/2026-04-30_STAGE_8B_2C_MACHINE_READABLE_PERSISTENCE_ERROR_IDEA_NORMALIZATION.md`**
+- **Stage 8B.2C machine-readable persistence error doctrine (**`STAGE_8B_2C_DOCTRINE_PUBLISHED`**) — **`docs/AUDITS/2026-04-30_STAGE_8B_2C_MACHINE_READABLE_PERSISTENCE_ERROR_DOCTRINE.md`** · Gemini **8B.2C** focused REQUEST (pre-**`8B.2D`**) — **`docs/AUDITS/2026-04-30_GEMINI_STAGE_8B_2C_FOCUSED_AUDIT_REQUEST.md`** (**Gemini closeout lodged externally**)
+- **Stage 8B.2B doctrine (**`STAGE_8B_2B_DOCTRINE_PUBLISHED`**) · **`TASK-013` slice rollup** — **`docs/AUDITS/2026-04-30_STAGE_8B_2B_PREPARE_SAVE_SPLIT_OUTCOME_GOVERNANCE.md`** · Gemini **focused** audit **REQUEST / closeout lodging** — **`docs/AUDITS/2026-04-30_GEMINI_STAGE_8B_2B_FOCUSED_AUDIT_REQUEST.md`** → **`docs/AUDITS/YYYY-MM-DD_GEMINI_STAGE_8B_2B_FOCUSED_AUDIT.md`** (**`STAGE_8B_2B_GEMINI_FOCUSED_AUDIT_PASS`**) (**canonical narration:** **`docs/TASKS.md`** **`§ TASK-2026-08B-013`**)
+- **Gemini 8B.2A focused audit CLOSEOUT (**`PASS WITH DOC FIXES`** → **`STAGE_8B_2A_GEMINI_FOCUSED_AUDIT_PASS`**) — **`docs/AUDITS/2026-04-30_GEMINI_STAGE_8B_2A_FOCUSED_AUDIT.md`** (target dossier **`2026-04-30_STAGE_8B_2A_IDEMPOTENCY_DUPLICATE_GOVERNANCE.md`**)
+- **Gemini MASTER RE-AUDIT — FINAL DAILY CLOSEOUT (**PASS — READY FOR 8B.2A**)** — архітекторські питання **RESOLVED** — **`docs/AUDITS/2026-04-30_GEMINI_MASTER_RE_AUDIT_FINAL_DAILY_CLOSEOUT.md`**
+- **Stage 8B.2A doctrine (**`STAGE_8B_2A_DOCTRINE_PUBLISHED`**) — bounded **§§1–15** governance (idempotency / duplicate · **no** impl) · request template **`docs/AUDITS/2026-04-30_GEMINI_STAGE_8B_2A_FOCUSED_AUDIT_REQUEST.md`** · **`TASK-2026-08B-013`** sub-slice **`STAGE_8B_2A_GEMINI_FOCUSED_AUDIT_PASS`**
+- **Pre–8B.2A doc sanity patch (**`STAGE_8B_PRE_8B2A_DOC_SANITY_PATCH_COMPLETE`**) — Gemini RE-AUDIT fixes — **`docs/AUDITS/2026-04-30_PRE_8B2A_DOC_SANITY_PATCH.md`**
+- **Pre–8B.2A governance cleanup (**`STAGE_8B_PRE_8B2A_GOVERNANCE_CLEANUP_COMPLETE`**) — **`docs/AUDITS/2026-04-30_STAGE_8B_PRE_8B2A_GOVERNANCE_CLEANUP.md`**
+- **GEMINI MASTER GOVERNANCE AUDIT — full chain (**Stage foundations → **8B.2**) — verdict **SAFE WITH FIXES** — **`docs/AUDITS/2026-04-30_GEMINI_MASTER_GOVERNANCE_AUDIT.md`**
+- **Stage 8B.2 — Governance sub-stages decomposition (**`STAGE_8B_2_GOVERNANCE_SUBSTAGES_DECOMPOSED`**) — **`docs/AUDITS/2026-04-30_STAGE_8B_2_GOVERNANCE_SUBSTAGES_DECOMPOSITION.md`** · order **`2A`→`2E`** · parent **`TASK-2026-08B-013`**
+- **Stage 8B.2 — Pre-Gate Scope (**`STAGE_8B_2_PRE_GATE_SCOPE_REGISTERED`** · **`STAGE_8B_2_NORMALIZED_ACTIVE_GATE`**) — **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`** · normative **`STAGE_8B_2_CLIENT_AGNOSTIC_FLOW_STABILIZATION`** · **`TASK-2026-08B-013`** (**`ACTIVE`**) — **governance execution**
+- Sequence: **`8B.1B` VERIFIED** → **`8B.2` NORMALIZED** → **`8B.2` PRE-GATE REGISTERED**
 - **Stage 8B.1B — GAS Thin Client Adapter V1 (**`STAGE_8B_1B_OPERATOR_VERIFIED`**) — **`TASK-2026-08B-011` CLOSED** — **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**
 - **Stage 8B.1A — LIVE verification closeout (**`STAGE_8B_1A_LIVE_VERIFIED`** · **`STAGE_8B_1A_CLOSEOUT_LOGGED`**) — **`TASK-2026-08B-012` CLOSED** — **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`**
 - **Stage 8B.1A — Gemini pre-live audit (`STAGE_8B_1A_PRELIVE_AUDIT_READY`)** — **`2026-04-30_STAGE_8B_1A_GEMINI_PRELIVE_AUDIT.md`** (**before LIVE deploy / E5**); implementation ref **`2026-04-30_STAGE_8B_1A_API_CONTRACT_IMPLEMENTATION.md`**
 - **Stage 8B.1A — API `save_snapshot` hardening IMPLEMENTED (`STAGE_8B_1A_API_CONTRACT_IMPLEMENTED`)** — **`2026-04-30_STAGE_8B_1A_API_CONTRACT_IMPLEMENTATION.md`** · plan **`2026-04-30_STAGE_8B_1A_API_SAVE_CONTRACT_GOVERNANCE_PLAN.md`** · **`TASK-2026-08B-012`**
 - **Stage 8B.1 — Gemini preflight (`STAGE_8B_1_AUDIT_REQUEST_READY`)** — **`2026-04-30_STAGE_8B_1_GEMINI_PREFLIGHT_REQUEST.md`** (**`TASK-2026-08B-011`**)
-- **Stage 8B** — Client-agnostic persistence governance (`STAGE_8B_GOVERNANCE_FIXED`) — **`docs/TASKS.md`**: **`TASK-2026-08B-001`**, **`TASK-2026-08B-012`** (**CLOSED**), **`TASK-2026-08B-011`** (**CLOSED**), **`TASK-2026-08B-013`** (**PLANNED** / **Stage 8B.2**); **`IDEA-0023`**
+- **Stage 8B** — Client-agnostic persistence governance (`STAGE_8B_GOVERNANCE_FIXED`) — **`docs/TASKS.md`**: **`TASK-2026-08B-001`**, **`TASK-2026-08B-012`** (**CLOSED**), **`TASK-2026-08B-011`** (**CLOSED**), **`TASK-2026-08B-013`** (**`ACTIVE`** / **Stage 8B.2**); **`IDEA-0023`**
 - **Stage 8A.2.1 — Live deploy `calculation_snapshots` closeout (`STAGE_8A_COMPLETE`)** — `2026-04-30_STAGE_8A_2_1_LIVE_DEPLOY_CALCULATION_SNAPSHOTS.md` — **`IDEA-0017` `IMPLEMENTED`**; thin GAS write path superseded narrative-wise by **`STAGE_8B_1B_OPERATOR_VERIFIED`** (**`TASK-2026-08B-011` CLOSED**)
 - **Stage 8A live verification gate — PASS** — `2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md` (**LIVE PASS** **2026-04-30**; prior automated probe **404** superseded)
 - **Stage 8A.2.0 — Remote migration history alignment preflight** — `2026-04-30_STAGE_8A_2_0_REMOTE_MIGRATION_HISTORY_PREFLIGHT.md` (**`READY_FOR_OPERATOR_REMOTE_HISTORY_REPAIR`** playbook)
@@ -95,6 +111,23 @@ Rule:
 - `2026-04-30_STAGE_8B_1A_LIVE_GATE.md`
 - `2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`
 - `2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`
+- `2026-04-30_STAGE_8B_2_GOVERNANCE_SUBSTAGES_DECOMPOSITION.md`
+- `2026-04-30_GEMINI_MASTER_GOVERNANCE_AUDIT.md`
+- `2026-04-30_STAGE_8B_2A_IDEMPOTENCY_DUPLICATE_GOVERNANCE.md`
+- `2026-04-30_GEMINI_STAGE_8B_2A_FOCUSED_AUDIT.md`
+- `2026-04-30_GEMINI_STAGE_8B_2A_FOCUSED_AUDIT_REQUEST.md`
+- `2026-04-30_GEMINI_MASTER_RE_AUDIT_FINAL_DAILY_CLOSEOUT.md`
+- `2026-04-30_POST_8B2B_TASK_REGISTRY_DUPLICATION_FIX.md`
+- `2026-04-30_GEMINI_POST_BULK_DOCUMENTATION_EDIT_CONSISTENCY_AUDIT_REQUEST.md`
+- `2026-04-30_STAGE_GEMINI_POST_BULK_DOC_EDIT_CONSISTENCY_IDEA_NORMALIZATION.md`
+- `2026-04-30_STAGE_8B_2C_MACHINE_READABLE_PERSISTENCE_ERROR_IDEA_NORMALIZATION.md`
+- `2026-04-30_STAGE_8B_2C_MACHINE_READABLE_PERSISTENCE_ERROR_DOCTRINE.md`
+- `2026-04-30_GEMINI_STAGE_8B_2C_FOCUSED_AUDIT_REQUEST.md`
+- `2026-04-30_STAGE_8B_2B_PREPARE_SAVE_SPLIT_OUTCOME_GOVERNANCE.md`
+- `2026-04-30_GEMINI_STAGE_8B_2B_FOCUSED_AUDIT_REQUEST.md`
+- `2026-04-30_PRE_8B2A_DOC_SANITY_PATCH.md`
+- `2026-04-30_STAGE_8B_PRE_8B2A_GOVERNANCE_CLEANUP.md`
+- `2026-04-30_STAGE_8B_PLATFORM_PERSISTENCE_NOT_GAS_PERSISTENCE.md`
 
 ## Deprecated audits
 
@@ -110,5 +143,5 @@ Rule:
 
 - **STAGE_8B.1A** — **`TASK-2026-08B-012`** **CLOSED** — **`2026-04-30_STAGE_8B_1A_LIVE_GATE.md`** (**`STAGE_8B_1A_LIVE_VERIFIED`** · **`STAGE_8B_1A_CLOSEOUT_LOGGED`**)
 - **STAGE_8B.1B** — **`TASK-2026-08B-011` CLOSED** — **`STAGE_8B_1B_OPERATOR_VERIFIED`** (**`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**)
-- **STAGE_8B.2** — **`TASK-2026-08B-013`** (**`PLANNED`**) — **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`** (**`STAGE_8B_2_PRE_GATE_SCOPE_REGISTERED`**)
+- **STAGE_8B.2** — **`STAGE_8B_2_NORMALIZED_ACTIVE_GATE`** — **`TASK-2026-08B-013`** (**`ACTIVE`**) — **`STAGE_8B_2_CLIENT_AGNOSTIC_FLOW_STABILIZATION`** — rollup **`docs/TASKS.md`** **`§ TASK-013`** · **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`** (**`2A`/`2B`/`2C` CLOSED** · **`2D` = `NORMALIZATION_ACTIVE`** · no doctrine yet)
 - Retrieval / history / analytics UI — **out of Stage 8B** scope until separate IDEA

@@ -6,23 +6,269 @@
 
 ---
 
-# 30.04.2026 — Stage **8B.2** pre-gate scope **REGISTERED** (**`STAGE_8B_2_PRE_GATE_SCOPE_REGISTERED`**)
+# 30.04.2026 — Governance Milestone Freeze (End of Day)
 
-## Ціль
+## Факт (**documentation only**)
 
-Зафіксувати **Stage 8B.2** — **Client-Agnostic Flow Stabilization / Error Handling Gate** у журналах репозиторію після Gemini readiness audit (**прийняті** теми без імплементації в цьому коміті).
+- Canonical slices closed: **`8B.2A`**, **`8B.2B`**, **`8B.2C`**
+- Active governance lane: **`8B.2D = NORMALIZATION_ACTIVE`** (normalization only)
+- **Governance Audit Budget Control** activated (**`docs/00_SYSTEM/02_GLOBAL_RULES.md`** §19)
+- **`TASK-2026-08B-013`** remains **`ACTIVE`**
+- **`8B.2E`** is not open
+- No implementation started in this checkpoint
+- **Код / API / GAS / DB:** **немає**
+
+## Next
+
+**`8B.2D` doctrine authoring** (not started).
+
+---
+
+# 30.04.2026 — Stage **8B.2D** normalization lane activation (**`NORMALIZATION_ACTIVE`**)
+
+## Факт (**documentation only**)
+
+- Lodged normalization artifact: **`docs/AUDITS/2026-04-30_STAGE_8B_2D_INTEGRITY_STANCE_V1_ENFORCEMENT_IDEA_NORMALIZATION.md`**
+- `TASK-013` slice updated: **`8B.2D = NORMALIZATION_ACTIVE`**
+- `NOW` updated: current execution switched to **`8B.2D Normalization`**
+- Stage boundary remains strict: **no doctrine authoring yet**, **no implementation**, **no code/API/GAS/DB changes**
+
+## Далі
+
+Await explicit **`8B.2D` doctrine authoring task** only.
+
+---
+
+# 30.04.2026 — Stage **8B.2C** governance dossier authoring (**`IN_AUTHORING`**)
+
+## Факт (**documentation only**)
+
+- Authored bounded doctrine dossier: **`docs/AUDITS/2026-04-30_STAGE_8B_2C_MACHINE_READABLE_PERSISTENCE_ERROR_DOCTRINE.md`**
+- Included strict separation: **transport/system access failures** vs **persistence governance failures** (without transport stack redesign)
+- Taxonomy kept bounded and stage-safe; no overlap with `2A` / `2B` / `2D`
+- `TASK-013` slice updated to **`8B.2C = IN_AUTHORING`**
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Focused Gemini audit only:
+**`docs/AUDITS/2026-04-30_GEMINI_STAGE_8B_2C_FOCUSED_AUDIT_REQUEST.md`**
+
+---
+
+# 30.04.2026 — Gemini post-fix documentary consistency CLOSEOUT (**`STAGE_GEMINI_POST_FIX_DOC_CONSISTENCY_PASS`**)
+
+## Факт (**documentation only**)
+
+- **`docs/AUDITS/2026-04-30_GEMINI_POST_FIX_DOCUMENTATION_CONSISTENCY_AUDIT.md`** — **`PASS CLEAN`**
+- Post-fix split-brain ризик закрито: `04_DATA_CONTRACTS` mirror sections узгоджені з V1 payload canon
+- V1 payload canon верифіковано по маршруту: **`§20` + `13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md` + `11_KZO_MVP_SNAPSHOT_V1_CONTRACT.md`**
+- Перехідний стан: **`8B.2C` normalization authorized** (тільки normalizer corridor; **без** doctrine authoring / **без** implementation)
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Лише **`8B.2C` Idea Normalization** як наступний gate у **`TASK-2026-08B-013`**.
+
+---
+
+# 30.04.2026 — **DOC FIX GATE** (**`STAGE_GEMINI_POST_BULK_DOC_EDIT_CONSISTENCY_FIX`**) — precision patch
+
+## Факт (**documentation only**)
+
+- **`docs/AUDITS/2026-04-30_STAGE_GEMINI_POST_BULK_DOC_EDIT_CONSISTENCY_IDEA_NORMALIZATION.md`** — intake **`ACTIVE_DOC_FIX_GATE`**
+- **`docs/00_SYSTEM/04_DATA_CONTRACTS.md`** — **`§16`–`§18`** headings (**NON-CANONICAL / LEGACY**); **`§19`** явно workflow-only vs payload **`§20` + `13_` + `11_`**
+- **`docs/TASKS.md`** — **`TASK-2026-08B-013`** **`Module`**: **`Contract V1 compliance verification`**
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+External closeout (**POST–bulk Gemini**) — **`docs/AUDITS/YYYY-MM-DD_GEMINI_POST_BULK_DOCUMENTATION_EDIT_CONSISTENCY_AUDIT.md`**
+
+---
+
+# 30.04.2026 — Gemini REQUEST — **POST–bulk documentation edit consistency**
 
 ## Факт (**governance-only**)
 
-- **8B.1B** closeout зафіксовано (**`TASK-2026-08B-011` CLOSED**, **`STAGE_8B_1B_OPERATOR_VERIFIED`**)
-- Gemini readiness findings **reviewed** → accepted / deferred split у **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`**
-- Створено **`TASK-2026-08B-013`** (**`PLANNED`**) — **не** плутати з **`TASK-2026-08B-012`** (**CLOSED**, **Stage 8B.1A**)
-- Послідовність журналу: **`8B.1B` VERIFIED** → **`8B.2` PRE-GATE SCOPE REGISTERED**
-- **Код / API / GAS / DB / migrations:** **немає** змін
+- **`docs/AUDITS/2026-04-30_GEMINI_POST_BULK_DOCUMENTATION_EDIT_CONSISTENCY_AUDIT_REQUEST.md`** — запит на зовнішній аудит після масових правок (**`02_GLOBAL_RULES`**, **`04_DATA_CONTRACTS`** §19–§20, реєстри **8B.2**/**`TASK`**) — **перетин канону / split-brain / `TASK-013` lane**
+- **`docs/AUDITS/00_AUDIT_INDEX.md`** — запис у **Latest audit**
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Closeout **`docs/AUDITS/YYYY-MM-DD_GEMINI_POST_BULK_DOCUMENTATION_EDIT_CONSISTENCY_AUDIT.md`** (**PASS** / **PASS WITH DOC FIXES**)
+
+---
+
+# 30.04.2026 — Stage **8B.2C** machine-readable persistence error doctrine (**`STAGE_8B_2C_DOCTRINE_PUBLISHED`**)
+
+## Факт (**governance-only**)
+
+- **`docs/AUDITS/2026-04-30_STAGE_8B_2C_MACHINE_READABLE_PERSISTENCE_ERROR_DOCTRINE.md`** — канон таксономії помилок (**фази **`P`/`S`**, родини, **`retryability_governance_hint`**, каталог **`KZO_*`/`SNAPSHOT_*`**)
+- **`docs/AUDITS/2026-04-30_GEMINI_STAGE_8B_2C_FOCUSED_AUDIT_REQUEST.md`** — запит на **focused** Gemini аудит (**до **`8B.2D`**)
+- **`docs/TASKS.md`**, **`docs/NOW.md`**, **`docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`**, **`docs/AUDITS/00_AUDIT_INDEX.md`**, **`docs/AUDITS/2026-04-30_STAGE_8B_2_GOVERNANCE_SUBSTAGES_DECOMPOSITION.md`**, **`docs/00-02_CALC_CONFIGURATOR/09_STATUS.md`**, **`docs/00-02_CALC_CONFIGURATOR/09_KZO/08_STATUS.md`**, **`docs/AUDITS/2026-04-30_STAGE_8B_2C_MACHINE_READABLE_PERSISTENCE_ERROR_IDEA_NORMALIZATION.md`**
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Зовнішній Gemini (**REQUEST**) → lodged **`docs/AUDITS/YYYY-MM-DD_GEMINI_STAGE_8B_2C_FOCUSED_AUDIT.md`** (**`STAGE_8B_2C_GEMINI_FOCUSED_AUDIT_PASS`**)
+
+---
+
+# 30.04.2026 — Stage **8B.2C** Idea normalization (**`STAGE_8B_2C_NORMALIZED_FOR_ACTIVE_SUBSTAGE`**)
+
+## Факт (**governance-only**)
+
+- **`docs/AUDITS/2026-04-30_STAGE_8B_2C_MACHINE_READABLE_PERSISTENCE_ERROR_IDEA_NORMALIZATION.md`** — латка **GPT Idea Normalizer** для обмеженого слайсу **`STAGE_8B_2C_MACHINE_READABLE_PERSISTENCE_ERROR_DOCTRINE`** (**doctrine definition only** · **without** код/API/GAS/DB)
+- **`docs/TASKS.md`**, **`docs/NOW.md`**, **`docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`**, **`docs/AUDITS/00_AUDIT_INDEX.md`**, **`docs/AUDITS/2026-04-30_STAGE_8B_2_GOVERNANCE_SUBSTAGES_DECOMPOSITION.md`**, **`docs/00-02_CALC_CONFIGURATOR/09_STATUS.md`**, **`docs/00-02_CALC_CONFIGURATOR/09_KZO/08_STATUS.md`** — **`8B.2C` ACTIVE** (**normalized latch**); одна доріжка канон-таксономії (**`STAGE_8B_2C_DOCTRINE_PUBLISHED`**) очікується в **`docs/AUDITS/2026-04-30_STAGE_8B_2C_MACHINE_READABLE_PERSISTENCE_ERROR_DOCTRINE.md`**
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Авторинг повного dossier **`8B.2C`**, потім Gemini **focused** gate (**`STAGE_8B_2C_GEMINI_FOCUSED_AUDIT_PASS`**) перед **`8B.2D`**
+
+---
+
+# 30.04.2026 — **POST–8B.2B** TASK registry duplication fix (**doc-only**)
+
+## Факт
+
+- **`docs/TASKS.md`**, **`docs/NOW.md`**, **`docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`**, **`docs/AUDITS/00_AUDIT_INDEX.md`**, **`docs/00-02_CALC_CONFIGURATOR/09_STATUS.md`**, **`docs/00-02_CALC_CONFIGURATOR/09_KZO/08_STATUS.md`** — усунено повторювані блоки **`TASK-2026-08B-013`** / rollup слайсу **8B.2**; один канон слайсу — **`TASKS`** **`§ TASK-013`** (**`ACTIVE`**) **`·`** **`8B.2A`/`8B.2B` CLOSED** (**стан **`8B.2C`** на момент того патчу:** NEXT / AWAITING NORMALIZER** — **замінено** записом **8B.2C Idea normalization** вище)
+- **Новий запис аудиту:** **`docs/AUDITS/2026-04-30_POST_8B2B_TASK_REGISTRY_DUPLICATION_FIX.md`**
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+**Stage 8B.2C** — **див.** запис **8B.2C Idea normalization** вище (**taxonomy dossier** + Gemini gate)
+
+---
+
+# 30.04.2026 — **Stage 8B.2B** split outcome doctrine + **Gemini focused REQUEST** scaffold
+
+## Факт (**governance-only**)
+
+- **`docs/AUDITS/2026-04-30_STAGE_8B_2B_PREPARE_SAVE_SPLIT_OUTCOME_GOVERNANCE.md`** — **`STAGE_8B_2B_DOCTRINE_PUBLISHED`** (phase **`P`**/**`S`**, теги **`COMPOUND_OK`** / **`PARTIAL_PS`** / **`BLOCKED_S`** / **`NOT_ATTEMPTED_S`**, replay після часткового результату, orphan boundaries · ізоляція від **`2C`/`2D`** · посилання лише на **`2A`**)
+- **`docs/AUDITS/2026-04-30_GEMINI_STAGE_8B_2B_FOCUSED_AUDIT_REQUEST.md`** — запит на **focused** Gemini аудит (**gate перед **`8B.2C`**)
+- Оновлення: **`TASKS.md`**, **`NOW.md`**, **`00_AUDIT_INDEX.md`**, **`09_STATUS.md`**, **`09_KZO/08_STATUS.md`**, **`12_IDEA_MASTER_LOG.md`**
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Зовнішній Gemini (**REQUEST**) → lodged **`docs/AUDITS/YYYY-MM-DD_GEMINI_STAGE_8B_2B_FOCUSED_AUDIT.md`** (**`STAGE_8B_2B_GEMINI_FOCUSED_AUDIT_PASS`**)
+
+---
+
+# 30.04.2026 — **Gemini **8B.2A** focused audit CLOSEOUT** (**`STAGE_8B_2A_GEMINI_FOCUSED_AUDIT_PASS`**)
+
+## Факт (**governance-only**)
+
+- **`docs/AUDITS/2026-04-30_GEMINI_STAGE_8B_2A_FOCUSED_AUDIT.md`** — **`PASS WITH DOC FIXES`** (внутрішнє **`§6`→`§14`** у рядку **`Duplicate request`**; §9 typography; **§§7–8** cross-ref у **§5 Allowed**)
+- **`docs/AUDITS/2026-04-30_STAGE_8B_2A_IDEMPOTENCY_DUPLICATE_GOVERNANCE.md`** — ті самі **doc fixes**
+- **`docs/TASKS.md`**, **`docs/NOW.md`**, **`docs/AUDITS/00_AUDIT_INDEX.md`**, **`09_STATUS.md`**, **`09_KZO/08_STATUS.md`** — sub-slice **`8B.2A`**: **`GEMINI`** closeout **`PASS`**; **next:** **`8B.2B`** doctrine (**docs only**)
+- **Код / API / GAS / DB:** **немає**
+
+---
+
+# 30.04.2026 — **Stage 8B.2A** doctrine dossier (**§§1–15 authoring template**)
+
+## Факт (**governance-only**)
+
+- **`docs/AUDITS/2026-04-30_STAGE_8B_2A_IDEMPOTENCY_DUPLICATE_GOVERNANCE.md`** — переструктуровано під обов’язкові розділи **1–15** (title, purpose, core risk, definitions **`request_id` / duplicate / replay / idempotent-safe**, allowed, forbidden, acceptance/failure states, client-neutral, thin client, deferred, success/failure conditions, stage boundary + matrix **D-01–D-04**, next **2B**)
+- **`docs/TASKS.md`** — **`TASK-2026-08B-013`** **`ACTIVE`**; (**історичний зріз цього блоку:** sub-slice **`8B.2A IN_AUTHORING`** до closeout Gemini · **див.** новіший запис **Gemini **8B.2A** focused audit CLOSEOUT** вище)
+
+## Далі (**історичний**)
+
+Перед closeout: Focused **Gemini 8B.2A** audit → **`STAGE_8B_2A_GEMINI_FOCUSED_AUDIT_PASS`** (або DOC FIXES + патч **`2A`** dossier)
+
+**Виконано:** **`docs/AUDITS/2026-04-30_GEMINI_STAGE_8B_2A_FOCUSED_AUDIT.md`**
+
+---
+
+# 30.04.2026 — **Gemini MASTER RE-AUDIT** — **FINAL DAILY CLOSEOUT** (**PASS — READY FOR 8B.2A**)
+
+## Факт (**governance log only**)
+
+- Зовнішній **Gemini** RE-AUDIT — вердикт **PASS (**READY FOR 8B.2A**)** — записано в **`docs/AUDITS/2026-04-30_GEMINI_MASTER_RE_AUDIT_FINAL_DAILY_CLOSEOUT.md`**
+- **`GEMINI_MASTER_RE_AUDIT_FINAL_DAILY_CLOSEOUT_2026_04_30`**
+- Правило операційного дня: **STOP** гігієні · dossier **`8B.2A`** **опубліковано**; **далі** — **focused Gemini 8B.2A** audit (**див.** **`docs/TASKS.md`** / **`GEMINI_STAGE_8B_2A_FOCUSED_AUDIT_REQUEST`**)
+- Питання до **архітектора** у тому ж досьє залишені як историчний текст; статус **`RESOLVED`** — **`docs/TASKS.md`** + **`docs/AUDITS/2026-04-30_STAGE_8B_2A_IDEMPOTENCY_DUPLICATE_GOVERNANCE.md`**
+
+---
+
+# 30.04.2026 — Архітекторські правила + **8B.2A** doctrine (**`TASK-2026-08B-013` → `ACTIVE`**)
+
+## Факт (**governance-only**)
+
+- **`docs/AUDITS/2026-04-30_STAGE_8B_2A_IDEMPOTENCY_DUPLICATE_GOVERNANCE.md`** — **`STAGE_8B_2A_DOCTRINE_PUBLISHED`**
+- **`docs/AUDITS/2026-04-30_GEMINI_STAGE_8B_2A_FOCUSED_AUDIT_REQUEST.md`** — запит на **focused** Gemini audit (**not MASTER**) перед **`2B`**
+- **`docs/TASKS.md`** **`TASK-013`** — **`ACTIVE`**; **`COMPLETE`** лише після **2A–2E** + synthesis; канон **`2A`** = **`AUDITS`**; distill у **`00_SYSTEM`** лише після прийняття (**окремий TASK**)
+- Оновлення: **`NOW`**, **`12_IDEA_MASTER_LOG`**, **`09_STATUS`**, **`09_KZO/08_STATUS`**, **`STAGE_8B_2_PRE_GATE_SCOPE`**, **`GEMINI_MASTER_RE_AUDIT_FINAL_DAILY_CLOSEOUT`** (розділ архітектора **RESOLVED**)
+- **Код / API / GAS / DB:** **немає**
+
+## Далі (**обов’язково** перед **`2B`**)
+
+Focused **Gemini 8B.2A** audit → closeout **`STAGE_8B_2A_GEMINI_FOCUSED_AUDIT_PASS`** (або DOC FIXES + патч dossier **`2A`**)
+
+---
+
+# 30.04.2026 — Pre–**8B.2A** **DOC SANITY** patch (**`STAGE_8B_PRE_8B2A_DOC_SANITY_PATCH_COMPLETE`**)
+
+## Факт (**governance-only**)
+
+- **Gemini RE-AUDIT** — **PASS WITH DOC FIXES** — зафіксовано в **`docs/AUDITS/2026-04-30_PRE_8B2A_DOC_SANITY_PATCH.md`**
+- **`04_DATA_CONTRACTS.md`** — узгодження **`§19`/`§20`** (немає persistence **split-brain**)
+- **`09_KZO/08_STATUS.md`** — швидкий зріз **8B.2** + **8B.2A**
+- **`TASKS.md`** — межа **`8B.2A`** (**лише доки**) під **`TASK-2026-08B-013`**
+- **`NOW.md`**, **`00_AUDIT_INDEX.md`** — синхрон
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+**Stage 8B.2A** — один governance dossier; **гігієну зупинено**
+
+---
+
+# 30.04.2026 — Pre–**8B.2A** governance cleanup (**`STAGE_8B_PRE_8B2A_GOVERNANCE_CLEANUP_COMPLETE`**)
+
+## Факт (**governance-only**)
+
+- **`02_GLOBAL_RULES.md` §2** — кваліфікація «доки vs код» (**objective truth / security / persistence integrity**)
+- **`09_STATUS.md`**, **`09_KZO/08_STATUS.md`**, **`NOW.md`**, **`TASKS.md`** — fold-one narrative / **TASK-ID continuity**
+- **`04_DATA_CONTRACTS.md` §20** — canonical pointer + **DEFERRED** mirror для **`save_snapshot`**
+- **`docs/AUDITS/2026-04-30_STAGE_8B_PLATFORM_PERSISTENCE_NOT_GAS_PERSISTENCE.md`** — закрито плейсхолдер **`YYYY-MM-DD`** у **`TASK-2026-08B-001`**
+- Досьє: **`docs/AUDITS/2026-04-30_STAGE_8B_PRE_8B2A_GOVERNANCE_CLEANUP.md`**
+- **Код / API / GAS / DB:** **немає**
+
+## Наступний зосередок
+
+**Stage 8B.2A** — governance docs only (**idempotency / duplicate doctrine**).
+
+---
+
+# 30.04.2026 — Stage **8B.2** governance **sub-stages** (**`STAGE_8B_2_GOVERNANCE_SUBSTAGES_DECOMPOSED`**)
+
+- **Normalizer decomposition** — **`docs/AUDITS/2026-04-30_STAGE_8B_2_GOVERNANCE_SUBSTAGES_DECOMPOSITION.md`** — slices **`2A`–`2E`** (doc-only; **no** code/API/GAS/DB); **parent** **`TASK-2026-08B-013`**
+
+---
+
+# 30.04.2026 — Stage **8B.2** — **NORMALIZED ACTIVE GATE** + pre-gate scope (**`STAGE_8B_2_NORMALIZED_ACTIVE_GATE`** · **`STAGE_8B_2_PRE_GATE_SCOPE_REGISTERED`**)
+
+## Ціль
+
+Зафіксувати **схвалений** Idea Normalizer вихід (**`STAGE_8B_2_CLIENT_AGNOSTIC_FLOW_STABILIZATION`**) як канонічний **governance-only** стан: **NOW**/**TASKS**/audit index / IDEA log — без імплементації.
+
+## Факт (**governance-only**)
+
+- **Stage 8B.2 normalized**
+- **Stage 8B.2 governance scope registered** → **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`**
+- **Canonical TASK (8B.2):** **`TASK-2026-08B-013`** (**`PLANNED`**). **`TASK-2026-08B-012`** залишається **CLOSED** (**Stage 8B.1A**) — не reuse для **8B.2**
+- **Послідовність:** **`8B.1B` VERIFIED** → **`8B.2` NORMALIZED** → **`8B.2` PRE-GATE REGISTERED**
+- **No implementation yet** — **no** code / API / GAS / DB / migrations
 
 ## Статус
 
-**`STAGE_8B_2_PRE_GATE_SCOPE_REGISTERED`**
+**`STAGE_8B_2_NORMALIZED_ACTIVE_GATE`** · **`STAGE_8B_2_PRE_GATE_SCOPE_REGISTERED`**
 
 ---
 

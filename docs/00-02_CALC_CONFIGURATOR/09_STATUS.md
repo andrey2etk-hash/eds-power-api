@@ -2,7 +2,9 @@
 
 ## Поточний статус
 
-Stage 4C verified operator shell
+**Актуальний операторний / реєстровий фронт:** **Stage 8B.2** — **`TASK-2026-08B-013`** (**`ACTIVE`**). Канон слайсів — **`docs/TASKS.md`** **`§ TASK-2026-08B-013`** (**`8B.2C`:** **`docs/AUDITS/2026-04-30_STAGE_8B_2C_MACHINE_READABLE_PERSISTENCE_ERROR_DOCTRINE.md`** · Gemini **focused** **`docs/AUDITS/2026-04-30_GEMINI_STAGE_8B_2C_FOCUSED_AUDIT_REQUEST.md`** → closeout pending). Гігієна перед **8B.2A:** **`docs/AUDITS/2026-04-30_STAGE_8B_PRE_8B2A_GOVERNANCE_CLEANUP.md`**, **`docs/AUDITS/2026-04-30_PRE_8B2A_DOC_SANITY_PATCH.md`**. **Stage 8B.1A** / **8B.1B** — **`CLOSED`**. **Stage 8A** — **`STAGE_8A_COMPLETE`**.
+
+Нижче — **перевірена послідовність** робіт **KZO MVP** (історія етапів; не зводити поточний стан лише до **4C**).
 
 CALC skeleton = governed foundation complete.
 
@@ -31,7 +33,7 @@ KZO MVP implementation baseline has reached Stage 5A task definition:
 
 На цьому рівні виконано:
 
-Структурна топологія та **Stages 7A / 7B** узгоджені з аудитами: **Stage 7B CLOSED**. **Stage 8A** **COMPLETE** (**`SUPABASE_LIVE_VERIFICATION_GATE` LIVE PASS**, **`IDEA-0017` `IMPLEMENTED`**). Frozen **V1 INSERT** — retrieval / analytics / orchestrated GAS save path — окремі **IDEA/TASK**.
+Структурна топологія та **Stages 7A / 7B** узгоджені з аудитами: **Stage 7B CLOSED**. **Stage 8A** **COMPLETE**. **Stages 8B.1A / 8B.1B** (**`TASK-2026-08B-012`**, **`TASK-2026-08B-011`**) **`CLOSED`**. **Governance focal point:** **`TASK-2026-08B-013`** / Stage **8B.2**; **pre–8B.2A hygiene** — **`docs/AUDITS/2026-04-30_STAGE_8B_PRE_8B2A_GOVERNANCE_CLEANUP.md`**. Frozen **V1 INSERT** — retrieval / analytics / unrelated client expansion — окремі **IDEA/TASK**.
 
 ## Stage 1 foundation
 
