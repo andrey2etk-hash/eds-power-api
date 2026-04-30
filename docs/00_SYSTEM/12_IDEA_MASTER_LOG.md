@@ -903,7 +903,7 @@ Implementation record:
 - Thin GAS **`saveKzoSnapshotV1()`** / **`runStage8B1BGasThinClientAdapterFlow()`** — transport + **`KZO_MVP_SNAPSHOT_V1`** envelope from **`prepare`** fields only (**`STAGE_8B_1B_OPERATOR_VERIFIED`** — **`TASK-2026-08B-011` CLOSED**)
 - Master table **Status**: **`IMPLEMENTED`** (**2026-04-30**)
 
-**Recommended next operational slice (post–IDEA-0017 / Stage 8B.1, under IDEA-0023):** **Stage 8B.2** — **Client-Agnostic Flow Stabilization / Error Handling Gate** (after **`STAGE_8B_1B_OPERATOR_VERIFIED`** **`TASK-2026-08B-011`**); **`TASK-2026-08B-012`** / **`TASK-2026-08B-011`** **CLOSED**. Gemini preflight (**`docs/AUDITS/2026-04-30_STAGE_8B_1_GEMINI_PREFLIGHT_REQUEST.md`**) remains historical context for API-first sequencing — **no** “GAS as orchestrator” wording.
+**Recommended next operational slice (post–IDEA-0017 / Stage 8B.1, under IDEA-0023):** **Stage 8B.2** — **`TASK-2026-08B-013`** (**`PLANNED`**) — **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`** — Client-Agnostic Flow Stabilization / Error Handling — **`TASK-2026-08B-012`** / **`TASK-2026-08B-011`** **CLOSED**. Gemini readiness **accepted fixes** enumerated in dossier (**idempotency** / **duplicate** policy, **prepare/save partial outcome**, machine-readable persistence **errors**, **snapshot integrity**, **client-neutral drift**) — implementation **explicitly deferred** until TASK leaves **`PLANNED`**.
 
 ### IDEA-0018 — Stage 8A.0 EDS Power Supabase root governance foundation
 
@@ -1103,7 +1103,7 @@ Current API may require additive fields in a sub-TASK — contract is **normativ
 
 1. **`TASK-2026-08B-012`** — **8B.1A** **`save_snapshot`** API contract hardening (validation / response / anti-orchestration leak) — plan **`docs/AUDITS/2026-04-30_STAGE_8B_1A_API_SAVE_CONTRACT_GOVERNANCE_PLAN.md`**.
 2. **`TASK-2026-08B-011`** — **8B.1B** Thin GAS adapter (**`runStage8B1BGasThinClientAdapterFlow()`**) — **`STAGE_8B_1B_OPERATOR_VERIFIED`** (**operator closeout **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**).
-3. **Stage 8B.2 (next)** — **Client-Agnostic Flow Stabilization / Error Handling Gate** — **TASK** / audit shell **TBD** before coding.
+3. **`TASK-2026-08B-013`** — **Stage 8B.2** Client-Agnostic Flow Stabilization / Error Handling — **pre-gate scope** **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`** (**`STAGE_8B_2_PRE_GATE_SCOPE_REGISTERED`**) — **`PLANNED`** until governance deliverables authored.
 
 Gemini critic preflight (**`docs/AUDITS/2026-04-30_STAGE_8B_1_GEMINI_PREFLIGHT_REQUEST.md`**) audits the **thin-GAS plan** **before** coding and aligns stakeholders on **API-first** reinforcement.
 
@@ -1121,11 +1121,12 @@ No client may redefine system persistence without **IDEA → TASK** and contract
 
 **Implementation record (when started):**
 
-- TASK: **`docs/TASKS.md`** — **`TASK-2026-08B-001`** (master); **`TASK-2026-08B-012`** (**8B.1A**); **`TASK-2026-08B-011`** (**8B.1B**)
+- TASK: **`docs/TASKS.md`** — **`TASK-2026-08B-001`** (master); **`TASK-2026-08B-012`** (**8B.1A** **CLOSED**); **`TASK-2026-08B-011`** (**8B.1B** **CLOSED**); **`TASK-2026-08B-013`** (**Stage 8B.2**, **`PLANNED`**)
 - Contract: **`docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`**
 - **8B.1** split + doc alignment: **`STAGE_8B_DOC_STATE_ALIGNED`** (**`CHANGELOG`**, **`NOW`**, **`12_IDEA_MASTER_LOG`**)
 - **8B.1A** API hardening: **`551ce87`** (**`CHANGELOG`**) · **`STAGE_8B_1A_API_CONTRACT_IMPLEMENTED`**
-- **8B.1B** thin adapter — **`gas/Stage3D_KZO_Handshake.gs`** · **`runStage8B1BGasThinClientAdapterFlow()`** — **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`** (**`STAGE_8B_1B_OPERATOR_VERIFIED`** **`TASK-2026-08B-011` CLOSED** · **next** **Stage 8B.2** stabilization / error-handling gate narrative)
+- **8B.1B** thin adapter — **`gas/Stage3D_KZO_Handshake.gs`** · **`runStage8B1BGasThinClientAdapterFlow()`** — **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`** (**`STAGE_8B_1B_OPERATOR_VERIFIED`** · **`TASK-2026-08B-011` CLOSED**)
+- **8B.2** pre-gate scope (**Gemini readiness → governance registry**) — **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`** · **`TASK-2026-08B-013`** (**`PLANNED`**) — mitigates narratives: duplicate drift, orphan persistence ambiguity, persistence error neutrality, snapshot integrity doctrine (**without product expansion**)
 
 Master table **Status**: **`ACTIVE`** until **8B** governance + audit **PASS** — then **`IMPLEMENTED`**.
 

@@ -6,6 +6,26 @@
 
 ---
 
+# 30.04.2026 — Stage **8B.2** pre-gate scope **REGISTERED** (**`STAGE_8B_2_PRE_GATE_SCOPE_REGISTERED`**)
+
+## Ціль
+
+Зафіксувати **Stage 8B.2** — **Client-Agnostic Flow Stabilization / Error Handling Gate** у журналах репозиторію після Gemini readiness audit (**прийняті** теми без імплементації в цьому коміті).
+
+## Факт (**governance-only**)
+
+- **8B.1B** closeout зафіксовано (**`TASK-2026-08B-011` CLOSED**, **`STAGE_8B_1B_OPERATOR_VERIFIED`**)
+- Gemini readiness findings **reviewed** → accepted / deferred split у **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`**
+- Створено **`TASK-2026-08B-013`** (**`PLANNED`**) — **не** плутати з **`TASK-2026-08B-012`** (**CLOSED**, **Stage 8B.1A**)
+- Послідовність журналу: **`8B.1B` VERIFIED** → **`8B.2` PRE-GATE SCOPE REGISTERED**
+- **Код / API / GAS / DB / migrations:** **немає** змін
+
+## Статус
+
+**`STAGE_8B_2_PRE_GATE_SCOPE_REGISTERED`**
+
+---
+
 # 30.04.2026 — Stage **8B.1B** operator verification **CLOSEOUT** (**`STAGE_8B_1B_OPERATOR_VERIFIED`**)
 
 ## Ціль

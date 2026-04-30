@@ -29,7 +29,7 @@ Stage **8A** proved persistence exists. Stage **8B** must establish **platform a
 4. **GAS:** **Thin Client Adapter V1** (**`TASK-2026-08B-011`**) — **`STAGE_8B_1B_OPERATOR_VERIFIED`** · **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**.
 5. **Audit:** `docs/AUDITS/YYYY-MM-DD_STAGE_8B_PLATFORM_PERSISTENCE_NOT_GAS_PERSISTENCE.md` — thesis: **platform persistence**, not **GAS persistence**.
 6. **Closure:** **`IDEA-0023`** → `IMPLEMENTED` in `12_IDEA_MASTER_LOG.md` after audit PASS.
-7. **Next doc gate (post–8B.1):** **Stage 8B.2** — **Client-Agnostic Flow Stabilization / Error Handling** (**TASK** to be instituted before implementation — **no** product scope creep in governance text alone).
+7. **Next doc gate (post–8B.1):** **Stage 8B.2** — **`TASK-2026-08B-013`** (**`PLANNED`**) — **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`** (pre-gate scope registry; **implementation** only when TASK leaves **`PLANNED`**).
 
 ### Expected result
 
@@ -97,7 +97,36 @@ First **real** client adapter: **GAS** calls the **same** API persistence pathwa
 ### Deliverable for closeout (**met**)
 
 - Operator verification **PASS** + audit **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`** (**`STAGE_8B_1B_OPERATOR_VERIFIED`**).
-- **Next (governance narrative):** **Stage 8B.2** — **Client-Agnostic Flow Stabilization / Error Handling Gate** (separate TASK when instituted).
+- **Next:** **`TASK-2026-08B-013`** — **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`** (**governance framing**).
+
+---
+
+## TASK-2026-08B-013 — Stage **8B.2** Client-Agnostic Flow Stabilization / Error Handling Gate
+
+| Field | Value |
+| --- | --- |
+| **ID** | TASK-2026-08B-013 |
+| **IDEA** | **IDEA-0023** |
+| **Module** | `00_SYSTEM`, API contracts (**when implemented** — **not** in pre-gate registry commit) |
+| **Status** | **`PLANNED`** |
+| **Prerequisite** | **`STAGE_8B_1B_OPERATOR_VERIFIED`** (**`TASK-2026-08B-011` CLOSED**); pre-gate scope **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`** |
+
+### Purpose (**governance framing only in this milestone**)
+
+Freeze **accepted** Gemini readiness themes into **implementable gates** without product expansion: duplicate/orphan persistence drift, bounded **prepare→save** outcomes, neutral machine-readable persistence errors, **snapshot integrity**, **client neutrality**.
+
+### Required deliverables (**governance artefacts first**)
+
+1. **Idempotency governance definition** (+ duplicate-request / duplicate-insert **policy**, not assumed implementation)
+2. **Duplicate snapshot prevention policy** (aligned with idempotency doc)
+3. **Partial success / partial failure contract** (**`prepare` OK + `save` fail** narration + operator semantics)
+4. **Snapshot integrity validation governance** (contract-level checklist vs **`KZO_MVP_SNAPSHOT_V1`**)
+5. **Client neutrality verification** (WEB/GAS symmetry at contract boundary)
+6. **Audit dossier** — implementation gate audit **after** code (**separate dated file**, **outside** pre-gate scope doc)
+
+### Forbidden (**Stage 8B.2 stabilization lane**)
+
+- New client platforms; UI work; queue/async fabric; DB redesign beyond stabilization; advanced auth/rate systems; persistent “failed snapshot” archival subsystem (**deferred** per pre-gate scope)
 
 ---
 

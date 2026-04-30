@@ -4,13 +4,39 @@
 
 Створити системний фундамент EDS Power для подальшої розробки модулів, API, БД, UI та AI-агентів.
 
-## Поточний Stage (8B.2 prep)
+## CURRENT STAGE
 
-- **Current focus:** **Stage 8B.2** — **Client-Agnostic Flow Stabilization / Error Handling Gate** (наступний керований етап; **окремий TASK** узгоджується перед імплементацією)
-- **Prior closeout:** **8B.1B** **`STAGE_8B_1B_OPERATOR_VERIFIED`** — **`TASK-2026-08B-011` CLOSED** — **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**
-- **`TASK-2026-08B-012`:** **CLOSED** · **`STAGE_8B_1A_LIVE_VERIFIED`**
-- **Попередній closeout:** **`STAGE_8B_1A_CLOSEOUT_LOGGED`** — **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`**
-- **Prior 8B posture (закріплено):** **`STAGE_8B_GOVERNANCE_FIXED`** · **`docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`**
+**Stage 8B.2** — Client-Agnostic Flow Stabilization / Error Handling Gate
+
+**Governance registry:** **`STAGE_8B_2_PRE_GATE_SCOPE_REGISTERED`** · **`TASK-2026-08B-013`** (**`PLANNED`**) · **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`**
+
+---
+
+## PRIMARY OBJECTIVES
+
+- Idempotency governance
+- Duplicate snapshot prevention (**policy-first** — implementation under **`TASK-2026-08B-013`** only after governance sign-off)
+- Prepare / Save split outcome contract (partial success / bounded failure narration)
+- Snapshot integrity contract (governed alignment to **`KZO_MVP_SNAPSHOT_V1`** without expanding product semantics)
+- Client-neutral contract verification (**no adapter-specific persistence truth**)
+
+---
+
+## OUT OF SCOPE
+
+- New client platforms
+- UI expansion
+- Auth expansion
+- Queue systems
+- Product logic expansion
+
+---
+
+## Поточний Stage (контекст реєстру)
+
+- **Prior closeout:** **8B.1B** **`STAGE_8B_1B_OPERATOR_VERIFIED`** (**`TASK-2026-08B-011` CLOSED**) — **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**
+- **8B.1A:** **`TASK-2026-08B-012` CLOSED** · **`STAGE_8B_1A_LIVE_VERIFIED`** — **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`**
+- **Prior 8B posture:** **`STAGE_8B_GOVERNANCE_FIXED`** · **`docs/00_SYSTEM/13_CLIENT_AGNOSTIC_PERSISTENCE_CONTRACT_V1.md`**
 - **Doc alignment:** **`STAGE_8B_DOC_STATE_ALIGNED`**
 
 ## Завершено — KZO MVP Stage 5C (факт перевірки, 29.04.2026)
@@ -57,7 +83,7 @@
 
 - **8B.1A:** **`STAGE_8B_1A_LIVE_VERIFIED`** — **`docs/AUDITS/2026-04-30_STAGE_8B_1A_LIVE_GATE.md`**
 - **8B.1B:** **`STAGE_8B_1B_OPERATOR_VERIFIED`** — **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`** · **`TASK-2026-08B-011` CLOSED**
-- **Next — Stage 8B.2:** **Client-Agnostic Flow Stabilization / Error Handling Gate** (**без** розширення продукту до окремого **TASK / IDEA**)
+- **Stage 8B.2 (active governance):** **`TASK-2026-08B-013`** · **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`** — **governance-only** registration (**no** code in this step)
 - Retrieval / snapshot history / analytics UI — **окремий** **IDEA** (як і раніше).
 
 ## Як узгоджено з Gemini doc-pass (Зовнішній аудит)
@@ -72,7 +98,7 @@ https://eds-power-api.onrender.com
 
 1. 00-01_AUTH — авторизація (frozen MVP / draft_ready)
 2. 00-02_CALC_CONFIGURATOR — конфігуратор (KZO Stage 5A–5C operator-visible path для structural / footprint API / topology API + топологія на Sheet верифіковані)
-3. 00-02_CALC_CONFIGURATOR/09_KZO — **8A** **`COMPLETE`**; **8B** **`STAGE_8B_GOVERNANCE_FIXED`** (**`IDEA-0023`** **`ACTIVE`**); **8B.1A** **`STAGE_8B_1A_LIVE_VERIFIED`**; **8B.1B** **`STAGE_8B_1B_OPERATOR_VERIFIED`** (**`TASK-2026-08B-011` CLOSED**) — **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`** · **next doc gate:** **Stage 8B.2** (stabilization / error handling)
+3. 00-02_CALC_CONFIGURATOR/09_KZO — **8A** **`COMPLETE`**; **8B** **`STAGE_8B_GOVERNANCE_FIXED`** (**`IDEA-0023`** **`ACTIVE`**); **8B.1A** / **8B.1B** **CLOSED**; **8B.2** **`STAGE_8B_2_PRE_GATE_SCOPE_REGISTERED`** — **`TASK-2026-08B-013`** (**`PLANNED`**) · **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`**
 
 ## Що робимо зараз
 
@@ -138,7 +164,7 @@ https://eds-power-api.onrender.com
 
 ## What remains next (plan)
 
-- **Stage 8B.2** — **Client-Agnostic Flow Stabilization / Error Handling Gate** (узгодити **TASK** як окремий крок перед кодом — **не** входить до цього closeout)
+- **Implement when tasked:** **`TASK-2026-08B-013`** — execution **after** governance dossier (**no** код у цьому pre-gate кроці)
 - Окремі **IDEAs:** retrieval API, snapshot history UI, analytics
 - keep Stage narrow: no BOM, pricing, retrieval dashboard, or unmanaged Sheet expansion unless separately tasked
 - keep GAS thin on future operator-visible transports
