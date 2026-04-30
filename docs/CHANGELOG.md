@@ -6,6 +6,29 @@
 
 ---
 
+# 30.04.2026 — Stage 8A closure: LIVE PASS + документація **`STAGE_8A_COMPLETE`**
+
+## Ціль етапу
+
+Закрити живий gate після успішного production deployment **`calculation_snapshots`** та **`POST /api/kzo/save_snapshot`**; зафіксувати **`IDEA-0017`** = **`IMPLEMENTED`**.
+
+## План
+
+- запис **LIVE PASS** у **`2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md`**
+- аудит closeout **`2026-04-30_STAGE_8A_2_1_LIVE_DEPLOY_CALCULATION_SNAPSHOTS.md`** (**`STAGE_8A_COMPLETE`**)
+- синхронізація NOW, IDEA master log, індексу аудитів, registry **`supabase/`**
+
+## Факт
+
+- **Live PASS** записано; **`IDEA-0017`** **`IMPLEMENTED`**
+- наступний рекомендований напрямок: **повторюваний operator-driven write path** — thin GAS після **`runKzoMvpFlow()`** → **`saveKzoSnapshotV1()`** (новий **IDEA/TASK**, окремо від retrieval/analytics)
+
+## Статус
+
+**`STAGE_8A_COMPLETE`**
+
+---
+
 # 30.04.2026 — Stage 8A.1: `calculation_snapshots` promotion test (локально, без prod apply)
 
 ## Ціль етапу
@@ -35,7 +58,7 @@
 
 ## Ризики
 
-- **Не знімаються** за цим епізодом: **live** верифікація Render + remote Supabase (**`IDEA-0017`** лишається **`ACTIVE`** / **`PENDING_SUPABASE_VERIFICATION`** до запису LIVE PASS у **`SUPABASE_LIVE_VERIFICATION_GATE`**).
+- Початковий ризик епізоду 8A.1 (**live** ще не була) — знятий після **8A.2.1** (**`STAGE_8A_COMPLETE`**).
 
 ## Ключовий прорив
 

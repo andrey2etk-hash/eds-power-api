@@ -37,29 +37,23 @@
 - **`KZO_MVP_SNAPSHOT_V1`** frozen — `docs/00-02_CALC_CONFIGURATOR/09_KZO/11_KZO_MVP_SNAPSHOT_V1_CONTRACT.md` (verified layers: **`structural_composition_summary`**, **`physical_summary`**, **`physical_topology_summary`**, **`engineering_class_summary`**, **`engineering_burden_summary`**; SUCCESS/FAILED envelopes; **`snapshot_version`** + **`logic_version`** policy).
 - Audit **`2026-04-29_STAGE_7B_KZO_MVP_SNAPSHOT_CONTRACT_FREEZE.md`** — external Gemini **`SAFE TO PROCEED TO STAGE 8A`**; Stage **7B** **CLOSED**; **`IDEA-0016`** **`IMPLEMENTED`** (unchanged Status Values).
 
-## Stage 8A — persistence path (локальна готовність, 30.04.2026)
+## Завершено — Stage **8A** Supabase persistence (`STAGE_8A_COMPLETE`, 30.04.2026)
 
-- **`POST /api/kzo/save_snapshot`** у репозиторії (`kzo_snapshot_persist.py`); **`prepare_calculation`** без змін.
-- canonical DDL **`public.calculation_snapshots`** знаходиться в **`supabase/migrations/20260429120000_calculation_snapshots_v1.sql`** (перенесено з **`_pending_after_remote_baseline/`** після **8A.0.8**).
-- Thin GAS **`saveKzoSnapshotV1()`** — лише транспорт JSON. **`supabase db reset`** **PASS** після промоції — legacy **`objects`/`bom_links`/`ncr`/`production_status`** + **23 × `v_*`** + **`calculation_snapshots`** (див. **8A.1** аудит).
-- Аудити: **`docs/AUDITS/2026-04-30_STAGE_8A_1_CALCULATION_SNAPSHOTS_PROMOTION_TEST.md`** (**`FIRST_PERSISTENCE_READY_NON_PROD`**); connectivity **`docs/AUDITS/2026-04-30_STAGE_8A_0_8_CURSOR_LOCAL_CONNECTIVITY.md`**; перша імплементація **`docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_FIRST_PERSISTENCE_MVP.md`**; mapping **`13_KZO_MVP_SNAPSHOT_V1_SQL_MAPPING.md`**.
+- **`POST /api/kzo/save_snapshot`** у репозиторії (`kzo_snapshot_persist.py`); **`prepare_calculation`** без змін; canonical DDL **`public.calculation_snapshots`** у **`supabase/migrations/20260429120000_calculation_snapshots_v1.sql`** (промоція **8A.1** + локальний **`db reset`** **PASS**).
+- **LIVE PASS** зафіксовано: **`docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md`** + closeout **`docs/AUDITS/2026-04-30_STAGE_8A_2_1_LIVE_DEPLOY_CALCULATION_SNAPSHOTS.md`**. **`IDEA-0017`** = **`IMPLEMENTED`**.
+- Thin GAS **`saveKzoSnapshotV1()`** — лише транспорт JSON.
+- Інші аудити траєкторії: **8A.1** **`FIRST_PERSISTENCE_READY_NON_PROD`**; **8A.0.8** **`CURSOR_LOCAL_STACK_VERIFIED`**; mapping **`13_KZO_MVP_SNAPSHOT_V1_SQL_MAPPING.md`**.
 
-## Активний gate — Stage 8A live (рендер/hosted Supabase, без змін задачі prod apply)
+## Рекомендований наступний етап (окремий **IDEA/TASK**, не scope 8A)
 
-- **Не виконується в TASK 8A.1:** production **`db push`**, будь-який non-local apply — заборонено.
-- **Live gate:** `docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md` — env на Render/hosted проєкті, redeploy **`eds-power-api`**, живий **`POST /api/kzo/save_snapshot`**, запис у **`calculation_snapshots`** (`product_type` = **`KZO`**).
-- Automated probe (**2026-04-29**) **`404`** на **`/api/kzo/save_snapshot`** — оператор робить лише живу перевірку за live gate аудитом (нема автоматичного PASS з епохи 29.04).
-- **IDEA-0017** = **`ACTIVE`** (**operative:** **`PENDING_SUPABASE_VERIFICATION`**) доки немає **LIVE PASS** запису у live gate → тоді **`IMPLEMENTED`**.
-
-## Поточний етап і наступний gate
-
-- Після **LIVE PASS** Stage 8A: **IDEA-0017** → **`IMPLEMENTED`**; окремий **IDEA/TASK** на retrieval / історію UI / analytics (поза **8A** verification scope).
+- **Операційний перший write path:** після **`runKzoMvpFlow()`** (або еквівалент збирання **`KZO_MVP_SNAPSHOT_V1`**) виклик **`saveKzoSnapshotV1()`** за замовчуванням для оператора, з передбачуваним логом (**`logic_version`**, **`request_id`**) — щоб рядки в **`calculation_snapshots`** були прив’язані до Sheet workflow, не лише до ручних HTTP probe.
+- Retrieval / snapshot history / analytics UI — **окремий** **IDEA** (як і раніше).
 
 ## Як узгоджено з Gemini doc-pass (Зовнішній аудит)
 
 - Gemini Stage 5C Sheet operator verification: **`PASS WITH DOC FIXES`** → застосовано лише синхронізація доків (без змін API/GAS). Використано статус IDEA **`IMPLEMENTED`**, без нових міток у master table beyond `Status Values`.
 - Stage 6B external Gemini audits: **`SAFE TO PROCEED TO STAGE 6C`** — **Stage 6C** (**`IDEA-0014`**) потім закритий імплементацією `engineering_burden_summary`.
-- Stage **7B** snapshot contract — external Gemini **`SAFE TO PROCEED TO STAGE 8A`**; **`KZO_MVP_SNAPSHOT_V1`** frozen (**`IDEA-0016`** **`IMPLEMENTED`**). Stage **8A** code shipped; **live Supabase verification** — **`ACTIVE`** (**`IDEA-0017`**, **`PENDING_SUPABASE_VERIFICATION`** до live PASS).
+- Stage **7B** snapshot contract — external Gemini **`SAFE TO PROCEED TO STAGE 8A`**; **`KZO_MVP_SNAPSHOT_V1`** frozen (**`IDEA-0016`** **`IMPLEMENTED`**). Stage **8A** **closed** (**`STAGE_8A_COMPLETE`**; **`IDEA-0017`** **`IMPLEMENTED`**; live gate **`PASS`** у **`SUPABASE_LIVE_VERIFICATION_GATE`**).
 
 https://eds-power-api.onrender.com
 
@@ -67,7 +61,7 @@ https://eds-power-api.onrender.com
 
 1. 00-01_AUTH — авторизація (frozen MVP / draft_ready)
 2. 00-02_CALC_CONFIGURATOR — конфігуратор (KZO Stage 5A–5C operator-visible path для structural / footprint API / topology API + топологія на Sheet верифіковані)
-3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (**7A/** **7B** **`IMPLEMENTED`**; **IDEA-0022** **`IMPLEMENTED`**; repo **`calculation_snapshots`** активна міграція + локальний **`db reset`** **PASS** — **`FIRST_PERSISTENCE_READY_NON_PROD`**; **`IDEA-0017`** **`ACTIVE`** до **live PASS**; retrieval/history/analytics — окремий IDEA)
+3. 00-02_CALC_CONFIGURATOR/09_KZO — KZO MVP (**7A/** **7B** **`IMPLEMENTED`**); **Stage 8A** **`COMPLETE`** (**`IDEA-0017`** **`IMPLEMENTED`**); retrieval/history/analytics та **операційний orchestrated save path** — окремі IDEA
 
 ## Що робимо зараз
 
@@ -92,7 +86,7 @@ https://eds-power-api.onrender.com
 - не порушуємо data contracts
 - не переходимо до full CALC implementation без окремого TASK
 - не додаємо Supabase/DB/AUTH без окремого TASK; retrieval/history/dashboard — те саме
-- не додаємо BOM / costing / expansion до live gate (**live PASS** оператор робить лише перевірку по **`docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md`**, без нової продукт-логіки)
+- не додаємо BOM / costing / expansion без окремого TASK
 
 ## What was completed today (fact)
 
@@ -125,11 +119,13 @@ https://eds-power-api.onrender.com
 - Stage 6C Render + **`runStage6CEngineeringBurdenFlow()`** operator **PASS** (**IDEA-0014** **`IMPLEMENTED`**; **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`**)
 - Stage 7A **`runKzoMvpFlow()`** manual operator **PASS** — **`mvp_run_outcome`** **`MVP_RUN_SUCCESS`**, **`http_code`** **200**, zones **`E4:F19`/`E20:F20`**, **`E21:F26`**, **`E27:F40`**, summaries present (**IDEA-0015** **`IMPLEMENTED`**; doc-pass **`2026-04-29_STAGE_7A_KZO_END_TO_END_MVP_STABILIZATION.md`**)
 - Stage **7B** **`KZO_MVP_SNAPSHOT_V1`** — formal closure (**Gemini** **`SAFE TO PROCEED TO STAGE 8A`**; **`2026-04-29_STAGE_7B_KZO_MVP_SNAPSHOT_CONTRACT_FREEZE.md`** updated; **`IDEA-0016`** **`IMPLEMENTED`**)
-- **IDEA-0022** **`IMPLEMENTED`** — baseline ordering + локальний **`supabase db reset`** + промоція **`calculation_snapshots`** (**`docs/AUDITS/2026-04-30_STAGE_8A_1_CALCULATION_SNAPSHOTS_PROMOTION_TEST.md`** — **`FIRST_PERSISTENCE_READY_NON_PROD`**); **8A.0.8** **`CURSOR_LOCAL_STACK_VERIFIED`**
+- **Stage 8A** **LIVE PASS** + **`STAGE_8A_COMPLETE`** (**`IDEA-0017`** **`IMPLEMENTED`** — **`2026-04-30_STAGE_8A_2_1`** + **`SUPABASE_LIVE_VERIFICATION_GATE`** **PASS**)
+- Trajectory **8A.0–8A.1**: **`IDEA-0022`** **`IMPLEMENTED`**, **`FIRST_PERSISTENCE_READY_NON_PROD`**, **`CURSOR_LOCAL_STACK_VERIFIED`** — див. відповідні аудити **30.04.2026**
+
 
 ## What remains next (plan)
 
-- **Stage 8A live gate** — **`docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md`**: hosted/staging проєкт (не TASK 8A.1 без окремої явної задачі prod apply), env **`SUPABASE_*`** на **`eds-power-api`**, redeploy, **`POST /api/kzo/save_snapshot`**, рядок у **`calculation_snapshots`** → тоді **`IDEA-0017`** → **`IMPLEMENTED`**
-- Retrieval / snapshot history / analytics UI — окремий **IDEA/TASK** (поза **live gate** перевірки)
+- Рекомендовано: **IDEA/TASK** на **thin GAS orchestration** — **`runKzoMvpFlow()`** → збір **`KZO_MVP_SNAPSHOT_V1`** → **`saveKzoSnapshotV1()`** (перший стабільний operator production write).
+- Окремі **IDEAs:** retrieval API, snapshot history UI, analytics (не змішувати без нормалізації).
 - keep Stage narrow: no BOM, pricing, retrieval dashboard, or unmanaged Sheet expansion unless separately tasked
 - keep GAS thin on future operator-visible transports

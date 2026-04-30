@@ -36,7 +36,7 @@ Operative **sub-state** strings (such as **`PENDING_SUPABASE_VERIFICATION`**) ap
 | IDEA-0014 | 2026-04-29 | Stage 6C KZO Engineering Burden Foundation MVP: planning-grade production burden from classification + topology (not kg/BOM/price) | `RIGHT_NOW` | `P1` | `TASK` | Stage 6C | After Stage 6B closed with Gemini SAFE TO PROCEED TO STAGE 6C | Planning burden before precision — burden tiers only — no BOM/CAD procurement | `IMPLEMENTED` |
 | IDEA-0015 | 2026-04-29 | Stage 7A KZO end-to-end MVP stabilization: unified operator-grade flow (single API call + orchestrated Sheet writeback) | `IMMEDIATE_CRITICAL` | `P0` | `URGENT_TASK` | Stage 7A | After Stage 6C operator-visible **`IMPLEMENTED`** closes layered stack | **Stabilize before deepen** — one scenario (5A+5C+6B/6C layers) — no BOM/DB/pricing/new API math until MVP cohesion validated | `IMPLEMENTED` |
 | IDEA-0016 | 2026-04-29 | Stage 7B KZO MVP snapshot contract freeze: canonical `KZO_MVP_SNAPSHOT_V1` before persistence | `IMMEDIATE_CRITICAL` | `P0` | `URGENT_TASK` | Stage 7B | After **IDEA-0015** `IMPLEMENTED` (7A operational PASS) | **Freeze before persistence** — one trusted object for Stage 8A — no Supabase/SQL in 7B | `IMPLEMENTED` |
-| IDEA-0017 | 2026-04-29 | Stage 8A Supabase first persistence MVP: insert-only `calculation_snapshots` (`product_type` KZO), `POST /api/kzo/save_snapshot` | `RIGHT_NOW` | `P1` | `TASK` | Stage 8A.1 | After **IDEA-0016** `IMPLEMENTED`; **IDEA-0018**/**IDEA-0019**/`IDEA-0020`/`IDEA-0022` **`IMPLEMENTED`**; repo migration chain verified non-prod (**8A.1**) before **`db push`** / live PASS | **Persist frozen truth** — one row per snapshot; **`ACTIVE`** до live gate PASS у **`SUPABASE_LIVE_VERIFICATION_GATE`** | `ACTIVE` |
+| IDEA-0017 | 2026-04-29 | Stage 8A Supabase first persistence MVP: insert-only `calculation_snapshots` (`product_type` KZO), `POST /api/kzo/save_snapshot` | `RIGHT_NOW` | `P1` | `TASK` | Stage 8A | After **IDEA-0016** `IMPLEMENTED`; **IDEA-0018**/**IDEA-0019**/`IDEA-0020`/`IDEA-0022` **`IMPLEMENTED`**; **live** gate **PASS** recorded | **Persist frozen truth** — one row per snapshot; **`STAGE_8A_COMPLETE`** | `IMPLEMENTED` |
 | IDEA-0018 | 2026-04-29 | Stage 8A.0 EDS Power Supabase root governance foundation — central DB memory, not KZO-root architecture | `IMMEDIATE_CRITICAL` | `P0` | `URGENT_TASK` | Stage 8A.0 | Before expanding live persistence footprint beyond ad-hoc module naming | Folder + naming + migration registry rules — **docs only** — no ERP/BOM/analytics DDL | `IMPLEMENTED` |
 | IDEA-0019 | 2026-04-29 | Stage 8A.0.1 Root migration naming correction — `calculation_snapshots` replaces KZO-biased table name (`TABLE=SYSTEM`, `ROW=PRODUCT`) | `IMMEDIATE_CRITICAL` | `P0` | `URGENT_TASK` | Stage 8A.0.1 | After **IDEA-0018** (**8A.0**); **before** first live push using root governance | Canonical migration + archive superseded DDL; **`KZO_MVP_SNAPSHOT_V1`** unchanged | `IMPLEMENTED` |
 | IDEA-0020 | 2026-04-29 | Stage 8A.0.2 Supabase remote baseline alignment — legacy remote `public` (`legacy_baseline`); **`calculation_snapshots` DDL** ordered after baseline import | `IMMEDIATE_CRITICAL` | `P0` | `URGENT_TASK` | Stage 8A.0.2 | Declared non-empty **`public`** (objects, bom_links, ncr, production_status, **`v_*`**) | **`LEGACY_REMOTE_BASELINE.md`** + **`_pending_after_remote_baseline/`** hold pattern — zero destructive DB action in TASK | `IMPLEMENTED` |
@@ -876,7 +876,7 @@ Classification / priority / decision:
 
 Stage target:
 
-- Stage **8A.1** (first persistence under root DB governance)
+- Stage **8A** (first persistence under root DB governance) — **`STAGE_8A_COMPLETE`**
 
 Trigger condition:
 
@@ -897,10 +897,12 @@ Implementation record:
 - Mapping: `docs/00-02_CALC_CONFIGURATOR/09_KZO/13_KZO_MVP_SNAPSHOT_V1_SQL_MAPPING.md`
 - Governance: `docs/00-02_CALC_CONFIGURATOR/09_KZO/14_CALC_TRUTH_VS_PERSISTENCE_STAGE_8A.md`
 - Audit: `docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_FIRST_PERSISTENCE_MVP.md`
-- Live verification gate: `docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md` — **LIVE PASS pending** (operative sub-state **`PENDING_SUPABASE_VERIFICATION`**) until migration + env + redeploy + POST + row proof are recorded there
+- Live verification gate: `docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md` — **LIVE PASS** (**2026-04-30**); closeout dossier **`docs/AUDITS/2026-04-30_STAGE_8A_2_1_LIVE_DEPLOY_CALCULATION_SNAPSHOTS.md`** (**`STAGE_8A_COMPLETE`**)
 - Forbidden: BOM, pricing, retrieval APIs, dashboards, **`prepare_calculation`** mutations, contract field inflation without V2
 - Thin GAS **`saveKzoSnapshotV1()`** — transport only
-- Master table **Status**: **`ACTIVE`** — set to **`IMPLEMENTED`** only after **live** Supabase + API verification recorded in **`2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md`**
+- Master table **Status**: **`IMPLEMENTED`** (**2026-04-30**)
+
+**Recommended next IDEA (outside IDEA-0017):** Thin GAS orchestration — **`runKzoMvpFlow()`** → assemble **`KZO_MVP_SNAPSHOT_V1`** → **`saveKzoSnapshotV1()`** for repeatable operator production writes (**no** automatic expansion to retrieval/history/analytics APIs).
 
 ### IDEA-0018 — Stage 8A.0 EDS Power Supabase root governance foundation
 

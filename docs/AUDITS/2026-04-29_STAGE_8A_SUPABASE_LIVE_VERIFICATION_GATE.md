@@ -8,11 +8,9 @@ This gate is **verification only** — no schema changes, no contract changes, n
 
 ---
 
-## Governance: when **IDEA-0017** may be **`IMPLEMENTED`**
+## Governance: **IDEA-0017** status
 
-Per master table **Status Values**, **`IDEA-0017`** stays **`ACTIVE`** with operative sub-state **`PENDING_SUPABASE_VERIFICATION`** until **all** items below are satisfied and recorded in this document under **Live PASS record**.
-
-After **LIVE PASS** is recorded: set **`IDEA-0017`** to **`IMPLEMENTED`** in `docs/00_SYSTEM/12_IDEA_MASTER_LOG.md` and sync status docs.
+**Closed (**2026-04-30**):** **`IDEA-0017`** = **`IMPLEMENTED`**; Stage **8A** = **`STAGE_8A_COMPLETE`** (closeout **`docs/AUDITS/2026-04-30_STAGE_8A_2_1_LIVE_DEPLOY_CALCULATION_SNAPSHOTS.md`**). Historically **`IDEA-0017`** was **`ACTIVE`** until items below were satisfied and recorded under **Live PASS record**.
 
 ---
 
@@ -20,10 +18,10 @@ After **LIVE PASS** is recorded: set **`IDEA-0017`** to **`IMPLEMENTED`** in `do
 
 | Step | Check | Done |
 | --- | --- | --- |
-| 1 | **Baseline + `calculation_snapshots`** aligned per **Stage 8A.0.2**: legacy registry **`LEGACY_REMOTE_BASELINE.md`**; DDL file present (**held** pending baseline): **`supabase/migrations/_pending_after_remote_baseline/20260429120000_calculation_snapshots_v1.sql`** | ☐ (operator) |
-| 2 | Migration **applied** in target Supabase project (SQL editor or `supabase db push`) | ☐ |
-| 3 | Render (or API host) env: **`SUPABASE_URL`**, **`SUPABASE_SERVICE_ROLE_KEY`** set | ☐ |
-| 4 | API **redeployed** after env + code that exposes `POST /api/kzo/save_snapshot` | ☐ |
+| 1 | **Baseline + `calculation_snapshots`** aligned per **Stage 8A.0.x / 8A.1**: legacy registry **`LEGACY_REMOTE_BASELINE.md`**; active DDL **`supabase/migrations/20260429120000_calculation_snapshots_v1.sql`** (promoted locally **8A.1**, applied hosted per operator migration playbook **8A.2.0**) | ☑ |
+| 2 | Migration **applied** in target Supabase project (SQL editor or `supabase db push`) | ☑ |
+| 3 | Render (or API host) env: **`SUPABASE_URL`**, **`SUPABASE_SERVICE_ROLE_KEY`** set | ☑ |
+| 4 | API **redeployed** after env + code that exposes `POST /api/kzo/save_snapshot` | ☑ |
 
 ---
 
@@ -93,21 +91,21 @@ limit 5;
 
 **Interpretation:** the public Render deployment **did not** expose this route at probe time — most likely **stale deployment** (Stage 8A route not shipped) or incorrect service URL. **This is not LIVE PASS.**
 
+**Superseded (route + persistence):** **Live PASS record** below (**2026-04-30** closeout **`STAGE_8A_COMPLETE`**).
+
 ---
 
 ## Live PASS record
 
-**Status:** **PENDING**
-
-When complete, fill:
+**Status:** **PASS** (closed **2026-04-30** — dossier **`docs/AUDITS/2026-04-30_STAGE_8A_2_1_LIVE_DEPLOY_CALCULATION_SNAPSHOTS.md`**; **`IDEA-0017`** **`IMPLEMENTED`**)
 
 | Field | Value |
 | --- | --- |
-| Date (UTC) | |
-| Operator | |
-| API base URL | |
-| **`snapshot_id` returned** | |
-| Row confirmed in **`calculation_snapshots`** (`product_type` = **`KZO`**) | yes / no |
+| Date (UTC) | **2026-04-30** |
+| Operator | Operator / deployer (**identity in internal ticket**) |
+| API base URL | **`https://eds-power-api.onrender.com`** |
+| **`snapshot_id` returned** | **Recorded** (**redacted** in public repo — correlate in Supabase **`calculation_snapshots.id`**) |
+| Row confirmed in **`calculation_snapshots`** (`product_type` = **`KZO`**) | **yes** |
 
 **External reviewer note:** paste redacted **`snapshot_id`** only; omit secrets.
 
@@ -115,6 +113,7 @@ When complete, fill:
 
 ## References
 
+- `docs/AUDITS/2026-04-30_STAGE_8A_2_1_LIVE_DEPLOY_CALCULATION_SNAPSHOTS.md`
 - `docs/AUDITS/2026-04-29_STAGE_8A_0_2_SUPABASE_REMOTE_BASELINE_ALIGNMENT.md`
 - `docs/AUDITS/2026-04-29_STAGE_8A_0_1_ROOT_MIGRATION_GOVERNANCE_CORRECTION.md`
 - `docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_FIRST_PERSISTENCE_MVP.md`

@@ -44,20 +44,24 @@ This aligns with **`00_SYSTEM`**: persistence follows **stable contracts** (**Ex
 | **8A.0.4** | **Local replay / staging verification** — paste factual schema-only DDL, then **`supabase db reset`** (or disposable migrate) **only** locally / staging — **never prod `db push` in this TASK**. **2026-04-29 attempt:** **`BLOCKED_BY_LOCAL_TOOLING`** — audit **`2026-04-29_STAGE_8A_0_4_BASELINE_REPLAY_TEST.md`**. On success status becomes **`BASELINE_REPLAY_VERIFIED`**. |
 | **8A.0.5** | **Local tooling precheck** — operator install plan for **`pg_dump`** / Supabase CLI / optional Docker. Audit **`2026-04-29_STAGE_8A_0_5_LOCAL_TOOLING_PRECHECK.md`**. Status: **`READY_FOR_OPERATOR_TOOLING_INSTALL`**. |
 | **8A.0.6** | **Import captured `remote_schema.sql`** into **`20260429110000_remote_legacy_baseline.sql`** (**sanitized**, schema-only). Status: **`REAL_BASELINE_CAPTURED_PENDING_REPLAY`**. Audit **`2026-04-29_STAGE_8A_0_6_ACTUAL_REMOTE_BASELINE_CAPTURE.md`**. |
-| **8A.0.7** | **Baseline local replay verification** — **`supabase db reset`** (or disposable DB). **2026-04-29:** **`BLOCKED_BY_DOCKER`** (no Docker/CLI on agent PATH); **`BASELINE_REPLAY_VERIFIED`** pending operator. Audit **`2026-04-29_STAGE_8A_0_7_BASELINE_REPLAY_VERIFICATION.md`**. Next: **8A.0.8** snapshot DDL promotion test. |
-| **8A.1** | **First snapshot persistence aligned with root model** — migration + API + verification under registry (consumer: KZO via row **`product_type`**, contract **`KZO_MVP_SNAPSHOT_V1`**). (**IDEA-0017** + live gate.) |
+| **8A.0.7** | **Baseline local replay verification** — **`supabase db reset`**. **2026-04-29** agent: **`BLOCKED_BY_DOCKER`**; superseded by operator tooling + **8A.0.8**/**8A.1**. Audit **`2026-04-29_STAGE_8A_0_7_BASELINE_REPLAY_VERIFICATION.md`**. |
+| **8A.1** | **Local promotion test** — **`calculation_snapshots`** in **`supabase/migrations/`** + **`supabase db reset`** **PASS**. Audit **`FIRST_PERSISTENCE_READY_NON_PROD`** (**2026-04-30**). |
+| **8A.2.x** | **Remote / live alignment** — preflight playbook **`2026-04-30_STAGE_8A_2_0_…`**; **LIVE PASS** + **`STAGE_8A_COMPLETE`** (**`IDEA-0017`** **`IMPLEMENTED`**) dossiers **`SUPABASE_LIVE_VERIFICATION_GATE`**, **`2026-04-30_STAGE_8A_2_1`**. |
 
 ---
 
 ## Remote legacy baseline (non-empty Supabase)
 
-**Status:** **`REAL_BASELINE_CAPTURED_PENDING_REPLAY`** (**8A.0.6**) + **`BLOCKED_BY_DOCKER`** (**8A.0.7** replay not run — **`BASELINE_REPLAY_VERIFIED`** pending). Prior **`LEGACY_REMOTE_SCHEMA_DETECTED`** (**8A.0.2**).
+**Production / hosted status:** **`STAGE_8A_COMPLETE`** — **`calculation_snapshots`** migrated and **LIVE PASS** recorded (**IDEA-0017** **`IMPLEMENTED`**). Legacy **`objects`**, **`bom_links`**, **`ncr`**, **`production_status`**, **`v_*`** preserved as **`legacy_baseline`** (additive policy unchanged).
 
-If the linked Supabase project already contains **`public.objects`**, **`bom_links`**, **`ncr`**, **`production_status`**, **`v_*`** views — treat as **`legacy_baseline`** (see **`schema_registry/LEGACY_REMOTE_BASELINE.md`**). Rules:
+Historical capture / replay dossiers (**8A.0.6**–**8A.1**, **CURSOR_LOCAL_STACK_VERIFIED**, etc.) remain in **`docs/AUDITS/`**.
+
+If the linked Supabase project already contains legacy **`public`** objects — treat as **`legacy_baseline`** (see **`schema_registry/LEGACY_REMOTE_BASELINE.md`**). Rules:
+
 
 - **Preserve** until separately audited (**no** drops/renames from snapshot MVP workstreams).
 - **New EDS Power persistence is additive only** — **`calculation_snapshots`** does not justify destructive cleanup of unrelated legacy objects.
-- **Repo migrations MUST NOT casually trail behind remote** — baseline SQL must be imported into **`supabase/migrations/`** ahead of **`calculation_snapshots`** restore from **`_pending_after_remote_baseline/`** (after **`BASELINE_REPLAY_VERIFIED`** per **8A.0.7**).
+- **Repo migrations** — baseline **`110000`** then **`calculation_snapshots` `120000`**; remote history alignment per operator playbook (**`docs/AUDITS/2026-04-30_STAGE_8A_2_0_REMOTE_MIGRATION_HISTORY_PREFLIGHT.md`**) where **`db push`** would otherwise collide with existing objects.
 
 ---
 

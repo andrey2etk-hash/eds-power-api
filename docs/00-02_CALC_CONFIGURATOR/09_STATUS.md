@@ -27,11 +27,11 @@ KZO MVP implementation baseline has reached Stage 5A task definition:
 - Stage 6C — **IMPLEMENTED / Render + operator-visible verified** API **`engineering_burden_summary`** — thin GAS **`runStage6CEngineeringBurdenFlow()`** **`E27:F40`** — planning burden (**IDEA-0014** **`IMPLEMENTED`**; audits **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_FOUNDATION.md`**, **`2026-04-29_STAGE_6C_ENGINEERING_BURDEN_RENDER_GATE.md`**)
 - Stage 7A — **IMPLEMENTED / operator-verified** cohesion **`runKzoMvpFlow()`** (**`api_status`** **`success`**, **`http`** **200**, **`mvp_run_outcome`** **`MVP_RUN_SUCCESS`**; **`E4:F19`/`E20:F20`**, **`E21:F26`**, **`E27:F40`**; summaries **`structural_composition_summary`**, **`physical_summary`**, **`physical_topology_summary`**, **`engineering_class_summary`**, **`engineering_burden_summary`**) (**IDEA-0015** **`IMPLEMENTED`**; audit **`2026-04-29_STAGE_7A_KZO_END_TO_END_MVP_STABILIZATION.md`**)
 - Stage **7B** — **VERIFIED / IMPLEMENTED / formally closed** — canonical **`KZO_MVP_SNAPSHOT_V1`** (`docs/00-02_CALC_CONFIGURATOR/09_KZO/11_KZO_MVP_SNAPSHOT_V1_CONTRACT.md`); Gemini **`SAFE TO PROCEED TO STAGE 8A`**; audit **`2026-04-29_STAGE_7B_KZO_MVP_SNAPSHOT_CONTRACT_FREEZE.md` formal closure; **IDEA-0016** **`IMPLEMENTED`** (**no V1 field changes** outside new snapshot + IDEA)
-- Stage **8A** — **IDEA-0022** **`IMPLEMENTED`**; **`FIRST_PERSISTENCE_READY_NON_PROD`** — активна міграція **`supabase/migrations/20260429120000_calculation_snapshots_v1.sql`** + локальний **`supabase db reset`** **PASS** (аудити **`2026-04-30_STAGE_8A_1_…`**); **IDEA-0017** **`ACTIVE`** до **live PASS** (**`SUPABASE_LIVE_VERIFICATION_GATE`**); **немає** prod `db push` в **8A.1**
+- Stage **8A** — **`STAGE_8A_COMPLETE`**: **`IDEA-0017`** **`IMPLEMENTED`**, **`IDEA-0022`** **`IMPLEMENTED`**; live gate **PASS** + closeout **`2026-04-30_STAGE_8A_2_1_LIVE_DEPLOY_CALCULATION_SNAPSHOTS.md`**
 
 На цьому рівні виконано:
 
-Структурна топологія та **Stages 7A / 7B** узгоджені з аудитами: **Stage 7B CLOSED**. **Stage 8A.1:** активна міграція **`calculation_snapshots`** + локальний **`db reset`** **PASS** — **`FIRST_PERSISTENCE_READY_NON_PROD`** (**`docs/AUDITS/2026-04-30_STAGE_8A_1_CALCULATION_SNAPSHOTS_PROMOTION_TEST.md`**). **`IDEA-0017`** **`ACTIVE`** до **live PASS** (**`docs/AUDITS/2026-04-29_STAGE_8A_SUPABASE_LIVE_VERIFICATION_GATE.md`**). Frozen **V1 INSERT** only — retrieval / analytics — поза Stage 8A verification.
+Структурна топологія та **Stages 7A / 7B** узгоджені з аудитами: **Stage 7B CLOSED**. **Stage 8A** **COMPLETE** (**`SUPABASE_LIVE_VERIFICATION_GATE` LIVE PASS**, **`IDEA-0017` `IMPLEMENTED`**). Frozen **V1 INSERT** — retrieval / analytics / orchestrated GAS save path — окремі **IDEA/TASK**.
 
 ## Stage 1 foundation
 
