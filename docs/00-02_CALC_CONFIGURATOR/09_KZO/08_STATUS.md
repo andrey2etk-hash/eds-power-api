@@ -1,12 +1,15 @@
 # KZO Status
 
-**Fast-read active gate:** **Stage 8B.2** — **`TASK-2026-08B-013`** (**`ACTIVE`**). **`2A`/`2B` CLOSED** **`·`** **`2C` doctrine **`docs/AUDITS/2026-04-30_STAGE_8B_2C_MACHINE_READABLE_PERSISTENCE_ERROR_DOCTRINE.md`** (**Gemini closeout pending**) — **`docs/TASKS.md`** **`§ TASK-2026-08B-013`**.
+**Fast-read active gate:** **Stage 8B.2 Governance Complete** — **`TASK-2026-08B-013`** (**`CLOSED`**, **`STAGE_8B_2_GOVERNANCE_CLOSED`**). **`2A`/`2B`/`2C`/`2D` CLOSED** **`·`** closeout dossier: **`docs/AUDITS/2026-05-01_STAGE_8B_2_GOVERNANCE_CLOSEOUT.md`**. **Next normalized lane:** **`8B.3A` API idempotency + duplicate snapshot protection (readiness only)** — **`docs/AUDITS/2026-05-01_STAGE_8B_3A_API_IDEMPOTENCY_DUPLICATE_SNAPSHOT_PROTECTION_IDEA_NORMALIZATION.md`**.
 
 **Hygiene closed:** **`STAGE_8B_PRE_8B2A_DOC_SANITY_PATCH_COMPLETE`** · **`docs/AUDITS/2026-04-30_PRE_8B2A_DOC_SANITY_PATCH.md`**.
 
+**File system governance (2026-05-01):** KZO doctrine docs re-aligned to sequential numbering in `09_KZO`:
+**`22_KZO_WELDED_SR_CELL_DNA.md`**, **`23_KZO_WELDED_SV_CELL_DNA.md`**, **`24_KZO_WELDED_SV_SR_PAIR_DNA.md`**, **`25_KZO_WELDED_TVP_CELL_DNA.md`**, **`26_KZO_WELDED_KGU_LINE_DELTA.md`**.
+
 ## Current stage (**operator / registry truth**)
 
-**As of registry (2026-04-30):** **Stage 8B.2** — **`TASK-2026-08B-013`** (**`ACTIVE`**) **`·`** rollup **`docs/TASKS.md`** **`§ TASK-013`** **`·`** pre-gate **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`**. **Stage 8B.1** — **`TASK-2026-08B-012`** / **`TASK-2026-08B-011`** **`CLOSED`**. **Stage 8A** — **`STAGE_8A_COMPLETE`**.
+**As of registry (2026-05-01):** **Stage 8B.2 Governance** — **`COMPLETE`** with **`TASK-2026-08B-013`** (**`CLOSED`**) and closeout **`docs/AUDITS/2026-05-01_STAGE_8B_2_GOVERNANCE_CLOSEOUT.md`**. **Stage 8B.1** — **`TASK-2026-08B-012`** / **`TASK-2026-08B-011`** **`CLOSED`**. **Stage 8A** — **`STAGE_8A_COMPLETE`**.
 
 ---
 
@@ -48,7 +51,7 @@
 
 **Stage 7B — `KZO_MVP_SNAPSHOT_V1`:** **CLOSED** — canonical snapshot frozen (**`IDEA-0016`** **`IMPLEMENTED`**); Gemini **`SAFE TO PROCEED TO STAGE 8A`**. **`KZO_MVP_SNAPSHOT_V1`** — **immutable** until new snapshot version + IDEA; **no contract edits** outside that process.
 
-**Stage 8A:** **`STAGE_8A_COMPLETE`** — **IDEA-0017** **`IMPLEMENTED`**; **IDEA-0022** **`IMPLEMENTED`**; thin GAS **orchestrated save path** (**`TASK-2026-08B-011`**) — **`CLOSED`** (**`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**). **Governance lane:** **`TASK-2026-08B-013`** / Stage **8B.2** (**pre–8B.2A:** **`docs/AUDITS/2026-04-30_STAGE_8B_PRE_8B2A_GOVERNANCE_CLEANUP.md`**, **`docs/AUDITS/2026-04-30_PRE_8B2A_DOC_SANITY_PATCH.md`**). Retrieval / history UI — окремий **TASK**.
+**Stage 8A:** **`STAGE_8A_COMPLETE`** — **IDEA-0017** **`IMPLEMENTED`**; **IDEA-0022** **`IMPLEMENTED`**; thin GAS **orchestrated save path** (**`TASK-2026-08B-011`**) — **`CLOSED`** (**`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**). **Stage 8B.2 governance lane:** **`TASK-2026-08B-013`** = **`CLOSED / COMPLETE`**; current state is freeze, next state is bounded implementation planning. Retrieval / history UI — окремий **TASK**.
 **Stage 7A unified MVP Runner:** **`runKzoMvpFlow()`** — cohesion gate (**IDEA-0015** **`IMPLEMENTED`**); operator verification **PASS** (manual **`MVP_RUN_SUCCESS`**, **`http_code`** **200**) — документовано **`docs/AUDITS/2026-04-29_STAGE_7A_KZO_END_TO_END_MVP_STABILIZATION.md`**.
 
 Previous closure: **Stage 5C MVP closed** for IDEA-0010 — Render topology gate **PASS**; operator-visible Sheet topology **PASS** (thin GAS `Stage4A_MVP!E21:F26`; IDEA-0010 **`IMPLEMENTED`** per master table `Status Values`).

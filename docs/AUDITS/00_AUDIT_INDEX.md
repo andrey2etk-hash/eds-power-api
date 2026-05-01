@@ -12,6 +12,12 @@ Rule:
 
 ## Latest audit
 
+- **KZO Layered Node Prototype API live verification (`PASS`) — selected tuple returns `layered_node_summary`; non-selected tuple remains absent; baseline layers preserved** — **`docs/AUDITS/2026-05-01_KZO_LAYERED_NODE_PROTOTYPE_API_LIVE_VERIFICATION.md`**
+- **KZO Layered Node Prototype MVP API demo slice (bounded, API-only)** — implementation in `main.py` + tests `tests/test_prepare_calculation_layered_node_prototype.py` for selected tuple (`KZO_WELDED` / `VACUUM_BREAKER` / `LEFT_END` / `INSULATOR_SYSTEM`)
+- **IDEA-0024 real planning dossier (demo-ready; planning only)** — **`docs/AUDITS/2026-05-01_KZO_LAYERED_NODE_PROTOTYPE_MVP_PLANNING_DOSSIER.md`** (`KZO_WELDED` / `VACUUM_BREAKER_LEFT_END` / `INSULATOR_SYSTEM`)
+- **IDEA-0024 normalization — KZO Layered Node Prototype MVP (`NEXT_ACTIVE_CANDIDATE`, planning only)** — **`docs/AUDITS/2026-05-01_KZO_LAYERED_NODE_PROTOTYPE_MVP_IDEA_NORMALIZATION.md`**
+- **KZO Layered Node Prototype MVP planning dossier placeholder** — **`docs/AUDITS/2026-05-01_KZO_LAYERED_NODE_PROTOTYPE_MVP_PLANNING_DOSSIER_PLACEHOLDER.md`**
+- **Stage 8B.3A implementation closeout (**`IMPLEMENTED_LIVE_VERIFIED`**) — commits `61493ed` + `515c82a`; live PASS (`STORED` -> `DUPLICATE_REJECTED` -> `STORED`)** — **`docs/AUDITS/2026-05-01_STAGE_8B_3A_LIVE_VERIFICATION.md`**
 - **Stage 8B.3A live verification gate (**`PASS`**) — duplicate replay returns `DUPLICATE_REJECTED` on live host** — **`docs/AUDITS/2026-05-01_STAGE_8B_3A_LIVE_VERIFICATION.md`**
 - **Stage 8B.3A bounded implementation closeout (**`STAGE_8B_3A_BOUNDED_IMPLEMENTATION_COMPLETE`**)** — **`docs/AUDITS/2026-05-01_STAGE_8B_3A_BOUNDED_IMPLEMENTATION_CLOSEOUT.md`**
 - **Stage 8B.3A bounded implementation framing (planning only)** — **`docs/AUDITS/2026-05-01_STAGE_8B_3A_BOUNDED_IMPLEMENTATION_PLAN.md`**

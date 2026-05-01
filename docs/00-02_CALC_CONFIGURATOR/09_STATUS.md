@@ -2,7 +2,7 @@
 
 ## Поточний статус
 
-**Актуальний операторний / реєстровий фронт:** **Stage 8B.2** — **`TASK-2026-08B-013`** (**`ACTIVE`**). Канон слайсів — **`docs/TASKS.md`** **`§ TASK-2026-08B-013`** (**`8B.2C`:** **`docs/AUDITS/2026-04-30_STAGE_8B_2C_MACHINE_READABLE_PERSISTENCE_ERROR_DOCTRINE.md`** · Gemini **focused** **`docs/AUDITS/2026-04-30_GEMINI_STAGE_8B_2C_FOCUSED_AUDIT_REQUEST.md`** → closeout pending). Гігієна перед **8B.2A:** **`docs/AUDITS/2026-04-30_STAGE_8B_PRE_8B2A_GOVERNANCE_CLEANUP.md`**, **`docs/AUDITS/2026-04-30_PRE_8B2A_DOC_SANITY_PATCH.md`**. **Stage 8B.1A** / **8B.1B** — **`CLOSED`**. **Stage 8A** — **`STAGE_8A_COMPLETE`**.
+**Актуальний операторний / реєстровий фронт:** **Stage 8B.2 Governance** — **`COMPLETE`**. **`TASK-2026-08B-013`** = **`CLOSED`** (**`STAGE_8B_2_GOVERNANCE_CLOSED`**) · closeout **`docs/AUDITS/2026-05-01_STAGE_8B_2_GOVERNANCE_CLOSEOUT.md`**. Активна наступна доріжка: **`8B.3A` bounded implementation readiness normalization** — **`docs/AUDITS/2026-05-01_STAGE_8B_3A_API_IDEMPOTENCY_DUPLICATE_SNAPSHOT_PROTECTION_IDEA_NORMALIZATION.md`** (**без імплементації**). Слайси **`2A`/`2B`/`2C`/`2D`** — **`CLOSED`**; **`8B.2E`** не відкрито. **Stage 8B.1A** / **8B.1B** — **`CLOSED`**. **Stage 8A** — **`STAGE_8A_COMPLETE`**.
 
 Нижче — **перевірена послідовність** робіт **KZO MVP** (історія етапів; не зводити поточний стан лише до **4C**).
 
@@ -33,7 +33,7 @@ KZO MVP implementation baseline has reached Stage 5A task definition:
 
 На цьому рівні виконано:
 
-Структурна топологія та **Stages 7A / 7B** узгоджені з аудитами: **Stage 7B CLOSED**. **Stage 8A** **COMPLETE**. **Stages 8B.1A / 8B.1B** (**`TASK-2026-08B-012`**, **`TASK-2026-08B-011`**) **`CLOSED`**. **Governance focal point:** **`TASK-2026-08B-013`** / Stage **8B.2**; **pre–8B.2A hygiene** — **`docs/AUDITS/2026-04-30_STAGE_8B_PRE_8B2A_GOVERNANCE_CLEANUP.md`**. Frozen **V1 INSERT** — retrieval / analytics / unrelated client expansion — окремі **IDEA/TASK**.
+Структурна топологія та **Stages 7A / 7B** узгоджені з аудитами: **Stage 7B CLOSED**. **Stage 8A** **COMPLETE**. **Stages 8B.1A / 8B.1B** (**`TASK-2026-08B-012`**, **`TASK-2026-08B-011`**) **`CLOSED`**. **Stage 8B.2 governance** (**`TASK-2026-08B-013`**) — **`CLOSED` / `COMPLETE`**; стан — **post-governance freeze**, далі лише bounded implementation planning.
 
 ## Stage 1 foundation
 

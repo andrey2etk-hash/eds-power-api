@@ -105,7 +105,7 @@ First **real** client adapter: **GAS** calls the **same** API persistence pathwa
 ### Deliverable for closeout (**met**)
 
 - Operator verification **PASS** + audit **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`** (**`STAGE_8B_1B_OPERATOR_VERIFIED`**).
-- **Next:** **`8B.3A` live gate passed** — verification logged in **`docs/AUDITS/2026-05-01_STAGE_8B_3A_LIVE_VERIFICATION.md`** (**A1=`STORED`, A2=`DUPLICATE_REJECTED`, B1=`STORED`**).
+- **Next:** **`IDEA-0024 = IMPLEMENTED_LIVE_VERIFIED`** for bounded API prototype tuple — live report **`docs/AUDITS/2026-05-01_KZO_LAYERED_NODE_PROTOTYPE_API_LIVE_VERIFICATION.md`** (`KZO_WELDED` + `VACUUM_BREAKER` + `LEFT_END` + `INSULATOR_SYSTEM`; no expansion).
 
 ---
 

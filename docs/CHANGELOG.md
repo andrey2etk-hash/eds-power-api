@@ -6,6 +6,349 @@
 
 ---
 
+# 01.05.2026 — Strategic Engineering & Manufacturing OS idea dossier normalized (registry-only)
+
+## Факт (**documentation / registry only**)
+
+- Strategic future architecture layers normalized in master registry:
+  - Engineering Intelligence
+  - Shop Floor Twin
+  - Management / Lean
+  - AI Optimization
+- Added strategic ideas `IDEA-0034` through `IDEA-0044` with category tags and explicit MVP guard note
+- Captured concepts only; no mutation of active MVP prototype priorities
+- Lean / Shop Floor Twin / AI Optimization concepts preserved as future doctrine placeholders
+- Registry-only capture completed in:
+  - **`docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`**
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Keep current MVP lane unchanged (`KZO Prototype + Semantic Node + Package Architecture foundation`) and treat strategic ideas as future-governance backlog until explicitly activated.
+
+---
+
+# 01.05.2026 — KZO conceptual doctrine capture closed; Element Calculation MVP opened (doc-only governance transition)
+
+## Факт (**documentation / governance transition only**)
+
+- KZO Conceptual Doctrine Capture formally closed:
+  - `CLOSED — PASS WITH TOPOLOGY BLOCKERS RECORDED`
+- Prototype Controlled Mutation Governance activated:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/31_KZO_PROTOTYPE_MODE_GOVERNANCE.md`**
+- DNA documents frozen as current prototype Source of Truth
+- Silent mutation explicitly prohibited; controlled mutation path fixed with tag:
+  - `[PROTOTYPE_REFINEMENT]`
+- Element Calculation MVP stage opened:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/30_KZO_WELDED_ELEMENT_CALCULATION_LOGIC.md`**
+- Master stage/idea registry updated:
+  - **`docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`**
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Proceed in MVP approximation lane for Live Calculator Brain under doc-first and controlled-mutation governance.
+
+---
+
+# 01.05.2026 — KZO welded Cable Assembly Cell doctrine recorded (doc-only)
+
+## Факт (**documentation only**)
+
+- Created Cable Assembly doctrine artifact:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/29_KZO_WELDED_CABLE_ASSEMBLY_CELL_DNA.md`**
+- Cable Assembly Cell recorded as minimal conceptual calculation doctrine
+- Minimal cable logic fixed as:
+  - `cable_connection_count`
+  - `cable_core_type`
+  - `cable_connection_type`
+- Conceptual calculation vs constructive boundary explicitly preserved
+- Updated idea registry:
+  - **`docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`**
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Keep Cable Assembly in minimal conceptual lane until cable catalog, naming, and accessory governance are approved.
+
+---
+
+# 01.05.2026 — KZO welded SHM DNA + SHMR delta doctrine recorded (doc-only)
+
+## Факт (**documentation only**)
+
+- Created SHM doctrine artifact:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/27_KZO_WELDED_SHM_DNA.md`**
+- Created SHMR derivative delta artifact:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/28_KZO_WELDED_SHMR_DELTA.md`**
+- SHM recorded as topology bridge node
+- SHMR recorded as SHM derivative (not separate base family)
+- Conceptual calculation vs constructive boundary explicitly preserved
+- Updated idea registry:
+  - **`docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`**
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Keep SHM/SHMR in conceptual topology/calculation lane until bridge-length, package, and disconnector governance is approved.
+
+---
+
+# 01.05.2026 — KZO welded KGU LINE delta doctrine recorded (doc-only)
+
+## Факт (**documentation only**)
+
+- Created LINE-specialization doctrine artifact:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/26_KZO_WELDED_KGU_LINE_DELTA.md`**
+- KGU line classified as LINE specialization (no separate KGU base family introduced)
+- Mandatory cable-side TN synchronization doctrine recorded with validation fail on missing TN cable
+- Linked KGU specialization from LINE DNA:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/19_KZO_WELDED_LINE_CELL_FULL_DNA.md`**
+- Updated idea registry:
+  - **`docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`**
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Keep KGU_LINE in conceptual LINE-delta lane until TN sync catalog and validation doctrine are approved.
+
+---
+
+# 01.05.2026 — KZO welded TVP cell DNA created (doc-only)
+
+## Факт (**documentation only**)
+
+- Created TVP doctrine artifact:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/25_KZO_WELDED_TVP_CELL_DNA.md`**
+- TVP recorded as distinct KZO cell type (separate branch, not LINE/TN/incoming derivative)
+- External vs internal TVP doctrine recorded, including required/optional dependency boundaries
+- Conceptual calculation vs constructive cabinet boundary explicitly preserved
+- Updated idea registry:
+  - **`docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`**
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Keep TVP in conceptual doctrine lane until mode, fuse, and transformer catalog governance is approved.
+
+---
+
+# 01.05.2026 — KZO welded SR cell doctrine recorded and aligned with SV/SR pair governance (doc-only)
+
+## Факт (**documentation only**)
+
+- Created SR doctrine artifact:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/22_KZO_WELDED_SR_CELL_DNA.md`**
+- SR doctrine aligned with SV/SR pair governance as conceptual calculation layer only
+- Recorded paired vacuum reduction rule:
+  - if paired SV has vacuum breaker, SR must not duplicate breaker and current transformers
+- Explicitly fixed boundary:
+  - calculation concept doctrine now
+  - cabinet construction differences deferred
+- Updated pair-doctrine placeholder with SR reduction and governance boundary:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/24_KZO_WELDED_SV_SR_PAIR_DNA.md`**
+- Updated idea registry with SR concept-only normalization:
+  - **`docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`**
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Keep SV/SR as conceptual pair-governance lane until topology and ownership doctrine are approved for implementation.
+
+---
+
+# 01.05.2026 — Gemini SV cell doctrine audit findings recorded (doc-only)
+
+## Факт (**documentation only**)
+
+- Gemini SV doctrine audit recorded with governance verdict:
+  - `SAFE WITH STRUCTURAL FIXES`
+  - `IMPLEMENTATION BLOCKED — TOPOLOGY INCOMPLETE`
+- Created SV doctrine artifact:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/23_KZO_WELDED_SV_CELL_DNA.md`**
+- Created pair-doctrine placeholder:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/24_KZO_WELDED_SV_SR_PAIR_DNA.md`**
+- Updated idea registry with `KZO_WELDED_SV_SR_PAIR_DNA` as topology-blocked normalization:
+  - **`docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`**
+- SV implementation is blocked until SV/SR pair topology and ownership doctrine are clarified and approved
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Finalize and approve SV/SR pair doctrine before opening any SV implementation lane.
+
+---
+
+# 01.05.2026 — KZO welded TN cell DNA captured (doc-only)
+
+## Факт (**documentation only**)
+
+- Created canonical TN cell DNA artifact:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/21_KZO_WELDED_TN_CELL_DNA.md`**
+- Scope fixed to `KZO_WELDED` / `TN_CELL` only
+- Captured TN as separate measurement/voltage-transformer branch object (not inherited from `LINE_CELL_FULL_DNA`)
+- Included required attributes, dependency rules, downstream impacts, passport/dispatcher marking, purchasing, constructive effects, validation notes, and unknowns for user confirmation
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+User review of TN-cell unknowns and catalog constraints before any implementation task.
+
+---
+
+# 01.05.2026 — KZO welded LINE fuse-current rule + INCOMING cell DNA (doc-only)
+
+## Факт (**documentation only**)
+
+- Patched LINE DNA:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/19_KZO_WELDED_LINE_CELL_FULL_DNA.md`**
+  - Added rule: if `switching_device_type = LBS_FUSE / ВНАП`, then `fuse_rated_current` is required
+  - Captured `fuse_rated_current` downstream impact: purchasing, protection selection, schematic, passport, BOM
+- Created INCOMING DNA:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/20_KZO_WELDED_INCOMING_CELL_DNA.md`**
+  - Model fixed as `INCOMING_CELL = LINE_CELL_BASE + INCOMING_DELTA`
+  - Added `PREPARED` canon and validation constraints, incoming current logic, downstream impact map, and explicit unknowns for user confirmation
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+User review/confirmation of incoming-cell unknowns and policy variants before any implementation task.
+
+---
+
+# 01.05.2026 — KZO welded LINE cell full DNA captured (doc-only)
+
+## Факт (**documentation only**)
+
+- Added canonical LINE cell DNA artifact:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/19_KZO_WELDED_LINE_CELL_FULL_DNA.md`**
+- Scope fixed to `KZO_WELDED` / `LINE_CELL` only
+- Captured full user-provided attribute list as MVP core set (no core/secondary split)
+- Included dependency rules, downstream impact map, passport/purchasing/constructive effects, validation notes, and explicit unknowns for user confirmation
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+User review and confirmation of unknowns before any implementation task.
+
+---
+
+# 01.05.2026 — KZO layered-node API live verification (pass)
+
+## Факт (**verification only**)
+
+- Live checks executed on `POST /api/calc/prepare_calculation`
+- Selected tuple (`KZO_WELDED` / `VACUUM_BREAKER` / `LEFT_END` / `INSULATOR_SYSTEM`) returned `layered_node_summary`
+- Non-selected tuple correctly did not return `layered_node_summary`
+- Existing baseline layers remained present:
+  - `structural_composition_summary`
+  - `physical_summary`
+  - `physical_topology_summary`
+- Verification report: **`docs/AUDITS/2026-05-01_KZO_LAYERED_NODE_PROTOTYPE_API_LIVE_VERIFICATION.md`**
+
+## Статус
+
+Live gate = `PASS` (bounded prototype behavior confirmed on deployed API after rollout).
+
+Deployment commit for this slice: `f2faa95`.
+
+---
+
+# 01.05.2026 — KZO Layered Node Prototype MVP API demo slice (bounded)
+
+## Факт (**API-only implementation**)
+
+- Added API-side prototype result on `prepare_calculation` for one bounded demo case only:
+  - `constructive_family = KZO_WELDED`
+  - `cell_role = VACUUM_BREAKER`
+  - `cell_position = LEFT_END`
+  - `node = INSULATOR_SYSTEM`
+- Added `layered_node_summary` only when the selected tuple matches demo constraints
+- Included summary blocks:
+  - `placement_points`
+  - `presence_rules_result`
+  - `primary_components`
+  - `dependent_hardware`
+  - `aggregate_bom`
+- Added bounded tests:
+  - selected case returns `layered_node_summary`
+  - non-selected family does not return fake summary
+  - baseline `prepare_calculation` response remains intact
+
+## Scope guard compliance
+
+- API only
+- no DB changes
+- no GAS changes
+- no Sheet changes
+- no pricing
+- no full BOM
+- no all-family expansion
+- no broad refactor
+
+---
+
+# 01.05.2026 — IDEA-0024 demo-case planning dossier authored
+
+## Факт (**planning only**)
+
+- Replaced placeholder-only state with first real practical planning dossier:
+  - **`docs/AUDITS/2026-05-01_KZO_LAYERED_NODE_PROTOTYPE_MVP_PLANNING_DOSSIER.md`**
+- Bounded selection fixed:
+  - family: `KZO_WELDED`
+  - cell: `VACUUM_BREAKER_LEFT_END`
+  - node: `INSULATOR_SYSTEM`
+- Included required planning blocks:
+  - placement map, presence matrix, primary/dependent logic, aggregate BOM output model, admin future rule-edit path, scope guard, demo presentation value
+- Placeholder dossier marked superseded:
+  - **`docs/AUDITS/2026-05-01_KZO_LAYERED_NODE_PROTOTYPE_MVP_PLANNING_DOSSIER_PLACEHOLDER.md`**
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Planning review only; implementation requires separate bounded task.
+
+---
+
+# 01.05.2026 — IDEA-0024 normalized as next active candidate (planning only)
+
+## Факт (**documentation only**)
+
+- Normalized: **KZO Layered Node Prototype MVP — Constructive Family + Cell Role Logic**
+- Canonical state: **`NEXT_ACTIVE_CANDIDATE`** / **`P1-NEXT`** / planning candidate only
+- Lodged normalization artifact: **`docs/AUDITS/2026-05-01_KZO_LAYERED_NODE_PROTOTYPE_MVP_IDEA_NORMALIZATION.md`**
+- Added planning placeholders:
+  - **`docs/AUDITS/2026-05-01_KZO_LAYERED_NODE_PROTOTYPE_MVP_PLANNING_DOSSIER_PLACEHOLDER.md`**
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/15_CONSTRUCTIVE_FAMILY_HIERARCHY_PLACEHOLDER.md`**
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/16_LAYERED_NODE_DOCTRINE_PLACEHOLDER.md`**
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/17_DEMO_CASE_SCOPE_DEFINITION_PLACEHOLDER.md`**
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/18_SCOPE_GUARD_LAYERED_NODE_PROTOTYPE.md`**
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Prototype framing task only (no implementation expansion).
+
+---
+
+# 01.05.2026 — Stage 8B.3A implementation closeout (`IMPLEMENTED_LIVE_VERIFIED`)
+
+## Факт (**registry only**)
+
+- Canonical closeout state set: **`8B.3A = IMPLEMENTED_LIVE_VERIFIED`**
+- Implementation commit: **`61493ed`** (duplicate protection logic + tests)
+- Live verification docs commit: **`515c82a`**
+- Live gate PASS confirmed:
+  - `A` first = `STORED`
+  - `A` duplicate = `DUPLICATE_REJECTED`
+  - `B` new = `STORED`
+
+## Далі
+
+Return focus to practical configurator depth under separate bounded tasking.
+
+---
+
 # 01.05.2026 — Stage 8B.3A live verification gate (pass)
 
 ## Факт (**verification only**)

@@ -14,13 +14,15 @@
 
 **Slice status (**canonical detail — один канон**, **не** копіювати доріжки аудитів сюди**):** **`docs/TASKS.md`** **`§ TASK-2026-08B-013`** (**`CLOSED`** **`·`** **`2A`/`2B`/`2C`/`2D` CLOSED** **`·`** **`8B.2E` not opened**) **`·`** closeout **`docs/AUDITS/2026-05-01_STAGE_8B_2_GOVERNANCE_CLOSEOUT.md`**
 
-**Current execution rule:** **`8B.3A` live verification gate is PASS**; keep scope frozen.
+**Current execution rule:** **`IDEA-0024` API live verification is `PASS`** (`IMPLEMENTED_LIVE_VERIFIED` for bounded prototype tuple).
 
-**Next execution:** **`8B.3A` closeout readiness** with strict no-scope-widening rule.
+**Next execution:** **KZO welded LINE + INCOMING + TN cell DNA review** (doc-only, no implementation).
 
 **Governance budget rule:** no master audits unless explicitly requested; one focused Gemini audit per doctrine; after `PASS`/`PASS WITH DOC FIXES` the slice is closed; no `8B.2E` opening without explicit user approval.
 
-**Active implementation lane:** **`STAGE_8B_3A_API_IDEMPOTENCY_DUPLICATE_SNAPSHOT_PROTECTION_MVP`** — normalization **`docs/AUDITS/2026-05-01_STAGE_8B_3A_API_IDEMPOTENCY_DUPLICATE_SNAPSHOT_PROTECTION_IDEA_NORMALIZATION.md`** + bounded plan **`docs/AUDITS/2026-05-01_STAGE_8B_3A_BOUNDED_IMPLEMENTATION_PLAN.md`** + closeout **`docs/AUDITS/2026-05-01_STAGE_8B_3A_BOUNDED_IMPLEMENTATION_CLOSEOUT.md`** + live verification **`docs/AUDITS/2026-05-01_STAGE_8B_3A_LIVE_VERIFICATION.md`** (**BLOCKED on duplicate replay check**).
+**Active practical slice:** **`IDEA-0024` KZO Layered Node Prototype MVP** — bounded API demo tuple is implemented and live-verified (selected tuple returns `layered_node_summary`; non-selected tuple does not; baseline layers preserved) — see **`docs/AUDITS/2026-05-01_KZO_LAYERED_NODE_PROTOTYPE_API_LIVE_VERIFICATION.md`**.
+
+**Active documentation capture:** **`KZO_WELDED` / `LINE_CELL` full DNA + `INCOMING_CELL` delta DNA + `TN_CELL` standalone DNA** — **`docs/00-02_CALC_CONFIGURATOR/09_KZO/19_KZO_WELDED_LINE_CELL_FULL_DNA.md`**, **`docs/00-02_CALC_CONFIGURATOR/09_KZO/20_KZO_WELDED_INCOMING_CELL_DNA.md`**, **`docs/00-02_CALC_CONFIGURATOR/09_KZO/21_KZO_WELDED_TN_CELL_DNA.md`** (LINE base + INCOMING delta; TN as separate measurement/VT branch; planning-only).
 
 **Pre–8B.2A hygiene (**complete**):** **`STAGE_8B_PRE_8B2A_GOVERNANCE_CLEANUP_COMPLETE`** — **`docs/AUDITS/2026-04-30_STAGE_8B_PRE_8B2A_GOVERNANCE_CLEANUP.md`**
 

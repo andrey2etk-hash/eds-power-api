@@ -43,10 +43,327 @@ Operative **sub-state** strings (such as **`PENDING_SUPABASE_VERIFICATION`**) ap
 | IDEA-0021 | 2026-04-29 | Role-adaptive operational shell doctrine (“self-checkout principle”): guided role-specific UI above, system truth / ERP / DB underneath | `NORMAL_LONG_TERM` | `P3` | `FUTURE` | Post–core platform architecture / multi-module UX doctrine | After stable CALC + persistence + first operational modules | One truth layer below; many governed operational shells above — users do not operate core accounting/ERP unless role requires it | `FUTURE` |
 | IDEA-0022 | 2026-04-29 | Stage 8A.0.3 Supabase remote baseline capture — authoritative migration slot ordering before `calculation_snapshots`; schema-only DDL from remote (no prod `db push`) | `IMMEDIATE_CRITICAL` | `P0` | `URGENT_TASK` | Stage 8A.0.3 → **8A.1** | After **IDEA-0020** **`IMPLEMENTED`**; local replay + promotion per **8A.0.8** / **8A.1** | **`20260429110000`** \< **`20260429120000_calculation_snapshots_v1`**; verified **`supabase db reset`** non-prod | `IMPLEMENTED` |
 | IDEA-0023 | 2026-04-30 | Stage 8B Client-Agnostic Persistence Flow — platform persistence architecture (not GAS orchestration) | `RIGHT_NOW` | `P1` | `TASK` | Stage 8B | After **`IDEA-0017`** **`IMPLEMENTED`** / **`STAGE_8A_COMPLETE`**; **before** web/mobile/portals/multi-client UX expansion without this freeze | **Client ≠ core; API = orchestrator; Supabase = memory** — identical persistence path from any adapter | `ACTIVE` |
+| IDEA-0024 | 2026-05-01 | KZO Layered Node Prototype MVP — Constructive Family + Cell Role Logic | `NEXT_ACTIVE_CANDIDATE` | `P1-NEXT` | `PLANNING_CANDIDATE` | Post-8B.3A Practical Configurator Depth | After **`8B.3A = IMPLEMENTED_LIVE_VERIFIED`** and before any broad BOM/ERP expansion | Convert governed configurator backbone into first bounded constructive engineering intelligence using one prototype family + one demo case | `ACTIVE` |
+| IDEA-0025 | 2026-05-01 | KZO_WELDED_SV_SR_PAIR_DNA | `DOC_GOVERNANCE_BLOCKER` | `P1-NEXT` | `NORMALIZED_BLOCKED` | KZO welded SV/SR doctrine | After Gemini external SV audit confirms standalone SV topology is incomplete | Gemini confirmed SV cannot be standalone; SV/SR pair doctrine is required before any implementation | `NORMALIZED_BLOCKED_BY_TOPOLOGY` |
+| IDEA-0026 | 2026-05-01 | KZO_WELDED_SR_CELL_DNA | `DOC_CONCEPT_GOVERNANCE` | `P1-NEXT` | `NORMALIZED_CONCEPT_ONLY` | KZO welded SR calculation doctrine | After SV/SR pair doctrine intake and user clarification on paired vacuum anti-duplication | SR mirrors SV paired logic, with vacuum-SV exception removing SR breaker and CT; construction differences are deferred | `NORMALIZED_CONCEPT_ONLY` |
+| IDEA-0027 | 2026-05-01 | KZO_WELDED_TVP_CELL_DNA | `DOC_CONCEPT_GOVERNANCE` | `P1-NEXT` | `NORMALIZED_CONCEPT_ONLY` | KZO welded TVP calculation doctrine | After user clarification that TVP is a distinct branch with external/internal transformer modes | TVP is a separate cell logic branch with placement-based dependency doctrine and deferred constructive divergence | `NORMALIZED_CONCEPT_ONLY` |
+| IDEA-0028 | 2026-05-01 | KZO_WELDED_KGU_LINE_DELTA | `DOC_CONCEPT_GOVERNANCE` | `P1-NEXT` | `NORMALIZED_CONCEPT_ONLY` | KZO welded KGU line specialization doctrine | After user clarification that KGU line must remain LINE-derived with mandatory TN sync delta | KGU_LINE is LINE base plus required TN synchronization delta; no separate KGU base family is opened | `NORMALIZED_CONCEPT_ONLY` |
+| IDEA-0029 | 2026-05-01 | KZO_WELDED_SHM_DNA | `DOC_CONCEPT_GOVERNANCE` | `P1-NEXT` | `NORMALIZED_CONCEPT_ONLY` | KZO welded SHM conceptual topology doctrine | After user clarification that SHM is topology bridge node driven by busbar current and bridge length | SHM is a topology/busbar bridge node doctrine, not standalone cell DNA, with constructive bridge details deferred | `NORMALIZED_CONCEPT_ONLY` |
+| IDEA-0030 | 2026-05-01 | KZO_WELDED_SHMR_DELTA | `DOC_CONCEPT_GOVERNANCE` | `P1-NEXT` | `NORMALIZED_CONCEPT_ONLY` | KZO welded SHMR derivative doctrine | After SHM conceptual doctrine intake requiring SHMR as derivative with disconnector delta | SHMR is SHM_BASE plus disconnector delta, not separate base family; mechanics and interlock details deferred | `NORMALIZED_CONCEPT_ONLY` |
+| IDEA-0031 | 2026-05-01 | KZO_WELDED_CABLE_ASSEMBLY_CELL_DNA | `DOC_CONCEPT_GOVERNANCE` | `P1-NEXT` | `NORMALIZED_CONCEPT_ONLY` | KZO welded cable assembly conceptual doctrine | After user-defined minimal cable assembly intake focused on count/core/type only | Minimal cable assembly doctrine fixed as count + core type + cable connection type only; constructive cable systems deferred | `NORMALIZED_CONCEPT_ONLY` |
+| IDEA-0032 | 2026-05-01 | KZO_CONCEPTUAL_DOCTRINE_CAPTURE_STAGE | `STAGE_GOVERNANCE_TRANSITION` | `P1-NEXT` | `CLOSED_PASS_WITH_TOPOLOGY_BLOCKERS` | KZO conceptual doctrine capture closeout | After canonical DNA coverage reached with explicit SV/SR topology blockers retained | DNA coverage is sufficient for prototype transition; Prototype Controlled Mutation Mode is enabled | `CLOSED_PASS_WITH_TOPOLOGY_BLOCKERS` |
+| IDEA-0033 | 2026-05-01 | KZO_ELEMENT_CALCULATION_MVP_STAGE | `STAGE_GOVERNANCE_TRANSITION` | `P1-NEXT` | `OPEN` | KZO Element Calculation MVP | After conceptual doctrine closure and prototype governance activation | Live Calculator Brain stage opened with focus on busbar, insulator, and simplified equipment packages | `OPEN` |
+| IDEA-0034 | 2026-05-01 | PACKAGE_BASED_CALCULATION | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Engineering Intelligence expansion | After prototype foundation stabilization and semantic node package readiness | Transition from raw per-part output to package architecture where semantic nodes emit package IDs | `FUTURE` |
+| IDEA-0035 | 2026-05-01 | SEMANTIC_NODE_REGISTRY | `STRATEGIC_FOUNDATION_NORMALIZATION` | `P1-FOUNDATION` | `NORMALIZED_CONCEPT_ONLY` | Semantic modeling foundation | Maintain alongside MVP prototype as conceptual registry basis | Separate WHAT (resource) from WHERE (semantic node); cell DNA acts as node activation map | `FUTURE` |
+| IDEA-0036 | 2026-05-01 | CONSTRAINT_BASED_OPTIMIZATION | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | AI optimization governance | After formal TABU/constraint doctrine is approved for legal varianting | Constraint boundaries define future AI-safe optimization space without violating hard exclusions | `FUTURE` |
+| IDEA-0037 | 2026-05-01 | ZONE_BASED_TRACKING | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Shop Floor Twin expansion | After object event model and zone taxonomy governance are frozen | Zone-level production twin records object, zone, timestamp, status, responsible, and comment | `FUTURE` |
+| IDEA-0038 | 2026-05-01 | DIGITAL_TWIN_OF_STORAGE | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Shop Floor Twin expansion | After QR identity governance and storage map model are approved | QR-driven storage twin maps what is stored and where it is stored | `FUTURE` |
+| IDEA-0039 | 2026-05-01 | OBJECT_LIFECYCLE_LEDGER | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Shop Floor Twin expansion | After unified event taxonomy across production/NCR/movement/VTK/storage is approved | Each object receives a full lifecycle ledger across operational events | `FUTURE` |
+| IDEA-0040 | 2026-05-01 | MOTIVATED_DATA_CAPTURE | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Lean management expansion | After HR/accountability policy alignment with event capture governance | QR participation data can support accountability and payroll-linked motivation | `FUTURE` |
+| IDEA-0041 | 2026-05-01 | PRODUCTION_PLANNING_INTELLIGENCE | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Lean planning expansion | After machine/skill/capacity data contracts are normalized | Forecast planning combines capacity, skill matrix, machine load, and lead-time prediction | `FUTURE` |
+| IDEA-0042 | 2026-05-01 | INSTRUCTION_QUALITY_INTEGRATION | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Lean quality expansion | After package-to-instruction media and QC linkage doctrine is approved | Packages link to instructions, QC artifacts, videos, and assembly knowledge | `FUTURE` |
+| IDEA-0043 | 2026-05-01 | AI_COMMERCIAL_AGENT | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | AI optimization expansion | After TABU-safe optimization envelope and commercial objective governance are defined | AI agent performs cost optimization without violating TABU constraints | `FUTURE` |
+| IDEA-0044 | 2026-05-01 | DEEP_OBJECT_FINGERPRINTING | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | AI + Lean traceability expansion | After node-level QR/passport traceability doctrine is approved | Deep fingerprinting enables node-level object traceability for analytics and AI layers | `FUTURE` |
+| IDEA-0034 | 2026-05-01 | PACKAGE_BASED_CALCULATION | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Engineering Intelligence expansion | After prototype foundation stabilization and semantic node package readiness | Transition from raw per-part output to package architecture where semantic nodes emit package IDs | `FUTURE` |
+| IDEA-0035 | 2026-05-01 | SEMANTIC_NODE_REGISTRY | `STRATEGIC_FOUNDATION_NORMALIZATION` | `P1-FOUNDATION` | `NORMALIZED_CONCEPT_ONLY` | Semantic modeling foundation | Maintain alongside MVP prototype as conceptual registry basis | Separate WHAT (resource) from WHERE (semantic node); cell DNA acts as node activation map | `FUTURE` |
+| IDEA-0036 | 2026-05-01 | CONSTRAINT_BASED_OPTIMIZATION | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | AI optimization governance | After formal TABU/constraint doctrine is approved for legal varianting | Constraint boundaries define future AI-safe optimization space without violating hard exclusions | `FUTURE` |
+| IDEA-0037 | 2026-05-01 | ZONE_BASED_TRACKING | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Shop Floor Twin expansion | After object event model and zone taxonomy governance are frozen | Zone-level production twin records object, zone, timestamp, status, responsible, and comment | `FUTURE` |
+| IDEA-0038 | 2026-05-01 | DIGITAL_TWIN_OF_STORAGE | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Shop Floor Twin expansion | After QR identity governance and storage map model are approved | QR-driven storage twin maps what is stored and where it is stored | `FUTURE` |
+| IDEA-0039 | 2026-05-01 | OBJECT_LIFECYCLE_LEDGER | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Shop Floor Twin expansion | After unified event taxonomy across production/NCR/movement/VTK/storage is approved | Each object receives a full lifecycle ledger across operational events | `FUTURE` |
+| IDEA-0040 | 2026-05-01 | MOTIVATED_DATA_CAPTURE | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Lean management expansion | After HR/accountability policy alignment with event capture governance | QR participation data can support accountability and payroll-linked motivation | `FUTURE` |
+| IDEA-0041 | 2026-05-01 | PRODUCTION_PLANNING_INTELLIGENCE | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Lean planning expansion | After machine/skill/capacity data contracts are normalized | Forecast planning combines capacity, skill matrix, machine load, and lead-time prediction | `FUTURE` |
+| IDEA-0042 | 2026-05-01 | INSTRUCTION_QUALITY_INTEGRATION | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Lean quality expansion | After package-to-instruction media and QC linkage doctrine is approved | Packages link to instructions, QC artifacts, videos, and assembly knowledge | `FUTURE` |
+| IDEA-0043 | 2026-05-01 | AI_COMMERCIAL_AGENT | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | AI optimization expansion | After TABU-safe optimization envelope and commercial objective governance are defined | AI agent performs cost optimization without violating TABU constraints | `FUTURE` |
+| IDEA-0044 | 2026-05-01 | DEEP_OBJECT_FINGERPRINTING | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | AI + Lean traceability expansion | After node-level QR/passport traceability doctrine is approved | Deep fingerprinting enables node-level object traceability for analytics and AI layers | `FUTURE` |
 
 ## Idea Notes
 
 ### IDEA-0002 — Google Sheets Sidebar UI
+
+### IDEA-0025 — KZO_WELDED_SV_SR_PAIR_DNA
+
+Status:
+
+- `NORMALIZED_BLOCKED_BY_TOPOLOGY`
+
+Notes:
+
+- Gemini confirmed SV cannot be standalone; requires paired SV/SR doctrine.
+
+### IDEA-0026 — KZO_WELDED_SR_CELL_DNA
+
+Status:
+
+- `NORMALIZED_CONCEPT_ONLY`
+
+Notes:
+
+- SR mirrors SV paired logic with vacuum-SV exception removing SR breaker + CT.
+- Construction differences are explicitly deferred to future constructive stages.
+
+### IDEA-0027 — KZO_WELDED_TVP_CELL_DNA
+
+Status:
+
+- `NORMALIZED_CONCEPT_ONLY`
+
+Notes:
+
+- TVP is recognized as a distinct KZO cell type, not LINE/TN/incoming derivative.
+- External vs internal TVP placement modes govern required/optional transformer and fuse fields.
+- Conceptual calculation doctrine is fixed; constructive cabinet divergence is deferred.
+
+### IDEA-0028 — KZO_WELDED_KGU_LINE_DELTA
+
+Status:
+
+- `NORMALIZED_CONCEPT_ONLY`
+
+Notes:
+
+- KGU line is recognized as LINE specialization, not a separate base family.
+- Mandatory synchronization delta requires cable-side TN presence and catalog fields.
+- Advanced synchronization/control architecture is explicitly deferred.
+
+### IDEA-0029 — KZO_WELDED_SHM_DNA
+
+Status:
+
+- `NORMALIZED_CONCEPT_ONLY`
+
+Notes:
+
+- SHM is recognized as topology bridge node driven by global busbar current and bridge length.
+- SHM doctrine remains conceptual/pre-constructive; detailed bridge mechanics are deferred.
+
+### IDEA-0030 — KZO_WELDED_SHMR_DELTA
+
+Status:
+
+- `NORMALIZED_CONCEPT_ONLY`
+
+Notes:
+
+- SHMR is recognized as SHM derivative (`SHM_BASE + DISCONNECTOR_DELTA`), not separate base family.
+- SHMR requires `shmr_disconnector_type` when `bridge_type = SHMR`.
+- Detailed disconnector mechanics and full interlock systems are deferred.
+
+### IDEA-0031 — KZO_WELDED_CABLE_ASSEMBLY_CELL_DNA
+
+Status:
+
+- `NORMALIZED_CONCEPT_ONLY`
+
+Notes:
+
+- Minimal cable assembly doctrine is fixed as `count + core type + cable connection type`.
+- Scope is intentionally limited to user-defined core cable logic only.
+- Constructive cable systems, accessories, and routing are explicitly deferred.
+
+### IDEA-0032 — KZO_CONCEPTUAL_DOCTRINE_CAPTURE_STAGE
+
+Status:
+
+- `CLOSED_PASS_WITH_TOPOLOGY_BLOCKERS`
+
+Notes:
+
+- DNA coverage is sufficient for prototype transition.
+- Known topology blockers (including SV/SR) remain explicitly recorded.
+- Prototype Controlled Mutation Mode is enabled.
+
+### IDEA-0033 — KZO_ELEMENT_CALCULATION_MVP_STAGE
+
+Status:
+
+- `OPEN`
+
+Notes:
+
+- Next stage is Live Calculator Brain.
+- Focus: busbar logic, insulator logic, simplified equipment package logic.
+- Stage is governance/docs transition and MVP approximation lane, not full engineering/BOM implementation.
+
+### IDEA-0034 — PACKAGE_BASED_CALCULATION
+
+Status:
+
+- `FUTURE`
+
+Tags:
+
+- #Future
+- #Normalized_Concept
+
+Notes:
+
+- Transition from per-part detail outputs toward package architecture.
+- Semantic nodes should output package IDs instead of raw part lists.
+- Future packages may include components, fasteners, process, instructions, and estimated time.
+- MVP stage records architectural possibility only. No implementation at current stage.
+
+### IDEA-0035 — SEMANTIC_NODE_REGISTRY
+
+Status:
+
+- `FUTURE`
+
+Tags:
+
+- #Current_Foundation
+- #Normalized_Concept
+
+Notes:
+
+- Separate WHAT (resource) from WHERE (semantic node).
+- Cell DNA acts as node activation map.
+- MVP stage records architectural possibility only. No implementation at current stage.
+
+### IDEA-0036 — CONSTRAINT_BASED_OPTIMIZATION
+
+Status:
+
+- `FUTURE`
+
+Tags:
+
+- #Future
+- #AI_Optimization
+
+Notes:
+
+- Customer TABU/constraint logic defines optimization boundaries.
+- Required for future AI optimization and legally safe varianting.
+- MVP stage records architectural possibility only. No implementation at current stage.
+
+### IDEA-0037 — ZONE_BASED_TRACKING
+
+Status:
+
+- `FUTURE`
+
+Tags:
+
+- #Future
+- #Lean
+
+Notes:
+
+- Zone-level production twin tracks Object ID, Zone, Timestamp, Status, Responsible, and Comment.
+- MVP stage records architectural possibility only. No implementation at current stage.
+
+### IDEA-0038 — DIGITAL_TWIN_OF_STORAGE
+
+Status:
+
+- `FUTURE`
+
+Tags:
+
+- #Future
+- #Lean
+
+Notes:
+
+- QR-driven storage mapping records what is stored and where it is stored.
+- MVP stage records architectural possibility only. No implementation at current stage.
+
+### IDEA-0039 — OBJECT_LIFECYCLE_LEDGER
+
+Status:
+
+- `FUTURE`
+
+Tags:
+
+- #Future
+- #Lean
+
+Notes:
+
+- Full event history per object: production, NCR, movement, VTK, storage.
+- MVP stage records architectural possibility only. No implementation at current stage.
+
+### IDEA-0040 — MOTIVATED_DATA_CAPTURE
+
+Status:
+
+- `FUTURE`
+
+Tags:
+
+- #Future
+- #Lean
+
+Notes:
+
+- QR event participation may be linked to payroll/accountability policies.
+- MVP stage records architectural possibility only. No implementation at current stage.
+
+### IDEA-0041 — PRODUCTION_PLANNING_INTELLIGENCE
+
+Status:
+
+- `FUTURE`
+
+Tags:
+
+- #Future
+- #Lean
+
+Notes:
+
+- Planning intelligence combines capacity, skill matrix, machine load, and lead-time forecasting.
+- MVP stage records architectural possibility only. No implementation at current stage.
+
+### IDEA-0042 — INSTRUCTION_QUALITY_INTEGRATION
+
+Status:
+
+- `FUTURE`
+
+Tags:
+
+- #Future
+- #Lean
+
+Notes:
+
+- Packages should link to instructions, QC, videos, and assembly knowledge.
+- MVP stage records architectural possibility only. No implementation at current stage.
+
+### IDEA-0043 — AI_COMMERCIAL_AGENT
+
+Status:
+
+- `FUTURE`
+
+Tags:
+
+- #Future
+- #AI_Optimization
+
+Notes:
+
+- Constraint-safe commercial agent should optimize cost without violating TABU rules.
+- MVP stage records architectural possibility only. No implementation at current stage.
+
+### IDEA-0044 — DEEP_OBJECT_FINGERPRINTING
+
+Status:
+
+- `FUTURE`
+
+Tags:
+
+- #Future
+- #AI_Optimization
+- #Lean
+
+Notes:
+
+- Node-level QR passports enable deep traceability of each object.
+- MVP stage records architectural possibility only. No implementation at current stage.
 
 Review stage:
 
@@ -1103,7 +1420,7 @@ Current API may require additive fields in a sub-TASK — contract is **normativ
 
 1. **`TASK-2026-08B-012`** — **8B.1A** **`save_snapshot`** API contract hardening (validation / response / anti-orchestration leak) — plan **`docs/AUDITS/2026-04-30_STAGE_8B_1A_API_SAVE_CONTRACT_GOVERNANCE_PLAN.md`**.
 2. **`TASK-2026-08B-011`** — **8B.1B** Thin GAS adapter (**`runStage8B1BGasThinClientAdapterFlow()`**) — **`STAGE_8B_1B_OPERATOR_VERIFIED`** (**operator closeout **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**).
-3. **`TASK-2026-08B-013`** — **Stage 8B.2** — **`ACTIVE`** — **canonical:** **`docs/TASKS.md`** **`§ TASK-013`** (**pre-gate **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`**) **`·`** **`2A`/`2B` CLOSED** **`·`** **`2C`:** **`STAGE_8B_2C_DOCTRINE_PUBLISHED`** (**`docs/AUDITS/2026-04-30_STAGE_8B_2C_MACHINE_READABLE_PERSISTENCE_ERROR_DOCTRINE.md`**) · Gemini **8B.2C** **pending** (**`COMPLETE`** only after **2A–2E** closed per TASK).
+3. **`TASK-2026-08B-013`** — **Stage 8B.2** — **`CLOSED`** — **canonical:** **`docs/TASKS.md`** **`§ TASK-013`** · full closeout **`docs/AUDITS/2026-05-01_STAGE_8B_2_GOVERNANCE_CLOSEOUT.md`** (**`2A`/`2B`/`2C`/`2D` CLOSED**).
 
 ##### Stage **8B.2** — **NORMALIZED ACTIVE GATE**
 
@@ -1145,7 +1462,7 @@ No client may redefine system persistence without **IDEA → TASK** and contract
 - **External Gemini MASTER RE-AUDIT — FINAL DAILY CLOSEOUT (**PASS — READY FOR 8B.2A**):** **`docs/AUDITS/2026-04-30_GEMINI_MASTER_RE_AUDIT_FINAL_DAILY_CLOSEOUT.md`** (**`GEMINI_MASTER_RE_AUDIT_FINAL_DAILY_CLOSEOUT_2026_04_30`**) · **архітектору:** питання в кінці досьє (**локація 2A / Gemini після 2A / статус TASK-013**)
 - **Pre–8B.2A doc sanity (**complete**):** **`STAGE_8B_PRE_8B2A_DOC_SANITY_PATCH_COMPLETE`** — **`docs/AUDITS/2026-04-30_PRE_8B2A_DOC_SANITY_PATCH.md`** — Gemini RE-AUDIT **DOC FIXES**; **no** code/API/GAS/DB
 
-Master table **Status**: **`ACTIVE`** until **8B** governance + audit **PASS** — then **`IMPLEMENTED`**.
+Master table **Status**: **`ACTIVE`** until **8B** governance + bounded implementation slices are completed — then **`IMPLEMENTED`**.
 
 Post-fix documentary consistency closeout (2026-04-30):
 
@@ -1153,11 +1470,17 @@ Post-fix documentary consistency closeout (2026-04-30):
 - Post-fix gate closed for documentation consistency and split-brain wording alignment
 - Next gate for **`TASK-2026-08B-013`**: **`8B.2C` normalization only** (**no doctrine authoring / no implementation until explicit approval**)
 
-Stage 8B.2D normalization activation (2026-04-30):
+Stage 8B.2 governance closeout (2026-05-01):
 
-- **`8B.2C`** is treated as governance-closed for registry progression
-- **`8B.2D`** is **`NORMALIZATION_ACTIVE`** via **`docs/AUDITS/2026-04-30_STAGE_8B_2D_INTEGRITY_STANCE_V1_ENFORCEMENT_IDEA_NORMALIZATION.md`**
-- Boundary remains strict: **no `8B.2D` doctrine authoring yet**, **no implementation**, **no code/API/GAS/DB**
+- **`TASK-2026-08B-013`** marked **`CLOSED`** with **`STAGE_8B_2_GOVERNANCE_CLOSED`**
+- Governance gate `8B.2` treated as complete (`2A`/`2B`/`2C`/`2D` closed; `2E` not opened)
+- Post-closeout state switched to bounded implementation readiness only
+
+Stage 8B.3A normalization activation (2026-05-01):
+
+- **`STAGE_8B_3A_API_IDEMPOTENCY_DUPLICATE_SNAPSHOT_PROTECTION_MVP`** normalized
+- Artifact: **`docs/AUDITS/2026-05-01_STAGE_8B_3A_API_IDEMPOTENCY_DUPLICATE_SNAPSHOT_PROTECTION_IDEA_NORMALIZATION.md`**
+- Boundary remains strict: readiness/planning only; **no implementation**, **no code/API/GAS/DB changes** in this step
 
 ### IDEA-0021 — EDS Power role-adaptive operational shell doctrine (“self-checkout principle”)
 
@@ -1215,3 +1538,33 @@ Anti-drift:
 - **Doctrine only** — no automatic expansion of current build stages without a new **IDEA → TASK** chain.
 
 Master table **Status**: **`FUTURE`**
+
+### IDEA-0024 — KZO Layered Node Prototype MVP (Constructive Family + Cell Role Logic)
+
+Classification / priority / decision:
+
+- `NEXT_ACTIVE_CANDIDATE` / `P1-NEXT` / `PLANNING_CANDIDATE`
+
+Stage target:
+
+- Post-8B.3A practical configurator depth
+
+Execution class:
+
+- Planning / prototype framing only
+
+Planning artifacts:
+
+- `docs/AUDITS/2026-05-01_KZO_LAYERED_NODE_PROTOTYPE_MVP_IDEA_NORMALIZATION.md`
+- `docs/AUDITS/2026-05-01_KZO_LAYERED_NODE_PROTOTYPE_MVP_PLANNING_DOSSIER_PLACEHOLDER.md`
+- `docs/00-02_CALC_CONFIGURATOR/09_KZO/15_CONSTRUCTIVE_FAMILY_HIERARCHY_PLACEHOLDER.md`
+- `docs/00-02_CALC_CONFIGURATOR/09_KZO/16_LAYERED_NODE_DOCTRINE_PLACEHOLDER.md`
+- `docs/00-02_CALC_CONFIGURATOR/09_KZO/17_DEMO_CASE_SCOPE_DEFINITION_PLACEHOLDER.md`
+- `docs/00-02_CALC_CONFIGURATOR/09_KZO/18_SCOPE_GUARD_LAYERED_NODE_PROTOTYPE.md`
+
+Scope guard:
+
+- one prototype family
+- one demo case
+- no implementation/code in this lane
+- no BOM explosion, no API/GAS/DB redesign
