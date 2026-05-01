@@ -6,6 +6,48 @@
 
 ---
 
+# 01.05.2026 — Finalize May 1 architecture and prepare registry foundation (doc-only)
+
+## Факт (**documentation / registry only**)
+
+- Strategic idea normalization finalized in `IDEA_MASTER_LOG` with Future/Normalized Concept positioning preserved for:
+  - Package-Based Calculation
+  - Digital Shop Floor Twin
+  - Digital Storage Twin
+  - Motivated Data Capture
+  - Commercial AI Agent
+- Created registry contract skeleton:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/33_KZO_WELDED_ENGINEERING_REGISTRY_CONTRACTS.md`**
+- Created constants placeholders for registry discipline (`Single Source of Truth` path):
+  - **`src/constants/busbar_registry_v1.json`**
+  - **`src/constants/insulator_registry_v1.json`**
+- Final May-1 strategic statement:
+  - "Завершено архітектурне проектування шарів Semantic Nodes та Package Layer. Затверджено перехід до Registry Discipline. Створено фундамент для універсального інженерного двигуна (Engineering OS)."
+- No MVP scope mutation and no implementation expansion performed.
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Registry Saturday can proceed with contract-driven refinement before any formula hardcoding.
+
+---
+
+# 01.05.2026 — DOC 32 created as KZO cognitive architecture skeleton (doc-only)
+
+## Факт (**documentation / architecture only**)
+
+- Created architecture skeleton:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/32_KZO_WELDED_GROUPING_AND_SEMANTIC_NODE_CALCULATION_DOCTRINE.md`**
+- Semantic Node / Package / Grouping doctrine foundation established at MVP architecture level
+- Expansion path fixed without overfilling details (nodes/packages/formulas remain placeholders)
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Ready for Step 2: Busbar semantic nodes (within controlled prototype refinement governance).
+
+---
+
 # 01.05.2026 — Strategic Engineering & Manufacturing OS idea dossier normalized (registry-only)
 
 ## Факт (**documentation / registry only**)

@@ -1,0 +1,15 @@
+{
+  "registry_version": "v1",
+  "items": [
+    {
+      "id": "INS_STD_10KV_GENERIC",
+      "insulator_type": "POST",
+      "rated_voltage_kv": 10,
+      "short_circuit_class_ka": null,
+      "recommended_spacing_mm": null,
+      "max_supported_span_mm": null,
+      "mounting_family": null,
+      "status": "PLACEHOLDER"
+    }
+  ]
+}

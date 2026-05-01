@@ -56,19 +56,8 @@ Operative **sub-state** strings (such as **`PENDING_SUPABASE_VERIFICATION`**) ap
 | IDEA-0034 | 2026-05-01 | PACKAGE_BASED_CALCULATION | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Engineering Intelligence expansion | After prototype foundation stabilization and semantic node package readiness | Transition from raw per-part output to package architecture where semantic nodes emit package IDs | `FUTURE` |
 | IDEA-0035 | 2026-05-01 | SEMANTIC_NODE_REGISTRY | `STRATEGIC_FOUNDATION_NORMALIZATION` | `P1-FOUNDATION` | `NORMALIZED_CONCEPT_ONLY` | Semantic modeling foundation | Maintain alongside MVP prototype as conceptual registry basis | Separate WHAT (resource) from WHERE (semantic node); cell DNA acts as node activation map | `FUTURE` |
 | IDEA-0036 | 2026-05-01 | CONSTRAINT_BASED_OPTIMIZATION | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | AI optimization governance | After formal TABU/constraint doctrine is approved for legal varianting | Constraint boundaries define future AI-safe optimization space without violating hard exclusions | `FUTURE` |
-| IDEA-0037 | 2026-05-01 | ZONE_BASED_TRACKING | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Shop Floor Twin expansion | After object event model and zone taxonomy governance are frozen | Zone-level production twin records object, zone, timestamp, status, responsible, and comment | `FUTURE` |
-| IDEA-0038 | 2026-05-01 | DIGITAL_TWIN_OF_STORAGE | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Shop Floor Twin expansion | After QR identity governance and storage map model are approved | QR-driven storage twin maps what is stored and where it is stored | `FUTURE` |
-| IDEA-0039 | 2026-05-01 | OBJECT_LIFECYCLE_LEDGER | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Shop Floor Twin expansion | After unified event taxonomy across production/NCR/movement/VTK/storage is approved | Each object receives a full lifecycle ledger across operational events | `FUTURE` |
-| IDEA-0040 | 2026-05-01 | MOTIVATED_DATA_CAPTURE | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Lean management expansion | After HR/accountability policy alignment with event capture governance | QR participation data can support accountability and payroll-linked motivation | `FUTURE` |
-| IDEA-0041 | 2026-05-01 | PRODUCTION_PLANNING_INTELLIGENCE | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Lean planning expansion | After machine/skill/capacity data contracts are normalized | Forecast planning combines capacity, skill matrix, machine load, and lead-time prediction | `FUTURE` |
-| IDEA-0042 | 2026-05-01 | INSTRUCTION_QUALITY_INTEGRATION | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Lean quality expansion | After package-to-instruction media and QC linkage doctrine is approved | Packages link to instructions, QC artifacts, videos, and assembly knowledge | `FUTURE` |
-| IDEA-0043 | 2026-05-01 | AI_COMMERCIAL_AGENT | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | AI optimization expansion | After TABU-safe optimization envelope and commercial objective governance are defined | AI agent performs cost optimization without violating TABU constraints | `FUTURE` |
-| IDEA-0044 | 2026-05-01 | DEEP_OBJECT_FINGERPRINTING | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | AI + Lean traceability expansion | After node-level QR/passport traceability doctrine is approved | Deep fingerprinting enables node-level object traceability for analytics and AI layers | `FUTURE` |
-| IDEA-0034 | 2026-05-01 | PACKAGE_BASED_CALCULATION | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Engineering Intelligence expansion | After prototype foundation stabilization and semantic node package readiness | Transition from raw per-part output to package architecture where semantic nodes emit package IDs | `FUTURE` |
-| IDEA-0035 | 2026-05-01 | SEMANTIC_NODE_REGISTRY | `STRATEGIC_FOUNDATION_NORMALIZATION` | `P1-FOUNDATION` | `NORMALIZED_CONCEPT_ONLY` | Semantic modeling foundation | Maintain alongside MVP prototype as conceptual registry basis | Separate WHAT (resource) from WHERE (semantic node); cell DNA acts as node activation map | `FUTURE` |
-| IDEA-0036 | 2026-05-01 | CONSTRAINT_BASED_OPTIMIZATION | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | AI optimization governance | After formal TABU/constraint doctrine is approved for legal varianting | Constraint boundaries define future AI-safe optimization space without violating hard exclusions | `FUTURE` |
-| IDEA-0037 | 2026-05-01 | ZONE_BASED_TRACKING | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Shop Floor Twin expansion | After object event model and zone taxonomy governance are frozen | Zone-level production twin records object, zone, timestamp, status, responsible, and comment | `FUTURE` |
-| IDEA-0038 | 2026-05-01 | DIGITAL_TWIN_OF_STORAGE | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Shop Floor Twin expansion | After QR identity governance and storage map model are approved | QR-driven storage twin maps what is stored and where it is stored | `FUTURE` |
+| IDEA-0037 | 2026-05-01 | DIGITAL_SHOP_FLOOR_TWIN | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Shop Floor Twin expansion | After object event model and zone taxonomy governance are frozen | Zone-level production twin records object, zone, timestamp, status, responsible, and comment | `FUTURE` |
+| IDEA-0038 | 2026-05-01 | DIGITAL_STORAGE_TWIN | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Shop Floor Twin expansion | After QR identity governance and storage map model are approved | QR-driven storage twin maps what is stored and where it is stored | `FUTURE` |
 | IDEA-0039 | 2026-05-01 | OBJECT_LIFECYCLE_LEDGER | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Shop Floor Twin expansion | After unified event taxonomy across production/NCR/movement/VTK/storage is approved | Each object receives a full lifecycle ledger across operational events | `FUTURE` |
 | IDEA-0040 | 2026-05-01 | MOTIVATED_DATA_CAPTURE | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Lean management expansion | After HR/accountability policy alignment with event capture governance | QR participation data can support accountability and payroll-linked motivation | `FUTURE` |
 | IDEA-0041 | 2026-05-01 | PRODUCTION_PLANNING_INTELLIGENCE | `STRATEGIC_FUTURE_NORMALIZATION` | `P2-FUTURE` | `NORMALIZED_CONCEPT_ONLY` | Lean planning expansion | After machine/skill/capacity data contracts are normalized | Forecast planning combines capacity, skill matrix, machine load, and lead-time prediction | `FUTURE` |
@@ -236,7 +225,7 @@ Notes:
 - Required for future AI optimization and legally safe varianting.
 - MVP stage records architectural possibility only. No implementation at current stage.
 
-### IDEA-0037 — ZONE_BASED_TRACKING
+### IDEA-0037 — DIGITAL_SHOP_FLOOR_TWIN
 
 Status:
 
@@ -252,7 +241,7 @@ Notes:
 - Zone-level production twin tracks Object ID, Zone, Timestamp, Status, Responsible, and Comment.
 - MVP stage records architectural possibility only. No implementation at current stage.
 
-### IDEA-0038 — DIGITAL_TWIN_OF_STORAGE
+### IDEA-0038 — DIGITAL_STORAGE_TWIN
 
 Status:
 

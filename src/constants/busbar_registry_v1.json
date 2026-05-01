@@ -1,0 +1,17 @@
+{
+  "registry_version": "v1",
+  "items": [
+    {
+      "id": "BUSBAR_CU_60X10_1000A",
+      "material": "CU",
+      "section_designation": "60x10",
+      "section_width_mm": 60,
+      "section_thickness_mm": 10,
+      "rated_current_a": 1000,
+      "mass_kg_per_m": null,
+      "thermal_factor": null,
+      "dynamic_factor": null,
+      "status": "PLACEHOLDER"
+    }
+  ]
+}
