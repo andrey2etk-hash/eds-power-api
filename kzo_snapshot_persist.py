@@ -269,3 +269,38 @@ def insert_snapshot_row(row: dict[str, Any]) -> tuple[str | None, str | None, st
             created_iso = None
 
     return snapshot_pk, created_iso, None
+
+
+def find_snapshot_by_request_id(request_id: str) -> tuple[str | None, str | None, str | None]:
+    """Return existing snapshot by request_id for bounded duplicate protection.
+
+    Returns ``(snapshot_id, created_at_iso, error_code)``.
+    ``snapshot_id`` is None when no duplicate exists.
+    """
+    rid = request_id.strip()
+    if rid == "":
+        return None, None, "SNAPSHOT_REQUEST_METADATA_REQUEST_ID_INVALID"
+
+    client, code = get_supabase_client()
+    if client is None:
+        return None, None, code or "SNAPSHOT_PERSISTENCE_UNAVAILABLE"
+
+    try:
+        sel = (
+            client.table(_TABLE)
+            .select("id,created_at")
+            .eq("product_type", _PRODUCT_TYPE_KZO)
+            .contains("request_metadata", {"request_id": rid})
+            .order("created_at", desc=False)
+            .limit(1)
+            .execute()
+        )
+    except Exception:
+        return None, None, "SNAPSHOT_DUPLICATE_CHECK_FAILED"
+
+    data = getattr(sel, "data", None)
+    if isinstance(data, list) and len(data) > 0 and isinstance(data[0], dict):
+        snapshot_id = data[0].get("id")
+        if isinstance(snapshot_id, str) and snapshot_id.strip() != "":
+            return snapshot_id, _format_created_at(data[0].get("created_at")), None
+    return None, None, None

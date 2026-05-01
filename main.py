@@ -6,7 +6,11 @@ from uuid import uuid4
 from fastapi import FastAPI, Header
 from fastapi.responses import JSONResponse
 
-from kzo_snapshot_persist import insert_snapshot_row, validate_kzo_mvp_snapshot_v1
+from kzo_snapshot_persist import (
+    find_snapshot_by_request_id,
+    insert_snapshot_row,
+    validate_kzo_mvp_snapshot_v1,
+)
 
 app = FastAPI()
 
@@ -84,6 +88,8 @@ _SNAPSHOT_ERROR_MESSAGES: dict[str, str] = {
     "SNAPSHOT_FAILURE_MESSAGE_REQUIRED": "failure.message is required for FAILED snapshots.",
     "SNAPSHOT_LOGIC_VERSION_METADATA_MISMATCH": "logic_version must match request_metadata.logic_version.",
     "SNAPSHOT_INSERT_FAILED": "Snapshot row could not be stored.",
+    "SNAPSHOT_DUPLICATE_CHECK_FAILED": "Duplicate protection check failed.",
+    "SNAPSHOT_DUPLICATE_REJECTED": "Duplicate snapshot save request rejected.",
     "SNAPSHOT_PERSISTENCE_UNAVAILABLE": "Persistence service is not configured.",
 }
 
@@ -130,16 +136,18 @@ def save_snapshot_http_response_failure(
     persistence_status: str,
     response_snapshot_version: str | None,
     error_code: str,
+    snapshot_id: str | None = None,
+    created_at: str | None = None,
     legacy_flat_error: bool = True,
 ) -> dict[str, Any]:
     """validation → REJECTED; insert/infrastructure → ERROR."""
     fb = _failure_envelope(error_code)
     out: dict[str, Any] = {
         "status": "FAILED",
-        "snapshot_id": None,
+        "snapshot_id": snapshot_id,
         "persistence_status": persistence_status,
         "snapshot_version": response_snapshot_version,
-        "created_at": None,
+        "created_at": created_at,
         "client_type": client_type,
         "failure": fb,
     }
@@ -605,6 +613,31 @@ def save_snapshot(
             response_snapshot_version=sv_response,
             error_code=validate_code,
         )
+
+    req_meta = normalized.get("request_metadata")
+    req_id = (
+        req_meta.get("request_id").strip()
+        if isinstance(req_meta, dict) and isinstance(req_meta.get("request_id"), str)
+        else None
+    )
+    if req_id:
+        existing_snapshot_id, existing_created_at, duplicate_check_code = find_snapshot_by_request_id(req_id)
+        if duplicate_check_code:
+            return save_snapshot_http_response_failure(
+                client_type=client_type,
+                persistence_status="ERROR",
+                response_snapshot_version=sv_response,
+                error_code=duplicate_check_code,
+            )
+        if existing_snapshot_id:
+            return save_snapshot_http_response_failure(
+                client_type=client_type,
+                persistence_status="DUPLICATE_REJECTED",
+                response_snapshot_version=sv_response,
+                error_code="SNAPSHOT_DUPLICATE_REJECTED",
+                snapshot_id=existing_snapshot_id,
+                created_at=existing_created_at,
+            )
 
     snapshot_id, created_at_iso, insert_code = insert_snapshot_row(normalized)
     if insert_code:
