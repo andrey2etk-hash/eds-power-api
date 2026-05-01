@@ -63,6 +63,10 @@ KZO_OBJECT_STATUSES = {
 }
 
 EDS_CLIENT_TYPES = frozenset({"GAS", "WEB", "MOBILE", "AGENT", "UNKNOWN"})
+KZO_PROTOTYPE_CONSTRUCTIVE_FAMILY = "KZO_WELDED"
+KZO_PROTOTYPE_CELL_ROLE = "VACUUM_BREAKER"
+KZO_PROTOTYPE_CELL_POSITION = "LEFT_END"
+KZO_PROTOTYPE_NODE = "INSULATOR_SYSTEM"
 
 _SNAPSHOT_ERROR_MESSAGES: dict[str, str] = {
     "SNAPSHOT_BODY_NOT_OBJECT": "Request body must be a JSON object.",
@@ -476,6 +480,64 @@ def _build_kzo_engineering_burden_summary(
     }
 
 
+def _build_kzo_layered_node_summary(payload: dict[str, Any]) -> dict[str, Any] | None:
+    """Stage prototype: one bounded family/role/position/node planning output."""
+    family = payload.get("constructive_family")
+    role = payload.get("cell_role")
+    position = payload.get("cell_position")
+    node = payload.get("node")
+    if not all(isinstance(v, str) for v in (family, role, position, node)):
+        return None
+    if (
+        family != KZO_PROTOTYPE_CONSTRUCTIVE_FAMILY
+        or role != KZO_PROTOTYPE_CELL_ROLE
+        or position != KZO_PROTOTYPE_CELL_POSITION
+        or node != KZO_PROTOTYPE_NODE
+    ):
+        return None
+
+    placement_points = [
+        "PP_FRAME_LEFT_PRIMARY",
+        "PP_INSULATOR_SUPPORT_A",
+        "PP_INSULATOR_SUPPORT_B",
+        "PP_BREAKER_INTERFACE_LEFT",
+    ]
+    presence_rules_result = {
+        "family_rule": "ACTIVE",
+        "role_rule": "ACTIVE",
+        "position_rule": "ACTIVE",
+        "node_rule": "ACTIVE",
+    }
+    primary_components = [
+        {"component": "INSULATOR_BASE", "qty": 1},
+        {"component": "WELDED_SUPPORT_BRACKET_SET", "qty": 1},
+        {"component": "PRIMARY_FASTENING_INTERFACE", "qty": 1},
+    ]
+    dependent_hardware = [
+        {"component": "BOLT_M10", "qty": 4},
+        {"component": "WASHER_M10", "qty": 8},
+        {"component": "NUT_M10", "qty": 4},
+    ]
+    aggregate_bom = {
+        "line_items": len(primary_components) + len(dependent_hardware),
+        "primary_qty_total": sum(int(item["qty"]) for item in primary_components),
+        "dependent_qty_total": sum(int(item["qty"]) for item in dependent_hardware),
+    }
+    return {
+        "prototype_version": "KZO_LAYERED_NODE_PROTOTYPE_MVP_V1",
+        "constructive_family": family,
+        "cell_role": role,
+        "cell_position": position,
+        "node": node,
+        "placement_points": placement_points,
+        "presence_rules_result": presence_rules_result,
+        "primary_components": primary_components,
+        "dependent_hardware": dependent_hardware,
+        "aggregate_bom": aggregate_bom,
+        "interpretation_scope": "PROTOTYPE_DEMO_CASE_ONLY",
+    }
+
+
 @app.get("/")
 def root():
     return {"message": "EDS Power API is running"}
@@ -562,30 +624,35 @@ def prepare_calculation(request: dict[str, Any]):
         structural_composition_summary,
     )
 
+    data = {
+        "validation_status": "VALIDATED",
+        "logic_version": normalized_payload["logic_version"],
+        "status": normalized_payload["status"],
+        "normalized_payload": normalized_payload,
+        "basic_result_summary": {
+            "summary_version": "KZO_MVP_V1",
+            "product_type": normalized_payload["product_type"],
+            "logic_version": normalized_payload["logic_version"],
+            "voltage_class": normalized_payload["voltage_class"],
+            "busbar_current": normalized_payload["busbar_current"],
+            "configuration_type": normalized_payload["configuration_type"],
+            "quantity_total": normalized_payload["quantity_total"],
+            "cell_type_summary": cell_type_summary,
+            "validation_status": "VALIDATED",
+        },
+        "structural_composition_summary": structural_composition_summary,
+        "physical_summary": physical_summary,
+        "physical_topology_summary": physical_topology_summary,
+        "engineering_class_summary": engineering_class_summary,
+        "engineering_burden_summary": engineering_burden_summary,
+    }
+    layered_node_summary = _build_kzo_layered_node_summary(payload)
+    if layered_node_summary is not None:
+        data["layered_node_summary"] = layered_node_summary
+
     return {
         "status": "success",
-        "data": {
-            "validation_status": "VALIDATED",
-            "logic_version": normalized_payload["logic_version"],
-            "status": normalized_payload["status"],
-            "normalized_payload": normalized_payload,
-            "basic_result_summary": {
-                "summary_version": "KZO_MVP_V1",
-                "product_type": normalized_payload["product_type"],
-                "logic_version": normalized_payload["logic_version"],
-                "voltage_class": normalized_payload["voltage_class"],
-                "busbar_current": normalized_payload["busbar_current"],
-                "configuration_type": normalized_payload["configuration_type"],
-                "quantity_total": normalized_payload["quantity_total"],
-                "cell_type_summary": cell_type_summary,
-                "validation_status": "VALIDATED",
-            },
-            "structural_composition_summary": structural_composition_summary,
-            "physical_summary": physical_summary,
-            "physical_topology_summary": physical_topology_summary,
-            "engineering_class_summary": engineering_class_summary,
-            "engineering_burden_summary": engineering_burden_summary,
-        },
+        "data": data,
         "error": None,
         "metadata": _response_metadata(meta, normalized_payload["logic_version"], started_at),
     }
