@@ -6,6 +6,94 @@
 
 ---
 
+# 01.05.2026 — Stage 8B.3A live verification gate (pass)
+
+## Факт (**verification only**)
+
+- Executed 3-step live gate on `https://eds-power-api.onrender.com/api/kzo/save_snapshot`
+- Check #1 (`request_id A`, first call): `STORED` — PASS
+- Check #2 (`request_id A`, replay): `DUPLICATE_REJECTED` — PASS
+- Check #3 (`request_id B`): `STORED` — PASS
+- Verification report lodged: **`docs/AUDITS/2026-05-01_STAGE_8B_3A_LIVE_VERIFICATION.md`**
+
+## Статус
+
+`8B.3A` live gate = `PASS` (duplicate replay correctly rejected on deployed API).
+
+---
+
+# 01.05.2026 — Stage 8B.3A bounded implementation execution (save_snapshot only)
+
+## Факт (**implementation slice, bounded**)
+
+- Implemented duplicate/replay guard at `save_snapshot` boundary only (`main.py`, `kzo_snapshot_persist.py`)
+- Added deterministic duplicate outcome: **`DUPLICATE_REJECTED`** (machine-readable failure envelope)
+- Preserved valid non-duplicate flow: first and distinct requests continue as **`STORED`**
+- Added minimal tests: **`tests/test_save_snapshot_duplicate_protection.py`** (`unittest`, 3 scenarios)
+- Closeout report lodged: **`docs/AUDITS/2026-05-01_STAGE_8B_3A_BOUNDED_IMPLEMENTATION_CLOSEOUT.md`**
+
+## Guardrails preserved
+
+- no broad API redesign
+- no DB redesign
+- no migrations
+- no GAS changes
+- no product logic expansion
+- no async
+- no new modules
+
+## Rollback note
+
+Rollback path documented in `8B.3A` closeout to restore pre-guard insert-only behavior if instability appears.
+
+---
+
+# 01.05.2026 — Stage 8B.3A bounded implementation framing
+
+## Факт (**documentation only**)
+
+- Lodged bounded implementation plan: **`docs/AUDITS/2026-05-01_STAGE_8B_3A_BOUNDED_IMPLEMENTATION_PLAN.md`**
+- Plan scope fixed to minimal API duplicate/replay protection at `save_snapshot` boundary only
+- Boundaries fixed: no code execution in this step, no API broad redesign, no DB redesign, no GAS changes, no async, no new modules
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Await explicit implementation task for `8B.3A`.
+
+---
+
+# 01.05.2026 — Stage 8B.3A normalization activated (readiness only)
+
+## Факт (**documentation only**)
+
+- Lodged idea normalization report: **`docs/AUDITS/2026-05-01_STAGE_8B_3A_API_IDEMPOTENCY_DUPLICATE_SNAPSHOT_PROTECTION_IDEA_NORMALIZATION.md`**
+- Scope fixed as **bounded implementation readiness** for API duplicate/replay protection at `save_snapshot` boundary
+- Transition kept strict: **no implementation yet**, **no redesign**, **no `8B.2E` opening**
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Await explicit bounded implementation task authoring for `8B.3A`.
+
+---
+
+# 01.05.2026 — Stage 8B.2 Governance Closed
+
+## Факт (**documentation only**)
+
+- Lodged full gate closeout dossier: **`docs/AUDITS/2026-05-01_STAGE_8B_2_GOVERNANCE_CLOSEOUT.md`**
+- Canonical state fixed: **`TASK-2026-08B-013`** = **`CLOSED`** with label **`STAGE_8B_2_GOVERNANCE_CLOSED`**
+- Slice state confirmed: **`8B.2A`**, **`8B.2B`**, **`8B.2C`**, **`8B.2D` = `CLOSED`**
+- Transition frozen: **Current = Post-8B.2 Governance Freeze**, **Next = Bounded Implementation Planning**
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Await bounded implementation slice normalization only.
+
+---
+
 # 30.04.2026 — Governance Milestone Freeze (End of Day)
 
 ## Факт (**documentation only**)

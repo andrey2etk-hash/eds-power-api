@@ -37,7 +37,7 @@ Stage **8A** proved persistence exists. Stage **8B** must establish **platform a
 4. **GAS:** **Thin Client Adapter V1** (**`TASK-2026-08B-011`**) — **`STAGE_8B_1B_OPERATOR_VERIFIED`** · **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`**.
 5. **Audit:** **`docs/AUDITS/2026-04-30_STAGE_8B_PLATFORM_PERSISTENCE_NOT_GAS_PERSISTENCE.md`** — thesis: **platform persistence**, not **GAS persistence** (**governance memo — satisfies charter slot**).
 6. **Closure:** **`IDEA-0023`** → `IMPLEMENTED` in `12_IDEA_MASTER_LOG.md` after audit PASS.
-7. **Stage 8B.2** — **`TASK-2026-08B-013`** (**`ACTIVE`**) — canonical registry (**single parent gate narration**) **`docs/TASKS.md`** § **`TASK-2026-08B-013`** (**do not** duplicate slice paths here).
+7. **Stage 8B.2** — **`TASK-2026-08B-013`** (**`CLOSED`**) — canonical registry (**single parent gate narration**) **`docs/TASKS.md`** § **`TASK-2026-08B-013`** (**do not** duplicate slice paths here).
 
 ### Expected result
 
@@ -105,7 +105,7 @@ First **real** client adapter: **GAS** calls the **same** API persistence pathwa
 ### Deliverable for closeout (**met**)
 
 - Operator verification **PASS** + audit **`docs/AUDITS/2026-04-30_STAGE_8B_1B_GAS_THIN_CLIENT_ADAPTER.md`** (**`STAGE_8B_1B_OPERATOR_VERIFIED`**).
-- **Next:** **`TASK-2026-08B-013`** — **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`** (**governance framing**).
+- **Next:** **`8B.3A` live gate passed** — verification logged in **`docs/AUDITS/2026-05-01_STAGE_8B_3A_LIVE_VERIFICATION.md`** (**A1=`STORED`, A2=`DUPLICATE_REJECTED`, B1=`STORED`**).
 
 ---
 
@@ -117,8 +117,9 @@ First **real** client adapter: **GAS** calls the **same** API persistence pathwa
 | **IDEA** | **IDEA-0023** |
 | **Normative handle (**Idea Normalizer**)** | **`STAGE_8B_2_CLIENT_AGNOSTIC_FLOW_STABILIZATION`** |
 | **Module** | **Верифікація відповідності канону V1** (**`TASK-013`**, **`IDEA-0023`**, **`STAGE` 8B.2**) — робочий канон **`13_` + `11_KZO`**; **`04_DATA_CONTRACTS`** лише процес **`§19`**, **не** ціль patch полів канону без окремого **TASK** |
-| **Status** | **`ACTIVE`** (**parent gate**) — перехід **`PLANNED` → `ACTIVE`** при публікації dossier **`8B.2A`** (**виконано 2026-04-30**); **`COMPLETE`** лише коли слайси **2A–2E** + synthesis deliverables **`TASK-013`** закриті документально |
-| **Slice progression (`TASK-013`)** | **`8B.2A` CLOSED** — **`STAGE_8B_2A_GEMINI_FOCUSED_AUDIT_PASS`** — **`docs/AUDITS/2026-04-30_GEMINI_STAGE_8B_2A_FOCUSED_AUDIT.md`** **`·`** **`8B.2B` CLOSED** — **`STAGE_8B_2B_DOCTRINE_PUBLISHED`** + **`STAGE_8B_2B_GEMINI_FOCUSED_AUDIT_PASS`** (**closeout **`docs/AUDITS/YYYY-MM-DD_GEMINI_STAGE_8B_2B_FOCUSED_AUDIT.md`** per REQUEST · **operator maintains dated artifact**) **`·`** **`8B.2C` CLOSED** — doctrine authored + focused audit closed (**external closeout**) **`·`** **`8B.2D` `NORMALIZATION_ACTIVE`** — **`docs/AUDITS/2026-04-30_STAGE_8B_2D_INTEGRITY_STANCE_V1_ENFORCEMENT_IDEA_NORMALIZATION.md`** (**normalization only; doctrine not authored yet**) **`·`** **`8B.2E` LOCKED** |
+| **Status** | **`CLOSED`** (**`STAGE_8B_2_GOVERNANCE_CLOSED`**) — full governance gate closeout lodged in **`docs/AUDITS/2026-05-01_STAGE_8B_2_GOVERNANCE_CLOSEOUT.md`** |
+| **Label** | **`STAGE_8B_2_GOVERNANCE_CLOSED`** |
+| **Slice progression (`TASK-013`)** | **`8B.2A` CLOSED** — **`STAGE_8B_2A_GEMINI_FOCUSED_AUDIT_PASS`** **`·`** **`8B.2B` CLOSED** — focused audit pass logged **`·`** **`8B.2C` CLOSED** — doctrine + focused audit closeout **`·`** **`8B.2D` CLOSED** — doctrine + focused audit request completed; governance gate frozen (**no `8B.2E` opening**) |
 | **Prerequisite** | **`STAGE_8B_1B_OPERATOR_VERIFIED`** (**`TASK-2026-08B-011` CLOSED**); dossier **`docs/AUDITS/2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`** |
 
 **Normalizer execution decomposition (**governance-only handles**):** **`STAGE_8B_2_GOVERNANCE_SUBSTAGES_DECOMPOSED`** — **`docs/AUDITS/2026-04-30_STAGE_8B_2_GOVERNANCE_SUBSTAGES_DECOMPOSITION.md`** — slices **`2A`→`2E`** (**not** new TASK IDs **unless** репо явно реєструє окремо).
@@ -187,10 +188,10 @@ Stabilize **persistence posture** (**idempotency**, **duplicate doctrines**, spl
 
 1. **Idempotency + duplicate doctrines** (**delivered in **`8B.2A`**) — **`docs/AUDITS/2026-04-30_STAGE_8B_2A_IDEMPOTENCY_DUPLICATE_GOVERNANCE.md`** + **`STAGE_8B_2A_GEMINI_FOCUSED_AUDIT_PASS`** — **`docs/AUDITS/2026-04-30_GEMINI_STAGE_8B_2A_FOCUSED_AUDIT.md`**
 2. **Prepare/save split outcome doctrine** (**delivered in **`8B.2B`**) — **`docs/AUDITS/2026-04-30_STAGE_8B_2B_PREPARE_SAVE_SPLIT_OUTCOME_GOVERNANCE.md`** + **`STAGE_8B_2B_GEMINI_FOCUSED_AUDIT_PASS`** — lodges **`docs/AUDITS/YYYY-MM-DD_GEMINI_STAGE_8B_2B_FOCUSED_AUDIT.md`** (**REQUEST** **`docs/AUDITS/2026-04-30_GEMINI_STAGE_8B_2B_FOCUSED_AUDIT_REQUEST.md`**)
-3. **Machine-readable persistence error doctrine (**`8B.2C`**) — `CLOSED`** (**dossier + focused audit closeout lodged externally**) · next active slice: **`8B.2D NORMALIZATION_ACTIVE`**
-4. **Snapshot integrity governance**
-5. **Client neutrality audit**
-6. **Stage audit dossier** (dated implementation gate **after** code — **distinct** from **`2026-04-30_STAGE_8B_2_PRE_GATE_SCOPE.md`** governance shell)
+3. **Machine-readable persistence error doctrine (**`8B.2C`**) — `CLOSED`**
+4. **Snapshot integrity governance (**`8B.2D`**) — `CLOSED`**
+5. **Client neutrality audit (**`8B.2E`**) — `NOT OPENED` by this closeout**
+6. **Stage governance closeout dossier** — **`docs/AUDITS/2026-05-01_STAGE_8B_2_GOVERNANCE_CLOSEOUT.md`**
 
 ### Forbidden (**Stage 8B.2 lane** — matches pre-gate scope)
 
