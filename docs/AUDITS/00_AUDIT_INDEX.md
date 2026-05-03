@@ -12,6 +12,9 @@ Rule:
 
 ## Latest audit
 
+- **Gemini DOC 37 Slice 02 implementation audit (`PASS`) — CLOSED / VERIFIED closeout; local node fastener selection accepted with strict interface authority and no BOM drift** — **`docs/AUDITS/2026-05-03_DOC_37_SLICE_02_FASTENER_SELECTION_IMPLEMENTATION.md`**
+- **Gemini DOC 37 Slice 01 implementation audit (`PASS`) — CLOSED / VERIFIED closeout; node geometry + joint stack foundation accepted** — **`docs/AUDITS/2026-05-03_DOC_37_SLICE_01_NODE_GEOMETRY_AND_JOINT_STACK_IMPLEMENTATION.md`**
+- **Gemini DOC 37 Busbar Node Package Calculation Re-Audit (`PASS`) — doctrine standard approved; implementation remains separate-slice only** — **`docs/00-02_CALC_CONFIGURATOR/09_KZO/37_KZO_WELDED_BUSBAR_NODE_PACKAGE_CALCULATION_V1.md`**
 - **KZO Layered Node Prototype API live verification (`PASS`) — selected tuple returns `layered_node_summary`; non-selected tuple remains absent; baseline layers preserved** — **`docs/AUDITS/2026-05-01_KZO_LAYERED_NODE_PROTOTYPE_API_LIVE_VERIFICATION.md`**
 - **KZO Layered Node Prototype MVP API demo slice (bounded, API-only)** — implementation in `main.py` + tests `tests/test_prepare_calculation_layered_node_prototype.py` for selected tuple (`KZO_WELDED` / `VACUUM_BREAKER` / `LEFT_END` / `INSULATOR_SYSTEM`)
 - **IDEA-0024 real planning dossier (demo-ready; planning only)** — **`docs/AUDITS/2026-05-01_KZO_LAYERED_NODE_PROTOTYPE_MVP_PLANNING_DOSSIER.md`** (`KZO_WELDED` / `VACUUM_BREAKER_LEFT_END` / `INSULATOR_SYSTEM`)

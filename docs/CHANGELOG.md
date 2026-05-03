@@ -6,6 +6,492 @@
 
 ---
 
+# 03.05.2026 — Gemini DOC 37 Slice 02 implementation audit PASS closeout
+
+## Факт (**documentation closeout only**)
+
+- Gemini implementation audit passed for DOC 37 Slice 02.
+- DOC 37 Slice 02 closed as **VERIFIED**.
+- Local node fastener selection accepted.
+- Strict bolt matcher and Interface Authority behavior accepted.
+- `node_fastener_lines` confirmed as local node output only (not final BOM).
+- DOC 38 is allowed only as doctrine/planning at this stage.
+- No implementation performed in this closeout.
+- No API / GAS / DB / registry data / BOM / pricing / CAD / procurement changes.
+
+## Далі
+
+Next allowed step: DOC 38 BOM Aggregation / Kit Issue — doctrine/planning only.
+
+---
+
+# 03.05.2026 — DOC 37 Slice 02 Fastener Selection implemented (narrow local-node slice)
+
+## Факт (**narrow implementation slice only**)
+
+- Implemented DOC 37 Slice 02 local node fastener selection:
+  - Slice 01 PASS dependency gate
+  - strict bolt matcher over prepared registry truth
+  - required bolt length calculation with no down-rounding
+  - local `node_fastener_lines` generation for node package only
+- Interface Authority rule added in code:
+  - equipment interface fastener constraints conflict -> explicit `INTERFACE_FASTENER_CONFLICT`
+- Added tests:
+  - `tests/test_busbar_node_fastener_selection_slice02.py`
+  - `python -m unittest tests.test_busbar_node_fastener_selection_slice02` -> `OK (15 tests)`
+  - combined run with DOC 36 + DOC 37 slices -> `OK (30 tests)`
+- Implementation audit note created:
+  - `docs/AUDITS/2026-05-03_DOC_37_SLICE_02_FASTENER_SELECTION_IMPLEMENTATION.md`
+- `node_fastener_lines` remain local node output only (not final BOM).
+- No BOM/pricing/CAD/API/GAS/DB changes.
+
+## Далі
+
+DOC 37 Slice 02 is implemented and ready for Gemini implementation audit.
+
+---
+
+# 03.05.2026 — DOC 37 Slice 02 Fastener Selection planning opened
+
+## Факт (**planning only / no implementation**)
+
+- DOC 37 Slice 01 remains closed as `VERIFIED`.
+- DOC 37 Slice 02 Fastener Selection planning opened as bounded planning-only lane.
+- Planning dossier created:
+  - `docs/AUDITS/2026-05-03_DOC_37_SLICE_02_FASTENER_SELECTION_PLAN.md`
+- Planning scope explicitly excludes:
+  - BOM aggregation
+  - pricing
+  - CAD
+  - API/GAS/DB integration
+- Implementation remains blocked at this step.
+- No code changes performed.
+
+## Далі
+
+Proceed only with focused planning audit/approval before any Slice 02 implementation task.
+
+---
+
+# 03.05.2026 — Gemini DOC 37 Slice 01 implementation audit PASS closeout
+
+## Факт (**documentation closeout only**)
+
+- Gemini implementation audit passed for DOC 37 Slice 01.
+- DOC 37 Slice 01 closed as **VERIFIED**.
+- Node geometry and joint stack foundation accepted.
+- `node_fastener_lines` and `node_material_lines` remain locked to `[]` for Slice 01 boundary.
+- DOC 37 Slice 02 is allowed only as planning at this point.
+- No implementation performed in this closeout.
+- No API / GAS / DB / registry data / BOM / pricing / CAD changes.
+
+## Далі
+
+Next allowed step: DOC 37 Slice 02 Fastener Selection — planning only.
+
+---
+
+# 03.05.2026 — DOC 37 Slice 01 planning opened (node geometry + joint stack)
+
+## Факт (**planning only / no implementation**)
+
+- DOC 33 Gemini re-audit passed and fastener registry contracts are approved for doctrine use.
+- DOC 37 Slice 01 planning opened with bounded scope:
+  - DOC 36 PASS dependency check
+  - phase/length validation
+  - total busbar length calculation
+  - connection group validation
+  - phase/connection mismatch handling
+  - joint stack thickness calculation for BUSBAR_SIDE and EQUIPMENT_SIDE groups
+- Planning dossier created:
+  - `docs/AUDITS/2026-05-03_DOC_37_SLICE_01_NODE_GEOMETRY_AND_JOINT_STACK_PLAN.md`
+- Implementation remains blocked; this is planning-only.
+- No code changes performed.
+
+## Далі
+
+Proceed only with focused re-audit/approval for Slice 01 plan before any implementation task is opened.
+
+---
+
+# 03.05.2026 — DOC 37 Slice 01 implemented (node geometry + joint stack only)
+
+## Факт (**narrow implementation slice only**)
+
+- Implemented DOC 37 Slice 01 geometry/stack core:
+  - DOC 36 PASS dependency check
+  - phase validation + total busbar length
+  - required connection group checks + phase/count mismatch handling
+  - joint stack thickness calculation for `BUSBAR_SIDE_CONNECTIONS` and `EQUIPMENT_SIDE_CONNECTIONS`
+- Added explicit positive-mm unit guard for required length/thickness inputs.
+- Result contract guard applied: `node_fastener_lines` locked to `[]` in Slice 01.
+- Added tests:
+  - `tests/test_busbar_node_package_slice01.py`
+  - `python -m unittest tests.test_busbar_node_package_slice01` -> `OK (8 tests)`
+- Implementation audit note created:
+  - `docs/AUDITS/2026-05-03_DOC_37_SLICE_01_NODE_GEOMETRY_AND_JOINT_STACK_IMPLEMENTATION.md`
+- No fastener selection, BOM, pricing, CAD, API, GAS, or DB changes.
+
+## Далі
+
+Slice 01 is implemented and ready for Gemini implementation audit.
+
+---
+
+# 03.05.2026 — Gemini DOC 33 fastener contract fixes applied (doc-only)
+
+## Факт (**documentation correction only**)
+
+- Gemini DOC 33 registry contract audit reviewed (`SAFE WITH FIXES`).
+- DOC 33 corrected with explicit fastener SSOT safeguards:
+  - `thread_pitch_mm` governance strengthened (registry-only, no inference from diameter/standard)
+  - `item_height_mm` governance added for `NUT` / `FLAT_WASHER` / `DISC_SPRING_WASHER`
+  - `hardware_stack_sum_mm` governance added in Washer Package Rule Registry
+  - Fastener Single Source Of Truth Rule added
+  - `safety_margin_mm` added to Joint Stack Rule Registry
+  - bolt length selection contract updated to registry-backed formula and required-data guards
+  - failure codes expanded for missing fastener geometry boundaries
+- DOC 37 reference alignment updated to use `hardware_stack_sum_mm` + `safety_margin_mm` and DOC 33-controlled fastener geometry.
+- No implementation performed.
+- No registry data created.
+- No API / GAS / DB / admin panel / BOM release / pricing / CAD changes.
+
+## Далі
+
+DOC 33 fastener registry contract fixes are ready for Gemini re-audit.
+
+---
+
+# 03.05.2026 — DOC 33 extended for DOC 37 fastener contracts (doc-only)
+
+## Факт (**documentation contract extension only**)
+
+- DOC 33 extended with formal contracts for:
+  - Fastener Registry
+  - Joint Stack Rule Registry
+  - Washer Package Rule Registry
+  - bolt length selection contract
+  - registry versioning requirement for DOC 37 outputs
+- DOC 37 registry dependencies on DOC 33 contracts explicitly formalized.
+- MVP registry governance preserved (manual/code-based contracts, no hidden engineering truth in algorithm branches).
+- No implementation performed.
+- No registry data created.
+- No API / GAS / DB / admin panel / BOM release / pricing / CAD changes.
+
+## Далі
+
+DOC 33 contract extension is complete and ready for focused doctrine audit.
+
+---
+
+# 03.05.2026 — Gemini DOC 37 re-audit PASS closeout (doc-only)
+
+## Факт (**documentation closeout only**)
+
+- Gemini DOC 37 re-audit passed (`PASS`).
+- DOC 37 approved as doctrine standard.
+- Fastener Truth Rule accepted.
+- Mass governance accepted.
+- Node package calculation doctrine closed as `PASS`.
+- No implementation performed.
+- No API / GAS / DB / admin panel / BOM release / pricing / CAD changes.
+
+## Далі
+
+Implementation may proceed only via separate approved narrow task.
+
+---
+
+# 03.05.2026 — Gemini DOC 37 audit fixes applied (doc-only)
+
+## Факт (**documentation correction only**)
+
+- Gemini DOC 37 audit reviewed after `IMPLEMENTATION BLOCKED` verdict.
+- DOC 37 corrected in:
+  - `docs/00-02_CALC_CONFIGURATOR/09_KZO/37_KZO_WELDED_BUSBAR_NODE_PACKAGE_CALCULATION_V1.md`
+- Fastener Truth Rule added and default fastener assumptions removed as engineering truth.
+- Bolt length selection doctrine added with registry-only selection boundary.
+- Mass governance tightened to `kg_per_meter` only for MVP (density-based mass deferred).
+- Output line names changed to avoid BOM confusion:
+  - `fastener_lines` -> `node_fastener_lines`
+  - `material_lines` -> `node_material_lines`
+- Failure code set expanded for fastener ambiguity, bolt length ambiguity, phase-connection mismatch, and unit-conversion safety boundaries.
+- DOC 33 strengthened for DOC 37-required registry families (Fastener, Joint Stack Rule, Washer Package Rule) as manual/code-based contracts only.
+- No implementation performed.
+- No API / GAS / DB / admin panel / BOM release / pricing / CAD changes.
+
+## Далі
+
+DOC 37 is corrected for governance re-audit; implementation remains blocked until explicit approval.
+
+---
+
+# 03.05.2026 — DOC 37 Busbar Node Package Calculation V1 created (doc-only)
+
+## Факт (**documentation / doctrine only**)
+
+- Created doctrine:
+  - `docs/00-02_CALC_CONFIGURATOR/09_KZO/37_KZO_WELDED_BUSBAR_NODE_PACKAGE_CALCULATION_V1.md`
+- Node package doctrine recorded for post-DOC-36 layer:
+  - phase lengths and total busbar length
+  - optional mass estimate rule
+  - connection point groups
+  - joint stack thickness rules
+  - fastener package calculation doctrine
+  - node package output contract and failure/status doctrine
+- Related references updated in:
+  - `docs/00-02_CALC_CONFIGURATOR/09_KZO/32_KZO_WELDED_GROUPING_AND_SEMANTIC_NODE_CALCULATION_DOCTRINE.md`
+  - `docs/00-02_CALC_CONFIGURATOR/09_KZO/33_KZO_WELDED_ENGINEERING_REGISTRY_CONTRACTS.md`
+- MVP registry governance preserved (registry-source boundary, no hidden engineering truth in algorithm branches).
+- No implementation performed.
+- No API / GAS / DB / admin panel / BOM release / pricing / CAD changes.
+- DOC 36 Slice 02 not started.
+
+## Далі
+
+DOC 37 remains doctrine-only until a separate implementation task is explicitly approved.
+
+---
+
+# 03.05.2026 — MVP registry doctrine clarified (doc-only)
+
+## Факт (**documentation governance only**)
+
+- MVP engineering registries fixed as code-based/manual registry constants.
+- Admin panel for registry management explicitly marked out of scope.
+- Algorithm doctrine clarified: evaluation logic must read registries and must not hide engineering truth in decision branches.
+- Clarifications recorded in:
+  - `docs/00-02_CALC_CONFIGURATOR/09_KZO/33_KZO_WELDED_ENGINEERING_REGISTRY_CONTRACTS.md`
+  - `docs/00-02_CALC_CONFIGURATOR/09_KZO/36_KZO_WELDED_BUSBAR_EVALUATION_ENGINE_V1.md`
+  - `docs/00_SYSTEM/14_MODULAR_SYSTEM_BACKBONE.md`
+- No implementation changes.
+
+## Далі
+
+Keep registry truth in versioned constants and contract updates; avoid hidden logic constants.
+
+---
+
+# 03.05.2026 — DOC 36 Slice 01 final re-check closed (VERIFIED)
+
+## Факт (**documentation closeout only**)
+
+- Gemini final re-check passed for DOC 36 Slice 01 (`PASS`).
+- Slice 01 closed as **VERIFIED** with accepted status safety core boundary.
+- DOC 37 doctrine-only lane approved as next allowed step.
+- DOC 36 Slice 02 remains blocked until a separate implementation task is opened.
+- No implementation changes in this closeout.
+- No API / GAS / DB / BOM / pricing / CAD changes.
+
+## Далі
+
+Next allowed step: `DOC 37 KZO Busbar Node Package Calculation V1` — doctrine only.
+
+---
+
+# 03.05.2026 — DOC 36 Slice 01 Gemini implementation audit fixes applied
+
+## Факт (**implementation fix only / no logic expansion**)
+
+- Gemini DOC 36 Slice 01 implementation audit reviewed (`PASS WITH FIXES`).
+- Slice 01 module placement corrected to canonical path:
+  - `busbar_evaluation_engine.py` -> `src/engines/kzo_welded/busbar_evaluation_engine.py`
+- Root placement governance risk resolved (no engine module left in repository root).
+- `selected_material_catalog_id` non-PASS behavior verified in tests (`ENGINEERING_REQUIRED`, `INCOMPLETE`, `SELECTION_REQUIRED` -> `None`).
+- Required registry version empty-string guard tested (`INCOMPLETE / REGISTRY_VERSION_MISSING`).
+- No Slice 02 logic implemented.
+- No API / GAS / DB / BOM / pricing / CAD changes.
+
+## Далі
+
+Slice 01 remains bounded and is ready for Gemini re-check on governance compliance.
+
+---
+
+# 03.05.2026 — DOC 36 Busbar Evaluation Engine V1 created (doc-only)
+
+## Факт (**documentation / doctrine only**)
+
+- Created evaluation doctrine:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/36_KZO_WELDED_BUSBAR_EVALUATION_ENGINE_V1.md`**
+- First deterministic busbar selection flow documented across:
+  - global material catalog
+  - KZO usage registry
+  - busbar node matrix
+  - equipment interface registry
+- Updated doctrine references in:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/32_KZO_WELDED_GROUPING_AND_SEMANTIC_NODE_CALCULATION_DOCTRINE.md`**
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/33_KZO_WELDED_ENGINEERING_REGISTRY_CONTRACTS.md`**
+- No implementation performed.
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Use DOC 36 as the approved decision contract for future implementation task scoping.
+
+---
+
+# 03.05.2026 — DOC 36 Busbar Evaluation Engine V1 Slice 01 implemented (status safety core)
+
+## Факт (**implementation slice / safety core only**)
+
+- DOC 36 passed Gemini re-audit and Slice 01 implementation clearance was used for narrow execution.
+- Implemented Busbar Evaluation Engine V1 Slice 01 safety core:
+  - strict evaluation statuses
+  - PASS paradox blocked in code
+  - registry version guard added
+  - unknown candidate current cannot return PASS
+- Added targeted tests for Slice 01 safety behavior.
+- No BOM / pricing / CAD / thermal / short-circuit logic introduced.
+- No DB persistence, GAS integration, or API surface expansion performed.
+- **Код / API / GAS / DB:** bounded to local engine module + unit tests only.
+
+## Далі
+
+Proceed to Gemini implementation audit for Slice 01 boundary confirmation before opening next evaluation slice.
+
+---
+
+# 03.05.2026 — Gemini DOC 36 audit fixes applied (doc-only)
+
+## Факт (**documentation / doctrine correction only**)
+
+- Gemini DOC 36 audit reviewed and applied after `IMPLEMENTATION BLOCKED` verdict.
+- DOC 36 corrected in:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/36_KZO_WELDED_BUSBAR_EVALUATION_ENGINE_V1.md`**
+- Status model expanded (`PASS`, `FAIL`, `INCOMPLETE`, `ENGINEERING_REQUIRED`, `AMBIGUOUS`, `SELECTION_REQUIRED`).
+- PASS paradox removed: unknown engineering current cannot produce `PASS`.
+- Equipment interface precedence documented over product usage defaults.
+- Multiple-candidate behavior documented (`SELECTION_REQUIRED`, `MULTIPLE_VALID_CANDIDATES`).
+- Registry traceability added to output contract (`registry_versions` block).
+- No implementation performed.
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+DOC 36 is ready for Gemini re-audit before any implementation slice is opened.
+
+---
+
+# 03.05.2026 — DOC 14 Modular System Backbone created (declarative contract only)
+
+## Факт (**documentation / architecture contract only**)
+
+- Created system backbone contract:
+  - **`docs/00_SYSTEM/14_MODULAR_SYSTEM_BACKBONE.md`**
+- Calculation Configurator explicitly positioned as Module 01 (current active MVP module)
+- Shared backbone entities and `ENGINEERING_READY` handoff rule defined
+- Future modules declared as extension points without internal workflow scope expansion
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Return to Module 01 technical registry lane (DOC 35 / DOC 36) under doc-first governance.
+
+---
+
+# 03.05.2026 — DOC 35 Equipment Interface Registry Contract created (doc-first, registry-only)
+
+## Факт (**documentation / registry only**)
+
+- Equipment Interface Registry Contract created:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/35_KZO_WELDED_EQUIPMENT_INTERFACE_REGISTRY_CONTRACT.md`**
+- Starter equipment interface registry created:
+  - **`src/constants/09_KZO/equipment_interface_registry_v1.json`**
+- Module 01 architecture now explicitly includes equipment-driven interface constraints
+- Busbar node matrix contract linked to equipment interface layer
+- Updated architecture links in:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/34_KZO_WELDED_BUSBAR_NODE_MATRIX_CONTRACT.md`**
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/33_KZO_WELDED_ENGINEERING_REGISTRY_CONTRACTS.md`**
+  - **`docs/00_SYSTEM/14_MODULAR_SYSTEM_BACKBONE.md`**
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Proceed with controlled registry refinement before evaluation-engine implementation.
+
+---
+
+# 03.05.2026 — KZO busbar node matrix contract and starter registry added (doc-first, registry-only)
+
+## Факт (**documentation / registry only**)
+
+- Busbar node matrix contract created:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/34_KZO_WELDED_BUSBAR_NODE_MATRIX_CONTRACT.md`**
+- Starter matrix registry created:
+  - **`src/constants/09_KZO/busbar_node_matrix_v1.json`**
+- Busbar selection governance expanded with node matrix concept:
+  - `CELL_TYPE x BUSBAR_NODE -> LENGTH_RULE + CURRENT_SOURCE + FORM_FACTOR_CONSTRAINTS`
+- Form-factor constraints explicitly recorded as required pass condition in busbar candidate filtering.
+- Docs-first rule for busbar matrix reinforced.
+- Updated cross-references in:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/32_KZO_WELDED_GROUPING_AND_SEMANTIC_NODE_CALCULATION_DOCTRINE.md`**
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/33_KZO_WELDED_ENGINEERING_REGISTRY_CONTRACTS.md`**
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Proceed with controlled busbar semantic-node refinement without expanding into full engineering or exhaustive matrix coverage.
+
+---
+
+# 03.05.2026 — KZO busbar usage registry placeholder corrected (registry-only)
+
+## Факт (**documentation / registry only**)
+
+- Corrected `material_catalog_id` in:
+  - **`src/constants/09_KZO/busbar_usage_registry_v1.json`**
+  - from `BUSBAR_CU_60X10_1` to `BUSBAR_CU_SHMT_60X10_1`
+- Limited `MAIN_BUSBAR` usage scope to:
+  - `allowed_node_types = ["MAIN_BUS_SLOT"]`
+- No `APPARATUS_DROP_SLOT` entry added at this stage.
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Keep usage registry minimal until dedicated entry for other node contexts is explicitly approved.
+
+---
+
+# 03.05.2026 — Global busbar material catalog populated with EDS starter sections (registry-only)
+
+## Факт (**documentation / registry only**)
+
+- Global busbar material catalog populated with initial EDS available section set:
+  - **`src/constants/global/busbar_material_catalog_v1.json`**
+- Materials recorded:
+  - `AL_AD31T`
+  - `CU_SHMT`
+- Starter sections recorded for both materials:
+  - `25x5`, `30x5`, `30x10`, `40x5`, `40x10`, `50x5`, `50x10`, `60x10`, `80x10`, `100x10`, `2x60x10`, `2x80x10`, `2x100x10`
+- `rated_current_a` and `mass_kg_per_m` intentionally remain `null` until engineering approval.
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Use this catalog as global physical section baseline; keep product-specific interpretation in product usage registries.
+
+---
+
+# 03.05.2026 — KZO busbar registry namespaced by product code (registry-only)
+
+## Факт (**documentation / registry only**)
+
+- KZO busbar registry moved to product namespace:
+  - **`src/constants/09_KZO/busbar_usage_registry_v1.json`**
+- Global busbar material catalog created:
+  - **`src/constants/global/busbar_material_catalog_v1.json`**
+- Added product-scoped registry rule in:
+  - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/33_KZO_WELDED_ENGINEERING_REGISTRY_CONTRACTS.md`**
+- Prevented false global reuse of KZO-specific busbar logic by splitting material catalog and product usage registry.
+- **Код / API / GAS / DB:** **немає**
+
+## Далі
+
+Review whether `insulator_registry_v1.json` should follow the same namespacing once product-specific interpretation rules are confirmed.
+
+---
+
 # 01.05.2026 — Finalize May 1 architecture and prepare registry foundation (doc-only)
 
 ## Факт (**documentation / registry only**)
@@ -19,7 +505,8 @@
 - Created registry contract skeleton:
   - **`docs/00-02_CALC_CONFIGURATOR/09_KZO/33_KZO_WELDED_ENGINEERING_REGISTRY_CONTRACTS.md`**
 - Created constants placeholders for registry discipline (`Single Source of Truth` path):
-  - **`src/constants/busbar_registry_v1.json`**
+  - **`src/constants/09_KZO/busbar_usage_registry_v1.json`**
+  - **`src/constants/global/busbar_material_catalog_v1.json`**
   - **`src/constants/insulator_registry_v1.json`**
 - Final May-1 strategic statement:
   - "Завершено архітектурне проектування шарів Semantic Nodes та Package Layer. Затверджено перехід до Registry Discipline. Створено фундамент для універсального інженерного двигуна (Engineering OS)."

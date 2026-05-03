@@ -1,0 +1,20 @@
+{
+  "registry_version": "v1",
+  "items": [
+    {
+      "usage_id": "KZO_MAIN_BUS_CU_60X10_1",
+      "product_code": "09_KZO",
+      "material_catalog_id": "BUSBAR_CU_SHMT_60X10_1",
+      "allowed_node_types": [
+        "MAIN_BUS_SLOT"
+      ],
+      "usage_context": "MAIN_BUSBAR",
+      "package_id": "KZO_BUSBAR_MAIN_PACKAGE_V1",
+      "kzo_constraints": {
+        "topology_scope": "MVP_PLACEHOLDER",
+        "tabu_flags": []
+      },
+      "status": "PLACEHOLDER"
+    }
+  ]
+}

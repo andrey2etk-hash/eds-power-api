@@ -1,0 +1,67 @@
+{
+  "registry_version": "v1",
+  "product_code": "09_KZO",
+  "source_contract": "docs/00-02_CALC_CONFIGURATOR/09_KZO/34_KZO_WELDED_BUSBAR_NODE_MATRIX_CONTRACT.md",
+  "items": [
+    {
+      "cell_type": "LINE_CELL",
+      "busbar_node_id": "MAIN_BUS_SLOT",
+      "node_active": true,
+      "length_rule_type": "CELL_WIDTH_BASED",
+      "length_mm_mvp": 800,
+      "current_source": "GLOBAL_BUSBAR_CURRENT",
+      "min_width_mm": null,
+      "min_thickness_mm": null,
+      "strip_count_policy": "REGISTRY_ALLOWED",
+      "form_factor_reason": null,
+      "usage_context": "MAIN_BUSBAR",
+      "notes": null,
+      "status": "MVP_STARTER"
+    },
+    {
+      "cell_type": "LINE_CELL",
+      "busbar_node_id": "APPARATUS_DROP_SLOT",
+      "node_active": true,
+      "length_rule_type": "FIXED_MVP",
+      "length_mm_mvp": null,
+      "current_source": "CELL_RATED_CURRENT",
+      "min_width_mm": 60,
+      "min_thickness_mm": null,
+      "strip_count_policy": "REGISTRY_ALLOWED",
+      "form_factor_reason": "apparatus terminal width placeholder",
+      "usage_context": "APPARATUS_DROP",
+      "notes": null,
+      "status": "MVP_STARTER"
+    },
+    {
+      "cell_type": "SHM",
+      "busbar_node_id": "BRIDGE_SPAN_SLOT",
+      "node_active": true,
+      "length_rule_type": "BRIDGE_LENGTH_BASED",
+      "length_mm_mvp": null,
+      "current_source": "BRIDGE_RATED_CURRENT",
+      "min_width_mm": null,
+      "min_thickness_mm": null,
+      "strip_count_policy": "REGISTRY_ALLOWED",
+      "form_factor_reason": null,
+      "usage_context": "BRIDGE",
+      "notes": null,
+      "status": "MVP_STARTER"
+    },
+    {
+      "cell_type": "SHMR",
+      "busbar_node_id": "BRIDGE_SPAN_SLOT",
+      "node_active": true,
+      "length_rule_type": "BRIDGE_LENGTH_BASED",
+      "length_mm_mvp": null,
+      "current_source": "BRIDGE_RATED_CURRENT",
+      "min_width_mm": null,
+      "min_thickness_mm": null,
+      "strip_count_policy": "REGISTRY_ALLOWED",
+      "form_factor_reason": null,
+      "usage_context": "BRIDGE",
+      "notes": "SHMR uses SHM bridge span base; disconnector delta handled separately.",
+      "status": "MVP_STARTER"
+    }
+  ]
+}

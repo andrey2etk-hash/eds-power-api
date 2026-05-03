@@ -16,7 +16,12 @@
 
 **Current execution rule:** **`IDEA-0024` API live verification is `PASS`** (`IMPLEMENTED_LIVE_VERIFIED` for bounded prototype tuple).
 
-**Next execution:** **KZO welded LINE + INCOMING + TN cell DNA review** (doc-only, no implementation).
+**Next execution:** safe options only:
+- **DOC 37 Slice 01 Node Geometry & Joint Stack** (**CLOSED / VERIFIED**)
+- **DOC 37 Slice 02 Fastener Selection** (**CLOSED / VERIFIED**)
+- **Next allowed step:** **DOC 38 BOM Aggregation / Kit Issue — DOCTRINE / PLANNING ONLY**
+**DOC 38 implementation is not active.** **DOC 36 Slice 02 remains blocked** until a separate implementation task is explicitly opened.
+**API/GAS/DB integration is not active.** **Procurement interface is not active.** **Admin panel is not active.**
 
 **Governance budget rule:** no master audits unless explicitly requested; one focused Gemini audit per doctrine; after `PASS`/`PASS WITH DOC FIXES` the slice is closed; no `8B.2E` opening without explicit user approval.
 

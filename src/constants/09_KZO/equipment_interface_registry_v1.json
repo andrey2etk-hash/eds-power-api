@@ -1,0 +1,61 @@
+{
+  "registry_version": "v1",
+  "product_code": "09_KZO",
+  "source_contract": "docs/00-02_CALC_CONFIGURATOR/09_KZO/35_KZO_WELDED_EQUIPMENT_INTERFACE_REGISTRY_CONTRACT.md",
+  "items": [
+    {
+      "equipment_id": "BREAKER_VL",
+      "equipment_family": "VACUUM_BREAKER",
+      "equipment_type": "VL",
+      "interface_node": "APPARATUS_DROP_SLOT",
+      "terminal_min_width_mm": 60,
+      "terminal_min_thickness_mm": null,
+      "compatible_busbar_materials": [
+        "CU_SHMT",
+        "AL_AD31T"
+      ],
+      "strip_count_constraints": "REGISTRY_ALLOWED",
+      "topology_constraints": [],
+      "interface_reason": "VL breaker terminal width MVP placeholder",
+      "source_basis": "EDS_MVP_ENGINEERING_ASSUMPTION",
+      "notes": null,
+      "status": "MVP_STARTER"
+    },
+    {
+      "equipment_id": "BREAKER_VD4",
+      "equipment_family": "VACUUM_BREAKER",
+      "equipment_type": "VD4",
+      "interface_node": "APPARATUS_DROP_SLOT",
+      "terminal_min_width_mm": 80,
+      "terminal_min_thickness_mm": null,
+      "compatible_busbar_materials": [
+        "CU_SHMT",
+        "AL_AD31T"
+      ],
+      "strip_count_constraints": "REGISTRY_ALLOWED",
+      "topology_constraints": [],
+      "interface_reason": "VD4 breaker terminal width MVP placeholder",
+      "source_basis": "EDS_MVP_ENGINEERING_ASSUMPTION",
+      "notes": null,
+      "status": "MVP_STARTER"
+    },
+    {
+      "equipment_id": "DISCONNECTOR_RVZ",
+      "equipment_family": "DISCONNECTOR",
+      "equipment_type": "RVZ",
+      "interface_node": "APPARATUS_DROP_SLOT",
+      "terminal_min_width_mm": 50,
+      "terminal_min_thickness_mm": null,
+      "compatible_busbar_materials": [
+        "CU_SHMT",
+        "AL_AD31T"
+      ],
+      "strip_count_constraints": "REGISTRY_ALLOWED",
+      "topology_constraints": [],
+      "interface_reason": "RVZ terminal width MVP placeholder",
+      "source_basis": "EDS_MVP_ENGINEERING_ASSUMPTION",
+      "notes": null,
+      "status": "MVP_STARTER"
+    }
+  ]
+}

@@ -46,6 +46,12 @@ GROUP_RESULT = SINGLE_CELL_RESULT x GROUP_QUANTITY
 Purpose:
 Define WHERE elements may exist.
 
+Busbar node matrix rules are defined in:
+
+- `docs/00-02_CALC_CONFIGURATOR/09_KZO/34_KZO_WELDED_BUSBAR_NODE_MATRIX_CONTRACT.md`
+- `docs/00-02_CALC_CONFIGURATOR/09_KZO/36_KZO_WELDED_BUSBAR_EVALUATION_ENGINE_V1.md` (first evaluation engine doctrine)
+- `docs/00-02_CALC_CONFIGURATOR/09_KZO/37_KZO_WELDED_BUSBAR_NODE_PACKAGE_CALCULATION_V1.md` (node package calculation after DOC 36 candidate selection)
+
 Subsections:
 
 A. Busbar Domain (placeholder only now)
@@ -53,6 +59,12 @@ B. Insulator Domain (placeholder only now)
 C. Future Domains placeholder
 
 Do not fully populate yet.
+
+Semantic nodes may require constraints beyond current rating:
+
+- form factor
+- topology context
+- product usage context
 
 ## Section 4 — Node Activation Logic Foundation
 
