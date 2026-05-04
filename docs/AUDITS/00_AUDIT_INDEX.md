@@ -12,6 +12,9 @@ Rule:
 
 ## Latest audit
 
+- **Gemini Module 01 Demo API Endpoint implementation re-audit (`PASS`) — endpoint CLOSED / VERIFIED closeout; fastener source-truth SAFE; runtime runner isolation SAFE; 100 tests OK** — **`docs/AUDITS/2026-05-03_MODULE_01_DEMO_API_ENDPOINT_IMPLEMENTATION.md`**
+- **Gemini Module 01 Demo API Endpoint Plan audit (`SAFE WITH FIXES`) — governance fixes applied; pending Gemini re-audit** — **`docs/AUDITS/2026-05-03_MODULE_01_DEMO_API_ENDPOINT_PLAN.md`**
+- **Gemini Module 01 Demo UI / API-GAS Integration Plan audit (`PASS`) — fastener_decisions Sheets output block added; plan CLOSED / PASS for next technical component planning** — **`docs/AUDITS/2026-05-03_MODULE_01_DEMO_UI_API_GAS_INTEGRATION_PLAN.md`**
 - **Gemini Module 01 one-page executive summary audit (`PASS`) — one-page summary CLOSED / PASS as director-facing artifact; boundary check CLEAN** — **`docs/AUDITS/2026-05-03_MODULE_01_ONE_PAGE_EXECUTIVE_SUMMARY.md`**
 - **Gemini Module 01 one-page executive summary plan audit (`PASS`) — Data Owners note applied; one-page plan CLOSED / PASS and ready for summary creation step** — **`docs/AUDITS/2026-05-03_MODULE_01_ONE_PAGE_EXECUTIVE_SUMMARY_PLAN.md`**
 - **Gemini Module 01 demo narrative package plan audit (`PASS`) — Data Ownership Note applied; narrative plan CLOSED / PASS for presentation artifact preparation planning** — **`docs/AUDITS/2026-05-03_MODULE_01_DEMO_NARRATIVE_PACKAGE_PLAN.md`**

@@ -30,10 +30,26 @@ class Module01LocalDemoRunnerTests(unittest.TestCase):
 
     def test_selected_bolts_match_expected(self):
         result = demo_runner.run_module_01_local_demo(write_output=False)
+        rows = result["fastener_decisions"]
         for node_id in ("KZO_DEMO_NODE_A", "KZO_DEMO_NODE_B"):
-            decision = result["fastener_decisions"][node_id]
-            self.assertEqual(decision["BUSBAR_SIDE_CONNECTIONS"], "DEMO_BOLT_M12X55")
-            self.assertEqual(decision["EQUIPMENT_SIDE_CONNECTIONS"], "DEMO_BOLT_M12X45")
+            self.assertTrue(
+                any(
+                    row["node"] == node_id
+                    and row["connection_group"] == "BUSBAR_SIDE_CONNECTIONS"
+                    and row["candidate_bolt"] == "DEMO_BOLT_M12X55"
+                    and row["decision"] == "SELECTED"
+                    for row in rows
+                )
+            )
+            self.assertTrue(
+                any(
+                    row["node"] == node_id
+                    and row["connection_group"] == "EQUIPMENT_SIDE_CONNECTIONS"
+                    and row["candidate_bolt"] == "DEMO_BOLT_M12X45"
+                    and row["decision"] == "SELECTED"
+                    for row in rows
+                )
+            )
 
     def test_doc38_totals_match_expected(self):
         result = demo_runner.run_module_01_local_demo(write_output=False)
@@ -86,6 +102,9 @@ class Module01LocalDemoRunnerTests(unittest.TestCase):
         lower_blob = str(result).lower()
         self.assertIn("not final erp bom", result["management_summary"].lower())
         self.assertIn("not final erp bom", result["boundary_note"].lower())
+        self.assertIn("not production data", result["boundary_note"].lower())
+        self.assertIn("not pricing", result["boundary_note"].lower())
+        self.assertIn("not cad", result["boundary_note"].lower())
         self.assertNotIn("warehouse_movement", lower_blob)
         self.assertNotIn("purchase_request", lower_blob)
         self.assertNotIn("erp_posting", lower_blob)

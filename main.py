@@ -1,7 +1,7 @@
 from datetime import UTC, datetime
 from time import perf_counter
 from typing import Any
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 from fastapi import FastAPI, Header
 from fastapi.responses import JSONResponse
@@ -63,6 +63,66 @@ KZO_OBJECT_STATUSES = {
 }
 
 EDS_CLIENT_TYPES = frozenset({"GAS", "WEB", "MOBILE", "AGENT", "UNKNOWN"})
+DEMO_ALLOWED_CLIENT_TYPE = "GAS_DEMO"
+DEMO_ALLOWED_MODE = "MODULE_01_DEMO"
+DEMO_ALLOWED_PRODUCT_TYPE = "KZO"
+DEMO_ALLOWED_DEMO_ID = "MODULE_01_KZO_DEMO_001"
+DEMO_ALLOWED_OUTPUT_BLOCKS = frozenset(
+    {
+        "demo_status",
+        "status_flow",
+        "node_results",
+        "fastener_decisions",
+        "kit_issue_lines",
+        "traceability",
+        "boundary_note",
+        "management_summary",
+        "registry_versions",
+    }
+)
+DEMO_FORBIDDEN_FLAGS = frozenset(
+    {
+        "pricing",
+        "procurement",
+        "warehouse",
+        "erp",
+        "cad",
+        "production",
+        "db_write",
+        "supabase_write",
+    }
+)
+DEMO_REQUIRED_REQUEST_FIELDS = (
+    "request_id",
+    "client_type",
+    "mode",
+    "product_type",
+    "demo_id",
+    "requested_output_blocks",
+    "operator_context",
+)
+
+DEMO_ERROR_INVALID_REQUEST_ID = "ERR_INVALID_REQUEST_ID"
+DEMO_ERROR_INVALID_CLIENT_TYPE = "ERR_INVALID_CLIENT_TYPE"
+DEMO_ERROR_INVALID_MODE = "ERR_INVALID_MODE"
+DEMO_ERROR_INVALID_PRODUCT_TYPE = "ERR_INVALID_PRODUCT_TYPE"
+DEMO_ERROR_INVALID_DEMO_ID = "ERR_INVALID_DEMO_ID"
+DEMO_ERROR_UNSUPPORTED_OUTPUT_BLOCK = "ERR_UNSUPPORTED_OUTPUT_BLOCK"
+DEMO_ERROR_FORBIDDEN_FLAG = "ERR_FORBIDDEN_FLAG"
+DEMO_ERROR_RUNNER_FAILURE = "ERR_DEMO_RUNNER_FAILURE"
+DEMO_ERROR_LOGIC_CHAIN_FAILURE = "ERR_LOGIC_CHAIN_FAILURE"
+DEMO_ERROR_FIXTURE_MUTATION = "ERR_FIXTURE_MUTATION_DETECTED"
+DEMO_ERROR_DEMO_VERSION_MISMATCH = "ERR_DEMO_VERSION_MISMATCH"
+DEMO_ERROR_BOUNDARY_VIOLATION = "ERR_BOUNDARY_VIOLATION"
+DEMO_MISSING_FIELD_ERRORS = {
+    "request_id": DEMO_ERROR_INVALID_REQUEST_ID,
+    "client_type": DEMO_ERROR_INVALID_CLIENT_TYPE,
+    "mode": DEMO_ERROR_INVALID_MODE,
+    "product_type": DEMO_ERROR_INVALID_PRODUCT_TYPE,
+    "demo_id": DEMO_ERROR_INVALID_DEMO_ID,
+    "requested_output_blocks": DEMO_ERROR_UNSUPPORTED_OUTPUT_BLOCK,
+}
+
 KZO_PROTOTYPE_CONSTRUCTIVE_FAMILY = "KZO_WELDED"
 KZO_PROTOTYPE_CELL_ROLE = "VACUUM_BREAKER"
 KZO_PROTOTYPE_CELL_POSITION = "LEFT_END"
@@ -193,6 +253,67 @@ def _validation_error(
             "metadata": _response_metadata(meta, logic_version, started_at),
         },
     )
+
+
+def _is_uuid4(value: Any) -> bool:
+    if not isinstance(value, str):
+        return False
+    try:
+        parsed = UUID(value)
+    except (TypeError, ValueError):
+        return False
+    return parsed.version == 4 and str(parsed) == value.lower()
+
+
+def _demo_metadata(request_id: str, client_type: Any) -> dict[str, Any]:
+    return {
+        "request_id": request_id if isinstance(request_id, str) else str(request_id),
+        "client_type": client_type if isinstance(client_type, str) else str(client_type),
+        "generated_at": datetime.now(UTC).isoformat(),
+    }
+
+
+def _demo_error_response(
+    *,
+    request_id: Any,
+    client_type: Any,
+    error_code: str,
+    message: str,
+    source_field: str,
+    notes: list[str] | None = None,
+) -> JSONResponse:
+    return JSONResponse(
+        status_code=200,
+        headers={"X-EDS-Power-Mode": "DEMO"},
+        content={
+            "status": "error",
+            "data": None,
+            "error": {
+                "error_code": error_code,
+                "message": message,
+                "source_field": source_field,
+                "notes": notes or [],
+            },
+            "metadata": _demo_metadata(request_id=request_id, client_type=client_type),
+        },
+    )
+
+
+def _collect_registry_versions(node: Any, collector: list[Any]) -> None:
+    if isinstance(node, dict):
+        for key, value in node.items():
+            if key == "registry_version" or key.endswith("_registry_version"):
+                collector.append(value)
+            _collect_registry_versions(value, collector)
+    elif isinstance(node, list):
+        for item in node:
+            _collect_registry_versions(item, collector)
+
+
+def _run_module_01_demo_in_memory() -> dict[str, Any]:
+    from src.runners.module_01_demo_runner import run_module_01_local_demo
+
+    return run_module_01_local_demo(write_output=False)
 
 
 def _validate_kzo_payload(payload: dict[str, Any]) -> tuple[dict[str, Any] | None, tuple[str, str, str] | None]:
@@ -545,6 +666,248 @@ def root():
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+
+@app.post("/api/demo/module-01/kzo/run")
+def run_module_01_demo_api(request: dict[str, Any]):
+    request_id = request.get("request_id")
+    client_type = request.get("client_type")
+
+    for field in DEMO_REQUIRED_REQUEST_FIELDS:
+        if field not in request:
+            error_code = DEMO_MISSING_FIELD_ERRORS.get(field, DEMO_ERROR_LOGIC_CHAIN_FAILURE)
+            message = f"Required field {field} is missing."
+            if field == "request_id":
+                message = "request_id is required and must be UUID v4."
+            return _demo_error_response(
+                request_id=request_id or str(uuid4()),
+                client_type=client_type or "UNKNOWN",
+                error_code=error_code,
+                message=message,
+                source_field=field,
+            )
+
+    if not _is_uuid4(request_id):
+        return _demo_error_response(
+            request_id=request_id or str(uuid4()),
+            client_type=client_type or "UNKNOWN",
+            error_code=DEMO_ERROR_INVALID_REQUEST_ID,
+            message="request_id must be a valid UUID v4.",
+            source_field="request_id",
+        )
+    if client_type != DEMO_ALLOWED_CLIENT_TYPE:
+        return _demo_error_response(
+            request_id=request_id,
+            client_type=client_type,
+            error_code=DEMO_ERROR_INVALID_CLIENT_TYPE,
+            message=f"client_type must be {DEMO_ALLOWED_CLIENT_TYPE}.",
+            source_field="client_type",
+        )
+    if request.get("mode") != DEMO_ALLOWED_MODE:
+        return _demo_error_response(
+            request_id=request_id,
+            client_type=client_type,
+            error_code=DEMO_ERROR_INVALID_MODE,
+            message=f"mode must be {DEMO_ALLOWED_MODE}.",
+            source_field="mode",
+        )
+    if request.get("product_type") != DEMO_ALLOWED_PRODUCT_TYPE:
+        return _demo_error_response(
+            request_id=request_id,
+            client_type=client_type,
+            error_code=DEMO_ERROR_INVALID_PRODUCT_TYPE,
+            message=f"product_type must be {DEMO_ALLOWED_PRODUCT_TYPE}.",
+            source_field="product_type",
+        )
+    if request.get("demo_id") != DEMO_ALLOWED_DEMO_ID:
+        return _demo_error_response(
+            request_id=request_id,
+            client_type=client_type,
+            error_code=DEMO_ERROR_INVALID_DEMO_ID,
+            message=f"demo_id must be {DEMO_ALLOWED_DEMO_ID}.",
+            source_field="demo_id",
+        )
+
+    requested_output_blocks = request.get("requested_output_blocks")
+    if not isinstance(requested_output_blocks, list) or len(requested_output_blocks) == 0:
+        return _demo_error_response(
+            request_id=request_id,
+            client_type=client_type,
+            error_code=DEMO_ERROR_UNSUPPORTED_OUTPUT_BLOCK,
+            message="requested_output_blocks must be a non-empty array.",
+            source_field="requested_output_blocks",
+        )
+    if any((not isinstance(block, str)) or block not in DEMO_ALLOWED_OUTPUT_BLOCKS for block in requested_output_blocks):
+        return _demo_error_response(
+            request_id=request_id,
+            client_type=client_type,
+            error_code=DEMO_ERROR_UNSUPPORTED_OUTPUT_BLOCK,
+            message="requested_output_blocks contains unsupported values.",
+            source_field="requested_output_blocks",
+        )
+
+    operator_context = request.get("operator_context")
+    if not isinstance(operator_context, dict):
+        return _demo_error_response(
+            request_id=request_id,
+            client_type=client_type,
+            error_code=DEMO_ERROR_LOGIC_CHAIN_FAILURE,
+            message="operator_context must be an object.",
+            source_field="operator_context",
+        )
+
+    for flag in DEMO_FORBIDDEN_FLAGS:
+        if flag in request or flag in operator_context:
+            return _demo_error_response(
+                request_id=request_id,
+                client_type=client_type,
+                error_code=DEMO_ERROR_FORBIDDEN_FLAG,
+                message=f"Forbidden flag detected: {flag}.",
+                source_field=flag,
+            )
+
+    try:
+        demo_output = _run_module_01_demo_in_memory()
+    except AssertionError as error:
+        error_code = DEMO_ERROR_FIXTURE_MUTATION if "mutat" in str(error).lower() else DEMO_ERROR_RUNNER_FAILURE
+        return _demo_error_response(
+            request_id=request_id,
+            client_type=client_type,
+            error_code=error_code,
+            message=str(error),
+            source_field="demo_runner",
+        )
+    except Exception as error:  # noqa: BLE001
+        return _demo_error_response(
+            request_id=request_id,
+            client_type=client_type,
+            error_code=DEMO_ERROR_RUNNER_FAILURE,
+            message=f"Demo runner execution failed: {error}",
+            source_field="demo_runner",
+        )
+
+    if demo_output.get("status") != "PASS":
+        return _demo_error_response(
+            request_id=request_id,
+            client_type=client_type,
+            error_code=DEMO_ERROR_LOGIC_CHAIN_FAILURE,
+            message="Module 01 demo chain did not return PASS.",
+            source_field="status",
+        )
+
+    collected_versions: list[Any] = []
+    _collect_registry_versions(demo_output.get("registry_versions"), collected_versions)
+    _collect_registry_versions(demo_output.get("kit_issue_lines"), collected_versions)
+    if not collected_versions or any(version != "demo_v1" for version in collected_versions):
+        return _demo_error_response(
+            request_id=request_id,
+            client_type=client_type,
+            error_code=DEMO_ERROR_DEMO_VERSION_MISMATCH,
+            message="Registry versions must be demo_v1 across response data.",
+            source_field="registry_versions",
+        )
+
+    fastener_rows = demo_output.get("fastener_decisions")
+    if not isinstance(fastener_rows, list) or not fastener_rows:
+        return _demo_error_response(
+            request_id=request_id,
+            client_type=client_type,
+            error_code=DEMO_ERROR_LOGIC_CHAIN_FAILURE,
+            message="fastener_decisions block is empty.",
+            source_field="fastener_decisions",
+        )
+    if any(
+        (not isinstance(row, dict))
+        or row.get("decision") not in {"SELECTED", "REJECTED"}
+        for row in fastener_rows
+    ):
+        return _demo_error_response(
+            request_id=request_id,
+            client_type=client_type,
+            error_code=DEMO_ERROR_LOGIC_CHAIN_FAILURE,
+            message="fastener_decisions rows must contain SELECTED/REJECTED decisions.",
+            source_field="fastener_decisions",
+        )
+
+    management_summary = demo_output.get("management_summary")
+    if not isinstance(management_summary, str) or not management_summary.strip():
+        return _demo_error_response(
+            request_id=request_id,
+            client_type=client_type,
+            error_code=DEMO_ERROR_LOGIC_CHAIN_FAILURE,
+            message="management_summary is required for demo success response.",
+            source_field="management_summary",
+        )
+
+    boundary_note = demo_output.get("boundary_note")
+    boundary_required_markers = (
+        "local demo only",
+        "not production data",
+        "not final erp bom",
+        "not procurement",
+        "not warehouse",
+        "not erp/1c",
+        "not pricing",
+        "not cad",
+        "no api/gas/db",
+    )
+    boundary_lower = str(boundary_note).lower()
+    if not isinstance(boundary_note, str) or any(marker not in boundary_lower for marker in boundary_required_markers):
+        return _demo_error_response(
+            request_id=request_id,
+            client_type=client_type,
+            error_code=DEMO_ERROR_BOUNDARY_VIOLATION,
+            message="boundary_note is missing required demo boundary statements.",
+            source_field="boundary_note",
+        )
+
+    output_blob = str(demo_output).lower()
+    for forbidden_token in ("erp_posting", "warehouse_reservation", "purchase_request", "stock_movement"):
+        if forbidden_token in output_blob:
+            return _demo_error_response(
+                request_id=request_id,
+                client_type=client_type,
+                error_code=DEMO_ERROR_BOUNDARY_VIOLATION,
+                message=f"Forbidden production token detected in response: {forbidden_token}.",
+                source_field="data",
+            )
+
+    available_blocks: dict[str, Any] = {
+        "demo_status": demo_output.get("status"),
+        "status_flow": demo_output.get("status_flow"),
+        "node_results": demo_output.get("node_results"),
+        "fastener_decisions": fastener_rows,
+        "kit_issue_lines": demo_output.get("kit_issue_lines"),
+        "traceability": {
+            "source_node_ids": demo_output.get("source_node_ids"),
+            "source_line_ids": demo_output.get("source_line_ids"),
+            "traceability_refs": demo_output.get("traceability_refs"),
+        },
+        "boundary_note": boundary_note,
+        "management_summary": management_summary,
+        "registry_versions": demo_output.get("registry_versions"),
+    }
+
+    data = {"demo_id": demo_output.get("demo_id")}
+    for block_name in requested_output_blocks:
+        data[block_name] = available_blocks[block_name]
+    data["boundary_note"] = boundary_note
+    data["management_summary"] = management_summary
+
+    response_payload = {
+        "status": "success",
+        "data": data,
+        "error": None,
+        "metadata": {
+            "request_id": request_id,
+            "logic_version": "MODULE_01_LOCAL_DEMO_CHAIN_V1",
+            "demo_version": "demo_v1",
+            "generated_at": datetime.now(UTC).isoformat(),
+            "client_type": client_type,
+            "response_source": "MODULE_01_LOCAL_DEMO_RUNNER",
+        },
+    }
+    return JSONResponse(status_code=200, headers={"X-EDS-Power-Mode": "DEMO"}, content=response_payload)
 
 
 @app.post("/api/calc/prepare_calculation")

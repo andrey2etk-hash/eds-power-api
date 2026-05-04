@@ -6,6 +6,154 @@
 
 ---
 
+# 04.05.2026 — Module 01 Demo API endpoint Gemini re-audit PASS (doc-only closeout)
+
+## Факт (**verified closeout only / no implementation changes**)
+
+- Gemini re-audit passed for Module 01 Demo API Endpoint (`PASS`).
+- Demo API endpoint is closed as `CLOSED / VERIFIED`.
+- fastener_decisions source-truth correction accepted.
+- API runtime runner isolation accepted (`src/runners/module_01_demo_runner.py`).
+- Local verification evidence confirmed: `100 tests OK`.
+- No implementation performed in this closeout step.
+- No code/test/fixture changes in this closeout step.
+- No GAS code.
+- No DB/Supabase integration changes.
+- No procurement/warehouse/ERP behavior.
+- No pricing/CAD behavior.
+- No production deployment actions.
+
+## Далі
+
+Next allowed step:
+- Demo GAS Thin Client Planning Only
+
+---
+
+# 04.05.2026 — Module 01 Demo API endpoint Gemini fixes applied (fix-only)
+
+## Факт (**Gemini PASS WITH FIXES corrections / demo-only scope preserved**)
+
+- Applied Gemini `PASS WITH FIXES` corrections to Module 01 demo endpoint implementation.
+- Removed API-side `fastener_decisions` reconstruction from `main.py`.
+- `fastener_decisions` now sourced from verified in-memory runner output only.
+- Boundary note aligned and validated for all required markers (`not production data`, `not pricing`, `not CAD`, plus existing demo boundaries).
+- Moved pure runner to runtime-safe module: `src/runners/module_01_demo_runner.py`.
+- Converted `tests/demo_runner_module_01.py` into thin CLI wrapper importing runtime runner module.
+- API runner import now uses `src.runners.module_01_demo_runner` (no runtime dependency on `tests` package).
+- Missing identity-field validation now maps to specific error codes (`request_id`, `client_type`, `mode`, `product_type`, `demo_id`).
+- Added/updated tests for error-header presence, runner import path, runner-source fastener decisions, and boundary-note marker checks.
+- Updated endpoint suite result: `28 tests OK`.
+- Updated combined suite result: `100 tests OK`.
+- No GAS code changes.
+- No DB/Supabase integration changes.
+- No procurement/warehouse/ERP behavior.
+- No pricing/CAD behavior.
+- No production deployment actions.
+
+## Далі
+
+Next allowed step:
+- Gemini re-audit of Demo API Endpoint implementation
+
+---
+
+# 04.05.2026 — Module 01 Demo API endpoint implemented (narrow demo-only scope)
+
+## Факт (**implementation active / demo-only boundary**)
+
+- Implemented demo endpoint `POST /api/demo/module-01/kzo/run` in `main.py`.
+- Added request/response envelope for demo-only execution with strict validation.
+- Implemented UUID v4 `request_id` validation and strict `requested_output_blocks` allowlist.
+- Implemented demo API error code registry and explicit error envelope.
+- Added mandatory response header `X-EDS-Power-Mode: DEMO` for success/error responses.
+- Implemented in-memory runner integration (`run_module_01_local_demo(write_output=False)`), no output-file source-of-truth usage.
+- Added endpoint test suite `tests/test_module_01_demo_api_endpoint.py` (`20 tests OK`).
+- Executed combined local suite including engines/fixtures/runner/API (`92 tests OK`).
+- Created implementation audit: `docs/AUDITS/2026-05-03_MODULE_01_DEMO_API_ENDPOINT_IMPLEMENTATION.md`.
+- No GAS code.
+- No DB/Supabase integration changes.
+- No procurement/warehouse/ERP behavior.
+- No pricing/CAD behavior.
+- No production deployment actions.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Demo API Endpoint implementation
+
+---
+
+# 04.05.2026 — Gemini SAFE WITH FIXES applied to Module 01 Demo API Endpoint Plan (doc-only)
+
+## Факт (**documentation correction only / no implementation**)
+
+- Applied Gemini `SAFE WITH FIXES` requirements to:
+  - `docs/AUDITS/2026-05-03_MODULE_01_DEMO_API_ENDPOINT_PLAN.md`
+- Added UUID v4 `request_id` rule.
+- Added strict `requested_output_blocks` allowlist.
+- Added Demo API error code registry.
+- Added pure function / in-memory demo runner rule.
+- Added `X-EDS-Power-Mode: DEMO` boundary header requirement.
+- No implementation performed.
+
+## Далі
+
+Next allowed step:
+- Gemini re-audit of Demo API Endpoint Plan
+
+---
+
+# 04.05.2026 — Module 01 Demo API endpoint planning created (doc-only)
+
+## Факт (**planning only / no implementation**)
+
+- Created Demo API endpoint planning dossier:
+  - `docs/AUDITS/2026-05-03_MODULE_01_DEMO_API_ENDPOINT_PLAN.md`
+- Planned controlled request/response envelope for `POST /api/demo/module-01/kzo/run`.
+- Planned `fastener_decisions` API contract for Google Sheets compatibility.
+- No API implementation performed.
+
+## Далі
+
+Proceed with focused Gemini audit of Demo API Endpoint Plan.
+
+---
+
+# 04.05.2026 — Module 01 Demo UI / API-GAS integration plan closed as PASS by Gemini (doc-only closeout)
+
+## Факт (**closeout only / no implementation changes**)
+
+- Gemini audit passed for Module 01 Demo UI / API-GAS Integration Plan (`PASS`).
+- fastener_decisions Google Sheets output block added to plan.
+- Integration plan closed as `CLOSED / PASS`.
+- No implementation performed.
+
+## Далі
+
+Next allowed options:
+- Demo API endpoint planning only
+- Demo GAS thin client planning only
+- Google Sheets output layout planning only
+
+---
+
+# 04.05.2026 — Module 01 Demo UI / API-GAS integration planning created (doc-only)
+
+## Факт (**planning only / no implementation**)
+
+- Created controlled integration planning dossier:
+  - `docs/AUDITS/2026-05-03_MODULE_01_DEMO_UI_API_GAS_INTEGRATION_PLAN.md`
+- Defined thin-client GAS boundary and strict no-engineering-logic-in-GAS rule.
+- Planned API request/response envelope and Google Sheets output blocks for demo-only flow.
+- No implementation performed.
+
+## Далі
+
+Proceed with focused Gemini audit of Demo UI / API-GAS Integration Plan.
+
+---
+
 # 04.05.2026 — Module 01 one-page executive summary closeout verified by Gemini (doc-only closeout)
 
 ## Факт (**closeout only / no implementation changes**)
