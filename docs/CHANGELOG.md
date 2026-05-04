@@ -6,6 +6,414 @@
 
 ---
 
+# 04.05.2026 — Module 01 remote Supabase migration retry attempt (blocked at strict preflight)
+
+## Факт (**retry preflight only / no execution**)
+
+- Remote migration retry was requested for project `mvcxtwoxhopumxcryxlc`.
+- Retry blocked by strict preflight conditions: repo not clean and `SUPABASE_DB_PASSWORD` missing in session.
+- `supabase db push` was not executed.
+- No remote migration execution, no DDL, no table creation, no DB writes.
+- No API/GAS changes and no forbidden domain drift.
+
+## Далі
+
+Next allowed step:
+- satisfy strict preflight (clean repo + set session password), then rerun remote migration retry as separate narrow task
+
+---
+
+# 04.05.2026 — Remote Supabase Auth Preflight Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Gemini audit passed for Remote Supabase Auth Preflight.
+- Remote authentication resolved and connectivity confirmed.
+- Auth preflight closed as `PASS`.
+- No migration execution performed during preflight closeout.
+- No DB writes, no DDL, no table creation, no API/GAS changes.
+
+## Далі
+
+Next allowed step:
+- Remote Supabase migration execution retry
+
+---
+
+# 04.05.2026 — Remote Supabase auth preflight completed (PASS / no execution)
+
+## Факт (**auth preflight only / read-only checks**)
+
+- Remote project identity confirmed for linked target `mvcxtwoxhopumxcryxlc` (`EDSPower Database`).
+- Session-only `SUPABASE_DB_PASSWORD` method applied for current PowerShell session.
+- Read-only remote checks passed (`supabase migration list`, linked `SELECT 1`).
+- No remote migration execution performed.
+- No DB writes, no DDL, no table creation, no API/GAS changes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Remote Supabase Auth Preflight Result
+
+---
+
+# 04.05.2026 — Remote Supabase Auth Fix Plan Gemini PASS closeout (doc-only)
+
+## Факт (**plan closeout only / no retry**)
+
+- Gemini audit passed for Remote Supabase Auth Fix Plan.
+- Auth fix plan closed as `PASS`.
+- Next allowed step set to Remote Supabase Auth Fix Application / Preflight Only.
+- No remote retry performed in this closeout step.
+- No DDL execution, no table creation, no DB writes.
+
+## Далі
+
+Next allowed step:
+- Remote Supabase Auth Fix Application / Preflight Only
+
+---
+
+# 04.05.2026 — Module 01 remote Supabase auth fix planning created (doc-only)
+
+## Факт (**auth fix planning only / no retry**)
+
+- Remote Supabase migration blocked by authentication/permission issue documented.
+- Remote auth fix planning created with PowerShell session-secret handling boundaries.
+- No remote retry performed in this step.
+- No secrets stored in docs/repo.
+- No DB writes performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Remote Supabase Auth Fix Plan
+
+---
+
+# 04.05.2026 — Module 01 remote Supabase migration execution attempt (blocked)
+
+## Факт (**remote execution attempt / blocked**)
+
+- Remote execution attempted for `20260504190000_module01_schema_slice_01.sql` on linked project `mvcxtwoxhopumxcryxlc` (`EDSPower Database`).
+- Execution blocked by remote login-role/credential error (`permission denied to alter role cli_login_postgres`).
+- Remote migration was not applied.
+- No remote table creation, no DB writes, no API/GAS changes.
+- No RLS/triggers/functions, no ERP/procurement/warehouse/pricing/CAD changes.
+
+## Далі
+
+Next allowed step:
+- resolve remote DB access preconditions and rerun remote migration execution as separate narrow task
+
+---
+
+# 04.05.2026 — Module 01 remote Supabase migration execution planning created (doc-only)
+
+## Факт (**remote planning only / no remote execution**)
+
+- Module 01 remote Supabase migration execution planning created.
+- Remote preflight, execution boundaries, verification checks, failure handling, and rollback boundaries planned.
+- Remote target environment rules and approval gates documented.
+- No remote execution performed.
+- No DDL execution, no table creation, no DB writes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Remote Migration Execution Plan
+
+---
+
+# 04.05.2026 — Module 01 Supabase Schema Slice 01 local/dev migration execution Gemini PASS closeout (doc-only)
+
+## Факт (**execution closeout only / no new execution**)
+
+- Gemini audit passed for Module 01 Supabase Schema Slice 01 local/dev migration execution.
+- Local/dev migration execution closed as `PASS`.
+- 8 `module01_` tables and 9 roles verified locally.
+- RLS warning accepted and deferred to future security slice.
+- No remote execution performed in this closeout step.
+
+## Далі
+
+Next allowed options:
+- Remote Supabase Migration Execution Planning
+- Calculation Entry API Planning
+- Calculation Entry Modal UI Planning
+
+Recommended:
+- Remote Supabase Migration Execution Planning
+
+---
+
+# 04.05.2026 — Module 01 Supabase Schema Slice 01 local/dev migration execution completed (PASS)
+
+## Факт (**local/dev execution only / verified**)
+
+- Executed `supabase migration up --local` for `20260504190000_module01_schema_slice_01.sql`.
+- Migration apply completed successfully in local/dev environment.
+- All 8 `module01_` tables verified.
+- Role seed verified (`9` roles, expected role codes present).
+- Excluded scope verified (no product-composition/object-conversion tables, no RLS/triggers/functions added by this migration).
+- No remote Supabase execution, no production deployment, no API/GAS changes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of local/dev migration execution result
+
+---
+
+# 04.05.2026 — Module 01 Supabase Schema Slice 01 local/dev migration execution attempt (blocked)
+
+## Факт (**execution attempt / blocked at preflight**)
+
+- Attempted local/dev execution for `supabase/migrations/20260504190000_module01_schema_slice_01.sql`.
+- Preflight detected local Supabase stack unavailable (`supabase status` failed due missing Docker engine pipe).
+- Migration execution was not run.
+- No DDL execution and no table creation in database occurred.
+- No DB writes, no API/GAS changes, no ERP/procurement/warehouse/pricing/CAD changes.
+
+## Далі
+
+Next allowed step:
+- Restore local Docker/Supabase stack and rerun migration execution as separate narrow task
+
+---
+
+# 04.05.2026 — Module 01 Supabase Schema Slice 01 Migration Execution Plan Gemini PASS closeout (doc-only)
+
+## Факт (**plan closeout only / no migration execution**)
+
+- Gemini audit passed for Module 01 Supabase Schema Slice 01 Migration Execution Plan.
+- Execution plan closed as `PASS`.
+- Local/dev migration execution allowed as next separate narrow task.
+- No migration execution performed in this closeout step.
+- No DDL execution, no table creation in DB, no DB writes.
+
+## Далі
+
+Next allowed step:
+- Execute Supabase Schema Slice 01 migration locally/dev
+
+---
+
+# 04.05.2026 — Module 01 Supabase Schema Slice 01 Migration Execution Planning created (doc-only)
+
+## Факт (**execution planning only / no migration execution**)
+
+- Module 01 Supabase Schema Slice 01 Migration Execution Planning created.
+- Preflight checks, execution boundaries, verification checks, failure handling, and rollback boundaries planned.
+- Post-execution documentation requirements defined.
+- No migration execution performed.
+- No DDL execution, no table creation in DB, no DB writes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Migration Execution Plan
+
+---
+
+# 04.05.2026 — Module 01 Supabase Schema Slice 01 migration file Gemini PASS closeout (doc-only)
+
+## Факт (**audit closeout only / no execution**)
+
+- Gemini audit passed for Module 01 Supabase Schema Slice 01 migration file.
+- Migration file approved.
+- No migration execution performed.
+- Next allowed step set to migration execution planning.
+- No implementation performed (no DDL execution, no table creation in DB, no DB writes).
+
+## Далі
+
+Next allowed step:
+- Supabase Schema Slice 01 Migration Execution Planning
+
+---
+
+# 04.05.2026 — Module 01 Supabase Schema Slice 01 migration file created (no execution)
+
+## Факт (**file creation only / no execution**)
+
+- Module 01 Supabase Schema Slice 01 migration file created.
+- 8 `module01_` tables defined in SQL migration file.
+- Idempotent role seed included.
+- No migration execution performed.
+- No DDL execution against database, no table creation in database, no DB writes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Supabase Schema Slice 01 migration file
+
+---
+
+# 04.05.2026 — Module 01 Supabase Schema Slice 01 SQL/Migration Plan Gemini PASS closeout (doc-only)
+
+## Факт (**plan closeout only / no implementation**)
+
+- Gemini audit passed for Module 01 Supabase Schema Slice 01 SQL/Migration Plan.
+- SQL/Migration Plan closed as `PASS`.
+- Next allowed step set to create migration file.
+- No SQL file or migration created in this closeout step.
+- No implementation performed (no DDL execution, no DB writes, no API/GAS changes).
+
+## Далі
+
+Next allowed step:
+- Create Supabase Schema Slice 01 migration file
+
+---
+
+# 04.05.2026 — Module 01 Supabase Schema Slice 01 SQL/Migration planning created (doc-only)
+
+## Факт (**sql planning only / no sql file**)
+
+- Module 01 Supabase Schema Slice 01 SQL/Migration planning created.
+- Future table definitions, constraints, indexes, and seed roles planned.
+- Verification and rollback planning captured.
+- Open decisions for Gemini audit captured.
+- No SQL/migration/table creation performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Supabase Schema Slice 01 SQL/Migration Plan
+
+---
+
+# 04.05.2026 — Module 01 Supabase Schema Slice 01 Plan Gemini PASS closeout (doc-only)
+
+## Факт (**plan closeout only / no implementation**)
+
+- Gemini audit passed for Module 01 Supabase Schema Slice 01 Plan.
+- Schema Slice 01 plan closed as `PASS`.
+- First physical schema slice approved for Supabase Schema Slice 01 SQL/Migration Planning.
+- No SQL/migration/table creation performed.
+- No implementation performed (no DB writes, no API/GAS changes).
+
+## Далі
+
+Next allowed step:
+- Supabase Schema Slice 01 SQL/Migration Planning
+
+---
+
+# 04.05.2026 — Module 01 Supabase Schema Slice 01 planning created (doc-only)
+
+## Факт (**schema planning only / no SQL**)
+
+- Module 01 Supabase Schema Slice 01 planning created.
+- First physical schema slice planned for users, roles, terminals, calculations, versions, status history, and audit events.
+- Excluded scope documented for product composition, conversion links, locks, RLS, and non-Module-01 domains.
+- No SQL/migration/table creation performed.
+- Open decisions recorded, including initial version suffix recommendation (`-00`).
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Supabase Schema Slice 01 Plan
+
+---
+
+# 04.05.2026 — Module 01 Supabase Data Model Plan Gemini PASS closeout (doc-only)
+
+## Факт (**plan closeout only / no implementation**)
+
+- Gemini audit passed for Module 01 Supabase Data Model Plan.
+- Conceptual model closed as `PASS`.
+- Supabase Source of Truth model accepted.
+- Next allowed step set to Supabase Schema Slice 01 Planning.
+- No implementation performed (no SQL, no DDL, no migration, no API/GAS changes, no DB writes).
+
+## Далі
+
+Next allowed step:
+- Supabase Schema Slice 01 Planning
+
+---
+
+# 04.05.2026 — Module 01 Supabase data model planning created (doc-only)
+
+## Факт (**planning only / no migration**)
+
+- Module 01 Supabase data model planning created.
+- Conceptual entities for calculations, versions, terminals, roles, and product composition defined.
+- Relationship map and primary integrity rules documented.
+- No schema/migration created.
+- No implementation performed (no SQL, no DB writes, no API/GAS changes).
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Supabase Data Model Plan
+
+---
+
+# 04.05.2026 — Module 01 Personal Terminal + Supabase SOT doctrine Gemini PASS closeout (doc-only)
+
+## Факт (**doctrine closeout only / no implementation**)
+
+- Gemini audit passed for Module 01 Personal Terminal + Supabase SOT Doctrine.
+- Doctrine closed as `PASS`.
+- Supabase as Source of Truth accepted.
+- Calculation-first UI model accepted.
+- No implementation performed (no GAS/API code, no Supabase schema/migration, no DB writes).
+
+## Далі
+
+Next allowed step:
+- Supabase Data Model Planning
+
+---
+
+# 04.05.2026 — Module 01 Personal Terminal + Supabase SOT doctrine created (doc-only)
+
+## Факт (**architecture doctrine only / no implementation**)
+
+- Module 01 personal terminal and Supabase source-of-truth doctrine created.
+- Calculation-first UI principle documented.
+- One user / one personal Google Sheet terminal model documented.
+- Supabase source-of-truth boundary documented.
+- Calculation version and locking principles documented.
+- Product composition foundation documented for simple and composite products.
+- No implementation performed (no GAS/API/DB/schema changes).
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Personal Terminal + Supabase SOT Doctrine
+
+---
+
+# 04.05.2026 — Module 01 Live Demo Milestone final closeout (doc-only)
+
+## Факт (**final verified closeout / no implementation changes**)
+
+- Module 01 Live Demo Milestone closed as `CLOSED / VERIFIED / LIVE VALIDATED`.
+- Google Sheets/GAS/API/Engine live chain validated end-to-end.
+- Commit `e6d0763` post-commit verification recorded as `CLEAN`.
+- 100-test regression suite recorded as `OK`.
+- Success and negative scenarios confirmed.
+- No production deployment / no ERP / no DB / no pricing actions.
+- No code/GAS/API/test/fixture changes in this closeout step.
+
+## Далі
+
+Next allowed options:
+- Director demo preparation package
+- short slide deck planning
+- controlled Demo UI hardening planning
+- MVP registry data expansion planning
+- Module 02 planning
+
+Recommended next step:
+- Director demo preparation package
+
+---
+
 # 04.05.2026 — Module 01 manual live validation completed (PASS)
 
 ## Факт (**manual live validation recorded / no implementation changes**)

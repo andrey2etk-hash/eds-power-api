@@ -21,14 +21,11 @@
 - **DOC 37 Slice 02 Fastener Selection** (**CLOSED / VERIFIED**)
 - **DOC 38 BOM Aggregation / Kit Issue doctrine** (**PASS / CLOSED AS DOCTRINE**)
 - **DOC 38 Slice 01 Basic Aggregation** (**CLOSED / VERIFIED**)
-**Current step:** **Module 01 Manual Live Validation PASS / LIVE VALIDATED**
-**Next allowed options:**
-  - **Module 01 live demo milestone closeout**
-  - **Commit and push validation result**
-  - **Director demo preparation package**
-**Post-commit verification:** **commit `4beaada` = `CLEAN`** (**endpoint/runtime/source-truth/header/boundary checks confirmed**)
+**Current step:** **Module 01 Supabase Schema Slice 01 remote migration retry attempted / FAIL / BLOCKED**
+**Next allowed step:** **Satisfy strict preflight (clean repo + session password), then rerun remote migration retry**
+**Post-commit verification:** **Module 01 live demo closeout remains `CLEAN` on commit `e6d0763`** (**verified baseline retained; no implementation changes in this doctrine task**)
 **DOC 38 Slice 02 implementation is not active.** **DOC 38 implementation is not active.** **DOC 36 Slice 02 remains blocked** until a separate implementation task is explicitly opened.
-**Live validation completed and recorded as PASS.** **No code/GAS/API changes active in this step.** **API implementation remains closed / verified.** **DB/Supabase is not active.** **Procurement/Warehouse/ERP is not active.** **Pricing/CAD is not active.** **Production deployment is not active.** **Final ERP BOM release is not active.**
+**Live validation completed and recorded as PASS.** **Repo clean check is required before retry.** **Remote migration retry is blocked until strict preflight is satisfied.** **DB push is not active.** **DDL execution is not active.** **Table creation is not active.** **DB writes are not active.** **Production deployment is not active.** **API/GAS implementation is not active.** **Secrets must not be stored in docs/repo.** **Procurement/Warehouse/ERP is not active.** **Pricing/CAD is not active.** **RLS implementation is not active.** **Final ERP BOM release is not active.**
 **Main demo flow is PASS path only (Node A PASS, Node B PASS, Aggregation PASS).** **Optional safety fixture is backup only (not primary demo).** **Fixture files created:** `tests/fixtures/demo/module_01_kzo_demo/demo_metadata.json`, `tests/fixtures/demo/module_01_kzo_demo/doc36_busbar_fixture.json`, `tests/fixtures/demo/module_01_kzo_demo/doc37_node_geometry_fixture.json`, `tests/fixtures/demo/module_01_kzo_demo/doc37_fastener_selection_fixture.json`, `tests/fixtures/demo/module_01_kzo_demo/doc38_aggregation_fixture.json`, `tests/fixtures/demo/module_01_kzo_demo/expected_outputs.json`, `tests/fixtures/demo/module_01_kzo_demo/optional_backup_safety_fixture.json`. **Fixture validation test created:** `tests/test_module_01_demo_fixtures_validation.py`. **Local demo runner/test created:** `tests/demo_runner_module_01.py`, `tests/test_module_01_local_demo_runner.py`. **Demo API endpoint CLOSED / VERIFIED:** `main.py`, `tests/test_module_01_demo_api_endpoint.py`, `docs/AUDITS/2026-05-03_MODULE_01_DEMO_API_ENDPOINT_IMPLEMENTATION.md`. **One-page executive summary created:** `docs/AUDITS/2026-05-03_MODULE_01_ONE_PAGE_EXECUTIVE_SUMMARY.md`. **Final ERP BOM release is not active.** **Admin panel is not active.**
 
 **Governance budget rule:** no master audits unless explicitly requested; one focused Gemini audit per doctrine; after `PASS`/`PASS WITH DOC FIXES` the slice is closed; no `8B.2E` opening without explicit user approval.
