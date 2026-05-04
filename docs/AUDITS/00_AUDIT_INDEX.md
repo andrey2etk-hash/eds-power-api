@@ -12,6 +12,14 @@ Rule:
 
 ## Latest audit
 
+- **Module 01 Manual Live Validation result (`PASS / LIVE VALIDATED`) — full Sheets/GAS/API/Engine chain confirmed with negative URL scenario evidence** — **`docs/AUDITS/2026-05-04_MODULE_01_MANUAL_LIVE_VALIDATION_RESULT.md`**
+- **Gemini Module 01 Manual Live Validation Plan audit (`PASS`) — plan CLOSED / APPROVED FOR MANUAL EXECUTION** — **`docs/AUDITS/2026-05-03_MODULE_01_MANUAL_LIVE_VALIDATION_PLAN.md`**
+- **Module 01 Manual Live Validation plan created (`PLANNING ONLY`) — full Sheets/GAS/API manual checklist and evidence template prepared; pending Gemini audit** — **`docs/AUDITS/2026-05-03_MODULE_01_MANUAL_LIVE_VALIDATION_PLAN.md`**
+- **Gemini Module 01 Demo GAS Thin Client implementation re-audit (`PASS`) — verified closeout; thin client boundary PASS; error handling EXCELLENT** — **`docs/AUDITS/2026-05-03_MODULE_01_DEMO_GAS_THIN_CLIENT_IMPLEMENTATION.md`**
+- **Module 01 Demo GAS Thin Client implementation created (`IMPLEMENTED / PENDING GEMINI AUDIT`) — thin GAS transport/writeback path added with clearance policy and DEMO header validation** — **`docs/AUDITS/2026-05-03_MODULE_01_DEMO_GAS_THIN_CLIENT_IMPLEMENTATION.md`**
+- **Gemini Module 01 Demo GAS Thin Client plan audit (`PASS`) — Output Clearance Policy added; plan CLOSED / PASS for next narrow implementation task** — **`docs/AUDITS/2026-05-03_MODULE_01_DEMO_GAS_THIN_CLIENT_PLAN.md`**
+- **Module 01 Demo GAS Thin Client plan created (`PLANNING ONLY`) — pending Gemini audit; thin-client boundary and Sheets output zoning defined** — **`docs/AUDITS/2026-05-03_MODULE_01_DEMO_GAS_THIN_CLIENT_PLAN.md`**
+- **Module 01 Demo API Endpoint post-commit verification (`CLEAN`) — verified closeout after commit `4beaada`; endpoint CLOSED / VERIFIED** — **`docs/AUDITS/2026-05-03_MODULE_01_DEMO_API_ENDPOINT_IMPLEMENTATION.md`**
 - **Gemini Module 01 Demo API Endpoint implementation re-audit (`PASS`) — endpoint CLOSED / VERIFIED closeout; fastener source-truth SAFE; runtime runner isolation SAFE; 100 tests OK** — **`docs/AUDITS/2026-05-03_MODULE_01_DEMO_API_ENDPOINT_IMPLEMENTATION.md`**
 - **Gemini Module 01 Demo API Endpoint Plan audit (`SAFE WITH FIXES`) — governance fixes applied; pending Gemini re-audit** — **`docs/AUDITS/2026-05-03_MODULE_01_DEMO_API_ENDPOINT_PLAN.md`**
 - **Gemini Module 01 Demo UI / API-GAS Integration Plan audit (`PASS`) — fastener_decisions Sheets output block added; plan CLOSED / PASS for next technical component planning** — **`docs/AUDITS/2026-05-03_MODULE_01_DEMO_UI_API_GAS_INTEGRATION_PLAN.md`**

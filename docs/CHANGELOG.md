@@ -6,6 +6,178 @@
 
 ---
 
+# 04.05.2026 — Module 01 manual live validation completed (PASS)
+
+## Факт (**manual live validation recorded / no implementation changes**)
+
+- Module 01 manual live validation completed successfully.
+- Google Sheets/GAS/API/Engine live chain validated as `PASS`.
+- Fastener decisions and kit issue lines confirmed against expected values.
+- Negative invalid-URL scenario confirmed clearance policy behavior.
+- No fallback calculation observed.
+- No code/GAS/API changes performed in this recording step.
+
+## Далі
+
+Next allowed options:
+- Module 01 live demo milestone closeout
+- Commit and push validation result
+- Director demo preparation package
+
+---
+
+# 04.05.2026 — Module 01 Manual Live Validation Plan Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution changes**)
+
+- Gemini audit passed for Module 01 Manual Live Validation Plan (`PASS`).
+- Manual live validation plan closed as `CLOSED / PASS`.
+- Manual live validation execution is now allowed as next step.
+- No code/GAS/API changes performed in this closeout step.
+- No live execution performed in this closeout step.
+
+## Далі
+
+Next allowed step:
+- Manual Live Validation Execution
+
+---
+
+# 04.05.2026 — Module 01 manual live validation planning created (doc-only)
+
+## Факт (**planning only / no live execution**)
+
+- Created manual live validation plan: `docs/AUDITS/2026-05-03_MODULE_01_MANUAL_LIVE_VALIDATION_PLAN.md`.
+- Planned full Google Sheets -> GAS -> API -> engine chain -> Sheets manual checklist.
+- Captured PASS/FAIL checks for status flow, fastener decisions, kit totals, traceability, boundaries, and error scenarios.
+- Captured evidence requirements and result template for live validation reporting.
+- No live execution performed.
+- No code/GAS/API changes performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Manual Live Validation Plan
+
+---
+
+# 04.05.2026 — Module 01 Demo GAS thin client Gemini re-audit PASS (doc-only closeout)
+
+## Факт (**verified closeout only / no implementation changes**)
+
+- Gemini re-audit passed for Module 01 Demo GAS Thin Client (`PASS`).
+- GAS thin client closed as `CLOSED / VERIFIED`.
+- HTTP 4xx/5xx API error-envelope handling confirmed as correct.
+- No engineering logic added to GAS.
+- No implementation performed in this closeout step.
+- No code/test/fixture changes in this closeout step.
+
+## Далі
+
+Next allowed step:
+- Manual Live Validation Planning
+
+---
+
+# 04.05.2026 — Module 01 Demo GAS thin client error handling normalized (fix-only)
+
+## Факт (**Gemini PASS WITH FIXES correction / thin client scope preserved**)
+
+- Normalized GAS error handling in `gas/Module01DemoClient.gs`.
+- API JSON error envelopes on HTTP 4xx/5xx now display as API errors (not transport errors) when envelope is valid.
+- Non-JSON / invalid envelope HTTP failures remain `TRANSPORT_ERROR`.
+- `muteHttpExceptions: true` preserved.
+- No engineering logic added to GAS.
+- No API/DB/Supabase/procurement/warehouse/ERP/pricing/CAD changes.
+
+## Далі
+
+Next allowed step:
+- Gemini re-audit of GAS Thin Client implementation
+
+---
+
+# 04.05.2026 — Module 01 Demo GAS thin client implemented (narrow implementation)
+
+## Факт (**implementation active / thin client only**)
+
+- Implemented GAS thin client in `gas/Module01DemoClient.gs` for `POST /api/demo/module-01/kzo/run`.
+- Added menu actions: run demo + clear demo output.
+- Added Google Sheets output blocks for demo status, flow, nodes, fasteners, kit lines, traceability, summary, and errors.
+- Implemented output clearance policy before each request (`RUNNING...` + full block cleanup).
+- Implemented request envelope builder + UUID v4 generation + endpoint URL from `B2`.
+- Implemented response/header validation including `X-EDS-Power-Mode = DEMO`.
+- Implemented API error and transport error display paths with no fallback calculations.
+- Added implementation audit dossier: `docs/AUDITS/2026-05-03_MODULE_01_DEMO_GAS_THIN_CLIENT_IMPLEMENTATION.md`.
+- No engineering logic added to GAS.
+- No API code changes.
+- No DB/Supabase/procurement/warehouse/ERP/pricing/CAD changes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of GAS Thin Client implementation
+
+---
+
+# 04.05.2026 — Module 01 Demo GAS thin client plan Gemini PASS and closeout (doc-only)
+
+## Факт (**closeout only / no implementation changes**)
+
+- Gemini audit passed for Module 01 Demo GAS Thin Client Plan (`PASS`).
+- Output Clearance Policy added to prevent mixing old/new demo sessions.
+- GAS thin client plan closed as `CLOSED / PASS`.
+- Next allowed step set: `Demo GAS Thin Client implementation` (separate narrow task).
+- No GAS implementation performed.
+- No API implementation performed.
+- No code/test/fixture changes in this closeout step.
+- No DB/Supabase/procurement/warehouse/ERP/pricing/CAD changes.
+
+## Далі
+
+Next allowed step:
+- Demo GAS Thin Client implementation (separate narrow task)
+
+---
+
+# 04.05.2026 — Module 01 Demo GAS thin client planning created (doc-only)
+
+## Факт (**planning only / no implementation**)
+
+- Created planning dossier: `docs/AUDITS/2026-05-03_MODULE_01_DEMO_GAS_THIN_CLIENT_PLAN.md`.
+- Planned Google Sheets output zones for Module 01 demo display flow.
+- Reaffirmed strict GAS thin-client boundary (no engineering logic in GAS).
+- Captured request envelope, response/header validation, output blocks, timeout, and error display plan.
+- No GAS implementation performed.
+- No API implementation performed.
+- No DB/Supabase/procurement/warehouse/ERP/pricing/CAD changes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of GAS Thin Client Plan
+
+---
+
+# 04.05.2026 — Module 01 Demo API endpoint verified closeout after post-commit verification (doc-only)
+
+## Факт (**closeout only / no implementation changes**)
+
+- Module 01 Demo API Endpoint closed as `CLOSED / VERIFIED` after post-commit verification.
+- Commit `4beaada` verified `CLEAN`.
+- Endpoint and source-truth fixes confirmed (runtime runner path + no API-side fastener reconstruction).
+- Test evidence reconfirmed: endpoint suite `28 OK`, combined suite `100 OK`.
+- Next allowed step set: `Demo GAS Thin Client Planning Only`.
+- No implementation performed in this closeout step.
+- No code/test/fixture changes in this closeout step.
+
+## Далі
+
+Next allowed step:
+- Demo GAS Thin Client Planning Only
+
+---
+
 # 04.05.2026 — Module 01 Demo API endpoint Gemini re-audit PASS (doc-only closeout)
 
 ## Факт (**verified closeout only / no implementation changes**)
