@@ -6,6 +6,23 @@
 
 ---
 
+# 04.05.2026 — Module 01 remote Supabase migration retry execution attempted (auth failed)
+
+## Факт (**retry execution attempted / blocked by auth**)
+
+- Remote retry preflight passed (clean repo, intended project, session password present, no conflicting `module01_*` tables).
+- Executed `supabase db push --linked` for project `mvcxtwoxhopumxcryxlc`.
+- Execution failed with remote password authentication error (`SQLSTATE 28P01`).
+- Migration was not applied remotely.
+- No schema changes, no DB writes, no API/GAS/Python changes.
+
+## Далі
+
+Next allowed step:
+- Validate remote DB password and rerun remote migration retry as separate narrow task
+
+---
+
 # 04.05.2026 — Module 01 remote Supabase migration retry attempt (blocked at strict preflight)
 
 ## Факт (**retry preflight only / no execution**)

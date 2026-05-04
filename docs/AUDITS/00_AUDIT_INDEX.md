@@ -12,6 +12,7 @@ Rule:
 
 ## Latest audit
 
+- **Module 01 Supabase Schema Slice 01 remote migration execution retry result (`FAIL / BLOCKED`) — strict preflight passed but remote `db push` failed with password authentication error (`SQLSTATE 28P01`); no remote apply performed** — **`docs/AUDITS/2026-05-04_MODULE_01_SUPABASE_SCHEMA_SLICE_01_REMOTE_MIGRATION_EXECUTION_RETRY_RESULT.md`**
 - **Module 01 Supabase Schema Slice 01 remote migration execution retry result (`FAIL / BLOCKED`) — strict preflight failed (repo dirty + `SUPABASE_DB_PASSWORD` missing), so `db push` not executed** — **`docs/AUDITS/2026-05-04_MODULE_01_SUPABASE_SCHEMA_SLICE_01_REMOTE_MIGRATION_EXECUTION_RETRY_RESULT.md`**
 - **Remote Supabase Auth Preflight Result (`PASS`) — linked remote identity confirmed; session-only secret method validated; read-only connectivity checks passed; no remote execution performed** — **`docs/AUDITS/2026-05-04_MODULE_01_REMOTE_SUPABASE_AUTH_PREFLIGHT_RESULT.md`**
 - **Remote Supabase Auth Fix Plan Gemini audit (`PASS`) — plan CLOSED / APPROVED; next allowed step set to Remote Supabase Auth Fix Application / Preflight Only** — **`docs/AUDITS/2026-05-04_MODULE_01_REMOTE_SUPABASE_AUTH_FIX_PLAN.md`**
