@@ -12,6 +12,15 @@ Rule:
 
 ## Latest audit
 
+- **Gemini Module 01 one-page executive summary audit (`PASS`) — one-page summary CLOSED / PASS as director-facing artifact; boundary check CLEAN** — **`docs/AUDITS/2026-05-03_MODULE_01_ONE_PAGE_EXECUTIVE_SUMMARY.md`**
+- **Gemini Module 01 one-page executive summary plan audit (`PASS`) — Data Owners note applied; one-page plan CLOSED / PASS and ready for summary creation step** — **`docs/AUDITS/2026-05-03_MODULE_01_ONE_PAGE_EXECUTIVE_SUMMARY_PLAN.md`**
+- **Gemini Module 01 demo narrative package plan audit (`PASS`) — Data Ownership Note applied; narrative plan CLOSED / PASS for presentation artifact preparation planning** — **`docs/AUDITS/2026-05-03_MODULE_01_DEMO_NARRATIVE_PACKAGE_PLAN.md`**
+- **Gemini Module 01 local demo runner implementation audit (`PASS`) — Module 01 local demo runner CLOSED / VERIFIED; canonical local chain confirmed with strict boundaries** — **`docs/AUDITS/2026-05-03_MODULE_01_LOCAL_DEMO_RUNNER_IMPLEMENTATION.md`**
+- **Gemini Module 01 demo fixture validation implementation audit (`PASS`) — Module 01 fixture validation CLOSED / VERIFIED; immutable fixture package ready for demo execution planning** — **`docs/AUDITS/2026-05-03_MODULE_01_DEMO_FIXTURE_VALIDATION_IMPLEMENTATION.md`**
+- **Module 01 local logic closeout (`DOC ONLY`) — local deterministic chain verified through DOC 38 Slice 01** — **`docs/AUDITS/2026-05-03_MODULE_01_LOCAL_LOGIC_CLOSEOUT.md`**
+- **Gemini DOC 38 Slice 01 implementation audit (`PASS`) — CLOSED / VERIFIED closeout; basic aggregation accepted with traceability preserved and no BOM drift** — **`docs/AUDITS/2026-05-03_DOC_38_SLICE_01_BASIC_AGGREGATION_IMPLEMENTATION.md`**
+- **Gemini DOC 38 BOM Aggregation Doctrine Re-Audit (`PASS`) — doctrine closeout accepted; next step is Slice 01 planning only** — **`docs/00-02_CALC_CONFIGURATOR/09_KZO/38_KZO_WELDED_BOM_AGGREGATION_AND_KIT_ISSUE_DOCTRINE_V1.md`**
+- **DOC 38 KZO BOM Aggregation / Kit Issue doctrine (`DOC ONLY`) — created for traceable local-node aggregation boundaries (no implementation)** — **`docs/00-02_CALC_CONFIGURATOR/09_KZO/38_KZO_WELDED_BOM_AGGREGATION_AND_KIT_ISSUE_DOCTRINE_V1.md`**
 - **Gemini DOC 37 Slice 02 implementation audit (`PASS`) — CLOSED / VERIFIED closeout; local node fastener selection accepted with strict interface authority and no BOM drift** — **`docs/AUDITS/2026-05-03_DOC_37_SLICE_02_FASTENER_SELECTION_IMPLEMENTATION.md`**
 - **Gemini DOC 37 Slice 01 implementation audit (`PASS`) — CLOSED / VERIFIED closeout; node geometry + joint stack foundation accepted** — **`docs/AUDITS/2026-05-03_DOC_37_SLICE_01_NODE_GEOMETRY_AND_JOINT_STACK_IMPLEMENTATION.md`**
 - **Gemini DOC 37 Busbar Node Package Calculation Re-Audit (`PASS`) — doctrine standard approved; implementation remains separate-slice only** — **`docs/00-02_CALC_CONFIGURATOR/09_KZO/37_KZO_WELDED_BUSBAR_NODE_PACKAGE_CALCULATION_V1.md`**

@@ -1,0 +1,331 @@
+{
+  "demo_id": "MODULE_01_KZO_DEMO_001",
+  "status": "PASS",
+  "status_flow": {
+    "DOC36": "PASS",
+    "KZO_DEMO_NODE_A_DOC37_S1": "PASS",
+    "KZO_DEMO_NODE_A_DOC37_S2": "PASS",
+    "KZO_DEMO_NODE_B_DOC37_S1": "PASS",
+    "KZO_DEMO_NODE_B_DOC37_S2": "PASS",
+    "DOC37_S1": "PASS",
+    "DOC37_S2": "PASS",
+    "DOC38_S1": "PASS"
+  },
+  "node_results": {
+    "KZO_DEMO_NODE_A": {
+      "total_busbar_length_mm": 1290,
+      "joint_stacks": {
+        "BUSBAR_SIDE_CONNECTIONS": 30,
+        "EQUIPMENT_SIDE_CONNECTIONS": 18
+      },
+      "selected_bolts": {
+        "BUSBAR_SIDE_CONNECTIONS": "DEMO_BOLT_M12X55",
+        "EQUIPMENT_SIDE_CONNECTIONS": "DEMO_BOLT_M12X45",
+        "required_bolt_lengths_mm": {
+          "BUSBAR_SIDE_CONNECTIONS": 48.5,
+          "EQUIPMENT_SIDE_CONNECTIONS": 36.5
+        },
+        "reasoning": {
+          "BUSBAR_SIDE_CONNECTIONS": "required_bolt_length_mm=48.5, DEMO_BOLT_M12X45 is too short, DEMO_BOLT_M12X55 passes.",
+          "EQUIPMENT_SIDE_CONNECTIONS": "required_bolt_length_mm=36.5, DEMO_BOLT_M12X45 passes."
+        }
+      }
+    },
+    "KZO_DEMO_NODE_B": {
+      "total_busbar_length_mm": 1200,
+      "joint_stacks": {
+        "BUSBAR_SIDE_CONNECTIONS": 30,
+        "EQUIPMENT_SIDE_CONNECTIONS": 18
+      },
+      "selected_bolts": {
+        "BUSBAR_SIDE_CONNECTIONS": "DEMO_BOLT_M12X55",
+        "EQUIPMENT_SIDE_CONNECTIONS": "DEMO_BOLT_M12X45",
+        "required_bolt_lengths_mm": {
+          "BUSBAR_SIDE_CONNECTIONS": 48.5,
+          "EQUIPMENT_SIDE_CONNECTIONS": 36.5
+        },
+        "reasoning": {
+          "BUSBAR_SIDE_CONNECTIONS": "required_bolt_length_mm=48.5, DEMO_BOLT_M12X45 is too short, DEMO_BOLT_M12X55 passes.",
+          "EQUIPMENT_SIDE_CONNECTIONS": "required_bolt_length_mm=36.5, DEMO_BOLT_M12X45 passes."
+        }
+      }
+    }
+  },
+  "fastener_decisions": {
+    "KZO_DEMO_NODE_A": {
+      "BUSBAR_SIDE_CONNECTIONS": "DEMO_BOLT_M12X55",
+      "EQUIPMENT_SIDE_CONNECTIONS": "DEMO_BOLT_M12X45",
+      "required_bolt_lengths_mm": {
+        "BUSBAR_SIDE_CONNECTIONS": 48.5,
+        "EQUIPMENT_SIDE_CONNECTIONS": 36.5
+      },
+      "reasoning": {
+        "BUSBAR_SIDE_CONNECTIONS": "required_bolt_length_mm=48.5, DEMO_BOLT_M12X45 is too short, DEMO_BOLT_M12X55 passes.",
+        "EQUIPMENT_SIDE_CONNECTIONS": "required_bolt_length_mm=36.5, DEMO_BOLT_M12X45 passes."
+      }
+    },
+    "KZO_DEMO_NODE_B": {
+      "BUSBAR_SIDE_CONNECTIONS": "DEMO_BOLT_M12X55",
+      "EQUIPMENT_SIDE_CONNECTIONS": "DEMO_BOLT_M12X45",
+      "required_bolt_lengths_mm": {
+        "BUSBAR_SIDE_CONNECTIONS": 48.5,
+        "EQUIPMENT_SIDE_CONNECTIONS": 36.5
+      },
+      "reasoning": {
+        "BUSBAR_SIDE_CONNECTIONS": "required_bolt_length_mm=48.5, DEMO_BOLT_M12X45 is too short, DEMO_BOLT_M12X55 passes.",
+        "EQUIPMENT_SIDE_CONNECTIONS": "required_bolt_length_mm=36.5, DEMO_BOLT_M12X45 passes."
+      }
+    }
+  },
+  "aggregation_result": {
+    "status": "PASS",
+    "source_node_count": 2
+  },
+  "kit_issue_lines": [
+    {
+      "item_id": "DEMO_BOLT_M12X55",
+      "item_type": "BOLT",
+      "total_quantity": 6.0,
+      "unit": "pcs",
+      "registry_source": "demo_fastener_registry",
+      "registry_version": "demo_v1",
+      "issue_context": "LOCAL_PRODUCTION_PREPARATION_ONLY",
+      "source_node_ids": [
+        "KZO_DEMO_NODE_A",
+        "KZO_DEMO_NODE_B"
+      ],
+      "source_groups": [
+        "BUSBAR_SIDE_CONNECTIONS"
+      ],
+      "source_line_ids": [
+        "SRC_A_001",
+        "SRC_B_001"
+      ],
+      "traceability_refs": [
+        "TRACE_KZO_DEMO_NODE_A_BUSBAR_BOLT",
+        "TRACE_KZO_DEMO_NODE_B_BUSBAR_BOLT"
+      ],
+      "source_line_count": 2,
+      "traceability_ref_count": 2,
+      "fastener_registry_version": "demo_v1",
+      "washer_package_rule_registry_version": "demo_v1",
+      "joint_stack_rule_registry_version": "demo_v1"
+    },
+    {
+      "item_id": "DEMO_BOLT_M12X45",
+      "item_type": "BOLT",
+      "total_quantity": 6.0,
+      "unit": "pcs",
+      "registry_source": "demo_fastener_registry",
+      "registry_version": "demo_v1",
+      "issue_context": "LOCAL_PRODUCTION_PREPARATION_ONLY",
+      "source_node_ids": [
+        "KZO_DEMO_NODE_A",
+        "KZO_DEMO_NODE_B"
+      ],
+      "source_groups": [
+        "EQUIPMENT_SIDE_CONNECTIONS"
+      ],
+      "source_line_ids": [
+        "SRC_A_002",
+        "SRC_B_002"
+      ],
+      "traceability_refs": [
+        "TRACE_KZO_DEMO_NODE_A_EQUIP_BOLT",
+        "TRACE_KZO_DEMO_NODE_B_EQUIP_BOLT"
+      ],
+      "source_line_count": 2,
+      "traceability_ref_count": 2,
+      "fastener_registry_version": "demo_v1",
+      "washer_package_rule_registry_version": "demo_v1",
+      "joint_stack_rule_registry_version": "demo_v1"
+    },
+    {
+      "item_id": "DEMO_NUT_M12",
+      "item_type": "NUT",
+      "total_quantity": 12.0,
+      "unit": "pcs",
+      "registry_source": "demo_fastener_registry",
+      "registry_version": "demo_v1",
+      "issue_context": "LOCAL_PRODUCTION_PREPARATION_ONLY",
+      "source_node_ids": [
+        "KZO_DEMO_NODE_A",
+        "KZO_DEMO_NODE_B"
+      ],
+      "source_groups": [
+        "NODE_SHARED_HARDWARE"
+      ],
+      "source_line_ids": [
+        "SRC_A_003",
+        "SRC_B_003"
+      ],
+      "traceability_refs": [
+        "TRACE_KZO_DEMO_NODE_A_NUT",
+        "TRACE_KZO_DEMO_NODE_B_NUT"
+      ],
+      "source_line_count": 2,
+      "traceability_ref_count": 2,
+      "fastener_registry_version": "demo_v1",
+      "washer_package_rule_registry_version": "demo_v1",
+      "joint_stack_rule_registry_version": "demo_v1"
+    },
+    {
+      "item_id": "DEMO_FLAT_WASHER_M12",
+      "item_type": "FLAT_WASHER",
+      "total_quantity": 24.0,
+      "unit": "pcs",
+      "registry_source": "demo_fastener_registry",
+      "registry_version": "demo_v1",
+      "issue_context": "LOCAL_PRODUCTION_PREPARATION_ONLY",
+      "source_node_ids": [
+        "KZO_DEMO_NODE_A",
+        "KZO_DEMO_NODE_B"
+      ],
+      "source_groups": [
+        "NODE_SHARED_HARDWARE"
+      ],
+      "source_line_ids": [
+        "SRC_A_004",
+        "SRC_B_004"
+      ],
+      "traceability_refs": [
+        "TRACE_KZO_DEMO_NODE_A_FLAT_WASHER",
+        "TRACE_KZO_DEMO_NODE_B_FLAT_WASHER"
+      ],
+      "source_line_count": 2,
+      "traceability_ref_count": 2,
+      "fastener_registry_version": "demo_v1",
+      "washer_package_rule_registry_version": "demo_v1",
+      "joint_stack_rule_registry_version": "demo_v1"
+    },
+    {
+      "item_id": "DEMO_DISC_SPRING_WASHER_M12",
+      "item_type": "DISC_SPRING_WASHER",
+      "total_quantity": 12.0,
+      "unit": "pcs",
+      "registry_source": "demo_fastener_registry",
+      "registry_version": "demo_v1",
+      "issue_context": "LOCAL_PRODUCTION_PREPARATION_ONLY",
+      "source_node_ids": [
+        "KZO_DEMO_NODE_A",
+        "KZO_DEMO_NODE_B"
+      ],
+      "source_groups": [
+        "NODE_SHARED_HARDWARE"
+      ],
+      "source_line_ids": [
+        "SRC_A_005",
+        "SRC_B_005"
+      ],
+      "traceability_refs": [
+        "TRACE_KZO_DEMO_NODE_A_DISC_WASHER",
+        "TRACE_KZO_DEMO_NODE_B_DISC_WASHER"
+      ],
+      "source_line_count": 2,
+      "traceability_ref_count": 2,
+      "fastener_registry_version": "demo_v1",
+      "washer_package_rule_registry_version": "demo_v1",
+      "joint_stack_rule_registry_version": "demo_v1"
+    }
+  ],
+  "source_node_ids": [
+    "KZO_DEMO_NODE_A",
+    "KZO_DEMO_NODE_B"
+  ],
+  "source_line_ids": [
+    "SRC_A_001",
+    "SRC_A_002",
+    "SRC_A_003",
+    "SRC_A_004",
+    "SRC_A_005",
+    "SRC_B_001",
+    "SRC_B_002",
+    "SRC_B_003",
+    "SRC_B_004",
+    "SRC_B_005"
+  ],
+  "traceability_refs": [
+    "TRACE_KZO_DEMO_NODE_A_BUSBAR_BOLT",
+    "TRACE_KZO_DEMO_NODE_A_DISC_WASHER",
+    "TRACE_KZO_DEMO_NODE_A_EQUIP_BOLT",
+    "TRACE_KZO_DEMO_NODE_A_FLAT_WASHER",
+    "TRACE_KZO_DEMO_NODE_A_NUT",
+    "TRACE_KZO_DEMO_NODE_B_BUSBAR_BOLT",
+    "TRACE_KZO_DEMO_NODE_B_DISC_WASHER",
+    "TRACE_KZO_DEMO_NODE_B_EQUIP_BOLT",
+    "TRACE_KZO_DEMO_NODE_B_FLAT_WASHER",
+    "TRACE_KZO_DEMO_NODE_B_NUT"
+  ],
+  "registry_versions": {
+    "doc36": {
+      "global_material_catalog_version": "demo_v1",
+      "kzo_usage_registry_version": "demo_v1",
+      "busbar_node_matrix_version": "demo_v1",
+      "equipment_interface_registry_version": "demo_v1"
+    },
+    "doc37_slice02": {
+      "fastener_registry_version": "demo_v1",
+      "joint_stack_rule_registry_version": "demo_v1",
+      "washer_package_rule_registry_version": "demo_v1"
+    },
+    "doc38": {
+      "fastener_registry_version": "demo_v1",
+      "joint_stack_rule_registry_version": "demo_v1",
+      "washer_package_rule_registry_version": "demo_v1"
+    }
+  },
+  "audit_trail": [
+    {
+      "step": "DOC36",
+      "input_summary": {
+        "selected_material_catalog_id": "DEMO_BUSBAR_CU_60X10",
+        "checks": {
+          "current_capacity": "PASS",
+          "form_factor": "PASS",
+          "usage_rule": "PASS",
+          "interface_rule": "PASS"
+        }
+      },
+      "decision": "Busbar candidate accepted for PASS path.",
+      "status": "PASS",
+      "registry_version": "demo_v1",
+      "traceability_reference": "DOC36_SELECTED_MATERIAL_DEMO_BUSBAR_CU_60X10"
+    },
+    {
+      "step": "DOC37_S1_NODE_A",
+      "input_summary": {
+        "busbar_node_id": "KZO_DEMO_NODE_A"
+      },
+      "decision": "Geometry and stacks resolved for Node A.",
+      "status": "PASS",
+      "registry_version": "demo_v1",
+      "traceability_reference": "TRACE_KZO_DEMO_NODE_A_BUSBAR_BOLT"
+    },
+    {
+      "step": "DOC37_S2_NODE_A",
+      "input_summary": {
+        "busbar_node_id": "KZO_DEMO_NODE_A"
+      },
+      "decision": "BUSBAR_SIDE requires 48.5 mm so M12x55 selected; EQUIPMENT_SIDE requires 36.5 mm so M12x45 selected.",
+      "status": "PASS",
+      "registry_version": "demo_v1",
+      "traceability_reference": "TRACE_KZO_DEMO_NODE_A_EQUIP_BOLT"
+    },
+    {
+      "step": "DOC38_S1",
+      "input_summary": {
+        "source_nodes": [
+          "KZO_DEMO_NODE_A",
+          "KZO_DEMO_NODE_B"
+        ]
+      },
+      "decision": "Node lines aggregated into deterministic kit_issue_lines totals 6/6/12/24/12.",
+      "status": "PASS",
+      "registry_version": "demo_v1",
+      "traceability_reference": "TRACE_KZO_DEMO_NODE_B_DISC_WASHER"
+    }
+  ],
+  "management_summary": "System reads registry truth, validates every engineering step, selects local fasteners, and aggregates traceable kit issue lines. This is not final ERP BOM.",
+  "boundary_note": "Local demo only. Not final ERP BOM. No procurement. No warehouse. No ERP/1C. No API/GAS/DB.",
+  "optional_backup_included_in_main_flow": false
+}

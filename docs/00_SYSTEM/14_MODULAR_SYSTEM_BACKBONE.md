@@ -78,6 +78,12 @@ Forbidden:
 Current MVP only proves Module 01.
 Future modules are strategic extension points.
 
+Note:
+Module 01 local logic chain is verified through DOC 38 Slice 01 closeout as internal deterministic engineering logic only; external integration remains out of active scope.
+
+Planning note:
+Module 01 demo scenario planning is opened as doc-only demonstration of local logic value without activating external integrations.
+
 ## Next Technical Return Path
 After this backbone contract:
 return to KZO Module 01 technical work:

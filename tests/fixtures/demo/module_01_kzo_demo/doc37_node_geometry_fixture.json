@@ -1,0 +1,86 @@
+{
+  "fixture_id": "MODULE_01_DOC37_NODE_GEOMETRY_FIXTURE_001",
+  "fixture_version": "1.0.0",
+  "immutable": true,
+  "demo_only": true,
+  "display_name": "DOC 37 Node Geometry PASS Fixture",
+  "short_description": "Prepared geometry inputs and expected outputs for two PASS nodes in Module 01 demo.",
+  "created_for": "Module 01 KZO local logic demo",
+  "not_production_data": true,
+  "registry_version": "demo_v1",
+  "last_updated": "2026-05-03",
+  "nodes": [
+    {
+      "busbar_node_id": "KZO_DEMO_NODE_A",
+      "display_name": "Node A — Main Busbar To Breaker Connection",
+      "short_description": "Demo node A with individual geometry values.",
+      "phase_count": 3,
+      "phase_length_l1_mm": 420,
+      "phase_length_l2_mm": 430,
+      "phase_length_l3_mm": 440,
+      "node_busbar_thickness_mm": 10,
+      "main_busbar_pack_thickness_mm": 20,
+      "equipment_terminal_thickness_mm": 8,
+      "connection_point_groups": [
+        {
+          "group_type": "BUSBAR_SIDE_CONNECTIONS",
+          "connection_point_count": 3
+        },
+        {
+          "group_type": "EQUIPMENT_SIDE_CONNECTIONS",
+          "connection_point_count": 3
+        }
+      ],
+      "expected_output": {
+        "status": "PASS",
+        "total_busbar_length_mm": 1290,
+        "joint_stacks": [
+          {
+            "group_type": "BUSBAR_SIDE_CONNECTIONS",
+            "joint_stack_thickness_mm": 30
+          },
+          {
+            "group_type": "EQUIPMENT_SIDE_CONNECTIONS",
+            "joint_stack_thickness_mm": 18
+          }
+        ]
+      }
+    },
+    {
+      "busbar_node_id": "KZO_DEMO_NODE_B",
+      "display_name": "Node B — Second Main Busbar To Breaker Connection",
+      "short_description": "Demo node B with different phase lengths to prove per-node calculation.",
+      "phase_count": 3,
+      "phase_length_l1_mm": 390,
+      "phase_length_l2_mm": 400,
+      "phase_length_l3_mm": 410,
+      "node_busbar_thickness_mm": 10,
+      "main_busbar_pack_thickness_mm": 20,
+      "equipment_terminal_thickness_mm": 8,
+      "connection_point_groups": [
+        {
+          "group_type": "BUSBAR_SIDE_CONNECTIONS",
+          "connection_point_count": 3
+        },
+        {
+          "group_type": "EQUIPMENT_SIDE_CONNECTIONS",
+          "connection_point_count": 3
+        }
+      ],
+      "expected_output": {
+        "status": "PASS",
+        "total_busbar_length_mm": 1200,
+        "joint_stacks": [
+          {
+            "group_type": "BUSBAR_SIDE_CONNECTIONS",
+            "joint_stack_thickness_mm": 30
+          },
+          {
+            "group_type": "EQUIPMENT_SIDE_CONNECTIONS",
+            "joint_stack_thickness_mm": 18
+          }
+        ]
+      }
+    }
+  ]
+}

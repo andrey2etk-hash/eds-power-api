@@ -1,0 +1,131 @@
+{
+  "fixture_id": "MODULE_01_EXPECTED_OUTPUTS_FIXTURE_001",
+  "fixture_version": "1.0.0",
+  "immutable": true,
+  "demo_only": true,
+  "display_name": "Module 01 Expected Outputs Fixture",
+  "short_description": "Expected outputs per stage for immutable Module 01 local KZO demo.",
+  "created_for": "Module 01 KZO local logic demo",
+  "not_production_data": true,
+  "expected_doc36_status": "PASS",
+  "registry_version": "demo_v1",
+  "last_updated": "2026-05-03",
+  "expected_node_a_geometry": {
+    "busbar_node_id": "KZO_DEMO_NODE_A",
+    "display_label": "Node A — Main Busbar To Breaker Connection",
+    "total_busbar_length_mm": 1290,
+    "joint_stack_thicknesses_mm": {
+      "BUSBAR_SIDE_CONNECTIONS": 30,
+      "EQUIPMENT_SIDE_CONNECTIONS": 18
+    }
+  },
+  "expected_node_b_geometry": {
+    "busbar_node_id": "KZO_DEMO_NODE_B",
+    "display_label": "Node B — Second Main Busbar To Breaker Connection",
+    "total_busbar_length_mm": 1200,
+    "joint_stack_thicknesses_mm": {
+      "BUSBAR_SIDE_CONNECTIONS": 30,
+      "EQUIPMENT_SIDE_CONNECTIONS": 18
+    }
+  },
+  "expected_node_a_fasteners": {
+    "busbar_node_id": "KZO_DEMO_NODE_A",
+    "display_label": "Node A Fastener Selection",
+    "BUSBAR_SIDE_CONNECTIONS": {
+      "selected_bolt_fastener_id": "DEMO_BOLT_M12X55",
+      "quantity": 3
+    },
+    "EQUIPMENT_SIDE_CONNECTIONS": {
+      "selected_bolt_fastener_id": "DEMO_BOLT_M12X45",
+      "quantity": 3
+    },
+    "shared_hardware_totals": {
+      "DEMO_NUT_M12": 6,
+      "DEMO_FLAT_WASHER_M12": 12,
+      "DEMO_DISC_SPRING_WASHER_M12": 6
+    }
+  },
+  "expected_node_b_fasteners": {
+    "busbar_node_id": "KZO_DEMO_NODE_B",
+    "display_label": "Node B Fastener Selection",
+    "BUSBAR_SIDE_CONNECTIONS": {
+      "selected_bolt_fastener_id": "DEMO_BOLT_M12X55",
+      "quantity": 3
+    },
+    "EQUIPMENT_SIDE_CONNECTIONS": {
+      "selected_bolt_fastener_id": "DEMO_BOLT_M12X45",
+      "quantity": 3
+    },
+    "shared_hardware_totals": {
+      "DEMO_NUT_M12": 6,
+      "DEMO_FLAT_WASHER_M12": 12,
+      "DEMO_DISC_SPRING_WASHER_M12": 6
+    }
+  },
+  "expected_doc38_aggregation": {
+    "display_label": "DOC 38 Aggregated Kit Issue Lines",
+    "source_line_ids": [
+      "SRC_A_001",
+      "SRC_A_002",
+      "SRC_A_003",
+      "SRC_A_004",
+      "SRC_A_005",
+      "SRC_B_001",
+      "SRC_B_002",
+      "SRC_B_003",
+      "SRC_B_004",
+      "SRC_B_005"
+    ],
+    "traceability_refs": [
+      "TRACE_KZO_DEMO_NODE_A_BUSBAR_BOLT",
+      "TRACE_KZO_DEMO_NODE_A_EQUIP_BOLT",
+      "TRACE_KZO_DEMO_NODE_A_NUT",
+      "TRACE_KZO_DEMO_NODE_A_FLAT_WASHER",
+      "TRACE_KZO_DEMO_NODE_A_DISC_WASHER",
+      "TRACE_KZO_DEMO_NODE_B_BUSBAR_BOLT",
+      "TRACE_KZO_DEMO_NODE_B_EQUIP_BOLT",
+      "TRACE_KZO_DEMO_NODE_B_NUT",
+      "TRACE_KZO_DEMO_NODE_B_FLAT_WASHER",
+      "TRACE_KZO_DEMO_NODE_B_DISC_WASHER"
+    ],
+    "registry_versions": {
+      "fastener_registry_version": "demo_v1",
+      "joint_stack_rule_registry_version": "demo_v1",
+      "washer_package_rule_registry_version": "demo_v1",
+      "aggregation_registry_version": "demo_v1"
+    },
+    "kit_issue_lines": [
+      {
+        "item_id": "DEMO_BOLT_M12X55",
+        "display_label": "Болт M12x55",
+        "quantity": 6,
+        "unit": "pcs"
+      },
+      {
+        "item_id": "DEMO_BOLT_M12X45",
+        "display_label": "Болт M12x45",
+        "quantity": 6,
+        "unit": "pcs"
+      },
+      {
+        "item_id": "DEMO_NUT_M12",
+        "display_label": "Гайка M12",
+        "quantity": 12,
+        "unit": "pcs"
+      },
+      {
+        "item_id": "DEMO_FLAT_WASHER_M12",
+        "display_label": "Шайба плоска M12",
+        "quantity": 24,
+        "unit": "pcs"
+      },
+      {
+        "item_id": "DEMO_DISC_SPRING_WASHER_M12",
+        "display_label": "Шайба тарільчата M12",
+        "quantity": 12,
+        "unit": "pcs"
+      }
+    ]
+  },
+  "management_summary": "System reads registry truth, validates every engineering step, selects local fasteners, and aggregates traceable kit issue lines. This is not final ERP BOM."
+}

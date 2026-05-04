@@ -51,6 +51,7 @@ Busbar node matrix rules are defined in:
 - `docs/00-02_CALC_CONFIGURATOR/09_KZO/34_KZO_WELDED_BUSBAR_NODE_MATRIX_CONTRACT.md`
 - `docs/00-02_CALC_CONFIGURATOR/09_KZO/36_KZO_WELDED_BUSBAR_EVALUATION_ENGINE_V1.md` (first evaluation engine doctrine)
 - `docs/00-02_CALC_CONFIGURATOR/09_KZO/37_KZO_WELDED_BUSBAR_NODE_PACKAGE_CALCULATION_V1.md` (node package calculation after DOC 36 candidate selection)
+- `docs/00-02_CALC_CONFIGURATOR/09_KZO/38_KZO_WELDED_BOM_AGGREGATION_AND_KIT_ISSUE_DOCTRINE_V1.md` (aggregation of verified DOC 37 local node outputs into traceable kit issue lines)
 
 Subsections:
 

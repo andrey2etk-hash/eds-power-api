@@ -6,6 +6,511 @@
 
 ---
 
+# 04.05.2026 — Module 01 one-page executive summary closeout verified by Gemini (doc-only closeout)
+
+## Факт (**closeout only / no implementation changes**)
+
+- Gemini audit passed for Module 01 one-page executive summary (`PASS`).
+- Executive summary closed as `CLOSED / PASS`.
+- Director-facing communication artifact accepted.
+- No implementation performed.
+
+## Далі
+
+Next allowed options:
+- Module 01 milestone closeout / commit and push
+- Short slide deck planning
+- Director demo script / Q&A planning
+- Demo UI / API-GAS integration planning only
+- MVP registry data expansion planning only
+
+---
+
+# 04.05.2026 — Module 01 one-page executive summary created (document-only)
+
+## Факт (**document only / no implementation**)
+
+- Created director-facing one-page executive summary:
+  - `docs/AUDITS/2026-05-03_MODULE_01_ONE_PAGE_EXECUTIVE_SUMMARY.md`
+- Included core message, demo proof, business value, boundaries, and next decision request.
+- No slides created.
+- No implementation performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of one-page executive summary
+- or short slide deck planning
+
+---
+
+# 04.05.2026 — Module 01 one-page executive summary plan closed as PASS by Gemini (doc-only closeout)
+
+## Факт (**closeout only / no implementation changes**)
+
+- Gemini audit passed for Module 01 one-page executive summary plan (`PASS`).
+- Data Owners note added to next steps section.
+- Executive summary plan closed as `CLOSED / PASS`.
+- No presentation artifact created.
+- No implementation performed.
+
+## Далі
+
+Next allowed step:
+- Create one-page executive summary
+
+---
+
+# 04.05.2026 — Module 01 one-page executive summary planning created (doc-only)
+
+## Факт (**planning only / no implementation**)
+
+- Created one-page executive summary planning dossier:
+  - `docs/AUDITS/2026-05-03_MODULE_01_ONE_PAGE_EXECUTIVE_SUMMARY_PLAN.md`
+- Defined director-facing one-page structure:
+  - current problem
+  - verified chain demonstration
+  - concrete engineering proof
+  - business value
+  - explicit boundaries
+  - next decision options
+- No presentation artifact created.
+- No implementation performed.
+
+## Далі
+
+Proceed with focused Gemini audit of one-page executive summary plan.
+
+---
+
+# 04.05.2026 — Module 01 demo narrative package plan closed as PASS by Gemini (doc-only closeout)
+
+## Факт (**closeout only / no implementation changes**)
+
+- Gemini audit passed for Module 01 demo narrative package plan (`PASS`).
+- Data Ownership Note for registry truth added.
+- Narrative plan closed as `CLOSED / PASS`.
+- No presentation file created.
+- No implementation performed in this closeout.
+
+## Далі
+
+Next allowed step:
+- Presentation artifact preparation planning
+  - one-page executive summary
+  - short slide deck
+  - director-facing demo script
+  - Q&A list
+
+---
+
+# 04.05.2026 — Module 01 demo narrative package planning created (doc-only)
+
+## Факт (**planning only / no implementation**)
+
+- Created director-facing narrative planning dossier:
+  - `docs/AUDITS/2026-05-03_MODULE_01_DEMO_NARRATIVE_PACKAGE_PLAN.md`
+- Defined demo story structure for management communication:
+  - problem framing
+  - engineering decision example (`M12x55` vs `M12x45`)
+  - `kit_issue_lines` explanation and traceability proof
+  - business value and boundary messaging
+- Captured next-step options for post-demo management decision.
+- No implementation performed.
+- No presentation file created.
+
+## Далі
+
+Proceed with focused Gemini audit of demo narrative package plan.
+
+---
+
+# 04.05.2026 — Module 01 local demo runner closeout verified by Gemini (doc-only closeout)
+
+## Факт (**closeout only / no implementation changes**)
+
+- Gemini local demo runner implementation audit passed (`PASS`).
+- Module 01 local demo runner closed as `CLOSED / VERIFIED`.
+- Local end-to-end demo chain confirmed:
+  - DOC 36 -> DOC 37 Slice 01 -> DOC 37 Slice 02 -> DOC 38 Slice 01
+- Audit trail and management summary are available in local demo output.
+- Local combined suite confirmation retained:
+  - `12` runner tests `OK`
+  - `72` combined tests `OK`
+- No code, test, or fixture changes performed in this closeout.
+- No API/GAS/DB/Supabase/procurement/warehouse/ERP/pricing/CAD changes performed in this closeout.
+
+## Далі
+
+Next allowed step:
+- Demo Narrative Package Planning
+
+---
+
+# 04.05.2026 — Module 01 local demo runner/test created (local-only implementation)
+
+## Факт (**local runner only / no engine changes**)
+
+- Created local demo runner:
+  - `tests/demo_runner_module_01.py`
+- Created runner unittest suite:
+  - `tests/test_module_01_local_demo_runner.py`
+- Executed verified fixtures through verified local engine chain:
+  - DOC 36 Slice 01 -> DOC 37 Slice 01 -> DOC 37 Slice 02 -> DOC 38 Slice 01
+- Added deterministic audit-trail output and generated local demo output:
+  - `tests/fixtures/demo/module_01_kzo_demo/output/module_01_demo_run_output.json`
+- Added deep-copy guard for fixture safety and strict `demo_v1` version assertion.
+- Test evidence:
+  - `python -m unittest tests.test_module_01_local_demo_runner` -> `Ran 12 tests ... OK`
+  - combined suite with runner + fixture validation -> `Ran 72 tests ... OK`
+- No engine logic changed.
+- No fixture modification performed.
+- No API/GAS/DB/Supabase/procurement/warehouse/ERP integration.
+
+## Далі
+
+Proceed with focused Gemini audit of local demo runner implementation.
+
+---
+
+# 04.05.2026 — Module 01 local demo execution planning created (doc-only)
+
+## Факт (**planning only / no implementation**)
+
+- Created local demo execution planning dossier:
+  - `docs/AUDITS/2026-05-03_MODULE_01_LOCAL_DEMO_EXECUTION_PLAN.md`
+- Connected verified immutable fixture package with verified local engine chain in planning:
+  - DOC 36 -> DOC 37 Slice 01 -> DOC 37 Slice 02 -> DOC 38 Slice 01
+- Planned expected demo output boundaries and traceability visibility for director-ready local demo framing.
+- No demo runner created.
+- No implementation performed.
+- API/GAS/DB/procurement/warehouse/ERP/pricing/CAD excluded by planning boundary.
+
+## Далі
+
+Proceed with focused Gemini audit of local demo execution plan before any runner implementation task.
+
+---
+
+# 04.05.2026 — Module 01 demo fixture validation closeout verified by Gemini (doc-only closeout)
+
+## Факт (**closeout only / no implementation changes**)
+
+- Gemini fixture validation implementation audit passed (`PASS`).
+- Module 01 demo fixture validation closed as `CLOSED / VERIFIED`.
+- Immutable demo fixture package confirmed ready for demo execution planning.
+- Local combined suite confirmation retained:
+  - `13` fixture validation tests `OK`
+  - `60` combined tests `OK`
+- No code, fixture, API, GAS, or DB changes performed in this closeout.
+
+## Далі
+
+Next allowed options:
+- Local Demo Execution Planning
+- Demo Narrative Package Planning
+
+---
+
+# 04.05.2026 — Module 01 demo fixture validation test implemented (validation-only)
+
+## Факт (**validation only / no engine changes**)
+
+- Created local validation test:
+  - `tests/test_module_01_demo_fixtures_validation.py`
+- Immutable demo fixtures validated for:
+  - JSON structure and required metadata
+  - cross-file consistency
+  - geometry expectations
+  - fastener math consistency
+  - DOC 38 aggregation totals
+  - traceability uniqueness (`source_line_id` / `traceability_ref`)
+  - strict `demo_v1` registry boundary
+- Validation implementation audit created:
+  - `docs/AUDITS/2026-05-03_MODULE_01_DEMO_FIXTURE_VALIDATION_IMPLEMENTATION.md`
+- Test results:
+  - `python -m unittest tests.test_module_01_demo_fixtures_validation` -> `Ran 13 tests ... OK`
+  - combined local suite with Module 01 validation -> `Ran 60 tests ... OK`
+- No engine logic changed.
+- No fixture modification performed.
+
+## Далі
+
+Proceed with focused Gemini audit of fixture validation implementation.
+
+---
+
+# 04.05.2026 — Module 01 demo fixture validation planning created (doc-only)
+
+## Факт (**planning only / no implementation**)
+
+- Created validation planning dossier:
+  - `docs/AUDITS/2026-05-03_MODULE_01_DEMO_FIXTURE_VALIDATION_PLAN.md`
+- Planned cross-file consistency checks for Module 01 immutable demo fixtures.
+- Planned traceability uniqueness rule (`one source_line_id = one traceability_ref`).
+- Planned strict `demo_v1` registry version boundary validation.
+- No validation runner created.
+- No tests created.
+- No fixture modification performed.
+- No implementation performed.
+
+## Далі
+
+Proceed with focused Gemini audit of fixture validation plan before any runner or test task.
+
+---
+
+# 04.05.2026 — Module 01 immutable demo JSON fixtures created (fixture data only)
+
+## Факт (**fixture data only / no implementation**)
+
+- Created immutable demo fixtures in `tests/fixtures/demo/module_01_kzo_demo/`:
+  - `demo_metadata.json`
+  - `doc36_busbar_fixture.json`
+  - `doc37_node_geometry_fixture.json`
+  - `doc37_fastener_selection_fixture.json`
+  - `doc38_aggregation_fixture.json`
+  - `expected_outputs.json`
+  - `optional_backup_safety_fixture.json`
+- Added Node A / Node B PASS fixture data with non-identical geometry and per-node traceability.
+- Added expected output fixture with stage-by-stage expected status and DOC 38 aggregation totals.
+- Added optional backup safety fixture (`INCOMPLETE`, `PHASE_LENGTH_MISSING`) outside main PASS flow.
+- Fixtures are immutable and demo-only; no production registry files created.
+- No implementation performed (no engine/API/GAS/DB/procurement/warehouse/ERP/pricing/CAD changes).
+
+## Далі
+
+Proceed with fixture validation planning or focused Gemini audit of created fixture files.
+
+---
+
+# 03.05.2026 — Module 01 immutable demo fixtures planning created (doc-only)
+
+## Факт (**planning only / no implementation**)
+
+- Module 01 immutable demo fixtures planning created:
+  - `docs/AUDITS/2026-05-03_MODULE_01_IMMUTABLE_DEMO_FIXTURES_PLAN.md`
+- Node A / Node B fixture content planned with concrete management-readable values.
+- `display_name` + `short_description` requirements fixed for key demo objects.
+- Registry metadata requirements expanded (`registry_version`, `last_updated`, `display_name`).
+- Optional backup safety fixture planned separately from main PASS flow.
+- No fixture files created.
+- No implementation performed.
+
+## Далі
+
+Proceed with Gemini audit of immutable demo fixtures plan before any fixture creation task.
+
+---
+
+# 03.05.2026 — Module 01 demo data preparation planning created (doc-only)
+
+## Факт (**planning only / no implementation**)
+
+- Module 01 demo data preparation planning created:
+  - `docs/AUDITS/2026-05-03_MODULE_01_DEMO_DATA_PREPARATION_PLAN.md`
+- Immutable fixture structure defined for local demo chain.
+- Node A / Node B PASS-only demo path defined.
+- Optional safety fixture remains separate from main demo flow.
+- No fixture data created.
+- No implementation performed.
+
+## Далі
+
+Proceed with Gemini audit of demo data preparation plan before fixture creation.
+
+---
+
+# 03.05.2026 — Module 01 demo plan updated after Gemini audit (doc-only)
+
+## Факт (**planning sync only / no implementation**)
+
+- Module 01 demo plan updated after Gemini audit feedback.
+- Negative scenario moved to optional backup fixture only (not in main flow).
+- Main director demo flow remains PASS-focused (Node A PASS + Node B PASS + Aggregation PASS).
+- Registry version visibility requirements added to demo output framing.
+- Immutable demo fixture rule added (no live mutation, no DB/API dependency).
+- Management glossary added for non-technical stakeholders.
+- No implementation performed.
+
+## Далі
+
+Proceed with demo data preparation planning under doc-only governance.
+
+---
+
+# 03.05.2026 — Module 01 demo scenario planning opened (doc-only)
+
+## Факт (**planning only / no implementation**)
+
+- Module 01 demo scenario planning opened:
+  - `docs/AUDITS/2026-05-03_MODULE_01_DEMO_SCENARIO_PLAN.md`
+- Demo scope defined as local logic chain only:
+  - DOC 36 -> DOC 37 Slice 01 -> DOC 37 Slice 02 -> DOC 38 Slice 01
+- Scope exclusions explicitly fixed:
+  - API/GAS/DB
+  - procurement/warehouse/ERP
+  - final BOM release
+  - pricing/CAD
+- No implementation performed.
+
+## Далі
+
+Proceed with focused audit of demo scenario plan before any demo implementation task.
+
+---
+
+# 03.05.2026 — Module 01 local logic closeout recorded (doc-only)
+
+## Факт (**documentation closeout only**)
+
+- Module 01 local logic closeout recorded:
+  - `docs/AUDITS/2026-05-03_MODULE_01_LOCAL_LOGIC_CLOSEOUT.md`
+- Verified local deterministic chain captured:
+  - DOC 36 Slice 01 -> DOC 37 Slice 01 -> DOC 37 Slice 02 -> DOC 38 Slice 01
+- Combined local test evidence recorded (`47 tests OK`).
+- No implementation performed in this closeout.
+- No code/tests changes in this closeout.
+- No API / GAS / DB / registry data / procurement / warehouse / ERP / pricing / CAD changes.
+
+## Далі
+
+Next direction selection pending among planning-only options.
+
+---
+
+# 03.05.2026 — Gemini DOC 38 Slice 01 implementation audit PASS closeout
+
+## Факт (**documentation closeout only**)
+
+- Gemini implementation audit passed for DOC 38 Slice 01.
+- DOC 38 Slice 01 closed as **VERIFIED**.
+- Basic aggregation foundation accepted.
+- `kit_issue_lines` confirmed as production-preparation output only.
+- Module 01 local logic chain is stable through DOC 38 Slice 01.
+- No implementation performed in this closeout.
+- No API / GAS / DB / registry data / procurement / warehouse / ERP / pricing / CAD changes.
+
+## Далі
+
+Next allowed options:
+- Module 01 local logic closeout — doc-only
+- DOC 38 Slice 02 planning only
+
+---
+
+# 03.05.2026 — DOC 38 Slice 01 Basic Aggregation implemented (narrow local aggregation slice)
+
+## Факт (**narrow implementation slice only**)
+
+- Implemented DOC 38 Slice 01 basic aggregation of verified DOC 37 local node outputs.
+- Added pre-aggregation validation:
+  - required source-line fields
+  - strict duplicate `source_line_id` and duplicate `traceability_ref` blocking
+  - numeric and positive quantity validation
+- Added strict aggregation identity behavior:
+  - material lines require `selected_material_catalog_id`
+  - no silent merge across identity mismatches
+- `kit_issue_lines` remain production-preparation aggregation output only (not final ERP BOM).
+- Added tests:
+  - `tests/test_bom_aggregation_slice01.py`
+  - `python -m unittest tests.test_bom_aggregation_slice01` -> `OK (17 tests)`
+  - combined run with DOC 36 + DOC 37 + DOC 38 slices -> `OK (47 tests)`
+- Implementation audit note created:
+  - `docs/AUDITS/2026-05-03_DOC_38_SLICE_01_BASIC_AGGREGATION_IMPLEMENTATION.md`
+- No ERP/procurement/warehouse/pricing/CAD/API/GAS/DB changes.
+
+## Далі
+
+DOC 38 Slice 01 is implemented and ready for Gemini implementation audit.
+
+---
+
+# 03.05.2026 — DOC 38 Slice 01 Basic Aggregation planning opened
+
+## Факт (**planning only / no implementation**)
+
+- DOC 38 doctrine is closed as `PASS` and accepted as doctrine standard.
+- DOC 38 Slice 01 Basic Aggregation planning opened as bounded planning-only lane.
+- Planning dossier created:
+  - `docs/AUDITS/2026-05-03_DOC_38_SLICE_01_BASIC_AGGREGATION_PLAN.md`
+- Planning scope explicitly excludes ERP/procurement/warehouse/pricing/CAD and API/GAS/DB integration.
+- Implementation remains blocked at this step.
+- No code changes performed.
+
+## Далі
+
+Proceed only with focused planning audit before opening any DOC 38 implementation task.
+
+---
+
+# 03.05.2026 — Gemini DOC 38 doctrine re-audit PASS closeout
+
+## Факт (**documentation closeout only**)
+
+- Gemini DOC 38 re-audit passed (`PASS`).
+- DOC 38 approved as aggregation doctrine standard.
+- Pre-aggregation validation accepted.
+- Aggregation identity and traceability governance rules accepted.
+- No implementation performed.
+- DOC 38 Slice 01 is allowed only as planning.
+- No API / GAS / DB / registry data / procurement / warehouse / ERP / pricing / CAD changes.
+
+## Далі
+
+Next allowed step: DOC 38 Slice 01 Basic Aggregation — planning only.
+
+---
+
+# 03.05.2026 — Gemini DOC 38 doctrine fixes applied (doc-only)
+
+## Факт (**documentation correction only**)
+
+- Gemini DOC 38 doctrine audit reviewed (`SAFE WITH FIXES`).
+- DOC 38 corrected with governance hardening:
+  - pre-aggregation validation added (numeric/positive quantity + source-line uniqueness)
+  - aggregation identity strengthened (item/unit/source/version/context keys)
+  - duplicate source-line and duplicate traceability protection added
+  - traceability summarization rule added with full-traceability preservation requirement
+  - output contract enriched (`source_line_ids`, counts, registry-version fields)
+  - failure code set expanded for line-level validation and aggregation identity conflicts
+  - registry-version mismatch rule strengthened with required conflict notes payload
+  - BOM/procurement/warehouse/ERP drift boundary explicitly tightened
+- No implementation performed.
+- No code/tests changes.
+- No API/GAS/DB changes.
+
+## Далі
+
+DOC 38 doctrine fixes are ready for Gemini re-audit before any Slice 01 planning is opened.
+
+---
+
+# 03.05.2026 — DOC 38 BOM Aggregation / Kit Issue doctrine created (doc-only)
+
+## Факт (**documentation / doctrine only**)
+
+- Created doctrine:
+  - `docs/00-02_CALC_CONFIGURATOR/09_KZO/38_KZO_WELDED_BOM_AGGREGATION_AND_KIT_ISSUE_DOCTRINE_V1.md`
+- Local node output aggregation doctrine documented for DOC 38:
+  - verified DOC 37 local node input preconditions
+  - aggregation/merge rules
+  - traceability preservation requirements
+  - registry version consistency rules
+- Related references updated in:
+  - `docs/00-02_CALC_CONFIGURATOR/09_KZO/32_KZO_WELDED_GROUPING_AND_SEMANTIC_NODE_CALCULATION_DOCTRINE.md`
+  - `docs/00-02_CALC_CONFIGURATOR/09_KZO/37_KZO_WELDED_BUSBAR_NODE_PACKAGE_CALCULATION_V1.md`
+- Procurement / warehouse / ERP / API / GAS / DB scope explicitly excluded.
+- No implementation performed.
+- No registry data created.
+- No pricing/CAD logic introduced.
+
+## Далі
+
+DOC 38 doctrine is ready for focused Gemini audit before any planning/implementation task is opened.
+
+---
+
 # 03.05.2026 — Gemini DOC 37 Slice 02 implementation audit PASS closeout
 
 ## Факт (**documentation closeout only**)

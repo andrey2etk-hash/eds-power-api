@@ -317,6 +317,14 @@ DOC 37 output is local node package specification only.
 It is not final BOM.
 Final aggregation belongs to DOC 38.
 
+DOC 38 compatibility note:
+For aggregation readiness, local node lines should carry:
+- source_line_id
+- source_node_id
+- source_group
+- registry_source
+- traceability_ref
+
 Failure note:
 If a downstream system treats DOC 37 output as final BOM, this is a governance breach.
 
@@ -476,6 +484,7 @@ DOC 37 is doctrine only.
 Implementation requires separate approved task.
 Slice 01 planning boundary covers node geometry and joint stack only; fastener selection remains a future slice.
 Slice 02 planning boundary covers local node fastener selection only; final BOM aggregation and kit issue remain under DOC 38.
+DOC 38 owns aggregation of `node_material_lines` and `node_fastener_lines`; DOC 37 outputs remain local node outputs only.
 
 DOC 37 must not weaken DOC 36.
 If DOC 36 output is not PASS, DOC 37 cannot return PASS.

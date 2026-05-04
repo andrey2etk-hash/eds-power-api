@@ -1,0 +1,55 @@
+{
+  "fixture_id": "MODULE_01_DOC36_BUSBAR_FIXTURE_001",
+  "fixture_version": "1.0.0",
+  "immutable": true,
+  "demo_only": true,
+  "display_name": "DOC 36 Prepared PASS Busbar Fixture",
+  "short_description": "Prepared PASS fixture for DOC 36 busbar evaluation output used by Module 01 demo.",
+  "created_for": "Module 01 KZO local logic demo",
+  "not_production_data": true,
+  "status": "PASS",
+  "selected_material_catalog_id": "DEMO_BUSBAR_CU_60X10",
+  "selected_usage_id": "DEMO_USAGE_MAIN_BUSBAR_TO_BREAKER",
+  "package_id": "DEMO_PACKAGE_MAIN_BUSBAR_TO_BREAKER",
+  "selected_busbar": {
+    "display_name": "Шина мідна 60x10",
+    "short_description": "Demo copper busbar selected for KZO node package calculation."
+  },
+  "disclaimer": "Demo fixture only. Selection is not a final engineering certification.",
+  "registry_versions": {
+    "global_material_catalog_version": "demo_v1",
+    "kzo_usage_registry_version": "demo_v1",
+    "busbar_node_matrix_version": "demo_v1",
+    "equipment_interface_registry_version": "demo_v1"
+  },
+  "registry_sources": [
+    {
+      "registry_key": "global_material_catalog",
+      "registry_version": "demo_v1",
+      "last_updated": "2026-05-03",
+      "display_name": "Demo Global Busbar Material Catalog",
+      "short_description": "Prepared demo-only global material catalog reference."
+    },
+    {
+      "registry_key": "kzo_usage_registry",
+      "registry_version": "demo_v1",
+      "last_updated": "2026-05-03",
+      "display_name": "Demo KZO Usage Registry",
+      "short_description": "Prepared demo-only KZO usage selection reference."
+    },
+    {
+      "registry_key": "busbar_node_matrix",
+      "registry_version": "demo_v1",
+      "last_updated": "2026-05-03",
+      "display_name": "Demo Busbar Node Matrix",
+      "short_description": "Prepared demo-only node matrix reference."
+    },
+    {
+      "registry_key": "equipment_interface_registry",
+      "registry_version": "demo_v1",
+      "last_updated": "2026-05-03",
+      "display_name": "Demo Equipment Interface Registry",
+      "short_description": "Prepared demo-only equipment interface reference."
+    }
+  ]
+}

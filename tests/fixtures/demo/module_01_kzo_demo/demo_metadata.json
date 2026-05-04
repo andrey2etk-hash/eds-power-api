@@ -1,0 +1,30 @@
+{
+  "fixture_id": "MODULE_01_KZO_DEMO_METADATA_001",
+  "fixture_version": "1.0.0",
+  "immutable": true,
+  "demo_only": true,
+  "display_name": "Module 01 KZO Local Engineering Demo Metadata",
+  "short_description": "Immutable metadata for Module 01 local KZO engineering demo.",
+  "created_for": "Module 01 KZO local logic demo",
+  "not_production_data": true,
+  "demo_id": "MODULE_01_KZO_DEMO_001",
+  "demo_scope": "LOCAL_LOGIC_ONLY",
+  "main_flow": "PASS_ONLY",
+  "optional_backup_fixture": true,
+  "boundaries": {
+    "api": false,
+    "gas": false,
+    "db": false,
+    "erp": false,
+    "procurement": false,
+    "warehouse": false,
+    "pricing": false,
+    "cad": false
+  },
+  "verified_chain": [
+    "DOC36_BUSBAR_EVALUATION",
+    "DOC37_SLICE01_NODE_GEOMETRY",
+    "DOC37_SLICE02_FASTENER_SELECTION",
+    "DOC38_SLICE01_BASIC_AGGREGATION"
+  ]
+}

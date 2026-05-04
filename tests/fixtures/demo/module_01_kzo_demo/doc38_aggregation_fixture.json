@@ -1,0 +1,193 @@
+{
+  "fixture_id": "MODULE_01_DOC38_AGGREGATION_FIXTURE_001",
+  "fixture_version": "1.0.0",
+  "immutable": true,
+  "demo_only": true,
+  "display_name": "DOC 38 Aggregation PASS Fixture",
+  "short_description": "Prepared aggregation input from two PASS nodes for Module 01 demo.",
+  "created_for": "Module 01 KZO local logic demo",
+  "not_production_data": true,
+  "aggregation_scope": "DEMO_MVP",
+  "product_type": "KZO",
+  "product_id": "KZO_DEMO_PRODUCT_001",
+  "calculation_id": "DEMO_CALC_001",
+  "registry_version": "demo_v1",
+  "last_updated": "2026-05-03",
+  "source_node_outputs": [
+    {
+      "source_line_id": "SRC_A_001",
+      "traceability_ref": "TRACE_KZO_DEMO_NODE_A_BUSBAR_BOLT",
+      "item_id": "DEMO_BOLT_M12X55",
+      "item_type": "BOLT",
+      "quantity": 3,
+      "unit": "pcs",
+      "source_node_id": "KZO_DEMO_NODE_A",
+      "source_group": "BUSBAR_SIDE_CONNECTIONS",
+      "registry_source": "demo_fastener_registry",
+      "registry_version": "demo_v1",
+      "issue_context": "LOCAL_PRODUCTION_PREPARATION_ONLY",
+      "status": "PASS"
+    },
+    {
+      "source_line_id": "SRC_A_002",
+      "traceability_ref": "TRACE_KZO_DEMO_NODE_A_EQUIP_BOLT",
+      "item_id": "DEMO_BOLT_M12X45",
+      "item_type": "BOLT",
+      "quantity": 3,
+      "unit": "pcs",
+      "source_node_id": "KZO_DEMO_NODE_A",
+      "source_group": "EQUIPMENT_SIDE_CONNECTIONS",
+      "registry_source": "demo_fastener_registry",
+      "registry_version": "demo_v1",
+      "issue_context": "LOCAL_PRODUCTION_PREPARATION_ONLY",
+      "status": "PASS"
+    },
+    {
+      "source_line_id": "SRC_A_003",
+      "traceability_ref": "TRACE_KZO_DEMO_NODE_A_NUT",
+      "item_id": "DEMO_NUT_M12",
+      "item_type": "NUT",
+      "quantity": 6,
+      "unit": "pcs",
+      "source_node_id": "KZO_DEMO_NODE_A",
+      "source_group": "NODE_SHARED_HARDWARE",
+      "registry_source": "demo_fastener_registry",
+      "registry_version": "demo_v1",
+      "issue_context": "LOCAL_PRODUCTION_PREPARATION_ONLY",
+      "status": "PASS"
+    },
+    {
+      "source_line_id": "SRC_A_004",
+      "traceability_ref": "TRACE_KZO_DEMO_NODE_A_FLAT_WASHER",
+      "item_id": "DEMO_FLAT_WASHER_M12",
+      "item_type": "FLAT_WASHER",
+      "quantity": 12,
+      "unit": "pcs",
+      "source_node_id": "KZO_DEMO_NODE_A",
+      "source_group": "NODE_SHARED_HARDWARE",
+      "registry_source": "demo_fastener_registry",
+      "registry_version": "demo_v1",
+      "issue_context": "LOCAL_PRODUCTION_PREPARATION_ONLY",
+      "status": "PASS"
+    },
+    {
+      "source_line_id": "SRC_A_005",
+      "traceability_ref": "TRACE_KZO_DEMO_NODE_A_DISC_WASHER",
+      "item_id": "DEMO_DISC_SPRING_WASHER_M12",
+      "item_type": "DISC_SPRING_WASHER",
+      "quantity": 6,
+      "unit": "pcs",
+      "source_node_id": "KZO_DEMO_NODE_A",
+      "source_group": "NODE_SHARED_HARDWARE",
+      "registry_source": "demo_fastener_registry",
+      "registry_version": "demo_v1",
+      "issue_context": "LOCAL_PRODUCTION_PREPARATION_ONLY",
+      "status": "PASS"
+    },
+    {
+      "source_line_id": "SRC_B_001",
+      "traceability_ref": "TRACE_KZO_DEMO_NODE_B_BUSBAR_BOLT",
+      "item_id": "DEMO_BOLT_M12X55",
+      "item_type": "BOLT",
+      "quantity": 3,
+      "unit": "pcs",
+      "source_node_id": "KZO_DEMO_NODE_B",
+      "source_group": "BUSBAR_SIDE_CONNECTIONS",
+      "registry_source": "demo_fastener_registry",
+      "registry_version": "demo_v1",
+      "issue_context": "LOCAL_PRODUCTION_PREPARATION_ONLY",
+      "status": "PASS"
+    },
+    {
+      "source_line_id": "SRC_B_002",
+      "traceability_ref": "TRACE_KZO_DEMO_NODE_B_EQUIP_BOLT",
+      "item_id": "DEMO_BOLT_M12X45",
+      "item_type": "BOLT",
+      "quantity": 3,
+      "unit": "pcs",
+      "source_node_id": "KZO_DEMO_NODE_B",
+      "source_group": "EQUIPMENT_SIDE_CONNECTIONS",
+      "registry_source": "demo_fastener_registry",
+      "registry_version": "demo_v1",
+      "issue_context": "LOCAL_PRODUCTION_PREPARATION_ONLY",
+      "status": "PASS"
+    },
+    {
+      "source_line_id": "SRC_B_003",
+      "traceability_ref": "TRACE_KZO_DEMO_NODE_B_NUT",
+      "item_id": "DEMO_NUT_M12",
+      "item_type": "NUT",
+      "quantity": 6,
+      "unit": "pcs",
+      "source_node_id": "KZO_DEMO_NODE_B",
+      "source_group": "NODE_SHARED_HARDWARE",
+      "registry_source": "demo_fastener_registry",
+      "registry_version": "demo_v1",
+      "issue_context": "LOCAL_PRODUCTION_PREPARATION_ONLY",
+      "status": "PASS"
+    },
+    {
+      "source_line_id": "SRC_B_004",
+      "traceability_ref": "TRACE_KZO_DEMO_NODE_B_FLAT_WASHER",
+      "item_id": "DEMO_FLAT_WASHER_M12",
+      "item_type": "FLAT_WASHER",
+      "quantity": 12,
+      "unit": "pcs",
+      "source_node_id": "KZO_DEMO_NODE_B",
+      "source_group": "NODE_SHARED_HARDWARE",
+      "registry_source": "demo_fastener_registry",
+      "registry_version": "demo_v1",
+      "issue_context": "LOCAL_PRODUCTION_PREPARATION_ONLY",
+      "status": "PASS"
+    },
+    {
+      "source_line_id": "SRC_B_005",
+      "traceability_ref": "TRACE_KZO_DEMO_NODE_B_DISC_WASHER",
+      "item_id": "DEMO_DISC_SPRING_WASHER_M12",
+      "item_type": "DISC_SPRING_WASHER",
+      "quantity": 6,
+      "unit": "pcs",
+      "source_node_id": "KZO_DEMO_NODE_B",
+      "source_group": "NODE_SHARED_HARDWARE",
+      "registry_source": "demo_fastener_registry",
+      "registry_version": "demo_v1",
+      "issue_context": "LOCAL_PRODUCTION_PREPARATION_ONLY",
+      "status": "PASS"
+    }
+  ],
+  "expected_aggregation": {
+    "kit_issue_lines": [
+      {
+        "item_id": "DEMO_BOLT_M12X55",
+        "item_type": "BOLT",
+        "quantity": 6,
+        "unit": "pcs"
+      },
+      {
+        "item_id": "DEMO_BOLT_M12X45",
+        "item_type": "BOLT",
+        "quantity": 6,
+        "unit": "pcs"
+      },
+      {
+        "item_id": "DEMO_NUT_M12",
+        "item_type": "NUT",
+        "quantity": 12,
+        "unit": "pcs"
+      },
+      {
+        "item_id": "DEMO_FLAT_WASHER_M12",
+        "item_type": "FLAT_WASHER",
+        "quantity": 24,
+        "unit": "pcs"
+      },
+      {
+        "item_id": "DEMO_DISC_SPRING_WASHER_M12",
+        "item_type": "DISC_SPRING_WASHER",
+        "quantity": 12,
+        "unit": "pcs"
+      }
+    ],
+    "scope_note": "kit_issue_lines are local production-preparation only and are not a final ERP BOM."
+  }
+}

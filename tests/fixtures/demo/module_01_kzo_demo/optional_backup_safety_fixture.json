@@ -1,0 +1,35 @@
+{
+  "fixture_id": "MODULE_01_OPTIONAL_BACKUP_SAFETY_FIXTURE_001",
+  "fixture_version": "1.0.0",
+  "immutable": true,
+  "demo_only": true,
+  "display_name": "Backup Safety Fixture — Missing Phase Length",
+  "short_description": "Optional backup-only fixture for incomplete input safety behavior demonstration.",
+  "created_for": "Module 01 KZO local logic demo",
+  "not_production_data": true,
+  "fixture_role": "OPTIONAL_BACKUP_ONLY",
+  "not_main_demo_flow": true,
+  "registry_version": "demo_v1",
+  "last_updated": "2026-05-03",
+  "node_id": "KZO_DEMO_NODE_BACKUP_INCOMPLETE",
+  "expected_status": "INCOMPLETE",
+  "expected_failure_code": "PHASE_LENGTH_MISSING",
+  "expected_failure_reason": "The system blocks calculation because one required phase length is missing.",
+  "input": {
+    "phase_count": 3,
+    "phase_length_l1_mm": 380,
+    "phase_length_l3_mm": 390,
+    "phase_length_l2_mm": null,
+    "missing_field": "phase_length_l2_mm",
+    "connection_point_groups": [
+      {
+        "group_type": "BUSBAR_SIDE_CONNECTIONS",
+        "connection_point_count": 3
+      },
+      {
+        "group_type": "EQUIPMENT_SIDE_CONNECTIONS",
+        "connection_point_count": 3
+      }
+    ]
+  }
+}
