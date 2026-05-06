@@ -195,6 +195,17 @@ Notes:
 
 - Prepared source files for first handshake in MASTER_TERMINAL_TEMPLATE before EDSPowerCore is deployed as library.
 
+### EDS_POWER_MASTER_TERMINAL_TEMPLATE_HANDSHAKE
+
+Status:
+
+- `PASS`
+
+Notes:
+
+- Manual execution of `runEDSPowerTerminalFoundationHandshakeTest()` in MASTER_TERMINAL_TEMPLATE recorded as PASS.
+- Template marker enforcement confirmed: `terminal_id = TERMINAL_TEMPLATE` with no production terminal_id in template.
+
 ### IDEA-0002 — Google Sheets Sidebar UI
 
 ### IDEA-0025 — KZO_WELDED_SV_SR_PAIR_DNA

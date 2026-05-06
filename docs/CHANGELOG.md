@@ -6,6 +6,25 @@
 
 ---
 
+# 06.05.2026 — EDS Power Master Terminal Template handshake passed
+
+## Факт (**operator pass / template handshake closeout**)
+
+- Master Terminal Template handshake passed.
+- EDSPowerCore reachable from template.
+- Local bootstrap validated in template.
+- `terminal_id` template marker confirmed (`TERMINAL_TEMPLATE`).
+- No production terminal_id stored in template.
+- No token/secrets logged.
+- No business/engineering logic executed.
+
+## Далі
+
+Next allowed step:
+- EDS Power Dynamic Menu Mock Integration
+
+---
+
 # 06.05.2026 — EDS Power Master Template Handshake Package prepared
 
 ## Факт (**gas source prep / template handshake package**)
