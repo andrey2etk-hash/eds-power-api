@@ -26,6 +26,8 @@ Implement and recover the first bounded EDS Power dynamic menu transport/renderi
 - Provider error interrupted the initial implementation attempt.
 - Recovery check confirmed code is syntactically valid and bounded.
 - Missing documentation/state updates were completed in this recovery continuation.
+- Follow-up diagnostic review identified a false-positive risk: fallback menu looked too similar to expected dynamic menu.
+- Initial visual operator result was reclassified as **`DYNAMIC_MENU_NOT_VERIFIED — FALLBACK_FALSE_POSITIVE_RISK`** until diagnostic evidence became available.
 
 ## Backend mock endpoint summary
 
@@ -57,6 +59,19 @@ Implement and recover the first bounded EDS Power dynamic menu transport/renderi
   - renders placeholder item safely as planned/unavailable action
 - Local role/access decisions are not implemented in GAS core.
 
+## Governance drift discovered and corrected
+
+- Drift 1: GAS appended `(planned)` locally for placeholder menu item, which violated backend label ownership.
+- Drift 2: fallback menu used a different title (`EDS Power Fallback`), which could leave two visible custom menus in one sheet session.
+- Previous two-menu visual state is **not** accepted as final PASS.
+
+Applied correction:
+
+- Backend now owns final placeholder label text (`Module 01 — Розрахунки (planned)`).
+- GAS no longer mutates placeholder labels locally.
+- Fallback and dynamic states now use one canonical menu title: `EDS Power`.
+- Fallback is distinguished by setup-only items and diagnostics (`menu_source = fallback_static`), not by separate menu title.
+
 Behavioral drift decision (`EDSPowerCore_onTerminalOpen`):
 
 - `onTerminalOpen` now renders a safe bootstrap/fallback `EDS Power` menu.
@@ -74,14 +89,71 @@ Behavioral drift decision (`EDSPowerCore_onTerminalOpen`):
 - Defer marker is returned in metadata (`auth_enforcement = DEFERRED_FOR_MOCK_SLICE`).
 - This is temporary and not a permanent auth bypass design.
 
-## Operator tests pending
+## False-positive risk note
 
-Pending manual tests in `EDS Power — MASTER TERMINAL TEMPLATE`:
+Observed visual menu (`EDS Power` with expected items) is no longer accepted as sufficient verification because fallback and dynamic states were not clearly separated.
 
-1. Run `edsPowerRefreshMenu()` and verify menu `EDS Power` updates from backend payload.
-2. Run `edsPowerRefreshMenu()` again and verify clean redraw without menu duplication chaos.
-3. Click Module 01 placeholder and verify safe message:
-   `Module 01 is not active in this mock menu slice.`
+Reclassified status (intermediate state):
+
+- **`DYNAMIC_MENU_NOT_VERIFIED — FALLBACK_FALSE_POSITIVE_RISK`**
+
+## Updated PASS criteria
+
+Dynamic Menu Mock Integration PASS now requires all of:
+
+1. Script Property `MODULE01_API_BASE_URL` is present.
+2. Refresh diagnostic shows `endpoint_http_status = 200`.
+3. Refresh diagnostic shows `menu_source = mock_backend`.
+4. Refresh diagnostic shows `rendered_items > 0`.
+5. Fallback menu (`EDS Power Fallback`) is not displayed.
+6. No token/secrets are logged.
+
+## Operator verification evidence (PASS)
+
+Manual operator verification completed in `EDS Power — MASTER TERMINAL TEMPLATE`.
+
+Execution log evidence:
+
+```json
+{
+  "stage": "EDS_POWER_DYNAMIC_MENU_REFRESH",
+  "menu_source": "mock_backend",
+  "base_url_present": true,
+  "endpoint_path": "/api/module01/auth/menu",
+  "endpoint_http_status": 200,
+  "rendered_items": 4,
+  "terminal_id_mode": "template_marker",
+  "terminal_id_present": true,
+  "core_version": "EDS_POWER_CORE_FOUNDATION_V1",
+  "error_code": null,
+  "error_message": null
+}
+```
+
+Rendered menu evidence:
+
+- Menu title: `EDS Power`
+- Menu items:
+  - `Оновити меню`
+  - `Статус сесії`
+  - `Module 01 — Розрахунки (planned)`
+  - `Вийти`
+
+Fallback separation evidence:
+
+- Same menu title rule: `EDS Power`
+- Fallback-only items:
+  - `⚠ Setup Required`
+  - `Refresh Setup Check`
+
+Confirmed:
+
+- backend mock menu payload reached EDSPowerCore
+- `endpoint_http_status = 200`
+- menu rendered from backend mock payload
+- false-positive fallback risk fixed
+- fallback no longer looks like success menu
+- Module 01 remains placeholder/planned only
 
 ## Security confirmation
 
@@ -99,7 +171,17 @@ Pending manual tests in `EDS Power — MASTER TERMINAL TEMPLATE`:
 - terminal provisioning
 - production rollout behavior
 
-## Verdict: IMPLEMENTATION_PENDING_OPERATOR_TEST
+## Important limitation
 
-Dynamic menu mock transport/render pipe is implemented and recovered from provider interruption.  
-Status: **`IMPLEMENTATION_PENDING_OPERATOR_TEST`**.
+This PASS confirms mock backend transport/render pipe only. It does not prove:
+
+- DB-driven role/module access
+- production RBAC
+- real module availability registry
+- calculation module execution
+- admin provisioning
+
+## Verdict: CORRECTION_PENDING_OPERATOR_RETEST
+
+Governance correction for label ownership and single-menu-title behavior is implemented.
+Operator retest is required to reconfirm PASS under corrected menu ownership rules.

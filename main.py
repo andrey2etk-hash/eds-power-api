@@ -163,7 +163,7 @@ AUTH_MENU_MOCK_ITEMS = [
         "menu_id": "module_01_placeholder",
         "module_id": "MODULE_01",
         "module_name": "Module 01",
-        "menu_label": "Module 01 — Розрахунки",
+        "menu_label": "Module 01 — Розрахунки (planned)",
         "action_key": "MODULE_01_PLACEHOLDER",
         "action_type": "PLACEHOLDER_DISABLED",
         "visibility": "VISIBLE",

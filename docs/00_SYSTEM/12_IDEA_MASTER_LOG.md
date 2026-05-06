@@ -210,12 +210,15 @@ Notes:
 
 Status:
 
-- `IMPLEMENTATION_PENDING_OPERATOR_TEST`
+- `CORRECTION_PENDING_OPERATOR_RETEST`
 
 Notes:
 
 - First bounded dynamic menu pipe implemented using mock backend payload and EDSPowerCore rendering.
 - Auth enforcement for menu endpoint is deferred for mock-pipe validation only and is documented as temporary.
+- False-positive risk was fixed by fallback/dynamic visual separation and safe diagnostics.
+- Governance correction applied: backend label ownership restored and menu title unified.
+- Operator retest required after correction to reconfirm PASS evidence under final behavior.
 
 ### IDEA-0002 — Google Sheets Sidebar UI
 

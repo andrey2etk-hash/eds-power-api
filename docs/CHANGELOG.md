@@ -6,6 +6,72 @@
 
 ---
 
+# 06.05.2026 — Dynamic menu governance correction (label ownership + single title)
+
+## Факт (**governance correction / operator retest required**)
+
+- Dynamic menu governance drift identified and corrected.
+- Backend label ownership restored for placeholder item (`Module 01 — Розрахунки (planned)` from API payload).
+- Fallback/success menu title unified to one canonical title: `EDS Power`.
+- False-positive/two-menu risk fixed via unified title + fallback-only setup items.
+
+## Далі
+
+Next allowed step:
+- Operator retest: run `edsPowerRefreshMenu()` and verify diagnostics/menu behavior
+
+---
+
+# 06.05.2026 — EDS Power Dynamic Menu Mock Integration operator verified (diagnostic proof)
+
+## Факт (**operator pass / mock pipe verified**)
+
+- EDS Power Dynamic Menu Mock Integration operator verified.
+- Backend mock payload reached EDSPowerCore.
+- `endpoint_http_status = 200` confirmed in refresh diagnostics.
+- Fallback false-positive risk fix confirmed (fallback visually separated from success menu).
+- Menu rendered from mock backend payload in `MASTER_TERMINAL_TEMPLATE`.
+- No DB/calculation/module expansion.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of EDS Power Dynamic Menu Mock Integration
+
+---
+
+# 06.05.2026 — Dynamic menu mock false-positive risk diagnostic fix
+
+## Факт (**test integrity bugfix / verification blocked**)
+
+- Dynamic menu mock test false-positive risk identified.
+- Fallback menu separated from dynamic menu (`EDS Power Fallback` with setup-only actions).
+- Safe refresh diagnostics added to distinguish `mock_backend` vs `fallback_static`.
+- Operator PASS is blocked until backend endpoint call is confirmed via diagnostics.
+
+## Далі
+
+Next allowed step:
+- Set `MODULE01_API_BASE_URL` and rerun `edsPowerRefreshMenu()`
+
+---
+
+# 06.05.2026 — EDS Power Dynamic Menu Mock Integration operator verified
+
+## Факт (**operator pass / no implementation drift**)
+
+- EDS Power Dynamic Menu Mock Integration operator verified.
+- Backend mock payload rendered in `MASTER_TERMINAL_TEMPLATE`.
+- Menu title and menu items confirmed (`EDS Power` / `Оновити меню` / `Статус сесії` / `Module 01 — Розрахунки (planned)` / `Вийти`).
+- No calculation/module/DB expansion.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of EDS Power Dynamic Menu Mock Integration
+
+---
+
 # 06.05.2026 — EDS Power Dynamic Menu Mock Integration recovered and implemented
 
 ## Факт (**bounded implementation / pending operator test**)

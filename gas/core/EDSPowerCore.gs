@@ -31,6 +31,20 @@ function EDSPowerCore_refreshMenu(context) {
     const data = envelope.data || {};
     const menus = Array.isArray(data.menus) ? data.menus : [];
     const rendered = EDSPowerCore_renderDynamicMenu_(menus);
+    const diagnostic = {
+      stage: "EDS_POWER_DYNAMIC_MENU_REFRESH",
+      menu_source: "mock_backend",
+      base_url_present: transportResult.base_url_present === true,
+      endpoint_path: transportResult.endpoint_path || EDS_POWER_DYNAMIC_MENU_ENDPOINT_PATH,
+      endpoint_http_status: typeof transportResult.http_status === "number" ? transportResult.http_status : null,
+      rendered_items: Number(rendered || 0),
+      terminal_id_mode: safeContext.terminal_id_mode || "unknown",
+      terminal_id_present: !!safeContext.terminal_id,
+      core_version: EDSPowerCore_VERSION,
+      error_code: null,
+      error_message: null
+    };
+    Logger.log(JSON.stringify(diagnostic));
     return {
       status: "success",
       menu_source: "mock_backend",
@@ -45,6 +59,26 @@ function EDSPowerCore_refreshMenu(context) {
     if (typeof EDSPowerCore_showError === "function") {
       EDSPowerCore_showError(error, safeContext);
     }
+    const errorCode = error && typeof error.code === "string"
+      ? error.code
+      : "EDS_POWER_MENU_REFRESH_FAILED";
+    const errorMessage = error && typeof error.message === "string"
+      ? error.message
+      : "Unknown menu refresh error.";
+    const diagnostic = {
+      stage: "EDS_POWER_DYNAMIC_MENU_REFRESH",
+      menu_source: "fallback_static",
+      base_url_present: errorCode === "EDS_POWER_MENU_BASE_URL_MISSING" ? false : null,
+      endpoint_path: EDS_POWER_DYNAMIC_MENU_ENDPOINT_PATH,
+      endpoint_http_status: null,
+      rendered_items: 2,
+      terminal_id_mode: safeContext.terminal_id_mode || "unknown",
+      terminal_id_present: !!safeContext.terminal_id,
+      core_version: EDSPowerCore_VERSION,
+      error_code: errorCode,
+      error_message: errorMessage
+    };
+    Logger.log(JSON.stringify(diagnostic));
     return {
       status: "menu_refresh_failed",
       menu_source: "fallback_static",
@@ -114,7 +148,10 @@ function EDSPowerCore_fetchMenuEnvelope_(context) {
     : "MODULE01_API_BASE_URL";
   const baseUrl = String(scriptProps.getProperty(baseUrlPropertyName) || "").trim();
   if (!baseUrl) {
-    throw new Error("EDS_POWER_MENU_BASE_URL_MISSING");
+    throw {
+      code: "EDS_POWER_MENU_BASE_URL_MISSING",
+      message: "API base URL is missing for dynamic menu refresh."
+    };
   }
   const endpointUrl = baseUrl.replace(/\/+$/, "") + EDS_POWER_DYNAMIC_MENU_ENDPOINT_PATH;
   const headers = {};
@@ -141,6 +178,8 @@ function EDSPowerCore_fetchMenuEnvelope_(context) {
   }
   return {
     http_status: response.getResponseCode(),
+    base_url_present: true,
+    endpoint_path: EDS_POWER_DYNAMIC_MENU_ENDPOINT_PATH,
     envelope: envelope
   };
 }
@@ -180,7 +219,7 @@ function EDSPowerCore_renderDynamicMenu_(menus) {
       return;
     }
     if (String(item.action_type || "") === "PLACEHOLDER_DISABLED") {
-      menu.addItem(label + " (planned)", callbackName);
+      menu.addItem(label, callbackName);
       rendered += 1;
     }
   });
@@ -224,11 +263,17 @@ function EDSPowerCore_resolveMenuCallback_(item) {
 function EDSPowerCore_renderStaticFallbackMenu_() {
   SpreadsheetApp.getUi()
     .createMenu(EDS_POWER_BOOTSTRAP_MENU_TITLE)
-    .addItem("Оновити меню", "edsPowerRefreshMenu")
-    .addItem("Статус сесії", "edsPowerSessionStatusPlaceholder_")
-    .addItem("Module 01 — Розрахунки (planned)", "edsPowerModulePlaceholder_")
-    .addItem("Вийти", "edsPowerLogout")
+    .addItem("⚠ Setup Required", "edsPowerFallbackSetupRequired_")
+    .addItem("Refresh Setup Check", "edsPowerRefreshSetupCheck_")
     .addToUi();
+}
+
+function edsPowerFallbackSetupRequired_() {
+  SpreadsheetApp.getUi().alert("Setup required: set MODULE01_API_BASE_URL in Script Properties.");
+}
+
+function edsPowerRefreshSetupCheck_() {
+  EDSPowerCore_refreshMenu(EDSPowerCore_sanitizeContext_({}));
 }
 
 function edsPowerModulePlaceholder_() {
@@ -271,6 +316,7 @@ function EDSPowerCore_sanitizeContext_(context) {
   const ctx = context && typeof context === "object" ? context : {};
   return {
     terminal_id: typeof ctx.terminal_id === "string" ? ctx.terminal_id : "",
+    terminal_id_mode: typeof ctx.terminal_id_mode === "string" ? ctx.terminal_id_mode : "",
     spreadsheet_id: typeof ctx.spreadsheet_id === "string" ? ctx.spreadsheet_id : "",
     active_sheet_name: typeof ctx.active_sheet_name === "string" ? ctx.active_sheet_name : "",
     client_type: "GAS",
