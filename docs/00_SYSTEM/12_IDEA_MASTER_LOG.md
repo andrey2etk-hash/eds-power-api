@@ -67,6 +67,28 @@ Operative **sub-state** strings (such as **`PENDING_SUPABASE_VERIFICATION`**) ap
 
 ## Idea Notes
 
+### POST_AUTH_USER_LED_ARCHITECTURE_PAUSE
+
+Status:
+
+- `GOVERNANCE_RULE_REGISTERED`
+
+Notes:
+
+- After secure request flow is verified, the project pauses for user-led system/product direction before implementation continues.
+- AI agents support structuring, risk review, and scope protection, but do not auto-advance implementation stage without explicit user direction.
+
+### MODULE_01_BATCH_REQUEST_ARCHITECTURE_RULE
+
+Status:
+
+- `GOVERNANCE_RULE_REGISTERED`
+
+Notes:
+
+- After authenticated session status passed, user identified performance risk of per-cell API calls.
+- Rule registered: Sheet edits stay local; server calls are explicit authenticated batch actions.
+
 ### IDEA-0002 — Google Sheets Sidebar UI
 
 ### IDEA-0025 — KZO_WELDED_SV_SR_PAIR_DNA

@@ -21,8 +21,11 @@
 - **DOC 37 Slice 02 Fastener Selection** (**CLOSED / VERIFIED**)
 - **DOC 38 BOM Aggregation / Kit Issue doctrine** (**PASS / CLOSED AS DOCTRINE**)
 - **DOC 38 Slice 01 Basic Aggregation** (**CLOSED / VERIFIED**)
-**Current step:** **Module 01 GAS Auth Operator Test — transport error detail active**
-**Next allowed step:** **Repeat login and inspect transport error detail**
+**Current step:** **Module 01 Authenticated Session Status Check — implementation/test**
+**Next allowed step:** **Module 01 Authenticated Calculation Call Planning OR Gemini audit**
+**Post-auth governance pause:** **After authenticated request flow is verified: NEXT = User-led architecture planning pause.**
+**Pause purpose:** **Define what Module 01 should become before calculation implementation continues.**
+**Batch request architecture rule:** **Module 01 must use batch authenticated requests, not per-cell API calls.**
 **Implementation guardrail:** **API Auth Endpoint Implementation Slice Plan remains required before functional login implementation.**
 **Current non-active scope:** **API implementation not active.** **code changes not active for implementation.** **dependency installation not performed.** **Render env changes not performed.** **SQL/migration not active.** **DB writes not active.** **secrets must not be stored.**
 **Prep readiness record:** **requirements prepared (`bcrypt`, `argon2-cffi`).** **env example prepared with names only (`EDS_SESSION_HMAC_SECRET`, `AUTH_SESSION_TTL_HOURS`).**

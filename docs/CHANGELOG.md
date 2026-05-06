@@ -6,6 +6,87 @@
 
 ---
 
+# 06.05.2026 — Module 01 batch request architecture rule registered
+
+## Факт (**governance rule / no implementation**)
+
+- Batch Request Rule registered for Sheet-based clients.
+- Per-cell authenticated API calls explicitly forbidden.
+- Authenticated calculation calls must use intentional JSON payload batches.
+- No implementation performed.
+
+## Далі
+
+Next allowed step:
+- Post-auth user-led architecture planning pause
+
+---
+
+# 06.05.2026 — User-led architecture pause rule registered
+
+## Факт (**governance rule / no implementation**)
+
+- User-led architecture pause rule added.
+- Post-auth implementation pause registered.
+- AI agents explicitly constrained from auto-driving next implementation stage.
+
+## Далі
+
+Next allowed step:
+- User-led architecture planning after authenticated flow verification
+
+---
+
+# 06.05.2026 — Module 01 authenticated session status check implemented
+
+## Факт (**auth-only implementation / no calculation logic**)
+
+- Authenticated session status endpoint/test added.
+- Bearer token validation path tested.
+- No calculation logic implemented.
+- No secrets stored.
+
+## Далі
+
+Next allowed step:
+- Module 01 Authenticated Calculation Call Planning OR Gemini audit
+
+---
+
+# 06.05.2026 — Module 01 Authenticated API Call Plan created (doc-only)
+
+## Факт (**governance planning only / no implementation**)
+
+- Module 01 Authenticated API Call Plan created.
+- FIRST_LIVE_SAKURA_LOGIN_PASS used as verified prerequisite.
+- Authorization `Bearer` session concept documented for future authenticated calls.
+- Backend session validation rules drafted.
+- No API/GAS/DB/calculation implementation performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of authenticated API call plan
+
+---
+
+# 06.05.2026 — Module 01 GAS auth operator test cycle 01 recorded (PASS)
+
+## Факт (**live operator verification / no implementation changes**)
+
+- First live Sakura login from Google Sheet succeeded.
+- GAS -> Render -> Supabase auth flow verified.
+- DB session row created and verified.
+- Authenticated menu state verified (`Оновити меню / Вийти`).
+- No password/token/hash stored in repo/chat.
+
+## Далі
+
+Next allowed step:
+- Module 01 Authenticated API Call Plan — DOC ONLY
+
+---
+
 # 06.05.2026 — Module 01 GAS auth password input fix applied
 
 ## Факт (**implementation fix / GAS only**)

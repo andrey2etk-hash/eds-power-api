@@ -591,3 +591,74 @@ AI (Cursor / GPT / інший агент) повинен:
 Операційний принцип:
 
 - Governance служить переходу до продуктної цінності, а не нескінченним audit-петлям.
+
+---
+
+## 20. User-Led Architecture Pause Rule
+
+After a major technical capability is verified, the project must pause before the next implementation stage.
+
+This applies especially after:
+- authentication flow is verified
+- secure API request flow is verified
+- persistence flow is verified
+- first calculation flow is verified
+
+Rule:
+AI agents must not automatically push the project into the next implementation stage.
+
+Before further implementation:
+1. User describes intended product/system direction.
+2. Architect agent structures the direction.
+3. Idea Normalizer classifies and scopes ideas.
+4. Gemini may audit risks.
+5. Cursor receives only approved bounded tasks.
+
+User vision is the primary source of product direction.
+
+AI may:
+- structure
+- challenge
+- identify risks
+- propose options
+- protect scope
+
+AI must NOT:
+- invent product direction
+- force next stage
+- replace user’s business logic
+- continue implementation just because previous technical gate passed
+
+---
+
+## 21. Batch Request Rule for Sheet-Based Clients
+
+Google Sheets clients must not call the API on every cell edit for calculation workflows.
+
+Rule:
+All calculation-related server calls from GAS must be intentional batch actions.
+
+Allowed triggers:
+- explicit menu command
+- explicit button action
+- approved operator workflow command
+
+Forbidden:
+- per-cell API call on every edit
+- automatic server roundtrip for each input field
+- auth validation spam caused by cell-by-cell edits
+- backend calls from formulas
+- hidden engineering recalculation from onEdit without approved batch scope
+
+Reason:
+Authorization must be checked on every API request,
+but the number of API requests must be minimized through batch payloads.
+
+Standard flow:
+1. User edits Sheet locally.
+2. GAS collects approved input range.
+3. GAS sends one authenticated JSON payload.
+4. API validates session once.
+5. API processes payload.
+6. API returns one standard response envelope.
+7. GAS writes output block.
