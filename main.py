@@ -1,16 +1,27 @@
-from datetime import UTC, datetime
+import hashlib
+import os
+import secrets
+from datetime import UTC, datetime, timedelta
 from time import perf_counter
 from typing import Any
 from uuid import UUID, uuid4
 
 from fastapi import FastAPI, Header
 from fastapi.responses import JSONResponse
+from argon2 import PasswordHasher
+from argon2.exceptions import InvalidHashError, VerifyMismatchError, VerificationError
 
 from kzo_snapshot_persist import (
     find_snapshot_by_request_id,
     insert_snapshot_row,
     validate_kzo_mvp_snapshot_v1,
 )
+
+try:
+    from supabase import Client, create_client
+except ImportError:
+    Client = Any  # type: ignore[misc, assignment]
+    create_client = None  # type: ignore[misc, assignment]
 
 app = FastAPI()
 
@@ -122,6 +133,15 @@ DEMO_MISSING_FIELD_ERRORS = {
     "demo_id": DEMO_ERROR_INVALID_DEMO_ID,
     "requested_output_blocks": DEMO_ERROR_UNSUPPORTED_OUTPUT_BLOCK,
 }
+
+AUTH_MODULE_NAME = "MODULE_01_AUTH"
+AUTH_ALLOWED_ACTIONS_TEST_OPERATOR = ["auth.login", "auth.refresh_menu"]
+AUTH_FAILURE_MESSAGE = "Authentication failed"
+AUTH_FAILURE_CODE = "AUTH_FAILED"
+AUTH_REQUIRED_ENV_KEYS = ("SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY", "AUTH_SESSION_TTL_HOURS")
+
+_auth_supabase_client: Client | None = None
+_password_hasher = PasswordHasher()
 
 KZO_PROTOTYPE_CONSTRUCTIVE_FAMILY = "KZO_WELDED"
 KZO_PROTOTYPE_CELL_ROLE = "VACUUM_BREAKER"
@@ -1084,3 +1104,240 @@ def save_snapshot(
         client_type=client_type,
         created_at=created_at_iso,
     )
+
+
+def _auth_response_metadata(request_id: str) -> dict[str, str]:
+    return {"request_id": request_id, "module": AUTH_MODULE_NAME}
+
+
+def _auth_failed_response(request_id: str) -> JSONResponse:
+    return JSONResponse(
+        status_code=200,
+        content={
+            "status": "auth_failed",
+            "data": None,
+            "error": {"error_code": AUTH_FAILURE_CODE, "message": AUTH_FAILURE_MESSAGE},
+            "metadata": _auth_response_metadata(request_id),
+        },
+    )
+
+
+def _auth_config_error_response(request_id: str) -> JSONResponse:
+    return JSONResponse(
+        status_code=500,
+        content={
+            "status": "error",
+            "data": None,
+            "error": {"error_code": "AUTH_CONFIG_ERROR", "message": "Authentication service unavailable"},
+            "metadata": _auth_response_metadata(request_id),
+        },
+    )
+
+
+def _auth_validate_request_shape(payload: Any) -> tuple[str, str, str] | None:
+    if not isinstance(payload, dict):
+        return None
+    email = payload.get("email")
+    password = payload.get("password")
+    spreadsheet_id = payload.get("spreadsheet_id")
+    if not isinstance(email, str) or not email.strip():
+        return None
+    if not isinstance(password, str) or not password:
+        return None
+    if not isinstance(spreadsheet_id, str) or not spreadsheet_id.strip():
+        return None
+    return email.strip().lower(), password, spreadsheet_id.strip()
+
+
+def _auth_parse_session_ttl_hours() -> int | None:
+    raw = os.environ.get("AUTH_SESSION_TTL_HOURS", "").strip()
+    if not raw:
+        return None
+    try:
+        parsed = int(raw)
+    except ValueError:
+        return None
+    if parsed <= 0:
+        return None
+    return parsed
+
+
+def _auth_get_supabase_client() -> Client | None:
+    global _auth_supabase_client
+    if _auth_supabase_client is not None:
+        return _auth_supabase_client
+    if create_client is None:
+        return None
+    url = os.environ.get("SUPABASE_URL", "").strip()
+    key = os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "").strip()
+    if not url or not key:
+        return None
+    _auth_supabase_client = create_client(url, key)
+    return _auth_supabase_client
+
+
+def _auth_env_ready() -> bool:
+    for key in AUTH_REQUIRED_ENV_KEYS:
+        if not os.environ.get(key, "").strip():
+            return False
+    return _auth_parse_session_ttl_hours() is not None
+
+
+def _auth_fetch_single(client: Client, table: str, *, select: str, filters: dict[str, Any]) -> dict[str, Any] | None:
+    query = client.table(table).select(select)
+    for key, value in filters.items():
+        query = query.eq(key, value)
+    result = query.limit(1).execute()
+    rows = getattr(result, "data", None)
+    if isinstance(rows, list) and rows and isinstance(rows[0], dict):
+        return rows[0]
+    return None
+
+
+def _auth_fetch_active_roles(client: Client, user_id: str) -> list[str]:
+    links = client.table("module01_user_roles").select("role_id,is_active").eq("user_id", user_id).execute()
+    link_rows = getattr(links, "data", None)
+    if not isinstance(link_rows, list):
+        return []
+    active_role_ids = [
+        row.get("role_id")
+        for row in link_rows
+        if isinstance(row, dict) and row.get("is_active") is True and isinstance(row.get("role_id"), str)
+    ]
+    if not active_role_ids:
+        return []
+    role_codes: list[str] = []
+    for role_id in active_role_ids:
+        role = _auth_fetch_single(
+            client,
+            "module01_roles",
+            select="role_code,is_active",
+            filters={"id": role_id},
+        )
+        if not role or role.get("is_active") is not True:
+            continue
+        role_code = role.get("role_code")
+        if isinstance(role_code, str) and role_code:
+            role_codes.append(role_code)
+    return sorted(set(role_codes))
+
+
+def _auth_verify_password(hash_value: Any, password: str) -> bool:
+    if not isinstance(hash_value, str) or not hash_value:
+        return False
+    try:
+        return _password_hasher.verify(hash_value, password)
+    except (VerifyMismatchError, VerificationError, InvalidHashError):
+        return False
+
+
+@app.post("/api/module01/auth/login")
+def module01_auth_login(payload: dict[str, Any]):
+    request_id = str(uuid4())
+    parsed = _auth_validate_request_shape(payload)
+    if parsed is None:
+        return _auth_failed_response(request_id)
+    email, password, spreadsheet_id = parsed
+
+    if not _auth_env_ready():
+        return _auth_config_error_response(request_id)
+    ttl_hours = _auth_parse_session_ttl_hours()
+    if ttl_hours is None:
+        return _auth_config_error_response(request_id)
+    client = _auth_get_supabase_client()
+    if client is None:
+        return _auth_config_error_response(request_id)
+
+    try:
+        user = _auth_fetch_single(
+            client,
+            "module01_users",
+            select="id,email,display_name,status",
+            filters={"email": email},
+        )
+        if user is None or user.get("status") != "ACTIVE":
+            return _auth_failed_response(request_id)
+        user_id = user.get("id")
+        if not isinstance(user_id, str) or not user_id:
+            return _auth_failed_response(request_id)
+
+        auth_row = _auth_fetch_single(
+            client,
+            "module01_user_auth",
+            select="password_hash,locked_until",
+            filters={"user_id": user_id},
+        )
+        if auth_row is None:
+            return _auth_failed_response(request_id)
+
+        locked_until = auth_row.get("locked_until")
+        if isinstance(locked_until, str) and locked_until.strip():
+            locked_ts = locked_until.strip()
+            if locked_ts.endswith("Z"):
+                locked_ts = locked_ts[:-1] + "+00:00"
+            try:
+                if datetime.fromisoformat(locked_ts) > datetime.now(UTC):
+                    return _auth_failed_response(request_id)
+            except ValueError:
+                return _auth_failed_response(request_id)
+
+        if not _auth_verify_password(auth_row.get("password_hash"), password):
+            return _auth_failed_response(request_id)
+
+        role_codes = _auth_fetch_active_roles(client, user_id)
+        if "TEST_OPERATOR" not in role_codes:
+            return _auth_failed_response(request_id)
+
+        terminal = _auth_fetch_single(
+            client,
+            "module01_user_terminals",
+            select="id,status",
+            filters={"user_id": user_id, "spreadsheet_id": spreadsheet_id},
+        )
+        if terminal is None or terminal.get("status") != "ACTIVE":
+            return _auth_failed_response(request_id)
+        terminal_id = terminal.get("id")
+        if not isinstance(terminal_id, str) or not terminal_id:
+            return _auth_failed_response(request_id)
+
+        raw_session_token = secrets.token_urlsafe(32)
+        session_token_hash = hashlib.sha256(raw_session_token.encode("utf-8")).hexdigest()
+        issued_at = datetime.now(UTC)
+        expires_at = issued_at + timedelta(hours=ttl_hours)
+        session_id = str(uuid4())
+
+        insert_payload = {
+            "id": session_id,
+            "user_id": user_id,
+            "terminal_id": terminal_id,
+            "session_token_hash": session_token_hash,
+            "issued_at": issued_at.isoformat(),
+            "expires_at": expires_at.isoformat(),
+            "revoked_at": None,
+            "last_seen_at": None,
+            "created_at": issued_at.isoformat(),
+            "updated_at": issued_at.isoformat(),
+        }
+        client.table("module01_user_sessions").insert(insert_payload).execute()
+
+        response_payload = {
+            "status": "success",
+            "data": {
+                "user": {
+                    "user_id": user_id,
+                    "email": user.get("email"),
+                    "display_name": user.get("display_name"),
+                    "role_codes": role_codes,
+                },
+                "session": {
+                    "session_token": raw_session_token,
+                    "expires_at": expires_at.isoformat(),
+                },
+                "allowed_actions": AUTH_ALLOWED_ACTIONS_TEST_OPERATOR,
+            },
+            "error": None,
+            "metadata": _auth_response_metadata(request_id),
+        }
+        return JSONResponse(status_code=200, content=response_payload)
+    except Exception:  # noqa: BLE001
+        return _auth_failed_response(request_id)

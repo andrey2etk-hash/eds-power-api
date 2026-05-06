@@ -26,6 +26,9 @@ function onOpen() {
     .addItem("Run Module 01 Demo", "runModule01Demo")
     .addItem("Clear Module 01 Demo Output", "clearModule01DemoOutput")
     .addToUi();
+  if (typeof module01AuthOnOpen_ === "function") {
+    module01AuthOnOpen_();
+  }
 }
 
 function runModule01Demo() {

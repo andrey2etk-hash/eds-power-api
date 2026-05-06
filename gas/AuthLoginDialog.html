@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 16px;
+      }
+      .field {
+        margin-bottom: 12px;
+      }
+      label {
+        display: block;
+        font-size: 12px;
+        margin-bottom: 4px;
+      }
+      input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 8px;
+      }
+      .actions {
+        margin-top: 16px;
+        display: flex;
+        gap: 8px;
+      }
+      button {
+        padding: 8px 12px;
+      }
+      .status {
+        margin-top: 12px;
+        min-height: 18px;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="username" placeholder="test.auth@eds.local">
+    </div>
+    <div class="field">
+      <label for="password">Пароль</label>
+      <input id="password" type="password" autocomplete="current-password">
+    </div>
+    <div class="actions">
+      <button id="submitBtn" onclick="submitLogin()">Увійти</button>
+      <button onclick="google.script.host.close()">Скасувати</button>
+    </div>
+    <div id="status" class="status"></div>
+    <div id="debugPanel" style="display:none; margin-top:12px; padding:8px; border:1px solid #ccc; font-family:monospace; font-size:12px; white-space:pre-wrap;"></div>
+
+    <script>
+      function setStatus(message) {
+        document.getElementById("status").textContent = message || "";
+      }
+
+      function setLoading(isLoading) {
+        document.getElementById("submitBtn").disabled = isLoading;
+      }
+
+      function hideDebugPanel() {
+        const panel = document.getElementById("debugPanel");
+        panel.style.display = "none";
+        panel.textContent = "";
+      }
+
+      function showDebugPanel(debug) {
+        const panel = document.getElementById("debugPanel");
+        const safeDebug = debug || {};
+        const lines = [
+          "HTTP: " + String(safeDebug.http_status || "n/a"),
+          "status: " + String(safeDebug.status || "unknown"),
+          "error_code: " + String(safeDebug.error_code || "n/a"),
+          "request_id: " + String(safeDebug.request_id || "n/a")
+        ];
+        if (safeDebug.error_message) {
+          lines.push("error_message: " + String(safeDebug.error_message));
+        }
+        if (safeDebug.transport_error_message) {
+          lines.push("transport_error_message: " + String(safeDebug.transport_error_message));
+        }
+        if (safeDebug.api_base_url_present) {
+          lines.push("api_base_url_present: " + String(safeDebug.api_base_url_present));
+        }
+        if (safeDebug.endpoint_path) {
+          lines.push("endpoint_path: " + String(safeDebug.endpoint_path));
+        }
+        if (safeDebug.endpoint_url_redacted) {
+          lines.push("endpoint_url_redacted: " + String(safeDebug.endpoint_url_redacted));
+        }
+        panel.textContent = lines.join("\n");
+        panel.style.display = "block";
+      }
+
+      function submitLogin() {
+        const email = String(document.getElementById("email").value || "").trim();
+        const password = String(document.getElementById("password").value || "");
+        if (!email) {
+          setStatus("Email є обов'язковим.");
+          hideDebugPanel();
+          return;
+        }
+        if (!password) {
+          setStatus("Пароль є обов'язковим.");
+          hideDebugPanel();
+          return;
+        }
+
+        setLoading(true);
+        setStatus("Авторизація...");
+        hideDebugPanel();
+        google.script.run
+          .withSuccessHandler(function(result) {
+            setLoading(false);
+            if (result && result.ok) {
+              setStatus(result.message || "Авторизація успішна.");
+              hideDebugPanel();
+              setTimeout(function() { google.script.host.close(); }, 300);
+              return;
+            }
+            setStatus((result && result.message) || "Помилка авторизації.");
+            showDebugPanel(result && result.debug ? result.debug : null);
+          })
+          .withFailureHandler(function() {
+            setLoading(false);
+            setStatus("Не вдалося виконати авторизацію. Спробуйте пізніше.");
+            showDebugPanel({
+              http_status: "n/a",
+              status: "script_failure",
+              error_code: "",
+              request_id: "",
+              error_message: "",
+              transport_error_message: "",
+              api_base_url_present: "n/a",
+              endpoint_path: "/api/module01/auth/login",
+              endpoint_url_redacted: ""
+            });
+          })
+          .module01AuthSubmitLogin(email, password);
+      }
+    </script>
+  </body>
+</html>

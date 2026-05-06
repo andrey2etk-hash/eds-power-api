@@ -6,6 +6,1977 @@
 
 ---
 
+# 06.05.2026 — Module 01 GAS auth password input fix applied
+
+## Факт (**implementation fix / GAS only**)
+
+- Password prompt replaced with HTML password input dialog (`<input type="password">`).
+- No backend/DB/Render changes.
+- No secrets logged or stored.
+
+## Далі
+
+Next allowed step:
+- Operator test in Google Sheet
+
+---
+
+# 06.05.2026 — Module 01 GAS Auth Integration Plan created (doc-only)
+
+## Факт (**GAS integration planning only / no implementation**)
+
+- Module 01 GAS Auth Integration Plan created.
+- GAS thin-client boundary documented.
+- `PropertiesService` session storage strategy documented.
+- Authorization `Bearer` flow documented for future authenticated API calls.
+- No GAS implementation yet.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of GAS Auth Integration Plan
+
+---
+
+# 06.05.2026 — Module 01 auth login endpoint final closeout (Gemini PASS)
+
+## Факт (**closeout / implementation accepted**)
+
+- Module 01 auth login endpoint closed with Gemini PASS.
+- Backend login endpoint implemented and tested.
+- Session creation flow verified.
+- No GAS integration yet.
+- Next step set to GAS Auth Integration Plan (DOC ONLY).
+
+## Далі
+
+Next allowed step:
+- Module 01 GAS Auth Integration Plan — DOC ONLY
+
+---
+
+# 06.05.2026 — Module 01 Auth Login endpoint implemented (backend-only)
+
+## Факт (**implementation slice / backend only**)
+
+- Module 01 backend auth login endpoint `POST /api/module01/auth/login` implemented.
+- Request validation, credential verification, role check, terminal binding check, and DB-session creation flow added.
+- GAS/auth UI remains out of scope and unchanged.
+- Refresh/logout/reset/RBAC expansion remains out of scope and unchanged.
+- Environment fail-closed behavior implemented for required auth env variables.
+- Raw session token is returned once; DB stores only `session_token_hash`.
+- No SQL/schema changes and no Render env changes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Module 01 Auth Login Endpoint implementation result
+
+---
+
+# 06.05.2026 — Module 01 Auth Environment Lock-in Plan created (doc-only)
+
+## Факт (**environment planning only / no secret handling**)
+
+- Module 01 Auth Environment Lock-in Plan created.
+- Required env variables defined (`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `AUTH_SESSION_TTL_HOURS`).
+- `SUPABASE_SERVICE_ROLE_KEY` security boundary documented (backend-only, never repo/GAS/client).
+- `EDS_SESSION_HMAC_SECRET` deferred for DB-session MVP.
+- No secrets read/printed/stored.
+- No API/auth/GAS/Render changes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Auth Environment Lock-in Plan
+
+---
+
+# 06.05.2026 — Module 01 Auth Login Endpoint Implementation Plan created (doc-only)
+
+## Факт (**bounded implementation planning / no code**) 
+
+- Module 01 Auth Login Endpoint Implementation Plan created.
+- Backend-first bounded login scope defined for `POST /api/module01/auth/login`.
+- GAS/auth UI is explicitly excluded from this slice.
+- Refresh/logout/reset/RBAC expansion is explicitly excluded.
+- No implementation yet.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of bounded login endpoint implementation plan
+
+---
+
+# 06.05.2026 — Module 01 session table manual DB execution recorded (doc-only)
+
+## Факт (**manual DB bridge execution result captured**)
+
+- `public.module01_user_sessions` created via Manual DB Bridge.
+- Indexes verified.
+- Constraints verified.
+- `session_token_hash` unique constraint verified.
+- `expires_at > issued_at` check constraint verified.
+- FK constraints verified.
+- No API/auth/GAS/Render changes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of session table Manual DB execution result
+
+---
+
+# 06.05.2026 — Module 01 Session Table SQL Creation Plan created (doc-only)
+
+## Факт (**SQL planning only / no execution**)
+
+- Module 01 Session Table SQL Creation Plan created.
+- SQL draft for `module01_user_sessions` documented.
+- UNIQUE `session_token_hash` rule documented.
+- Verification and rollback SQL documented.
+- No SQL executed.
+- No DB writes.
+- No API/auth/GAS/Render changes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Session Table SQL Creation Plan
+
+---
+
+# 06.05.2026 — Module 01 Session Table Schema Plan created (doc-only)
+
+## Факт (**schema planning only / no implementation**)
+
+- Module 01 Session Table Schema Plan created.
+- Proposed `module01_user_sessions` table and columns documented.
+- DB session storage and validity rules documented.
+- No SQL executed.
+- No DB writes.
+- No API/auth/GAS/Render changes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Session Table Schema Plan
+
+---
+
+# 06.05.2026 — Module 01 session strategy decision recorded (DB Session MVP)
+
+## Факт (**decision only / no implementation**)
+
+- Module 01 session strategy selected: DB Session for MVP.
+- HMAC signed token and JWT were deferred.
+- Account enumeration protection rule added (`AUTH_FAILED` externally; detailed reasons in internal audit only).
+- Spreadsheet_id-only terminal binding accepted for MVP.
+- `terminal_secret` / terminal fingerprint recorded as future enhancement.
+- Implementation remains blocked pending session table plan.
+- No API/auth/GAS/DB implementation.
+
+## Далі
+
+Next allowed step:
+- Module 01 Session Table Schema Plan — DOC ONLY
+
+---
+
+# 06.05.2026 — Module 01 Auth Implementation Plan prepared (API-first, doc-only)
+
+## Факт (**planning only / no implementation**)
+
+- Created API-first Module 01 Auth implementation plan.
+- Proposed `POST /api/module01/auth/login` request/response/error contracts were documented.
+- Backend check order was defined from request validation through session/token creation.
+- Session strategy options documented without pre-approving token format (HMAC / DB session table / JWT / other).
+- Implementation blockers were recorded for next decision gate.
+- No API/auth/GAS/Render implementation changes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Module 01 Auth Implementation Plan (API-first)
+
+---
+
+# 06.05.2026 — Module 01 test user provisioning final closeout (PASS)
+
+## Факт (**closeout / doc-only**)
+
+- Module 01 test user provisioning closed with Gemini PASS.
+- First test auth identity exists in Supabase.
+- `TEST_OPERATOR` role verified.
+- Terminal binding verified.
+- Manual DB Bridge validated.
+- Password hash not stored in repository.
+- No API/auth/GAS/Render implementation yet.
+
+## Далі
+
+Next allowed step:
+- Module 01 Auth Implementation Plan — API-first / DOC ONLY
+
+---
+
+# 06.05.2026 — Module 01 test user provisioning INSERT execution recorded (doc-only)
+
+## Факт (**manual execution result captured / no new execution by Cursor**)
+
+- Module 01 test user provisioning INSERT executed successfully via Manual DB Bridge.
+- `TEST_OPERATOR` role created/verified.
+- Test user created/verified.
+- User auth row created/verified.
+- User-role link created/verified.
+- Terminal binding created/verified.
+- Password hash not stored in repository.
+- No API/auth/GAS/Render changes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of SQL INSERT execution result
+
+---
+
+# 06.05.2026 — MVP Database Access Policy defined (Manual DB Bridge)
+
+## Факт (**policy definition / doc-only**)
+
+- Added MVP Database Access Policy (Manual DB Bridge).
+- Formalized manual SQL execution workflow for MVP stage when Cursor has no direct Supabase access.
+
+## Далі
+
+Next allowed step:
+- Continue operations under manual DB bridge model
+
+---
+
+# 05.05.2026 — Module 01 SQL INSERT secure abort recorded (doc-only)
+
+## Факт (**secure abort documented / no execution**)
+
+- Module 01 SQL INSERT execution aborted safely due to `HASH_BUFFER_MISSING`.
+- No DB writes.
+- No partial provisioning.
+- No password hash stored in repository.
+- No API/auth/GAS/Render changes.
+
+## Далі
+
+Next allowed step:
+- User/operator-controlled hash regeneration and manual SQL execution plan
+
+---
+
+# 05.05.2026 — Module 01 test user provisioning INSERT blocked (doc-only)
+
+## Факт (**approved execution attempted / blocked by security gate**)
+
+- User approval for Module 01 test user provisioning INSERT was received.
+- Execution was stopped before SQL run due to `HASH_BUFFER_MISSING` (secure hash buffer unavailable in active session).
+- No INSERT was executed.
+- Verification SELECT was not executed because INSERT did not run.
+- Password hash not stored in repository.
+- No API/auth/GAS/Render changes.
+
+## Далі
+
+Next allowed step:
+- Failure review and controlled re-run decision (with secure hash buffer available)
+
+---
+
+# 05.05.2026 — Module 01 manual SQL preflight completed (doc-only)
+
+## Факт (**manual preflight result recorded / no execution**)
+
+- Manual Supabase SQL Editor preflight completed.
+- Test user `test.auth@eds.local` not found.
+- Role `TEST_OPERATOR` not found.
+- Terminal binding for `17JWfDwXQM5S_8uiGFM3C88hUDae_c2cg0LrbWEodZTU` not found.
+- SELECT-only verification recorded.
+- No DB writes.
+- No password hash used.
+- No API/auth/GAS/Render changes.
+
+## Далі
+
+Next allowed step:
+- Module 01 Test User SQL INSERT Execution — user approval required
+
+---
+
+# 05.05.2026 — Module 01 SQL preflight attempt blocked (read-only)
+
+## Факт (**read-only preflight / no execution packet run**)
+
+- Module 01 SQL preflight SELECT execution attempted from approved final packet.
+- Supabase linked query path blocked before table-level SELECT (`permission denied to alter role`; missing/required DB password path in current session).
+- User / role / terminal state check remained unverified because preflight SELECT did not execute.
+- No INSERT/UPDATE/DELETE executed.
+- No DB writes.
+- No password hash used.
+- No API/auth/GAS/Render changes.
+
+## Далі
+
+Next allowed step:
+- Resolve DB access preflight blocker, rerun read-only preflight SELECT, then request user approval for INSERT execution
+
+---
+
+# 05.05.2026 — Module 01 Final SQL Execution Packet PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Module 01 Final SQL Execution Packet marked PASS and closed as prep artifact.
+- Preflight / final insert / verification / rollback packet completeness accepted.
+- Password hash remains out of repository (secure buffer injection required at execution time).
+- No SQL executed.
+- No DB writes.
+- No API/auth/GAS/Render drift.
+
+## Далі
+
+Next allowed step:
+- User-approved SQL execution preflight and provisioning
+
+---
+
+# 05.05.2026 — Module 01 Final SQL Execution Packet prepared (doc-only)
+
+## Факт (**prep only / no execution**)
+
+- Module 01 Final SQL Execution Packet prepared.
+- UUID placeholders replaced where safe using generated values.
+- Password hash kept out of repository (secure buffer injection required at execution time).
+- Preflight SELECT / final INSERT / verification / rollback packets prepared.
+- No SQL executed.
+- No DB writes.
+- No API/auth/GAS/Render changes.
+
+## Далі
+
+Next allowed step:
+- User-approved SQL execution preflight and provisioning
+
+---
+
+# 05.05.2026 — Module 01 test user value generation Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Gemini audit passed for Module 01 test user value generation result.
+- UUID generation and Argon2id hash generation result accepted with repository-safe handling.
+- Temporary script cleanup confirmed.
+- No SQL/DB/API/auth/GAS/Render drift.
+
+## Далі
+
+Next allowed step:
+- Module 01 Test User SQL Execution Task
+
+---
+
+# 05.05.2026 — Module 01 test user UUID/hash value generation executed (local-only)
+
+## Факт (**value generation only / no implementation**)
+
+- Module 01 test user UUID/hash value generation executed.
+- Argon2id hash generated locally.
+- UUIDs generated locally.
+- No SQL executed.
+- No DB writes.
+- No API/auth/GAS/Render changes.
+- Temporary script deleted.
+- Password not stored in repo.
+
+## Далі
+
+Next allowed step:
+- Module 01 Test User SQL Execution Task
+
+---
+
+# 05.05.2026 — Module 01 SQL provisioning plan schema-alignment Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Schema-aligned SQL provisioning plan accepted as PASS.
+- Non-existing fields remained excluded from executable draft (`auth_provider`, `terminal_type`, `binding_status`), with mapped replacements retained (`status`, `is_active`, `assigned_at`).
+- Provisioning execution remains blocked until separate execution approval task.
+- No SQL executed, no DB writes, no UUID/hash generation, no API/auth/GAS/Render changes.
+
+## Далі
+
+Next allowed step:
+- Module 01 Test User SQL Provisioning Execution Task (separate approval)
+
+---
+
+# 05.05.2026 — Module 01 SQL provisioning plan aligned to confirmed schema (doc-only)
+
+## Факт (**schema alignment only / no execution**)
+
+- Module 01 SQL provisioning plan aligned to read-only confirmed schema.
+- Removed non-existing `auth_provider` and `terminal_type` from future SQL draft.
+- Replaced `binding_status` with `status` where applicable.
+- Replaced role status/scope assumptions with `is_active` where applicable.
+- Replaced role assignment `created_at` with `assigned_at` where applicable.
+- `auth_provider` and `terminal_type` recorded as future schema gaps (deferred migration candidates).
+- No ALTER TABLE.
+- No SQL executed.
+- No DB writes.
+- No UUID/hash generation.
+- No API/auth/GAS/Render changes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of schema-aligned SQL provisioning plan
+
+---
+
+# 05.05.2026 — Module 01 schema confirmation performed (read-only)
+
+## Факт (**read-only inspection / no execution**)
+
+- Module 01 schema confirmation performed in read-only mode for auth provisioning tables.
+- Inspected: `module01_users`, `module01_user_auth`, `module01_roles`, `module01_user_roles`, `module01_user_terminals`.
+- Schema mismatches identified between current SQL draft and confirmed columns; SQL provisioning plan update is required before execution approval.
+- No DB writes.
+- No UUID generated.
+- No password hash generated.
+- No API/auth implementation.
+
+## Далі
+
+Next allowed step:
+- Update SQL Provisioning Plan to match schema
+
+---
+
+# 05.05.2026 — Module 01 Test User SQL Provisioning Plan Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Gemini audit passed for Module 01 Test User SQL Provisioning Plan.
+- Placeholder-only SQL/UUID/hash planning approach accepted.
+- Provisioning execution remains blocked until a separate SQL execution task is explicitly approved.
+- No SQL executed, no DB writes, no UUID/password-hash generation, no API/auth/GAS/Render changes.
+
+## Далі
+
+Next allowed step:
+- Module 01 Test User SQL Provisioning Execution Task (separate approval)
+
+---
+
+# 05.05.2026 — Module 01 Test User SQL Provisioning Plan created (doc-only)
+
+## Факт (**planning only / no execution**)
+
+- Module 01 Test User SQL Provisioning Plan created.
+- SQL draft prepared as planning-only placeholders (`DO NOT EXECUTE` blocks for insert/select/rollback).
+- UUID generation not performed.
+- Password hash generation not performed.
+- No SQL executed.
+- No DB writes.
+- No API/auth/GAS/Render changes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of SQL Provisioning Plan
+
+---
+
+# 05.05.2026 — Module 01 test terminal spreadsheet_id recorded (doc-only)
+
+## Факт (**recording only / no execution**)
+
+- Test terminal `spreadsheet_id` recorded for Module 01 Auth provisioning planning: `17JWfDwXQM5S_8uiGFM3C88hUDae_c2cg0LrbWEodZTU`.
+- Provisioning remains blocked pending controlled SQL provisioning plan and audit.
+- No SQL executed.
+- No DB writes.
+- No UUID generated.
+- No password hash generated.
+- No API/auth implementation.
+
+## Далі
+
+Next allowed step:
+- Module 01 Test User SQL Provisioning Plan — DOC ONLY
+
+---
+
+# 05.05.2026 — Module 01 TEST_OPERATOR role definition recorded (doc-only)
+
+## Факт (**role doctrine only / no execution**)
+
+- TEST_OPERATOR role defined as doc-only test role.
+- Allowed actions constrained to `auth.login` and `auth.refresh_menu`.
+- Provisioning remains blocked pending `role_id` and `spreadsheet_id`.
+- No SQL/DB/password-hash/API drift.
+
+## Далі
+
+Next allowed step:
+- Provide spreadsheet_id and prepare controlled SQL provisioning plan
+
+---
+
+# 05.05.2026 — Module 01 Auth Test User Provisioning Plan finalization gate updated (doc-only)
+
+## Факт (**finalization only / no execution**)
+
+- Test User Provisioning Plan passed audit and moved from open-questions list to explicit finalization gate.
+- Confirmed from repository docs: `module01_users`, `module01_user_auth`, `module01_user_roles`, `module01_user_terminals`.
+- Provisioning execution remains blocked pending final inputs (`role_code`/`role_id`, `spreadsheet_id`, algorithm confirmation, separate SQL execution approval).
+- No SQL executed, no DB writes, no password hash generated, no API/auth implementation.
+
+## Далі
+
+Next allowed step:
+- Provide final inputs: terminal table name confirmation, test role / role_id, spreadsheet_id
+
+---
+
+# 05.05.2026 — Module 01 Auth Test User Provisioning Plan created (doc-only)
+
+## Факт (**planning only / no execution**)
+
+- Created `docs/AUDITS/2026-05-05_MODULE_01_AUTH_TEST_USER_PROVISIONING_PLAN.md`.
+- Captured controlled test-user provisioning plan with table scope, password-hash planning rules, terminal binding planning, and placeholder SQL (planning-only).
+- No SQL executed.
+- No DB writes.
+- No password hash generated.
+- No API/auth implementation.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Test User Provisioning Plan
+
+---
+
+# 05.05.2026 — Module 01 Auth dependency import smoke test executed after accepted deviation (local-only)
+
+## Факт (**smoke execution only / no implementation**)
+
+- Module 01 Auth dependency import smoke test executed after accepted deviation.
+- `bcrypt` import checked.
+- `argon2` `PasswordHasher` import checked.
+- Temporary smoke test file deleted (`tmp_auth_dependency_import_check.py`).
+- No API/auth/DB/GAS/Render/secrets changes.
+- No additional dependency installation performed during this step.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of import smoke test result OR Module 01 Auth Slice 1B planning
+
+---
+
+# 05.05.2026 — Module 01 Auth Dependency Installation Deviation recorded (doc-only)
+
+## Факт (**deviation recording only / execution paused**)
+
+- Local `pip install -r requirements.txt` was executed earlier than intended.
+- Recorded as controlled operational boundary deviation.
+- No API/auth/DB/GAS/Render/secrets changes were performed.
+- Further execution paused pending user decision.
+
+## Далі
+
+Next allowed step:
+- User decision: Gemini deviation audit OR controlled import smoke test execution
+
+---
+
+# 05.05.2026 — Module 01 Auth Dependency Import Check Plan created (doc-only)
+
+## Факт (**planning only / no execution**)
+
+- Created `docs/AUDITS/2026-05-05_MODULE_01_AUTH_DEPENDENCY_IMPORT_CHECK_PLAN.md`.
+- Captured controlled local import-check plan for `bcrypt` and `argon2-cffi` (install command, temp smoke script, execution command, cleanup rule, pass/failure criteria).
+- No installation performed yet.
+- No implementation performed.
+- No secrets used.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Auth Dependency Import Check Plan
+
+---
+
+# 05.05.2026 — Module 01 Auth Dependency & Env File Update completed (prep-only)
+
+## Факт (**prep file update only / no implementation**)
+
+- `requirements.txt` updated with `bcrypt` and `argon2-cffi`.
+- `.env.example` updated with auth session env names only (`EDS_SESSION_HMAC_SECRET`, `AUTH_SESSION_TTL_HOURS`).
+- No secrets stored in repository files.
+- No dependency installation performed.
+- No code implementation performed.
+
+## Далі
+
+Next allowed step:
+- Auth Dependency Import Check Plan or Gemini audit of Auth Dependency & Env File Update
+
+---
+
+# 05.05.2026 — Module 01 Auth Dependency and Environment Plan Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no changes**)
+
+- Gemini audit passed for Auth Dependency and Environment Plan.
+- Direct `bcrypt` + `argon2-cffi` dependency strategy approved for MVP.
+- `EDS_SESSION_HMAC_SECRET` and `AUTH_SESSION_TTL_HOURS` confirmed as required.
+- `API_VERSION` selected as code constant.
+- No code or environment changes performed in this closeout step.
+
+## Далі
+
+Next allowed step:
+- Auth Dependency & Env File Update Task
+
+---
+
+# 05.05.2026 — Module 01 Auth Dependency and Environment Plan created (doc-only)
+
+## Факт (**dependency/environment planning only / no changes**)
+
+- Created `docs/AUDITS/2026-05-05_MODULE_01_AUTH_DEPENDENCY_ENVIRONMENT_PLAN.md`.
+- Planned password hashing dependencies (`bcrypt`, `argon2-cffi`) and decision point for `passlib`.
+- Planned auth environment variables (`EDS_SESSION_HMAC_SECRET`, `AUTH_SESSION_TTL_HOURS`, optional `API_VERSION`) and fail-safe policy.
+- No code, requirement, or environment changes performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Auth Dependency and Environment Plan
+
+---
+
+# 05.05.2026 — Module 01 Audit Event Data Contract Plan Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no implementation**)
+
+- Gemini audit passed for Audit Event Data Contract Plan.
+- UUID `request_id` policy approved (server-side UUID fallback for missing/invalid input).
+- Auth audit event mapping and metadata boundaries approved for MVP.
+- No implementation performed (no API/Python/GAS/SQL changes).
+
+## Далі
+
+Next allowed step:
+- Auth Dependency & Environment Plan
+
+---
+
+# 05.05.2026 — Module 01 Audit Event Data Contract Plan created (doc-only)
+
+## Факт (**data contract planning only / no implementation**)
+
+- Created `docs/AUDITS/2026-05-05_MODULE_01_AUDIT_EVENT_DATA_CONTRACT_PLAN.md`.
+- Captured auth event mapping into `public.module01_audit_events` for login/refresh/logout flow.
+- Captured strict `request_id` UUID policy and metadata allow/forbid rules.
+- No implementation performed (no API/Python/GAS/SQL changes).
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Audit Event Data Contract Plan
+
+---
+
+# 05.05.2026 — Module 01 API Auth Slice 1A Repo Inspection Result Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no code changes**)
+
+- Gemini audit passed for API Auth Slice 1A Repo Inspection Result.
+- Inspection blockers were confirmed and accepted as carry-forward constraints.
+- Module 01 Audit Event Data Contract Plan approved as the next step.
+- No code changes performed (no API/Python/GAS/SQL updates).
+
+## Далі
+
+Next allowed step:
+- Module 01 Audit Event Data Contract Plan
+
+---
+
+# 05.05.2026 — Module 01 API Auth Slice 1A Repo Inspection completed (audit-only)
+
+## Факт (**repo inspection only / no implementation**)
+
+- Created `docs/AUDITS/2026-05-05_MODULE_01_API_AUTH_SLICE_1A_REPO_INSPECTION_RESULT.md`.
+- Inspected FastAPI structure, DB access pattern, dependency manifest, env naming patterns, and audit schema feasibility.
+- Captured blockers and implementation recommendations for `login` / `refresh_menu` / `logout` implementation readiness.
+- No code changes performed (no API/Python/GAS/SQL implementation).
+
+## Далі
+
+Next allowed step:
+- Gemini audit of API Auth Slice 1A Repo Inspection Result
+
+---
+
+# 05.05.2026 — Module 01 API Auth Endpoint Implementation Slice Plan Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no code**)
+
+- Gemini audit passed for API Auth Endpoint Implementation Slice Plan.
+- Repo inspection/dependency audit approved as the next implementation gate.
+- Gemini implementation decisions recorded (MVP static mapping, login-first after inspection, `refresh_menu` dependency, HMAC_SHA256 preference).
+- No code implemented (no API/Python/GAS/SQL changes).
+
+## Далі
+
+Next allowed step:
+- API Auth Endpoint Implementation Slice 1A — Repo Inspection / Dependency Audit
+
+---
+
+# 05.05.2026 — Module 01 API Auth Endpoint Implementation Slice Plan created (doc-only)
+
+## Факт (**implementation planning only / no code**)
+
+- Created `docs/AUDITS/2026-05-05_MODULE_01_API_AUTH_ENDPOINT_IMPLEMENTATION_SLICE_PLAN.md`.
+- Planned implementation sequence for `login`, `refresh_menu`, `logout` (Slice 1A-1F).
+- Captured password/session/audit dependencies and blockers before coding.
+- No code implemented (no API/Python/GAS/SQL changes).
+
+## Далі
+
+Next allowed step:
+- Gemini audit of API Auth Endpoint Implementation Slice Plan
+
+---
+
+# 05.05.2026 — Module 01 Login Modal UI Plan Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no implementation**)
+
+- Gemini audit passed for Login Modal UI Plan.
+- Login modal UX/security doctrine approved.
+- `onOpen` `refresh_menu` timeout/fallback note carried forward to implementation planning.
+- No implementation performed (no GAS/API/Python/SQL changes).
+
+## Далі
+
+Next allowed step:
+- API Auth Endpoint Implementation Slice Plan
+
+---
+
+# 05.05.2026 — Module 01 Login Modal UI Plan created (doc-only)
+
+## Факт (**UI planning only / no implementation**)
+
+- Created `docs/AUDITS/2026-05-05_MODULE_01_LOGIN_MODAL_UI_PLAN.md`.
+- Initial pre-auth menu state captured (`EDS Power -> Авторизуватись` only).
+- Corporate email + password login modal field set documented.
+- `onOpen` token-check and `refresh_menu` behavior documented.
+- No implementation performed (no GAS/API/Python/SQL changes).
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Login Modal UI Plan
+
+---
+
+# 05.05.2026 — Module 01 User Session Migration History Alignment FINAL INSERT Result Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no implementation**)
+
+- Gemini audit passed for User Session Migration History Alignment FINAL INSERT Result.
+- `module01_user_sessions` migration history aligned.
+- Module 01 Auth Data Layer marked as fully aligned.
+- No API/GAS implementation performed in this closeout step.
+
+## Далі
+
+Next allowed step:
+- Login Modal UI Plan / API Auth Endpoint Implementation Slice Planning
+
+---
+
+# 05.05.2026 — Module 01 User Session Migration History Alignment FINAL INSERT Result recorded (doc-only)
+
+## Факт (**result recording only / no additional execution**)
+
+- `module01_user_sessions` migration history alignment FINAL INSERT recorded as successful.
+- Version `20260505120000` registered in `supabase_migrations.schema_migrations`.
+- Verification recorded: `statements_count = 10`, `row_count = 1`, `session_row_count = 0`.
+- `db push` and migration repair were not used.
+- Pending Gemini audit.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of User Session Migration History Alignment FINAL INSERT Result
+
+---
+
+# 05.05.2026 — Module 01 User Session Migration History Alignment FINAL INSERT Execution Plan Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Gemini audit passed for User Session Migration History Alignment FINAL INSERT Execution Plan.
+- Target version `20260505120000` (`module01_user_sessions`) approved for alignment execution.
+- Expected `statements_count = 10` accepted.
+- No SQL execution performed in this closeout step.
+
+## Далі
+
+Next allowed step:
+- User Session Migration History Alignment FINAL INSERT Execution
+
+---
+
+# 05.05.2026 — Module 01 User Session Migration History Alignment FINAL INSERT Execution Plan created (doc-only)
+
+## Факт (**final insert planning only / no execution**)
+
+- Created `docs/AUDITS/2026-05-05_MODULE_01_USER_SESSION_MIGRATION_HISTORY_ALIGNMENT_FINAL_INSERT_EXECUTION_PLAN.md`.
+- Captured FINAL INSERT target row for migration history alignment (`version = 20260505120000`, `name = module01_user_sessions`).
+- Prepared exact INSERT SQL (with `BEGIN` / `COMMIT` wrapper) from approved migration statements, for future operator execution only.
+- Captured expected `statements_count = 10`.
+- No SQL execution performed in this planning step.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of User Session FINAL INSERT Execution Plan
+
+---
+
+# 05.05.2026 — Module 01 User Session Migration History Alignment Decision Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Gemini audit passed for User Session Migration History Alignment Decision.
+- Path B accepted for version `20260505120000` under strict guardrails.
+- Final INSERT execution plan is required before any `schema_migrations` write.
+- No SQL execution performed in this closeout step.
+
+## Далі
+
+Next allowed step:
+- User Session Migration History Alignment FINAL INSERT Execution Plan
+
+---
+
+# 05.05.2026 — Module 01 User Session Migration History Alignment Decision created (doc-only)
+
+## Факт (**decision planning only / no execution**)
+
+- Created `docs/AUDITS/2026-05-05_MODULE_01_USER_SESSION_MIGRATION_HISTORY_ALIGNMENT_DECISION.md`.
+- Recorded asymmetric state: remote session table applied, but migration history for version `20260505120000` is not yet aligned.
+- Recommended Path B (manual `schema_migrations` INSERT) under strict guardrails and separate audited execution planning.
+- No SQL execution performed in this decision step.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of User Session Migration History Alignment Decision
+
+---
+
+# 05.05.2026 — Module 01 User Session Remote Apply Execution Result Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no additional execution**)
+
+- Gemini audit passed for User Session Remote Apply Execution Result.
+- `public.module01_user_sessions` remote verification accepted.
+- Session table apply recorded without seed tokens/sessions (`session_row_count = 0`).
+- Migration history alignment remains deferred to a separate audited step.
+
+## Далі
+
+Next allowed step:
+- Module 01 User Session Migration History Alignment Decision
+
+---
+
+# 05.05.2026 — Module 01 User Session Remote Apply Execution Result recorded (doc-only)
+
+## Факт (**result recording only / no additional execution**)
+
+- `module01_user_sessions` remote apply recorded as completed through Supabase SQL Editor.
+- Table/columns/indexes/constraints verification recorded as PASS.
+- `session_row_count = 0` recorded; no seed sessions and no token data inserted.
+- Dependent Module 01 tables presence re-confirmed (6/6).
+- `db push` and migration repair were not used.
+- Migration history alignment deferred to separate audited step.
+- Pending Gemini audit.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of User Session Remote Apply Execution Result
+
+---
+
+# 05.05.2026 — Module 01 User Session Remote Apply Execution Plan Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Gemini audit passed for Module 01 User Session Remote Apply Execution Plan.
+- SQL Editor apply path approved for `module01_user_sessions`.
+- Migration history alignment remains deferred to a separate audited step.
+- No SQL execution performed in this closeout step.
+
+## Далі
+
+Next allowed step:
+- Module 01 User Session Remote Apply Execution
+
+---
+
+# 05.05.2026 — Module 01 User Session Remote Apply Execution Plan created (doc-only)
+
+## Факт (**remote apply planning only / no execution**)
+
+- Created `docs/AUDITS/2026-05-05_MODULE_01_USER_SESSION_REMOTE_APPLY_EXECUTION_PLAN.md`.
+- Captured SQL Editor apply path for `module01_user_sessions` migration file.
+- Captured pre-apply boundaries and full verification query pack.
+- Captured post-apply rule: migration history alignment is deferred to a separate audited step.
+- No SQL execution performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of User Session Remote Apply Execution Plan
+
+---
+
+# 05.05.2026 — Module 01 User Session Migration File Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Gemini audit passed for `module01_user_sessions` migration file.
+- Migration file approved for remote apply planning.
+- No SQL execution performed in this closeout step.
+
+## Далі
+
+Next allowed step:
+- Module 01 User Session Remote Apply Execution Plan
+
+---
+
+# 05.05.2026 — Module 01 User Session Migration File created (migration file only / no execution)
+
+## Факт (**migration file creation only / no execution**)
+
+- Created migration file `supabase/migrations/20260505120000_module01_user_sessions.sql`.
+- Added `public.module01_user_sessions` table with approved constraints and indexes for opaque session token persistence.
+- Captured strict checks (`token_algorithm`, `client_type`), terminal-bound FK model, and no-seed/no-secret boundaries.
+- Added commented verification queries only; no SQL execution performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of module01_user_sessions migration file
+
+---
+
+# 05.05.2026 — Module 01 User Session SQL/Migration Plan Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Gemini audit passed for User Session SQL/Migration Plan.
+- `module01_user_sessions` migration plan approved.
+- Strict `client_type` and `token_algorithm` checks approved.
+- No SQL execution and no migration file creation performed in this closeout step.
+
+## Далі
+
+Next allowed step:
+- Migration File Creation
+
+---
+
+# 05.05.2026 — Module 01 User Session SQL/Migration Plan created (doc-only)
+
+## Факт (**sql/migration planning only / no execution**)
+
+- Created `docs/AUDITS/2026-05-05_MODULE_01_USER_SESSION_SQL_MIGRATION_PLAN.md`.
+- Planned `module01_user_sessions` migration scope, constraints, indexes, and security guardrails.
+- Recorded no-seed/no-secrets/no-raw-token constraints for migration content.
+- No SQL execution and no migration file creation performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of User Session SQL/Migration Plan
+
+---
+
+# 05.05.2026 — Module 01 User Session Data Model Extension Plan Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no implementation**)
+
+- Gemini audit passed for User Session Data Model Extension Plan.
+- `module01_user_sessions` model approved, including opaque session token persistence and terminal-bound session doctrine.
+- Key policy decisions accepted (global unique session token hash, cascade FKs, strict token algorithm check, 12-hour initial TTL).
+- No SQL or implementation performed.
+
+## Далі
+
+Next allowed step:
+- User Session SQL/Migration Plan
+
+---
+
+# 05.05.2026 — Module 01 User Session Data Model Extension Plan created (doc-only)
+
+## Факт (**data model planning only / no implementation**)
+
+- Created `docs/AUDITS/2026-05-05_MODULE_01_USER_SESSION_DATA_MODEL_EXTENSION_PLAN.md`.
+- Proposed `module01_user_sessions` for opaque session token persistence and lifecycle control.
+- Captured mandatory terminal-session binding and mismatch-revoke rule.
+- Captured that API Auth Endpoint implementation remains blocked until session table planning/migration is completed.
+- No SQL or implementation performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of User Session Data Model Extension Plan
+
+---
+
+# 05.05.2026 — Module 01 API Auth Endpoint Data Contract Plan Gemini PASS closeout (doc-only)
+
+## Факт (**doc fixes + closeout / no implementation**)
+
+- Gemini audit passed for API Auth Endpoint Data Contract Plan.
+- Added terminal-session binding enforcement rule (header terminal must match session binding; mismatch revokes session).
+- Added high-entropy opaque token rule (CSPRNG token, API stores hash only, raw token not logged/stored).
+- Plan closed as PASS.
+- No implementation performed.
+
+## Далі
+
+Next allowed step:
+- API Auth Endpoint Implementation Slice Plan
+
+---
+
+# 05.05.2026 — Module 01 API Auth Endpoint Data Contract Plan created (doc-only)
+
+## Факт (**data contract planning only / no implementation**)
+
+- Created `docs/AUDITS/2026-05-05_MODULE_01_API_AUTH_ENDPOINT_DATA_CONTRACT_PLAN.md`.
+- Captured opaque session token contract (API issues token, API stores only token hash, GAS stores only token in UserProperties).
+- Captured request/response contracts for `login`, `refresh_menu`, `logout`, `change_password`, `request_password_reset`, and `admin_reset_password`.
+- No implementation performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of API Auth Endpoint Data Contract Plan
+
+---
+
+# 05.05.2026 — Module 01 API Auth Endpoint Plan Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no implementation**)
+
+- Gemini audit passed for Module 01 API Auth Endpoint Plan.
+- API endpoint scope, terminal enforcement, and additive multi-role/menu-schema doctrine approved.
+- No implementation performed in this closeout step.
+
+## Далі
+
+Next allowed step:
+- API Auth Endpoint Data Contract Plan
+
+---
+
+# 05.05.2026 — Module 01 API Auth Endpoint Plan created (doc-only)
+
+## Факт (**api planning only / no implementation**)
+
+- Created `docs/AUDITS/2026-05-05_MODULE_01_API_AUTH_ENDPOINT_PLAN.md`.
+- Planned login/password/change/reset/admin-reset endpoint scope for Module 01 corporate email + password auth.
+- Captured terminal enforcement (`terminal_id` / `spreadsheet_id`) and API-only authorization authority.
+- Captured additive multi-role permission resolution and API-generated `menu_schema` doctrine for GAS render-only behavior.
+- No implementation performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of API Auth Endpoint Plan
+
+---
+
+# 05.05.2026 — Module 01 Multi-Role Authorization Addendum Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no implementation**)
+
+- Gemini audit passed for Multi-Role Authorization Addendum.
+- Additive roles doctrine approved.
+- API-side permission/menu schema resolution confirmed.
+- No implementation performed in this closeout step.
+
+## Далі
+
+Next allowed step:
+- API Auth Endpoint Plan
+
+---
+
+# 05.05.2026 — Module 01 User Auth Migration History Alignment FINAL INSERT Result recorded (doc-only)
+
+## Факт (**result recording only / no additional execution**)
+
+- `module01_user_auth` migration history alignment FINAL INSERT recorded as successful.
+- Version `20260505110000` registered in `supabase_migrations.schema_migrations`.
+- Verification recorded: `statements_count = 10`, `row_count = 1`.
+- `db push` and migration repair were not used.
+- Pending Gemini audit.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of User Auth Migration History Alignment FINAL INSERT Result
+
+---
+
+# 05.05.2026 — Module 01 Multi-Role Authorization Addendum created (doc-only)
+
+## Факт (**doctrine addendum only / no implementation**)
+
+- Created `docs/AUDITS/2026-05-05_MODULE_01_MULTI_ROLE_AUTHORIZATION_ADDENDUM.md`.
+- Captured additive multi-role doctrine for Module 01 (`module01_user_roles` as active source of combined roles).
+- Recorded that `DIRECTOR` is not automatically "all permissions"; broad access requires explicit multi-role assignment.
+- Recorded API authority for final `roles[]` / `permissions[]` / `menu_schema`, with GAS as render-only consumer.
+- No implementation performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Multi-Role Authorization Addendum
+
+---
+
+# 05.05.2026 — Module 01 User Auth Migration History Alignment FINAL INSERT Execution Plan Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Gemini audit passed for User Auth Migration History Alignment FINAL INSERT Execution Plan.
+- Target version `20260505110000` (`module01_user_auth`) approved for alignment execution.
+- No SQL execution performed in this closeout step.
+
+## Далі
+
+Next allowed step:
+- User Auth Migration History Alignment FINAL INSERT Execution
+
+---
+
+# 05.05.2026 — Module 01 User Auth Migration History Alignment FINAL INSERT Execution Plan created (doc-only)
+
+## Факт (**final insert planning only / no execution**)
+
+- Created `docs/AUDITS/2026-05-05_MODULE_01_USER_AUTH_MIGRATION_HISTORY_ALIGNMENT_FINAL_INSERT_EXECUTION_PLAN.md`.
+- Captured FINAL INSERT target row for migration history alignment (`version = 20260505110000`, `name = module01_user_auth`).
+- Prepared exact INSERT SQL (with `BEGIN` / `COMMIT` wrapper) from approved migration statements, for future operator execution only.
+- No SQL execution performed in this planning step.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of User Auth FINAL INSERT Execution Plan
+
+---
+
+# 05.05.2026 — Module 01 User Auth Migration History Alignment Decision Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Gemini audit passed for User Auth Migration History Alignment Decision.
+- Path B accepted for version `20260505110000` under strict guardrails.
+- Final INSERT execution plan is required before any `schema_migrations` write.
+- No SQL execution performed in this closeout step.
+
+## Далі
+
+Next allowed step:
+- User Auth Migration History Alignment FINAL INSERT Execution Plan
+
+---
+
+# 05.05.2026 — Module 01 User Auth Migration History Alignment Decision created (doc-only)
+
+## Факт (**decision planning only / no execution**)
+
+- Created `docs/AUDITS/2026-05-05_MODULE_01_USER_AUTH_MIGRATION_HISTORY_ALIGNMENT_DECISION.md`.
+- Recorded asymmetric state: remote auth table applied, but migration history for version `20260505110000` is not yet aligned.
+- Recommended Path B (manual `schema_migrations` INSERT) under strict guardrails and separate audited execution planning.
+- No SQL execution performed in this decision step.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of User Auth Migration History Alignment Decision
+
+---
+
+# 05.05.2026 — Module 01 User Auth Remote Apply Execution Result Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no additional execution**)
+
+- Gemini audit passed for User Auth Remote Apply Execution Result.
+- `public.module01_user_auth` remote apply verification accepted.
+- Auth table apply recorded without seed passwords (`auth_row_count = 0`).
+- Migration history alignment remains deferred to a separate audited step.
+
+## Далі
+
+Next allowed step:
+- Module 01 User Auth Migration History Alignment Decision
+
+---
+
+# 05.05.2026 — Module 01 User Auth Remote Apply Execution Result recorded (doc-only)
+
+## Факт (**result recording only / no additional execution**)
+
+- `module01_user_auth` remote apply recorded as completed through Supabase SQL Editor.
+- Table/columns/indexes/constraints verification recorded as PASS.
+- `auth_row_count = 0` recorded; no seed passwords and no auth rows inserted.
+- Base Module 01 tables presence re-confirmed (8/8).
+- `db push` and migration repair were not used.
+- Migration history alignment deferred to separate audited step.
+- Pending Gemini audit.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of User Auth Remote Apply Execution Result
+
+---
+
+# 05.05.2026 — Module 01 User Auth Remote Apply Execution Plan Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Gemini audit passed for Module 01 User Auth Remote Apply Execution Plan.
+- SQL Editor apply path approved for `module01_user_auth`.
+- Migration history alignment remains deferred to a separate audited step.
+- No SQL execution performed in this closeout step.
+
+## Далі
+
+Next allowed step:
+- Module 01 User Auth Remote Apply Execution
+
+---
+
+# 05.05.2026 — Module 01 User Auth Remote Apply Execution Plan created (doc-only)
+
+## Факт (**remote apply planning only / no execution**)
+
+- Created `docs/AUDITS/2026-05-05_MODULE_01_USER_AUTH_REMOTE_APPLY_EXECUTION_PLAN.md`.
+- Captured SQL Editor apply path for `module01_user_auth` migration file.
+- Captured pre-apply boundaries and full verification query pack.
+- Captured post-apply rule: migration history alignment is deferred to a separate audited step.
+- No SQL execution performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of User Auth Remote Apply Execution Plan
+
+---
+
+# 05.05.2026 — Module 01 User Auth Migration File Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Gemini audit passed for `module01_user_auth` migration file.
+- Migration file approved for remote apply planning.
+- Confirmed compliance with approved SQL model and guardrails.
+- No SQL execution performed in this closeout step.
+
+## Далі
+
+Next allowed step:
+- Module 01 User Auth Remote Apply Execution Plan
+
+---
+
+# 05.05.2026 — Module 01 User Auth Migration File created (migration file only / no execution)
+
+## Факт (**migration file creation only / no execution**)
+
+- Created migration file `supabase/migrations/20260505110000_module01_user_auth.sql`.
+- Added `public.module01_user_auth` table definition with approved constraints and indexes.
+- Added strict `password_algorithm` CHECK (`ARGON2ID`, `BCRYPT`) and partial unique index for `reset_token_hash` (`where reset_token_hash is not null`).
+- Added comments documenting auth/profile separation and security handling (`password_hash`, `reset_token_hash`, `updated_at`).
+- Added commented verification queries only; no SQL execution performed.
+- No seed passwords, no user inserts, no real secrets in migration content.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of module01_user_auth migration file
+
+---
+
+# 05.05.2026 — Module 01 Authorization Data Model Extension SQL/Migration Plan Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Gemini audit passed for Authorization Data Model Extension SQL/Migration Plan.
+- `module01_user_auth` migration plan approved.
+- Strict `password_algorithm` CHECK approved (`ARGON2ID`, `BCRYPT`).
+- Partial unique `reset_token_hash` index approved (`where reset_token_hash is not null`).
+- `updated_at` triggers remain deferred for Slice 01 consistency.
+- No SQL execution and no migration file creation performed in this closeout step.
+
+## Далі
+
+Next allowed step:
+- Migration File Creation
+
+---
+
+# 05.05.2026 — Module 01 Authorization Data Model Extension SQL/Migration Plan created (doc-only)
+
+## Факт (**sql/migration planning only / no execution**)
+
+- Created `docs/AUDITS/2026-05-05_MODULE_01_AUTHORIZATION_DATA_MODEL_EXTENSION_SQL_MIGRATION_PLAN.md`.
+- Captured migration scope for `module01_user_auth` table, including planned constraints and indexes.
+- Captured backfill/security guardrails (no seed passwords, no secrets, no real credentials in migration).
+- Captured open design questions for Gemini review (algorithm check, token uniqueness, `updated_at` trigger stance, delete behavior).
+- No migration file creation and no SQL execution performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Authorization Data Model Extension SQL/Migration Plan
+
+---
+
+# 05.05.2026 — Module 01 Authorization Data Model Extension Plan Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Gemini audit passed for Module 01 Authorization Data Model Extension Plan.
+- Separate `module01_user_auth` table strategy was accepted as the approved direction.
+- Terminal enforcement and auth audit event requirements were accepted.
+- No SQL/migration execution and no implementation performed in this closeout step.
+
+## Далі
+
+Next allowed step:
+- Authorization Data Model Extension SQL/Migration Plan
+
+---
+
+# 05.05.2026 — Module 01 Authorization Data Model Extension Plan created (doc-only)
+
+## Факт (**data model planning only / no implementation**)
+
+- Created `docs/AUDITS/2026-05-05_MODULE_01_AUTHORIZATION_DATA_MODEL_EXTENSION_PLAN.md`.
+- Proposed `module01_user_auth` as recommended model for security separation (vs extending `module01_users` directly).
+- Captured planned auth fields for password, reset, lockout, login state, and terminal-aware login tracking.
+- Captured terminal enforcement data requirements (`terminal_id` / `spreadsheet_id`) for future API login flow.
+- No SQL/migration execution and no implementation performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Authorization Data Model Extension Plan
+
+---
+
+# 05.05.2026 — Module 01 Corporate Email Authorization Doctrine Gemini re-audit PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Gemini re-audit passed for Module 01 Corporate Email Authorization Doctrine.
+- Doctrine closed as `PASS` / `CLOSED / APPROVED`.
+- Confirmed doctrine baseline: corporate email primary identity, API sole authorization authority, GAS thin client, self-registration forbidden.
+- Recorded carry-forward note: API Auth Endpoint Plan must require `terminal_id` / `spreadsheet_id` in login request for `module01_user_terminals` enforcement.
+- No implementation performed: no API/GAS/Python changes, no SQL/migrations, no DB writes.
+
+## Далі
+
+Next allowed step:
+- Authorization Data Model Extension Plan
+
+---
+
+# 05.05.2026 — Module 01 Corporate Email Authorization Doctrine updated after Gemini PASS WITH DOC FIXES (doc-only)
+
+## Факт (**doc fixes only / no implementation**)
+
+- Updated `docs/AUDITS/2026-05-05_MODULE_01_CORPORATE_EMAIL_AUTHORIZATION_DOCTRINE.md` after Gemini verdict `PASS WITH DOC FIXES`.
+- Added Google Session identity separation rule (Google session email cannot bypass corporate email authorization flow).
+- Added API permission/menu schema doctrine (API returns authority, GAS renders only).
+- Added session/menu revalidation doctrine for `onOpen`, refresh, and logout state clearing.
+- No implementation performed: no API/GAS/Python changes, no SQL/migration changes, no DB writes.
+
+## Далі
+
+Next allowed step:
+- Gemini re-audit of Corporate Email Authorization Doctrine
+
+---
+
+# 05.05.2026 — Module 01 Migration History Alignment FINAL INSERT Result Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Gemini audit passed for Module 01 Migration History Alignment FINAL INSERT Result.
+- Remote schema and migration history are now aligned for Module 01 Schema Slice 01.
+- Confirmed final registration state: version `20260504190000`, name `module01_schema_slice_01`, `statements_count = 33`, duplicate check `row_count = 1`.
+- Module 01 Schema Slice 01 data layer recorded as ready for API strategy planning.
+- No SQL execution, no `db push`, and no migration repair performed in this closeout step.
+
+## Далі
+
+Next allowed step:
+- Module 01 API Implementation Strategy Planning
+
+---
+
+# 05.05.2026 — Module 01 Corporate Email Authorization Doctrine created (doc-only)
+
+## Факт (**doctrine capture only / no implementation**)
+
+- Created `docs/AUDITS/2026-05-05_MODULE_01_CORPORATE_EMAIL_AUTHORIZATION_DOCTRINE.md`.
+- Captured core identity doctrine: corporate email is the primary user identity.
+- Captured password doctrine and admin-only provisioning model.
+- Captured explicit prohibition of self-registration.
+- Captured role-aware menu principle with pre-auth `Авторизуватись` only and post-auth API-driven menu.
+- Captured GAS thin-client boundary and Supabase/API source-of-truth rule.
+- No API/GAS/Python implementation performed; no SQL/migrations; no DB writes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Corporate Email Authorization Doctrine
+
+---
+
+# 05.05.2026 — Module 01 Migration History Alignment FINAL INSERT Result recorded (doc-only)
+
+## Факт (**result recording only / no execution by Cursor**)
+
+- Recorded successful final alignment insert result for Module 01 migration history in `supabase_migrations.schema_migrations`.
+- Captured target registration: version `20260504190000`, name `module01_schema_slice_01`.
+- Captured verification metrics: `statements_count = 33`, duplicate check `row_count = 1`.
+- Confirmed transaction wrapper was used (`BEGIN; INSERT ...; COMMIT;`) and SQL Editor returned `Success. No rows returned.`
+- Confirmed `db push` and migration repair were not used.
+- Result dossier created: `docs/AUDITS/2026-05-04_MODULE_01_MIGRATION_HISTORY_ALIGNMENT_FINAL_INSERT_RESULT.md`.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Migration History Alignment FINAL INSERT Result
+
+---
+
+# 05.05.2026 — Module 01 Migration History Alignment FINAL INSERT Execution Plan Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Gemini audit passed for Module 01 Migration History Alignment FINAL INSERT Execution Plan.
+- Plan closed as `PASS` / `CLOSED / APPROVED`.
+- Confirmed required execution wrapper: explicit `BEGIN` / `COMMIT` transaction around the single `schema_migrations` INSERT.
+- Confirmed `db push` remains forbidden and migration repair remains forbidden in this step.
+- No SQL execution performed.
+
+## Далі
+
+Next allowed step:
+- Migration History Alignment FINAL INSERT Execution
+
+---
+
+# 05.05.2026 — Module 01 Migration History Alignment FINAL INSERT Execution Plan created (doc-only)
+
+## Факт (**execution planning only / no execution**)
+
+- Created `docs/AUDITS/2026-05-04_MODULE_01_MIGRATION_HISTORY_ALIGNMENT_FINAL_INSERT_EXECUTION_PLAN.md`.
+- Captured exact target history row: version `20260504190000`, name `module01_schema_slice_01`.
+- Prepared final INSERT SQL with `statements[]` derived from approved migration file `supabase/migrations/20260504190000_module01_schema_slice_01.sql`.
+- Captured pre-insert checks and post-insert verification sequence.
+- No SQL execution performed in this planning step.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of FINAL INSERT Execution Plan
+
+---
+
+# 05.05.2026 — Module 01 Migration History Alignment Read-only Inspection Result recorded (doc-only)
+
+## Факт (**result recording only / no execution**)
+
+- Recorded read-only inspection result for `supabase_migrations.schema_migrations`.
+- Captured structure: `version` (text, not null), `statements` (array, nullable), `name` (text, nullable).
+- Captured target version check: `20260504190000` absent (`0` rows).
+- Captured recent history shape with `version` + `statements` + `name` (examples: `calculation_snapshots_v1`, `remote_legacy_baseline`).
+- Reconfirmed Module 01 apply state: 8 `module01_` tables present, 9 roles present and active.
+- No write performed to `schema_migrations`; no migration repair; no `db push`.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Read-only Inspection Result
+
+---
+
+# 05.05.2026 — Module 01 Migration History Alignment Execution Plan Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Gemini audit passed for Module 01 Migration History Alignment Execution Plan.
+- Plan closed as `PASS` / `CLOSED / APPROVED`.
+- Confirmed Phase 1 read-only inspection is approved as the next operational step.
+- Confirmed execution plan does not authorize final `schema_migrations` INSERT in this closeout step.
+- No SQL execution performed.
+
+## Далі
+
+Next allowed step:
+- Migration History Alignment Read-only Inspection Execution
+
+---
+
+# 05.05.2026 — Module 01 Migration History Alignment Execution Plan created (doc-only)
+
+## Факт (**execution planning only / no execution**)
+
+- Created `docs/AUDITS/2026-05-04_MODULE_01_MIGRATION_HISTORY_ALIGNMENT_EXECUTION_PLAN.md`.
+- Captured phased alignment plan: read-only inspection -> insert format determination -> controlled write -> post-insert verification.
+- Captured strict rule: no guessed INSERT; actual `schema_migrations` structure must be inspected first.
+- Captured requirement: if structure remains unclear, stop and open a micro-plan before any write.
+- No SQL execution performed in this planning step.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Migration History Alignment Execution Plan
+
+---
+
+# 05.05.2026 — Module 01 Migration History Alignment Decision Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Gemini audit passed for Module 01 Migration History Alignment Decision.
+- Alignment decision closed as `PASS` / `CLOSED`.
+- Confirmed that execution plan is required before any `schema_migrations` write action.
+- Confirmed no SQL execution performed in this closeout step.
+
+## Далі
+
+Next allowed step:
+- Migration History Alignment Execution Plan
+
+---
+
+# 05.05.2026 — Module 01 Migration History Alignment Decision created (doc-only)
+
+## Факт (**decision planning only / no execution**)
+
+- Created `docs/AUDITS/2026-05-04_MODULE_01_MIGRATION_HISTORY_ALIGNMENT_DECISION.md`.
+- Captured asymmetric state: remote schema is applied for Module 01, but migration history alignment for version `20260504190000` is not completed.
+- Captured candidate paths: CLI repair, manual `schema_migrations` insert, temporary documented drift.
+- Captured recommendation: prepare for manual alignment path only via separate audited execution plan (with fallback to official repair if CLI path becomes healthy).
+- Confirmed no `schema_migrations` insert executed, no migration repair executed, and `db push` remains forbidden.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Migration History Alignment Decision
+
+---
+
+# 05.05.2026 — Module 01 Manual SQL Editor Apply Execution Result recorded (doc-only)
+
+## Факт (**result recording only / no execution by Cursor**)
+
+- Recorded operator-reported manual apply result for Module 01 Schema Slice 01 via Supabase SQL Editor.
+- SQL Editor execution outcome captured: `Success. No rows returned.`
+- Verification captured: 8 `module01_` tables present, 9 seed roles present and active.
+- Excluded tables check captured: `0` rows (`commercial_products`, `calculation_product_items`, `product_composition_items`, `module_routes`, `object_conversion_links`).
+- Legacy safety check captured: `objects`, `bom_links`, `ncr`, `production_status` remain present.
+- `schema_migrations` alignment explicitly deferred; no manual insert and no migration repair performed.
+- Result dossier created: `docs/AUDITS/2026-05-04_MODULE_01_MANUAL_SQL_EDITOR_APPLY_EXECUTION_RESULT.md`.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Manual SQL Editor Apply Execution Result
+
+---
+
+# 05.05.2026 — Module 01 Manual SQL Editor Apply Execution Plan Gemini PASS closeout (doc-only)
+
+## Факт (**closeout only / no execution**)
+
+- Gemini audit verdict recorded as `PASS`; execution plan closed as `CLOSED / APPROVED`.
+- Confirmed next allowed step: Manual SQL Editor Apply Execution as a separate operator task.
+- Confirmed correction: `module01_calculations` is the correct Slice 01 table name.
+- Confirmed `schema_migrations` alignment remains deferred to separate audited step.
+- Confirmed `schema_migrations` manual insert and `migration repair` remain forbidden in apply step.
+- No SQL execution, no `db push`, no migration execution, no DDL execution, no table creation, no DB writes.
+
+## Далі
+
+Next allowed step:
+- Manual SQL Editor Apply Execution (separate operator task)
+
+---
+
+# 05.05.2026 — Module 01 Manual SQL Editor Apply Execution Plan created (doc-only)
+
+## Факт (**execution planning only / no execution**)
+
+- Created `docs/AUDITS/2026-05-04_MODULE_01_MANUAL_SQL_EDITOR_APPLY_EXECUTION_PLAN.md`.
+- Added full copy-ready SQL script from approved migration `supabase/migrations/20260504190000_module01_schema_slice_01.sql`.
+- Added post-apply read-only verification queries for required table/role/exclusion/legacy checks.
+- Explicitly preserved guardrails: no SQL execution by Cursor, no `db push`, no migration execution, no `schema_migrations` manual insert, no migration repair in this step.
+- Migration-history alignment remains deferred to a separate audited decision after apply verification.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Manual SQL Editor Apply Execution Plan
+
+---
+
+# 05.05.2026 — Module 01 Remote Apply Method Decision created (doc-only)
+
+## Факт (**decision planning only / no execution**)
+
+- Created `docs/AUDITS/2026-05-04_MODULE_01_REMOTE_APPLY_METHOD_DECISION.md`.
+- Decision captured: prefer Manual SQL Editor / Direct SQL Apply Path for Module 01 Schema Slice 01 under separate execution planning and Gemini audit.
+- Retrospective captured: Stage 8A live PASS proved API persistence path, but did not explicitly prove `supabase db push` / `supabase migration list` success.
+- Rule captured: `schema_migrations` alignment is deferred to a separate audited decision after SQL apply verification; no manual insert authorized in this decision.
+- No SQL execution, no `db push`, no migration execution, no DDL, no table creation, no DB writes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Remote Apply Method Decision
+
+---
+
+# 05.05.2026 — Stage 8A.2 live migration application method review (doc/diagnostic only)
+
+## Факт (**diagnostic review only / no execution**)
+
+- Reviewed Stage `8A.2.0` and `8A.2.1` dossiers plus Stage 8A live gate, audit index, and Supabase governance READMEs.
+- Confirmed both required documents exist: `2026-04-30_STAGE_8A_2_0_REMOTE_MIGRATION_HISTORY_PREFLIGHT.md` and `2026-04-30_STAGE_8A_2_1_LIVE_DEPLOY_CALCULATION_SNAPSHOTS.md`.
+- Recovered that prior live PASS proves hosted table existence + API insert correlation, but does not preserve one explicit operator command proving whether final apply was SQL Editor or `db push`.
+- Marked prior `db push` success as not proven by available Stage 8A closeout evidence.
+- Produced diagnostic dossier: `docs/AUDITS/2026-05-04_STAGE_8A2_LIVE_MIGRATION_APPLICATION_METHOD_REVIEW.md`.
+- No `db push`, no migration execution, no DDL, no table creation, no DB writes, no password reset/relink.
+
+## Далі
+
+Next allowed step:
+- Decision on Module 01 remote apply method
+
+---
+
+# 05.05.2026 — Module 01 Remote Supabase Password Reset + Relink Preflight repeat execution (blocked, no DB operations)
+
+## Факт (**repeat preflight execution only / no push / no writes**)
+
+- Repeat preflight executed for project `mvcxtwoxhopumxcryxlc` (`EDSPower Database`) in strict no-write mode.
+- Disk check completed: `C:` free `5.24 GB`, `D:` free `37.06 GB`.
+- Repo status check completed: dirty docs/audits only; no code/migration dirty state detected.
+- Session precondition in this execution shell remained `SUPABASE_DB_PASSWORD_MISSING`.
+- `supabase link --project-ref ...`, linked read-only query, and linked migration list were not executed due missing session secret.
+- Confirmed no `db push`, no migration execution, no DDL, no table creation, and no DB writes.
+- Session cleanup command executed: `Remove-Item Env:\SUPABASE_DB_PASSWORD`.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Password Reset + Relink Preflight Result
+
+---
+
+# 05.05.2026 — Module 01 Remote Supabase Password Reset + Relink Preflight execution (blocked, no DB operations)
+
+## Факт (**preflight execution only / no push / no writes**)
+
+- Preflight started for remote project `mvcxtwoxhopumxcryxlc` (`EDSPower Database`) in strict no-write mode.
+- Disk check completed: `C:` free `5.28 GB`, `D:` free `37.06 GB`.
+- Repo status check completed: dirty docs/audits only; no code/migration dirty state detected.
+- Session precondition failed: `SUPABASE_DB_PASSWORD_MISSING` in current PowerShell session.
+- `supabase link --project-ref ...`, linked read-only query, and linked migration list were not executed because the required session secret was missing.
+- Confirmed no `db push`, no migration execution, no DDL, no table creation, and no DB writes.
+- Session cleanup command executed: `Remove-Item Env:\SUPABASE_DB_PASSWORD`.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Password Reset + Relink Preflight Result
+
+---
+
+# 04.05.2026 — Remote Baseline Governance Review Before DB Push Gemini PASS closeout (doc-only)
+
+## Факт (**review closeout only / no execution**)
+
+- Gemini audit passed for Remote Baseline Governance Review Before DB Push.
+- Review closed as `PASS`.
+- Baseline ordering accepted (`110000` -> `120000` -> `20260504190000`).
+- `db push` remains blocked until migration-history gate passes after auth recovery.
+- Local file-system recovery state recorded as sufficiently stabilized for read-only preflight continuation (audit index restored; `C:` free space improved).
+
+## Далі
+
+Next allowed step:
+- Resume Remote Supabase Password Reset + Relink Preflight
+
+---
+
+# 04.05.2026 — Remote baseline governance review before db push (doc/diagnostic only)
+
+## Факт (**review only / no execution**)
+
+- Reviewed Stage 8A.0.2 baseline hold lineage against current Supabase migration layout and later 8A.x closeouts.
+- Confirmed baseline migration exists in root before snapshots and Module 01 migration; pending baseline hold folder has no active SQL migrations.
+- Confirmed `calculation_snapshots_v1` is promoted in root migration chain (not pending).
+- Push-safety verdict recorded as `SAFE_TO_PLAN_PUSH_AFTER_AUTH`, with mandatory post-auth migration-history visibility gate before any push planning.
+- No `db push`, no migration execution, no DB writes, no password reset/relink actions.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Remote Baseline Governance Review
+
+---
+
+# 04.05.2026 — Remote Supabase Password Reset + Relink Preflight execution (blocked)
+
+## Факт (**preflight execution only / no push**)
+
+- Preflight execution started in read-only mode for project `mvcxtwoxhopumxcryxlc` (`EDSPower Database`).
+- Project identity was confirmed; status observed as `ACTIVE_HEALTHY` via read-only project metadata.
+- Execution blocked before relink/query/list gates because session variable check returned `SUPABASE_DB_PASSWORD_MISSING`.
+- Relink, linked read-only query, and linked migration list were not executed in this run.
+- No `db push`, no migration execution, no DDL, no table creation, no DB writes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Password Reset + Relink Preflight Result
+
+---
+
+# 04.05.2026 — Remote Supabase Password Reset + Relink Preflight Plan Gemini PASS closeout (doc-only)
+
+## Факт (**plan closeout only / no execution**)
+
+- Gemini audit passed for Password Reset + Relink Preflight Plan.
+- Preflight plan closed as `PASS`.
+- Next allowed step recorded as executing Password Reset + Relink Preflight in a separate narrow task.
+- `db push` remains forbidden at this closeout step.
+- No execution performed: no password reset, no relink, no migration execution, no DB writes.
+
+## Далі
+
+Next allowed step:
+- Execute Password Reset + Relink Preflight
+
+---
+
+# 04.05.2026 — Module 01 Remote Supabase Password Reset + Relink Preflight planning created (doc-only)
+
+## Факт (**preflight planning only / no execution**)
+
+- Password Reset + Relink Preflight planning created for Module 01 remote Supabase auth-context mismatch resolution.
+- Safe operator password-reset sequence, session-only secret handling, relink requirements, and linked read-only validation gates documented.
+- `db push` forbidden boundary retained until migration list/status read-only checks pass in a separate execution task.
+- No execution performed in this planning step.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Password Reset + Relink Preflight Plan
+
+---
+
+# 04.05.2026 — Module 01 Remote Supabase Auth Fix Path Decision created (doc-only)
+
+## Факт (**decision planning only / no execution**)
+
+- Remote Supabase auth fix path decision documented after reviewing connection history and diagnostics.
+- Auth-context mismatch across CLI command paths recorded as the likely issue class.
+- Recommended path recorded: password reset + relink + linked read-only migration status before any retry planning.
+- No execution performed in this decision step.
+- No `db push`, no migration execution, no DDL, no table creation, no DB writes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Auth Fix Path Decision
+
+---
+
+# 04.05.2026 — Supabase connection history review completed (doc/diagnostic review only)
+
+## Факт (**review only / no execution**)
+
+- Historical Supabase connection reports were reviewed to reconstruct PASS/FAIL connection paths.
+- Successful method confirmed: read-only `supabase db query --linked "SELECT 1 ..."` with session-scoped secret handling.
+- Failed methods consolidated: `supabase db push --linked`, linked/explicit migration-path checks, and explicit pooler `--db-url` checks with `SQLSTATE 28P01`.
+- Likely mismatch documented as auth-context/credential-path issue (not API/GAS/Python implementation issue).
+- No `db push`, no migration execution, no DDL, no table creation, no DB writes.
+
+## Далі
+
+Next allowed step:
+- Decision on safe next diagnostic path
+
+---
+
+# 04.05.2026 — Remote Pooler Connection Diagnostic Execution completed (read-only / no db push)
+
+## Факт (**diagnostic execution only / no push**)
+
+- Read-only explicit pooler URI diagnostic executed for `mvcxtwoxhopumxcryxlc` (`EDSPower Database`).
+- Project metadata indicates status `ACTIVE_HEALTHY` in region `eu-central-1` (observation only; no infra action).
+- Supabase CLI version confirmed as `2.98.1`.
+- Explicit pooler query failed with `SQLSTATE 28P01`.
+- Explicit pooler migration list failed with `SQLSTATE 28P01`.
+- No `db push`, no migration execution, no DDL, no table creation, no DB writes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Remote Pooler Connection Diagnostic Result
+
+---
+
+# 04.05.2026 — Remote Supabase Pooler Connection Fix Plan Gemini PASS closeout (doc-only)
+
+## Факт (**plan closeout only / no execution**)
+
+- Gemini audit passed for Remote Supabase Pooler Connection Fix Plan.
+- Explicit pooler URI diagnostic path approved as primary.
+- Direct strategy remains conditional on IPv6/direct access.
+- SQL Editor fallback remains emergency-only.
+- No `db push`, no DDL, no table creation, no DB writes performed in this closeout.
+
+## Далі
+
+Next allowed step:
+- Remote Pooler Connection Diagnostic Execution — read-only / no db push
+
+---
+
+# 04.05.2026 — Module 01 remote Supabase pooler connection fix planning created (doc-only)
+
+## Факт (**connection fix planning only / no execution**)
+
+- Direct vs transaction-pooler connection mismatch captured as likely root context for remote migration auth failure (`SQLSTATE 28P01`).
+- Pooler connection facts documented (`aws-1-eu-central-1.pooler.supabase.com`, port `6543`, user format `postgres.<project_ref>`).
+- Direct connection facts documented (`db.mvcxtwoxhopumxcryxlc.supabase.co`, port `5432`, user `postgres`, non-IPv4 note).
+- Candidate fix paths documented (Pooler URI strategy, Direct strategy, SQL Editor fallback as emergency only).
+- No remote execution performed in this planning step.
+- No `db push`, no DDL, no table creation, no DB writes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Pooler Connection Fix Plan
+
+---
+
+# 04.05.2026 — Remote DB Push Auth Diagnostic Execution completed (read-only / no push)
+
+## Факт (**diagnostic execution only / no push**)
+
+- Executed read-only diagnostic for remote auth mismatch on project `mvcxtwoxhopumxcryxlc` (`EDSPower Database`).
+- Supabase CLI updated from `2.95.4` to `2.98.1` using `scoop update supabase`.
+- Project relink completed successfully (`supabase link --project-ref mvcxtwoxhopumxcryxlc`).
+- Read-only auth check stayed PASS (`supabase db query --linked "SELECT 1 as auth_test;"` -> `auth_test = 1`).
+- Read-only `supabase migration list` still failed with `SQLSTATE 28P01` on pooled connection path, confirming mismatch persists after CLI update/relink.
+- No `db push`, no migration execution, no DDL, no table creation, no DB writes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Remote DB Push Auth Diagnostic Result
+
+---
+
+# 04.05.2026 — Remote DB Push Auth Diagnostic Plan Gemini PASS closeout (doc-only)
+
+## Факт (**diagnostic closeout only / no push**)
+
+- Gemini audit passed for Remote DB Push Auth Diagnostic Plan.
+- Diagnostic plan closed as `PASS`.
+- Next allowed step set to Remote DB Push Auth Diagnostic Execution (read-only / no push).
+- No db push performed and no DB writes performed in this closeout.
+
+## Далі
+
+Next allowed step:
+- Remote DB Push Auth Diagnostic Execution — read-only / no push
+
+---
+
+# 04.05.2026 — Module 01 remote db push auth diagnostic planning created (doc-only)
+
+## Факт (**diagnostic planning only / no execution**)
+
+- Remote `db push` remains blocked by `SQLSTATE 28P01` while read-only auth query is PASS.
+- Remote DB push auth diagnostic plan created.
+- Known facts, safe-state guardrails, and possible root-cause paths documented.
+- No remote migration execution performed.
+- No DB writes and no DDL execution performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Remote DB Push Auth Diagnostic Plan
+
+---
+
+# 04.05.2026 — Module 01 final remote migration execution attempt (blocked by auth)
+
+## Факт (**remote execution attempted / failed**)
+
+- Final remote execution preflight passed (clean repo, linked project ref, read-only auth check, no conflicting `module01_*` tables).
+- Executed `supabase db push --linked` against `mvcxtwoxhopumxcryxlc`.
+- Execution failed with password authentication error (`SQLSTATE 28P01`).
+- Migration was not applied remotely.
+- No API/GAS/Python changes; no RLS/triggers/functions; no forbidden domain changes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of remote migration execution result
+
+---
+
 # 04.05.2026 — Module 01 remote Supabase migration retry execution attempted (auth failed)
 
 ## Факт (**retry execution attempted / blocked by auth**)
