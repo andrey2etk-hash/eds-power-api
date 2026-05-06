@@ -22,8 +22,8 @@
 - **DOC 38 BOM Aggregation / Kit Issue doctrine** (**PASS / CLOSED AS DOCTRINE**)
 - **DOC 38 Slice 01 Basic Aggregation** (**CLOSED / VERIFIED**)
 **Selected terminal architecture:** **MODEL C — HYBRID TERMINAL GOVERNANCE**
-**Current step:** **EDS Power GAS Skeleton Naming Correction — complete / pending test**
-**Next allowed step:** **Run EDSPower terminal foundation handshake test**
+**Current step:** **EDS Power Master Template Handshake Package — GAS source prep**
+**Next allowed step:** **Manual paste into MASTER TERMINAL TEMPLATE and run handshake test**
 **Naming governance record:** **Canonical naming in current system = EDS Power / EDS Power Client Core / EDSPowerCore.**
 **Reserved future name note:** **Sakura/SakuraCore reserved for separate future project; not canonical in current EDS Power docs.**
 **Post-auth governance pause:** **After authenticated request flow is verified: NEXT = User-led architecture planning pause.**

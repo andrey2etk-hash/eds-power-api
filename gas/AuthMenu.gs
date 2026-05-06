@@ -66,6 +66,7 @@ function module01AuthOnOpen_() {
   if (isLoggedIn) {
     menu
       .addItem("Оновити меню", "module01AuthRefreshMenu")
+      .addItem("Перевірити сесію", "runModule01AuthenticatedSessionStatusCheck")
       .addItem("Вийти", "module01AuthLogout");
   } else {
     menu.addItem("Авторизуватись", "module01AuthLogin");
@@ -150,4 +151,43 @@ function module01AuthLogout() {
   module01AuthClearSession_();
   module01AuthOnOpen_();
   SpreadsheetApp.getUi().alert("Сесію очищено. Необхідна повторна авторизація.");
+}
+
+function runModule01AuthenticatedSessionStatusCheck() {
+  const ui = SpreadsheetApp.getUi();
+  const sessionData = module01AuthGetSession_();
+  if (!sessionData || !sessionData.session_token) {
+    ui.alert("Session token is missing. Please login first.");
+    return;
+  }
+
+  try {
+    const result = module01AuthSessionStatusTransport_(sessionData.session_token);
+    const envelope = result.envelope || {};
+    const metadata = envelope.metadata || {};
+    const error = envelope.error || {};
+    const data = envelope.data || {};
+
+    if (envelope.status === "success" && data.authenticated === true) {
+      ui.alert(
+        "Session status: success\n" +
+        "authenticated: true\n" +
+        "user_id: " + String(data.user_id || "n/a") + "\n" +
+        "terminal_id: " + String(data.terminal_id || "n/a") + "\n" +
+        "expires_at: " + String(data.expires_at || "n/a") + "\n" +
+        "remaining_seconds: " + String(data.remaining_seconds || 0)
+      );
+      return;
+    }
+
+    ui.alert(
+      "Session status check failed\n" +
+      "HTTP: " + String(result.http_status) + "\n" +
+      "status: " + String(envelope.status || "unknown") + "\n" +
+      "error_code: " + String(error.error_code || "n/a") + "\n" +
+      "request_id: " + String(metadata.request_id || "n/a")
+    );
+  } catch (_error) {
+    ui.alert("Session status check transport error.");
+  }
 }

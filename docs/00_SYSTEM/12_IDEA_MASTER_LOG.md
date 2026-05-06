@@ -175,6 +175,26 @@ Notes:
 
 - Code-level Sakura references removed from active GAS skeleton after documentation naming correction.
 
+### EDS_POWER_MASTER_TERMINAL_TEMPLATE_DOCTRINE
+
+Status:
+
+- `DOC_CONTRACT_CREATED`
+
+Notes:
+
+- Defines master Google Sheet template as source for future 40-60 terminal copies.
+
+### EDS_POWER_MASTER_TEMPLATE_HANDSHAKE_PACKAGE
+
+Status:
+
+- `GAS_SOURCE_PREPARED`
+
+Notes:
+
+- Prepared source files for first handshake in MASTER_TERMINAL_TEMPLATE before EDSPowerCore is deployed as library.
+
 ### IDEA-0002 — Google Sheets Sidebar UI
 
 ### IDEA-0025 — KZO_WELDED_SV_SR_PAIR_DNA

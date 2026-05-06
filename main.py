@@ -1110,6 +1110,10 @@ def _auth_response_metadata(request_id: str) -> dict[str, str]:
     return {"request_id": request_id, "module": AUTH_MODULE_NAME}
 
 
+def _auth_timed_metadata(request_id: str, started_at: float) -> dict[str, Any]:
+    return _response_metadata({"request_id": request_id}, None, started_at)
+
+
 def _auth_failed_response(request_id: str) -> JSONResponse:
     return JSONResponse(
         status_code=200,
@@ -1231,6 +1235,45 @@ def _auth_verify_password(hash_value: Any, password: str) -> bool:
         return False
 
 
+def _auth_error_response(
+    *,
+    request_id: str,
+    started_at: float,
+    error_code: str,
+    message: str,
+    source_field: str = "Authorization",
+    action: str = "session_status",
+) -> JSONResponse:
+    return JSONResponse(
+        status_code=200,
+        content={
+            "status": "auth_error",
+            "data": None,
+            "error": {
+                "error_code": error_code,
+                "message": message,
+                "source_field": source_field,
+                "module": AUTH_MODULE_NAME,
+                "action": action,
+            },
+            "metadata": _auth_timed_metadata(request_id, started_at),
+        },
+    )
+
+
+def _auth_extract_bearer_token(authorization: str | None) -> str | None:
+    if not isinstance(authorization, str):
+        return None
+    raw = authorization.strip()
+    if not raw:
+        return None
+    parts = raw.split(" ", 1)
+    if len(parts) != 2 or parts[0].lower() != "bearer":
+        return None
+    token = parts[1].strip()
+    return token if token else None
+
+
 @app.post("/api/module01/auth/login")
 def module01_auth_login(payload: dict[str, Any]):
     request_id = str(uuid4())
@@ -1341,3 +1384,151 @@ def module01_auth_login(payload: dict[str, Any]):
         return JSONResponse(status_code=200, content=response_payload)
     except Exception:  # noqa: BLE001
         return _auth_failed_response(request_id)
+
+
+@app.get("/api/module01/auth/session/status")
+def module01_auth_session_status(authorization: str | None = Header(default=None, alias="Authorization")):
+    started_at = perf_counter()
+    request_id = str(uuid4())
+    bearer_token = _auth_extract_bearer_token(authorization)
+    if not bearer_token:
+        return _auth_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code="AUTH_MISSING_TOKEN",
+            message="Authorization token is missing.",
+        )
+
+    if not _auth_env_ready():
+        return _auth_config_error_response(request_id)
+    client = _auth_get_supabase_client()
+    if client is None:
+        return _auth_config_error_response(request_id)
+
+    try:
+        token_hash = hashlib.sha256(bearer_token.encode("utf-8")).hexdigest()
+        session_row = _auth_fetch_single(
+            client,
+            "module01_user_sessions",
+            select="id,user_id,terminal_id,expires_at,revoked_at",
+            filters={"session_token_hash": token_hash},
+        )
+        if session_row is None:
+            return _auth_error_response(
+                request_id=request_id,
+                started_at=started_at,
+                error_code="AUTH_INVALID_TOKEN",
+                message="Authentication failed.",
+            )
+
+        if session_row.get("revoked_at") is not None:
+            return _auth_error_response(
+                request_id=request_id,
+                started_at=started_at,
+                error_code="AUTH_SESSION_REVOKED",
+                message="Session is revoked.",
+            )
+
+        expires_raw = session_row.get("expires_at")
+        if not isinstance(expires_raw, str) or not expires_raw.strip():
+            return _auth_error_response(
+                request_id=request_id,
+                started_at=started_at,
+                error_code="AUTH_INVALID_TOKEN",
+                message="Authentication failed.",
+            )
+        expires_str = expires_raw.strip()
+        if expires_str.endswith("Z"):
+            expires_str = expires_str[:-1] + "+00:00"
+        try:
+            expires_at_dt = datetime.fromisoformat(expires_str)
+        except ValueError:
+            return _auth_error_response(
+                request_id=request_id,
+                started_at=started_at,
+                error_code="AUTH_INVALID_TOKEN",
+                message="Authentication failed.",
+            )
+        now_dt = datetime.now(UTC)
+        if expires_at_dt <= now_dt:
+            return _auth_error_response(
+                request_id=request_id,
+                started_at=started_at,
+                error_code="AUTH_SESSION_EXPIRED",
+                message="Session is expired.",
+            )
+
+        user_id = session_row.get("user_id")
+        terminal_id = session_row.get("terminal_id")
+        if not isinstance(user_id, str) or not user_id or not isinstance(terminal_id, str) or not terminal_id:
+            return _auth_error_response(
+                request_id=request_id,
+                started_at=started_at,
+                error_code="AUTH_INVALID_TOKEN",
+                message="Authentication failed.",
+            )
+
+        user = _auth_fetch_single(
+            client,
+            "module01_users",
+            select="id,email,status",
+            filters={"id": user_id},
+        )
+        if user is None or user.get("status") != "ACTIVE":
+            return _auth_error_response(
+                request_id=request_id,
+                started_at=started_at,
+                error_code="AUTH_USER_NOT_FOUND",
+                message="User is not available.",
+            )
+
+        terminal = _auth_fetch_single(
+            client,
+            "module01_user_terminals",
+            select="id,user_id,status",
+            filters={"id": terminal_id},
+        )
+        if (
+            terminal is None
+            or terminal.get("status") != "ACTIVE"
+            or terminal.get("user_id") != user_id
+        ):
+            return _auth_error_response(
+                request_id=request_id,
+                started_at=started_at,
+                error_code="AUTH_TERMINAL_MISMATCH",
+                message="Terminal is not valid for this session.",
+            )
+
+        role_codes = _auth_fetch_active_roles(client, user_id)
+        if not role_codes:
+            return _auth_error_response(
+                request_id=request_id,
+                started_at=started_at,
+                error_code="AUTH_FORBIDDEN_ROLE",
+                message="Role is not allowed for this action.",
+            )
+        primary_role = "TEST_OPERATOR" if "TEST_OPERATOR" in role_codes else role_codes[0]
+
+        response_payload = {
+            "status": "success",
+            "data": {
+                "authenticated": True,
+                "user_id": user_id,
+                "email": user.get("email"),
+                "role": primary_role,
+                "terminal_id": terminal_id,
+                "expires_at": expires_at_dt.isoformat(),
+                "remaining_seconds": max(0, int((expires_at_dt - now_dt).total_seconds())),
+            },
+            "error": None,
+            "metadata": _auth_timed_metadata(request_id, started_at),
+        }
+        return JSONResponse(status_code=200, content=response_payload)
+    except Exception:  # noqa: BLE001
+        return _auth_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code="AUTH_INVALID_TOKEN",
+            message="Authentication failed.",
+        )

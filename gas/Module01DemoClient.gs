@@ -20,15 +20,12 @@ const MODULE01_DEMO_RESULT_RANGES_TO_CLEAR = [
   MODULE01_DEMO_ERROR_RANGE_A1
 ];
 
-function onOpen() {
+function registerModule01DemoMenu_() {
   SpreadsheetApp.getUi()
     .createMenu("EDS Power Demo")
     .addItem("Run Module 01 Demo", "runModule01Demo")
     .addItem("Clear Module 01 Demo Output", "clearModule01DemoOutput")
     .addToUi();
-  if (typeof module01AuthOnOpen_ === "function") {
-    module01AuthOnOpen_();
-  }
 }
 
 function runModule01Demo() {

@@ -6,6 +6,40 @@
 
 ---
 
+# 06.05.2026 — EDS Power Master Template Handshake Package prepared
+
+## Факт (**gas source prep / template handshake package**)
+
+- EDSPowerCore foundation source prepared.
+- EDS Power local bootstrap source prepared.
+- Temporary master template handshake setup documented.
+- terminal_id template fallback fixed to `TERMINAL_TEMPLATE` for master template mode.
+- No dynamic menu / calculation / DB implementation performed.
+
+## Далі
+
+Next allowed step:
+- Manual paste into MASTER TERMINAL TEMPLATE and run handshake test
+
+---
+
+# 06.05.2026 — EDS Power Master Terminal Template Doctrine created
+
+## Факт (**template foundation doctrine / no implementation**)
+
+- Master Terminal Template Doctrine created.
+- Clarified that first clean bootstrap must be validated in template sheet.
+- Clarified that production terminal_id must not exist in master template.
+- Existing skeleton confirmed suitable for template install scope without behavior expansion.
+- No business/engineering logic implemented.
+
+## Далі
+
+Next allowed step:
+- Run EDSPower terminal foundation handshake test in master template
+
+---
+
 # 06.05.2026 — EDS Power GAS skeleton naming rename applied
 
 ## Факт (**skeleton rename / no logic changes**)

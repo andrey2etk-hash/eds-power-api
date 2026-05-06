@@ -170,3 +170,6 @@ EDS Power Client Core Contract:
 
 Note:
 Minimal bootstrap implementation is blocked until EDSPowerCore public interface is approved.
+
+Template validation note:
+The first local bootstrap implementation must be installed and validated in `MASTER_TERMINAL_TEMPLATE` or approved first clean template candidate, not a random test sheet.

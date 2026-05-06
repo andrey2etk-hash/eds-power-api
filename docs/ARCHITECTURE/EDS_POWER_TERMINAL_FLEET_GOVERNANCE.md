@@ -219,6 +219,9 @@ EDS Power Admin Provisioning Doctrine:
 EDS Power Dynamic Menu Payload Contract:
 `docs/ARCHITECTURE/EDS_POWER_DYNAMIC_MENU_PAYLOAD_CONTRACT.md`
 
+EDS Power Master Terminal Template Doctrine:
+`docs/ARCHITECTURE/EDS_POWER_MASTER_TERMINAL_TEMPLATE_DOCTRINE.md`
+
 ## 15. Verdict
 
 Hybrid Model C is the selected EDS Power terminal fleet baseline.
