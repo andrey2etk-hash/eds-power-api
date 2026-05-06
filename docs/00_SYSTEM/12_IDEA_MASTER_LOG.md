@@ -89,6 +89,92 @@ Notes:
 - After authenticated session status passed, user identified performance risk of per-cell API calls.
 - Rule registered: Sheet edits stay local; server calls are explicit authenticated batch actions.
 
+### EDS_POWER_TERMINAL_FLEET_GOVERNANCE
+
+Status:
+
+- `HYBRID_BASELINE_FINALIZED`
+
+Notes:
+
+- Hybrid Model C finalized as selected terminal fleet architecture for 40–60 Google Sheet terminals.
+- Model C baseline: local bootstrap + central GAS Core + API/Supabase-driven menu/module access.
+- User identified need for centralized control of 40–60 Google Sheet terminals before deeper GAS expansion.
+- Gemini confirmed idea as critical governance protection.
+
+### EDS_POWER_MINIMAL_LOCAL_BOOTSTRAP_CONTRACT
+
+Status:
+
+- `DOC_CONTRACT_CREATED`
+
+Notes:
+
+- Defines what may exist in local bound scripts for 40–60 Google Sheet terminals.
+
+### EDS_POWER_CLIENT_CORE_CONTRACT
+
+Status:
+
+- `DOC_CONTRACT_CREATED`
+
+Notes:
+
+- Defines EDSPowerCore responsibilities and public interface before local bootstrap implementation.
+
+### EDS_POWER_TERMINAL_FOUNDATION_SKELETON
+
+Status:
+
+- `PASS`
+
+Notes:
+
+- First bounded implementation after approved terminal fleet, local bootstrap, and central core contracts.
+- Gemini verdict recorded: `TERMINAL_FOUNDATION_SKELETON_PASS`.
+
+### EDS_POWER_TERMINAL_ASSIGNMENT_DOCTRINE
+
+Status:
+
+- `DOC_CONTRACT_CREATED`
+
+Notes:
+
+- Defines user/role/department/location/admin/test terminal assignment and mismatch policy.
+
+### EDS_POWER_ADMIN_PROVISIONING_DOCTRINE
+
+Status:
+
+- `DOC_CONTRACT_CREATED`
+
+Notes:
+
+- Defines future admin flow for creating users, copying/registering terminals, binding users to terminals, and avoiding manual Supabase administration.
+
+### EDS_POWER_DYNAMIC_MENU_PAYLOAD_CONTRACT
+
+Status:
+
+- `PASS`
+
+Notes:
+
+- Defines API-driven menu payload before dynamic menu implementation.
+- Gemini verdict recorded: `DYNAMIC_MENU_PAYLOAD_CONTRACT_PASS`.
+- Naming governance correction: Sakura-prefixed handles are deprecated in current EDS Power project.
+
+### EDS_POWER_GAS_SKELETON_NAMING_RENAME
+
+Status:
+
+- `IMPLEMENTATION_RENAME_PENDING_TEST`
+
+Notes:
+
+- Code-level Sakura references removed from active GAS skeleton after documentation naming correction.
+
 ### IDEA-0002 — Google Sheets Sidebar UI
 
 ### IDEA-0025 — KZO_WELDED_SV_SR_PAIR_DNA

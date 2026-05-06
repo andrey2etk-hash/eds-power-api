@@ -6,6 +6,211 @@
 
 ---
 
+# 06.05.2026 — EDS Power GAS skeleton naming rename applied
+
+## Факт (**skeleton rename / no logic changes**)
+
+- GAS skeleton Sakura references renamed to EDS Power / EDSPowerCore terminology.
+- Core/local bootstrap filenames renamed to `gas/core/EDSPowerCore.gs` and `gas/terminal/EDSPowerLocalBootstrap.gs`.
+- Public function names aligned with EDSPowerCore naming (`EDSPowerCore_*`, `edsPower*`).
+- No behavior change intended.
+- No business/engineering/API/DB logic changed.
+
+## Далі
+
+Next allowed step:
+- Run EDSPower terminal foundation handshake test
+
+---
+
+# 06.05.2026 — EDS Power naming governance correction applied
+
+## Факт (**naming governance patch / no implementation**)
+
+- Accidental Sakura/SakuraCore terminology replaced with EDS Power terminology in active architecture/governance docs.
+- EDSPowerCore selected as current client core name for EDS Power system documentation.
+- SakuraCore reserved for future separate product/project naming only.
+- Architecture logic unchanged.
+- No implementation performed.
+
+## Далі
+
+Next allowed step:
+- EDS Power Dynamic Menu Mock Integration (bounded implementation)
+
+---
+
+# 06.05.2026 — EDS Power Dynamic Menu Payload Contract passed Gemini audit
+
+## Факт (**closeout / pass / no implementation drift**)
+
+- EDS Power Dynamic Menu Payload Contract passed Gemini audit (`DYNAMIC_MENU_PAYLOAD_CONTRACT_PASS`).
+- Dynamic menu mock integration allowed as next bounded step.
+- DB-driven role/module registry remains deferred.
+- No implementation performed in closeout.
+
+## Далі
+
+Next allowed step:
+- Dynamic Menu Mock Integration (bounded implementation)
+
+---
+
+# 06.05.2026 — EDS Power Dynamic Menu Payload Contract created
+
+## Факт (**architecture contract / no implementation**)
+
+- EDS Power Dynamic Menu Payload Contract created.
+- API-driven menu response structure documented.
+- Module visibility/status/action rules documented.
+- Error contract for menu endpoint drafted.
+- No implementation performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Dynamic Menu Payload Contract
+
+---
+
+# 06.05.2026 — EDS Power Terminal Foundation Skeleton passed Gemini audit
+
+## Факт (**closeout / pass / no implementation drift**)
+
+- EDS Power Terminal Foundation Skeleton passed Gemini audit (`TERMINAL_FOUNDATION_SKELETON_PASS`).
+- Local bootstrap / central core handshake confirmed.
+- No business/engineering logic introduced.
+- No DB writes, no direct Supabase access, no SQL, no secret exposure.
+
+## Далі
+
+Next allowed step:
+- Dynamic Menu Payload Contract (DOC ONLY)
+
+---
+
+# 06.05.2026 — Terminal Assignment + Admin Provisioning doctrines recorded
+
+## Факт (**future architecture doctrine / no implementation**)
+
+- Terminal Assignment Doctrine created.
+- Admin Provisioning Doctrine created.
+- Terminal mismatch policy documented.
+- Admin user/terminal provisioning concept documented.
+- Supabase confirmed as source of truth, not daily admin UI.
+- No implementation performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of doctrine pack OR Gemini audit of terminal foundation skeleton
+
+---
+
+# 06.05.2026 — EDS Power Terminal Foundation Skeleton initialized
+
+## Факт (**gas foundation skeleton / bounded implementation**)
+
+- EDS Power Terminal Foundation Skeleton initialized.
+- Central core public interface skeleton added.
+- Local bootstrap thin wrappers added.
+- onOpen handshake skeleton added (safe context + core call + fallback path).
+- No business/engineering logic implemented.
+- No DB/API calculation calls performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of terminal foundation skeleton
+
+---
+
+# 06.05.2026 — Central GAS Core responsibility contract created
+
+## Факт (**architecture contract / no implementation**)
+
+- Central GAS Core responsibility contract created.
+- EDSPowerCore public interface drafted.
+- Local bootstrap implementation remains blocked until interface audit.
+- No implementation performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Central GAS Core Contract
+
+---
+
+# 06.05.2026 — Minimal Local Bootstrap Contract created
+
+## Факт (**architecture contract / no implementation**)
+
+- Minimal Local Bootstrap Contract created.
+- Local terminal responsibilities bounded.
+- Forbidden local responsibilities documented.
+- terminal_id doctrine drafted.
+- No implementation performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of Minimal Local Bootstrap Contract OR Define Central GAS Core Responsibility Contract (DOC ONLY)
+
+---
+
+# 06.05.2026 — EDS Power Terminal Fleet Governance finalized (Hybrid Model C)
+
+## Факт (**architecture finalization / no implementation**)
+
+- EDS Power Terminal Fleet Governance finalized.
+- Hybrid Model C selected as baseline.
+- Local bootstrap / central GAS Core / API / Supabase responsibilities documented.
+- Dynamic menu doctrine documented.
+- Admin vs production isolation documented.
+- Version rollout risks documented.
+- No implementation performed.
+
+## Далі
+
+Next allowed step:
+- Define Minimal Local Bootstrap Contract (DOC ONLY)
+
+---
+
+# 06.05.2026 — Hybrid Model C selected as EDS Power Terminal Fleet baseline
+
+## Факт (**architecture baseline decision / no implementation**)
+
+- Hybrid Model C selected as EDS Power Terminal Fleet baseline.
+- Terminal/bootstrap vs central GAS Core boundary confirmed.
+- Dynamic menu and module access doctrine confirmed.
+- Future mobile path recorded as API-first backend, not GAS UI reuse.
+- No implementation performed.
+
+## Далі
+
+Next allowed step:
+- User-led decision on first minimal bootstrap/core split draft
+
+---
+
+# 06.05.2026 — EDS Power Terminal Fleet Governance architecture documented
+
+## Факт (**architecture planning / no implementation**)
+
+- EDS Power Terminal Fleet Governance architecture document created for controlled 40–60 terminal operations.
+- Local bootstrap vs central GAS Core boundary defined to prevent script drift and uncontrolled rollout.
+- Dynamic menu doctrine and role/module exposure governance recorded as API/registry-driven policy.
+- Module access and rollout governance model recorded (stable vs dev/admin separation).
+- No implementation performed.
+
+## Далі
+
+Next allowed step:
+- User-led decision on terminal distribution model: Apps Script library vs web app/API-driven UI shell vs hybrid
+
+---
+
 # 06.05.2026 — Module 01 batch request architecture rule registered
 
 ## Факт (**governance rule / no implementation**)

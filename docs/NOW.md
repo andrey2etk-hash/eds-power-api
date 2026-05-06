@@ -21,10 +21,13 @@
 - **DOC 37 Slice 02 Fastener Selection** (**CLOSED / VERIFIED**)
 - **DOC 38 BOM Aggregation / Kit Issue doctrine** (**PASS / CLOSED AS DOCTRINE**)
 - **DOC 38 Slice 01 Basic Aggregation** (**CLOSED / VERIFIED**)
-**Current step:** **Module 01 Authenticated Session Status Check — implementation/test**
-**Next allowed step:** **Module 01 Authenticated Calculation Call Planning OR Gemini audit**
+**Selected terminal architecture:** **MODEL C — HYBRID TERMINAL GOVERNANCE**
+**Current step:** **EDS Power GAS Skeleton Naming Correction — complete / pending test**
+**Next allowed step:** **Run EDSPower terminal foundation handshake test**
+**Naming governance record:** **Canonical naming in current system = EDS Power / EDS Power Client Core / EDSPowerCore.**
+**Reserved future name note:** **Sakura/SakuraCore reserved for separate future project; not canonical in current EDS Power docs.**
 **Post-auth governance pause:** **After authenticated request flow is verified: NEXT = User-led architecture planning pause.**
-**Pause purpose:** **Define what Module 01 should become before calculation implementation continues.**
+**Pause purpose:** **Define controlled multi-terminal architecture before deeper implementation continues.**
 **Batch request architecture rule:** **Module 01 must use batch authenticated requests, not per-cell API calls.**
 **Implementation guardrail:** **API Auth Endpoint Implementation Slice Plan remains required before functional login implementation.**
 **Current non-active scope:** **API implementation not active.** **code changes not active for implementation.** **dependency installation not performed.** **Render env changes not performed.** **SQL/migration not active.** **DB writes not active.** **secrets must not be stored.**
