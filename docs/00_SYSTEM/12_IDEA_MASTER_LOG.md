@@ -206,6 +206,17 @@ Notes:
 - Manual execution of `runEDSPowerTerminalFoundationHandshakeTest()` in MASTER_TERMINAL_TEMPLATE recorded as PASS.
 - Template marker enforcement confirmed: `terminal_id = TERMINAL_TEMPLATE` with no production terminal_id in template.
 
+### EDS_POWER_DYNAMIC_MENU_MOCK_INTEGRATION
+
+Status:
+
+- `IMPLEMENTATION_PENDING_OPERATOR_TEST`
+
+Notes:
+
+- First bounded dynamic menu pipe implemented using mock backend payload and EDSPowerCore rendering.
+- Auth enforcement for menu endpoint is deferred for mock-pipe validation only and is documented as temporary.
+
 ### IDEA-0002 — Google Sheets Sidebar UI
 
 ### IDEA-0025 — KZO_WELDED_SV_SR_PAIR_DNA

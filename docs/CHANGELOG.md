@@ -6,6 +6,24 @@
 
 ---
 
+# 06.05.2026 — EDS Power Dynamic Menu Mock Integration recovered and implemented
+
+## Факт (**bounded implementation / pending operator test**)
+
+- EDS Power Dynamic Menu Mock Integration implemented from recovered partial diff.
+- Backend mock menu endpoint added: `GET /api/module01/auth/menu`.
+- EDSPowerCore now renders menu from backend mock payload via `edsPowerRefreshMenu()` transport path.
+- Auth enforcement for menu endpoint explicitly deferred in mock slice and documented.
+- DB-driven role/module registry remains deferred.
+- No calculations implemented.
+
+## Далі
+
+Next allowed step:
+- Run `edsPowerRefreshMenu()` in EDS Power — MASTER TERMINAL TEMPLATE
+
+---
+
 # 06.05.2026 — EDS Power Master Terminal Template handshake passed
 
 ## Факт (**operator pass / template handshake closeout**)

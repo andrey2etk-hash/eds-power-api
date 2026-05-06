@@ -139,6 +139,48 @@ AUTH_ALLOWED_ACTIONS_TEST_OPERATOR = ["auth.login", "auth.refresh_menu"]
 AUTH_FAILURE_MESSAGE = "Authentication failed"
 AUTH_FAILURE_CODE = "AUTH_FAILED"
 AUTH_REQUIRED_ENV_KEYS = ("SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY", "AUTH_SESSION_TTL_HOURS")
+AUTH_MENU_MOCK_RESPONSE_VERSION = "EDS_POWER_MENU_V1"
+AUTH_MENU_MOCK_ITEMS = [
+    {
+        "menu_id": "refresh_menu",
+        "menu_label": "Оновити меню",
+        "action_key": "REFRESH_MENU",
+        "action_type": "REFRESH_MENU",
+        "visibility": "VISIBLE",
+        "enabled": True,
+        "sort_order": 10,
+    },
+    {
+        "menu_id": "session_status",
+        "menu_label": "Статус сесії",
+        "action_key": "SESSION_STATUS",
+        "action_type": "SESSION_STATUS",
+        "visibility": "VISIBLE",
+        "enabled": True,
+        "sort_order": 20,
+    },
+    {
+        "menu_id": "module_01_placeholder",
+        "module_id": "MODULE_01",
+        "module_name": "Module 01",
+        "menu_label": "Module 01 — Розрахунки",
+        "action_key": "MODULE_01_PLACEHOLDER",
+        "action_type": "PLACEHOLDER_DISABLED",
+        "visibility": "VISIBLE",
+        "enabled": False,
+        "module_status": "PLANNED",
+        "sort_order": 30,
+    },
+    {
+        "menu_id": "logout",
+        "menu_label": "Вийти",
+        "action_key": "LOGOUT",
+        "action_type": "LOGOUT",
+        "visibility": "VISIBLE",
+        "enabled": True,
+        "sort_order": 90,
+    },
+]
 
 _auth_supabase_client: Client | None = None
 _password_hasher = PasswordHasher()
@@ -1274,6 +1316,26 @@ def _auth_extract_bearer_token(authorization: str | None) -> str | None:
     return token if token else None
 
 
+def _auth_mock_menu_payload() -> dict[str, Any]:
+    return {
+        "menu_version": AUTH_MENU_MOCK_RESPONSE_VERSION,
+        "user_context": {
+            "display_name": "Mock User",
+            "primary_role": "MOCK_OPERATOR",
+            "is_admin": False,
+        },
+        "terminal_context": {
+            "terminal_id": "TERMINAL_TEMPLATE",
+            "terminal_status": "TEMPLATE",
+        },
+        "core_compatibility": {
+            "required_core_version": "EDS_POWER_CORE_FOUNDATION_V1",
+            "compatibility_status": "COMPATIBLE",
+        },
+        "menus": AUTH_MENU_MOCK_ITEMS,
+    }
+
+
 @app.post("/api/module01/auth/login")
 def module01_auth_login(payload: dict[str, Any]):
     request_id = str(uuid4())
@@ -1532,3 +1594,22 @@ def module01_auth_session_status(authorization: str | None = Header(default=None
             error_code="AUTH_INVALID_TOKEN",
             message="Authentication failed.",
         )
+
+
+@app.get("/api/module01/auth/menu")
+def module01_auth_menu():
+    started_at = perf_counter()
+    request_id = str(uuid4())
+    metadata = _auth_timed_metadata(request_id, started_at)
+    metadata["logic_version"] = None
+    metadata["mock_slice"] = "DYNAMIC_MENU_PIPE_ONLY"
+    metadata["auth_enforcement"] = "DEFERRED_FOR_MOCK_SLICE"
+    return JSONResponse(
+        status_code=200,
+        content={
+            "status": "success",
+            "data": _auth_mock_menu_payload(),
+            "error": None,
+            "metadata": metadata,
+        },
+    )

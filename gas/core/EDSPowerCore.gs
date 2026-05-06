@@ -1,14 +1,17 @@
 const EDSPowerCore_VERSION = "EDS_POWER_CORE_FOUNDATION_V1";
-const EDS_POWER_BOOTSTRAP_MENU_TITLE = "EDS Power Terminal";
+const EDS_POWER_BOOTSTRAP_MENU_TITLE = "EDS Power";
+const EDS_POWER_DYNAMIC_MENU_ENDPOINT_PATH = "/api/module01/auth/menu";
+const EDS_POWER_VISIBLE_STATUS = "VISIBLE";
+const EDS_POWER_MENU_ALLOWED_ACTIONS = {
+  REFRESH_MENU: true,
+  SESSION_STATUS: true,
+  LOGOUT: true,
+  PLACEHOLDER_DISABLED: true
+};
 
 function EDSPowerCore_onTerminalOpen(context) {
   const safeContext = EDSPowerCore_sanitizeContext_(context);
-  const ui = SpreadsheetApp.getUi();
-  ui.createMenu(EDS_POWER_BOOTSTRAP_MENU_TITLE)
-    .addItem("Refresh EDS Power Menu", "edsPowerRefreshMenu")
-    .addItem("Login (Skeleton)", "edsPowerLogin")
-    .addItem("Logout (Skeleton)", "edsPowerLogout")
-    .addToUi();
+  EDSPowerCore_renderStaticFallbackMenu_();
   return {
     status: "success",
     core_reachable: true,
@@ -21,7 +24,35 @@ function EDSPowerCore_onTerminalOpen(context) {
 }
 
 function EDSPowerCore_refreshMenu(context) {
-  return EDSPowerCore_onTerminalOpen(context);
+  const safeContext = EDSPowerCore_sanitizeContext_(context);
+  try {
+    const transportResult = EDSPowerCore_fetchMenuEnvelope_(safeContext);
+    const envelope = transportResult.envelope || {};
+    const data = envelope.data || {};
+    const menus = Array.isArray(data.menus) ? data.menus : [];
+    const rendered = EDSPowerCore_renderDynamicMenu_(menus);
+    return {
+      status: "success",
+      menu_source: "mock_backend",
+      core_reachable: true,
+      core_version: EDSPowerCore_VERSION,
+      terminal_id: safeContext.terminal_id,
+      rendered_items: rendered,
+      endpoint_http_status: transportResult.http_status
+    };
+  } catch (error) {
+    EDSPowerCore_renderStaticFallbackMenu_();
+    if (typeof EDSPowerCore_showError === "function") {
+      EDSPowerCore_showError(error, safeContext);
+    }
+    return {
+      status: "menu_refresh_failed",
+      menu_source: "fallback_static",
+      core_reachable: true,
+      core_version: EDSPowerCore_VERSION,
+      terminal_id: safeContext.terminal_id
+    };
+  }
 }
 
 function EDSPowerCore_login(context) {
@@ -56,6 +87,9 @@ function EDSPowerCore_getSessionStatus(context) {
 
 function EDSPowerCore_openModule(actionKey, context) {
   const safeContext = EDSPowerCore_sanitizeContext_(context);
+  if (String(actionKey || "") === "MODULE_01_PLACEHOLDER") {
+    edsPowerModulePlaceholder_();
+  }
   return {
     status: "placeholder",
     action: "open_module",
@@ -71,6 +105,138 @@ function EDSPowerCore_callApi(request) {
     request_type: request && typeof request === "object" ? "object" : "none",
     core_version: EDSPowerCore_VERSION
   };
+}
+
+function EDSPowerCore_fetchMenuEnvelope_(context) {
+  const scriptProps = PropertiesService.getScriptProperties();
+  const baseUrlPropertyName = typeof MODULE01_AUTH_BASE_URL_PROPERTY === "string"
+    ? MODULE01_AUTH_BASE_URL_PROPERTY
+    : "MODULE01_API_BASE_URL";
+  const baseUrl = String(scriptProps.getProperty(baseUrlPropertyName) || "").trim();
+  if (!baseUrl) {
+    throw new Error("EDS_POWER_MENU_BASE_URL_MISSING");
+  }
+  const endpointUrl = baseUrl.replace(/\/+$/, "") + EDS_POWER_DYNAMIC_MENU_ENDPOINT_PATH;
+  const headers = {};
+  const sessionToken = EDSPowerCore_resolveSessionToken_();
+  if (sessionToken) {
+    headers.Authorization = "Bearer " + sessionToken;
+  }
+  const response = UrlFetchApp.fetch(endpointUrl, {
+    method: "get",
+    headers: headers,
+    muteHttpExceptions: true
+  });
+  let envelope = null;
+  try {
+    envelope = JSON.parse(response.getContentText());
+  } catch (_error) {
+    throw new Error("EDS_POWER_MENU_INVALID_JSON");
+  }
+  if (!envelope || typeof envelope !== "object") {
+    throw new Error("EDS_POWER_MENU_INVALID_ENVELOPE");
+  }
+  if (!envelope.data || !Array.isArray(envelope.data.menus)) {
+    throw new Error("EDS_POWER_MENU_ITEMS_MISSING");
+  }
+  return {
+    http_status: response.getResponseCode(),
+    envelope: envelope
+  };
+}
+
+function EDSPowerCore_resolveSessionToken_() {
+  if (typeof module01AuthGetSession_ !== "function") {
+    return "";
+  }
+  const session = module01AuthGetSession_();
+  const token = session && typeof session.session_token === "string"
+    ? String(session.session_token).trim()
+    : "";
+  return token || "";
+}
+
+function EDSPowerCore_renderDynamicMenu_(menus) {
+  const ui = SpreadsheetApp.getUi();
+  const visibleMenus = menus
+    .filter(function (item) {
+      return item && typeof item === "object" && String(item.visibility || "") === EDS_POWER_VISIBLE_STATUS;
+    })
+    .sort(function (a, b) {
+      return Number(a.sort_order || 0) - Number(b.sort_order || 0);
+    });
+
+  const menu = ui.createMenu(EDS_POWER_BOOTSTRAP_MENU_TITLE);
+  let rendered = 0;
+  visibleMenus.forEach(function (item) {
+    const callbackName = EDSPowerCore_resolveMenuCallback_(item);
+    if (!callbackName) {
+      return;
+    }
+    const label = EDSPowerCore_resolveMenuLabel_(item);
+    if (item.enabled === true) {
+      menu.addItem(label, callbackName);
+      rendered += 1;
+      return;
+    }
+    if (String(item.action_type || "") === "PLACEHOLDER_DISABLED") {
+      menu.addItem(label + " (planned)", callbackName);
+      rendered += 1;
+    }
+  });
+  menu.addToUi();
+  return rendered;
+}
+
+function EDSPowerCore_resolveMenuLabel_(item) {
+  const fallback = "EDS Power Action";
+  const label = item && typeof item.menu_label === "string" ? item.menu_label.trim() : "";
+  return label || fallback;
+}
+
+function EDSPowerCore_resolveMenuCallback_(item) {
+  if (!item || typeof item !== "object") {
+    return "";
+  }
+  const actionType = String(item.action_type || "").trim().toUpperCase();
+  const actionKey = String(item.action_key || "").trim().toUpperCase();
+  const normalizedAction = actionType || actionKey;
+  if (!EDS_POWER_MENU_ALLOWED_ACTIONS[normalizedAction]) {
+    return "";
+  }
+  if (normalizedAction === "REFRESH_MENU") {
+    return "edsPowerRefreshMenu";
+  }
+  if (normalizedAction === "SESSION_STATUS") {
+    return typeof runModule01AuthenticatedSessionStatusCheck === "function"
+      ? "runModule01AuthenticatedSessionStatusCheck"
+      : "edsPowerSessionStatusPlaceholder_";
+  }
+  if (normalizedAction === "LOGOUT") {
+    return "edsPowerLogout";
+  }
+  if (normalizedAction === "PLACEHOLDER_DISABLED") {
+    return "edsPowerModulePlaceholder_";
+  }
+  return "";
+}
+
+function EDSPowerCore_renderStaticFallbackMenu_() {
+  SpreadsheetApp.getUi()
+    .createMenu(EDS_POWER_BOOTSTRAP_MENU_TITLE)
+    .addItem("Оновити меню", "edsPowerRefreshMenu")
+    .addItem("Статус сесії", "edsPowerSessionStatusPlaceholder_")
+    .addItem("Module 01 — Розрахунки (planned)", "edsPowerModulePlaceholder_")
+    .addItem("Вийти", "edsPowerLogout")
+    .addToUi();
+}
+
+function edsPowerModulePlaceholder_() {
+  SpreadsheetApp.getUi().alert("Module 01 is not active in this mock menu slice.");
+}
+
+function edsPowerSessionStatusPlaceholder_() {
+  SpreadsheetApp.getUi().alert("Session status action is unavailable.");
 }
 
 function EDSPowerCore_showError(error, context) {
