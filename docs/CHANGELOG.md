@@ -6,6 +6,20 @@
 
 ---
 
+# 09.05.2026 — Module 01 Sidebar Planning (`DOC ONLY`)
+
+## Факт (**planning only**)
+
+- **Terminal Governance Patch:** **PASS / locked** — **Render Thinking / GAS Thin UI**, **main.py Thin Router** (`docs/00_SYSTEM/02_GLOBAL_RULES.md`); **GAS Deployment and Sync Doctrine** (`docs/ARCHITECTURE/EDS_POWER_GAS_DEPLOYMENT_AND_SYNC_DOCTRINE.md`); aligns with **Terminal UI Shell** **`ARCHITECTURE_LOCKED`**.
+- **Module 01 Sidebar Planning:** **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_PLANNING.md`** — first module **workspace** in shell (header, context, action groups, Create Calculation modal concept, `active_calculation`, future endpoints/registry keys) — **no** GAS/backend/SQL/registry implementation.
+- **Verdict:** **`MODULE_01_SIDEBAR_PLAN_READY_FOR_AUDIT`** — pending Gemini + user approval before any implementation task.
+
+## Далі
+
+- Gemini audit of sidebar planning doc; **do not** open sidebar/modal/endpoint implementation until explicit approval.
+
+---
+
 # 08.05.2026 — Terminal governance patch: Render thinking / GAS sync / main.py thin router (`DOC ONLY`)
 
 ## Факт (**governance documentation only**)
