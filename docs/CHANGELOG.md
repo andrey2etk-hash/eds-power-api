@@ -6,6 +6,53 @@
 
 ---
 
+# 07.05.2026 — Module 01 login: Render-side diagnostic logging (log only)
+
+## Факт (**backend only**)
+
+- **`POST /api/module01/auth/login`**: structured **`EDS_POWER_AUTH_LOGIN_DIAG`** log lines (JSON) per pipeline stage — **no** change to auth outcomes, **no** extra detail in API responses (still generic **`AUTH_FAILED`**).
+- **Does not log:** passwords, hashes, session tokens, service keys.
+- Slightly wider **Supabase `select`** on login only: `password_algorithm` on `module01_user_auth`, `spreadsheet_id` on `module01_user_terminals` — **same filters**, for diagnostic fields only.
+- Audit: **`docs/AUDITS/2026-05-07_RENDER_SUPABASE_AUTH_PATH_DIAGNOSTIC.md`**.
+
+## Далі
+
+- Deploy to Render; reproduce login; grep logs by **`EDS_POWER_AUTH_LOGIN_DIAG`** / **`request_id`**; remove or env-gate logging after triage.
+
+---
+
+# 07.05.2026 — GAS core dynamic menu refresh compatibility (GAS ONLY)
+
+## Факт (**thin client / no backend**)
+
+- **`EDSPowerCore_onTerminalOpen`** now attempts **`EDSPowerCore_refreshMenu`** (silent errors on open) instead of always static fallback.
+- **`edsPowerRefreshSetupCheck_`** uses **`buildEDSPowerTerminalContext_()`** when present; real **`terminal_id`** in diagnostics.
+- **`menu_source`** on success from **`envelope.metadata.menu_source`**; **auth_error** / **error** envelopes handled before misleading **ITEMS_MISSING**.
+- Neutral **Setup Required** alert; failure diagnostics may include **`endpoint_http_status`** when backend responded.
+- Audit: **`docs/AUDITS/2026-05-07_GAS_CORE_DYNAMIC_MENU_REFRESH_FIX.md`**.
+
+## Далі
+
+- Operator deploy GAS + verify **`registry`** menu path after login.
+
+---
+
+# 07.05.2026 — DB-Driven Menu Registry Render/operator test (live / governance)
+
+## Факт (**`RENDER_OPERATOR_TEST_BLOCKED` — partial verification**)
+
+- Public Render base **`https://eds-power-api.onrender.com`**: `GET /api/module01/auth/menu` without token → **`AUTH_MISSING_TOKEN`**; invalid Bearer → **`AUTH_INVALID_TOKEN`** (**PASS**).
+- **Authenticated** registry path (**`menu_source` = `registry`**, modules/menus, SYSTEM_SHELL / actions) and **Google Sheet** “Оновити меню”: **not executed** in this pass (requires operator session token; no secrets logged).
+- **Deployed commit SHA:** not confirmed from API — operator confirms Render dashboard vs `0aa7298`.
+- Audit: **`docs/AUDITS/2026-05-07_DB_DRIVEN_MENU_RENDER_OPERATOR_TEST.md`**.
+- **No GAS / DB / SQL / migration / Render env / backend code** changes in this task. Leftover local doc edits (`DYNAMIC_MENU_PAYLOAD_CONTRACT`, `2026-05-06` mock audit) **not** committed.
+
+## Далі
+
+- Operator-run authenticated + Sheet verification → update verdict to **`RENDER_OPERATOR_TEST_PASS`** or file regression.
+
+---
+
 # 07.05.2026 — DB-Driven Menu Backend Service (CODE ONLY / backend)
 
 ## Факт (**MenuRegistryService + authenticated `/api/module01/auth/menu`**)

@@ -54,7 +54,11 @@ class Module01AuthLoginEndpointTests(unittest.TestCase):
                 return {"password_hash": "$argon2id$v=19$m=65536,t=3,p=4$abc$def", "locked_until": None}
             if table == "module01_user_terminals":
                 if filters.get("spreadsheet_id") == "sheet-1":
-                    return {"id": "10578103-6c44-4eaf-a825-402d1fc5f7a6", "status": "ACTIVE"}
+                    return {
+                        "id": "10578103-6c44-4eaf-a825-402d1fc5f7a6",
+                        "status": "ACTIVE",
+                        "spreadsheet_id": "sheet-1",
+                    }
                 return None
             return None
 

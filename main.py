@@ -1,4 +1,6 @@
 import hashlib
+import json
+import logging
 import os
 import secrets
 from datetime import UTC, datetime, timedelta
@@ -143,6 +145,28 @@ AUTH_FAILURE_CODE = "AUTH_FAILED"
 AUTH_REQUIRED_ENV_KEYS = ("SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY", "AUTH_SESSION_TTL_HOURS")
 AUTH_MENU_MOCK_RESPONSE_VERSION = "EDS_POWER_MENU_V1"
 AUTH_MENU_ACTION = "menu"
+_AUTH_LOGIN_DIAG_ALLOWED_KEYS: frozenset[str] = frozenset(
+    {
+        "request_id",
+        "auth_stage",
+        "email_present",
+        "email_domain",
+        "spreadsheet_id_present",
+        "spreadsheet_id_suffix",
+        "supabase_query_user_found",
+        "user_status",
+        "supabase_query_terminal_found",
+        "terminal_status",
+        "terminal_spreadsheet_match",
+        "supabase_query_auth_row_found",
+        "password_algorithm",
+        "password_hash_present",
+        "locked_until_present",
+        "password_verify_result",
+        "final_auth_result",
+    }
+)
+
 AUTH_MENU_MOCK_ITEMS = [
     {
         "menu_id": "refresh_menu",
@@ -1198,6 +1222,45 @@ def _auth_validate_request_shape(payload: Any) -> tuple[str, str, str] | None:
     return email.strip().lower(), password, spreadsheet_id.strip()
 
 
+def _auth_redact_email_domain(email: Any) -> str | None:
+    if not isinstance(email, str):
+        return None
+    normalized = email.strip().lower()
+    if "@" not in normalized:
+        return None
+    domain = normalized.split("@", 1)[-1].strip()
+    return domain or None
+
+
+def _auth_redact_spreadsheet_suffix(spreadsheet_id: Any) -> str | None:
+    if not isinstance(spreadsheet_id, str):
+        return None
+    s = spreadsheet_id.strip()
+    if not s:
+        return None
+    return s[-6:] if len(s) >= 6 else s
+
+
+def _auth_login_shape_flags(payload: Any) -> tuple[bool, bool, str | None, str | None]:
+    if not isinstance(payload, dict):
+        return False, False, None, None
+    email = payload.get("email")
+    sid = payload.get("spreadsheet_id")
+    email_present = isinstance(email, str) and bool(email.strip())
+    spreadsheet_present = isinstance(sid, str) and bool(sid.strip())
+    return (
+        email_present,
+        spreadsheet_present,
+        _auth_redact_email_domain(email) if isinstance(email, str) else None,
+        _auth_redact_spreadsheet_suffix(sid) if isinstance(sid, str) else None,
+    )
+
+
+def _auth_emit_login_diagnostic(line: dict[str, Any]) -> None:
+    payload = {k: line[k] for k in _AUTH_LOGIN_DIAG_ALLOWED_KEYS if k in line}
+    logging.getLogger(__name__).info("EDS_POWER_AUTH_LOGIN_DIAG %s", json.dumps(payload, sort_keys=True))
+
+
 def _auth_parse_session_ttl_hours() -> int | None:
     raw = os.environ.get("AUTH_SESSION_TTL_HOURS", "").strip()
     if not raw:
@@ -1590,71 +1653,338 @@ def _auth_validate_session_context(
 @app.post("/api/module01/auth/login")
 def module01_auth_login(payload: dict[str, Any]):
     request_id = str(uuid4())
+    email_present, spreadsheet_id_present, email_domain, spreadsheet_id_suffix = _auth_login_shape_flags(payload)
     parsed = _auth_validate_request_shape(payload)
     if parsed is None:
+        _auth_emit_login_diagnostic(
+            {
+                "request_id": request_id,
+                "auth_stage": "LOGIN_REQUEST_RECEIVED",
+                "email_present": email_present,
+                "email_domain": email_domain,
+                "spreadsheet_id_present": spreadsheet_id_present,
+                "spreadsheet_id_suffix": spreadsheet_id_suffix,
+                "final_auth_result": "AUTH_FAILED",
+            }
+        )
         return _auth_failed_response(request_id)
     email, password, spreadsheet_id = parsed
+    email_domain = _auth_redact_email_domain(email)
+    spreadsheet_id_suffix = _auth_redact_spreadsheet_suffix(spreadsheet_id)
+
+    def _base_diag() -> dict[str, Any]:
+        return {
+            "request_id": request_id,
+            "email_present": True,
+            "email_domain": email_domain,
+            "spreadsheet_id_present": True,
+            "spreadsheet_id_suffix": spreadsheet_id_suffix,
+        }
 
     if not _auth_env_ready():
+        _auth_emit_login_diagnostic(
+            {**_base_diag(), "auth_stage": "LOGIN_REQUEST_RECEIVED", "final_auth_result": "AUTH_FAILED"}
+        )
         return _auth_config_error_response(request_id)
     ttl_hours = _auth_parse_session_ttl_hours()
     if ttl_hours is None:
+        _auth_emit_login_diagnostic(
+            {**_base_diag(), "auth_stage": "LOGIN_REQUEST_RECEIVED", "final_auth_result": "AUTH_FAILED"}
+        )
         return _auth_config_error_response(request_id)
     client = _auth_get_supabase_client()
     if client is None:
+        _auth_emit_login_diagnostic(
+            {**_base_diag(), "auth_stage": "LOGIN_REQUEST_RECEIVED", "final_auth_result": "AUTH_FAILED"}
+        )
         return _auth_config_error_response(request_id)
 
     try:
+        _auth_emit_login_diagnostic(
+            {**_base_diag(), "auth_stage": "USER_LOOKUP_STARTED", "final_auth_result": "AUTH_FAILED"}
+        )
         user = _auth_fetch_single(
             client,
             "module01_users",
             select="id,email,display_name,status",
             filters={"email": email},
         )
-        if user is None or user.get("status") != "ACTIVE":
+        if user is None:
+            _auth_emit_login_diagnostic(
+                {
+                    **_base_diag(),
+                    "auth_stage": "USER_LOOKUP_FAILED",
+                    "supabase_query_user_found": False,
+                    "final_auth_result": "AUTH_FAILED",
+                }
+            )
+            return _auth_failed_response(request_id)
+        if user.get("status") != "ACTIVE":
+            _auth_emit_login_diagnostic(
+                {
+                    **_base_diag(),
+                    "auth_stage": "USER_INACTIVE",
+                    "supabase_query_user_found": True,
+                    "user_status": str(user.get("status") or ""),
+                    "final_auth_result": "AUTH_FAILED",
+                }
+            )
             return _auth_failed_response(request_id)
         user_id = user.get("id")
         if not isinstance(user_id, str) or not user_id:
+            _auth_emit_login_diagnostic(
+                {
+                    **_base_diag(),
+                    "auth_stage": "USER_LOOKUP_FAILED",
+                    "supabase_query_user_found": True,
+                    "user_status": "ACTIVE",
+                    "final_auth_result": "AUTH_FAILED",
+                }
+            )
             return _auth_failed_response(request_id)
 
+        _auth_emit_login_diagnostic(
+            {
+                **_base_diag(),
+                "auth_stage": "USER_FOUND",
+                "supabase_query_user_found": True,
+                "user_status": "ACTIVE",
+                "final_auth_result": "AUTH_FAILED",
+            }
+        )
+
+        _auth_emit_login_diagnostic(
+            {
+                **_base_diag(),
+                "auth_stage": "AUTH_ROW_LOOKUP_STARTED",
+                "supabase_query_user_found": True,
+                "user_status": "ACTIVE",
+                "final_auth_result": "AUTH_FAILED",
+            }
+        )
         auth_row = _auth_fetch_single(
             client,
             "module01_user_auth",
-            select="password_hash,locked_until",
+            select="password_hash,locked_until,password_algorithm",
             filters={"user_id": user_id},
         )
         if auth_row is None:
+            _auth_emit_login_diagnostic(
+                {
+                    **_base_diag(),
+                    "auth_stage": "AUTH_ROW_MISSING",
+                    "supabase_query_user_found": True,
+                    "user_status": "ACTIVE",
+                    "supabase_query_auth_row_found": False,
+                    "final_auth_result": "AUTH_FAILED",
+                }
+            )
             return _auth_failed_response(request_id)
 
+        ph_raw = auth_row.get("password_hash")
+        password_hash_present = isinstance(ph_raw, str) and bool(ph_raw.strip())
+        palg = auth_row.get("password_algorithm")
+        password_algorithm = str(palg) if isinstance(palg, str) and palg.strip() else None
         locked_until = auth_row.get("locked_until")
+        locked_until_present = locked_until is not None and (
+            not isinstance(locked_until, str) or bool(locked_until.strip())
+        )
+
+        _auth_emit_login_diagnostic(
+            {
+                **_base_diag(),
+                "auth_stage": "AUTH_ROW_FOUND",
+                "supabase_query_user_found": True,
+                "user_status": "ACTIVE",
+                "supabase_query_auth_row_found": True,
+                "password_algorithm": password_algorithm,
+                "password_hash_present": password_hash_present,
+                "locked_until_present": locked_until_present,
+                "final_auth_result": "AUTH_FAILED",
+            }
+        )
+
         if isinstance(locked_until, str) and locked_until.strip():
             locked_ts = locked_until.strip()
             if locked_ts.endswith("Z"):
                 locked_ts = locked_ts[:-1] + "+00:00"
             try:
                 if datetime.fromisoformat(locked_ts) > datetime.now(UTC):
+                    _auth_emit_login_diagnostic(
+                        {
+                            **_base_diag(),
+                            "auth_stage": "USER_LOCKED",
+                            "supabase_query_user_found": True,
+                            "user_status": "ACTIVE",
+                            "supabase_query_auth_row_found": True,
+                            "password_algorithm": password_algorithm,
+                            "password_hash_present": password_hash_present,
+                            "locked_until_present": True,
+                            "final_auth_result": "AUTH_FAILED",
+                        }
+                    )
                     return _auth_failed_response(request_id)
             except ValueError:
+                _auth_emit_login_diagnostic(
+                    {
+                        **_base_diag(),
+                        "auth_stage": "USER_LOCKED",
+                        "supabase_query_user_found": True,
+                        "user_status": "ACTIVE",
+                        "supabase_query_auth_row_found": True,
+                        "password_algorithm": password_algorithm,
+                        "password_hash_present": password_hash_present,
+                        "locked_until_present": True,
+                        "final_auth_result": "AUTH_FAILED",
+                    }
+                )
                 return _auth_failed_response(request_id)
 
+        _auth_emit_login_diagnostic(
+            {
+                **_base_diag(),
+                "auth_stage": "PASSWORD_VERIFY_STARTED",
+                "supabase_query_user_found": True,
+                "user_status": "ACTIVE",
+                "supabase_query_auth_row_found": True,
+                "password_algorithm": password_algorithm,
+                "password_hash_present": password_hash_present,
+                "locked_until_present": locked_until_present,
+                "final_auth_result": "AUTH_FAILED",
+            }
+        )
         if not _auth_verify_password(auth_row.get("password_hash"), password):
+            _auth_emit_login_diagnostic(
+                {
+                    **_base_diag(),
+                    "auth_stage": "PASSWORD_VERIFY_FAILED",
+                    "supabase_query_user_found": True,
+                    "user_status": "ACTIVE",
+                    "supabase_query_auth_row_found": True,
+                    "password_algorithm": password_algorithm,
+                    "password_hash_present": password_hash_present,
+                    "locked_until_present": locked_until_present,
+                    "password_verify_result": False,
+                    "final_auth_result": "AUTH_FAILED",
+                }
+            )
             return _auth_failed_response(request_id)
 
         role_codes = _auth_fetch_active_roles(client, user_id)
         if "TEST_OPERATOR" not in role_codes:
+            _auth_emit_login_diagnostic(
+                {
+                    **_base_diag(),
+                    "auth_stage": "USER_FOUND",
+                    "supabase_query_user_found": True,
+                    "user_status": "ACTIVE",
+                    "supabase_query_auth_row_found": True,
+                    "password_algorithm": password_algorithm,
+                    "password_hash_present": password_hash_present,
+                    "locked_until_present": locked_until_present,
+                    "password_verify_result": True,
+                    "final_auth_result": "AUTH_FAILED",
+                }
+            )
             return _auth_failed_response(request_id)
 
+        _auth_emit_login_diagnostic(
+            {
+                **_base_diag(),
+                "auth_stage": "TERMINAL_LOOKUP_STARTED",
+                "supabase_query_user_found": True,
+                "user_status": "ACTIVE",
+                "supabase_query_auth_row_found": True,
+                "password_algorithm": password_algorithm,
+                "password_hash_present": password_hash_present,
+                "locked_until_present": locked_until_present,
+                "password_verify_result": True,
+                "final_auth_result": "AUTH_FAILED",
+            }
+        )
         terminal = _auth_fetch_single(
             client,
             "module01_user_terminals",
-            select="id,status",
+            select="id,status,spreadsheet_id",
             filters={"user_id": user_id, "spreadsheet_id": spreadsheet_id},
         )
-        if terminal is None or terminal.get("status") != "ACTIVE":
+        terminal_sheet = terminal.get("spreadsheet_id") if isinstance(terminal, dict) else None
+        terminal_match = isinstance(terminal_sheet, str) and terminal_sheet.strip() == spreadsheet_id
+        if terminal is None:
+            _auth_emit_login_diagnostic(
+                {
+                    **_base_diag(),
+                    "auth_stage": "SPREADSHEET_ID_MISMATCH",
+                    "supabase_query_user_found": True,
+                    "user_status": "ACTIVE",
+                    "supabase_query_auth_row_found": True,
+                    "password_algorithm": password_algorithm,
+                    "password_hash_present": password_hash_present,
+                    "locked_until_present": locked_until_present,
+                    "password_verify_result": True,
+                    "supabase_query_terminal_found": False,
+                    "terminal_spreadsheet_match": False,
+                    "final_auth_result": "AUTH_FAILED",
+                }
+            )
+            return _auth_failed_response(request_id)
+        if terminal.get("status") != "ACTIVE":
+            _auth_emit_login_diagnostic(
+                {
+                    **_base_diag(),
+                    "auth_stage": "TERMINAL_INACTIVE",
+                    "supabase_query_user_found": True,
+                    "user_status": "ACTIVE",
+                    "supabase_query_auth_row_found": True,
+                    "password_algorithm": password_algorithm,
+                    "password_hash_present": password_hash_present,
+                    "locked_until_present": locked_until_present,
+                    "password_verify_result": True,
+                    "supabase_query_terminal_found": True,
+                    "terminal_status": str(terminal.get("status") or ""),
+                    "terminal_spreadsheet_match": terminal_match,
+                    "final_auth_result": "AUTH_FAILED",
+                }
+            )
             return _auth_failed_response(request_id)
         terminal_id = terminal.get("id")
         if not isinstance(terminal_id, str) or not terminal_id:
+            _auth_emit_login_diagnostic(
+                {
+                    **_base_diag(),
+                    "auth_stage": "TERMINAL_LOOKUP_FAILED",
+                    "supabase_query_user_found": True,
+                    "user_status": "ACTIVE",
+                    "supabase_query_auth_row_found": True,
+                    "password_algorithm": password_algorithm,
+                    "password_hash_present": password_hash_present,
+                    "locked_until_present": locked_until_present,
+                    "password_verify_result": True,
+                    "supabase_query_terminal_found": True,
+                    "terminal_status": str(terminal.get("status") or ""),
+                    "terminal_spreadsheet_match": terminal_match,
+                    "final_auth_result": "AUTH_FAILED",
+                }
+            )
             return _auth_failed_response(request_id)
+
+        _auth_emit_login_diagnostic(
+            {
+                **_base_diag(),
+                "auth_stage": "TERMINAL_FOUND",
+                "supabase_query_user_found": True,
+                "user_status": "ACTIVE",
+                "supabase_query_auth_row_found": True,
+                "password_algorithm": password_algorithm,
+                "password_hash_present": password_hash_present,
+                "locked_until_present": locked_until_present,
+                "password_verify_result": True,
+                "supabase_query_terminal_found": True,
+                "terminal_status": "ACTIVE",
+                "terminal_spreadsheet_match": terminal_match,
+                "final_auth_result": "AUTH_FAILED",
+            }
+        )
 
         raw_session_token = secrets.token_urlsafe(32)
         session_token_hash = hashlib.sha256(raw_session_token.encode("utf-8")).hexdigest()
@@ -1676,6 +2006,24 @@ def module01_auth_login(payload: dict[str, Any]):
         }
         client.table("module01_user_sessions").insert(insert_payload).execute()
 
+        _auth_emit_login_diagnostic(
+            {
+                **_base_diag(),
+                "auth_stage": "LOGIN_SUCCESS",
+                "supabase_query_user_found": True,
+                "user_status": "ACTIVE",
+                "supabase_query_auth_row_found": True,
+                "password_algorithm": password_algorithm,
+                "password_hash_present": password_hash_present,
+                "locked_until_present": locked_until_present,
+                "password_verify_result": True,
+                "supabase_query_terminal_found": True,
+                "terminal_status": "ACTIVE",
+                "terminal_spreadsheet_match": terminal_match,
+                "final_auth_result": "LOGIN_SUCCESS",
+            }
+        )
+
         response_payload = {
             "status": "success",
             "data": {
@@ -1696,6 +2044,13 @@ def module01_auth_login(payload: dict[str, Any]):
         }
         return JSONResponse(status_code=200, content=response_payload)
     except Exception:  # noqa: BLE001
+        _auth_emit_login_diagnostic(
+            {
+                **_base_diag(),
+                "auth_stage": "USER_LOOKUP_FAILED",
+                "final_auth_result": "AUTH_FAILED",
+            }
+        )
         return _auth_failed_response(request_id)
 
 
