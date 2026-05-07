@@ -1,5 +1,6 @@
 const MODULE01_AUTH_ENDPOINT_PATH = "/api/module01/auth/login";
 const MODULE01_AUTH_SESSION_STATUS_ENDPOINT_PATH = "/api/module01/auth/session/status";
+const MODULE01_SIDEBAR_CONTEXT_ENDPOINT_PATH = "/api/module01/sidebar/context";
 const MODULE01_AUTH_BASE_URL_PROPERTY = "MODULE01_API_BASE_URL";
 
 function module01AuthRedactUrl_(url) {
@@ -43,6 +44,21 @@ function module01AuthResolveSessionStatusUrl_() {
     };
   }
   return baseUrl.replace(/\/+$/, "") + MODULE01_AUTH_SESSION_STATUS_ENDPOINT_PATH;
+}
+
+function module01AuthResolveSidebarContextUrl_() {
+  const scriptProps = PropertiesService.getScriptProperties();
+  const baseUrl = String(scriptProps.getProperty(MODULE01_AUTH_BASE_URL_PROPERTY) || "").trim();
+  if (!baseUrl) {
+    throw {
+      code: "AUTH_TRANSPORT_BASE_URL_MISSING",
+      message: "API base URL is missing.",
+      api_base_url_present: false,
+      endpoint_path: MODULE01_SIDEBAR_CONTEXT_ENDPOINT_PATH,
+      endpoint_url_redacted: ""
+    };
+  }
+  return baseUrl.replace(/\/+$/, "") + MODULE01_SIDEBAR_CONTEXT_ENDPOINT_PATH;
 }
 
 function module01AuthLoginTransport_(email, password, spreadsheetId) {
@@ -126,6 +142,37 @@ function module01AuthSessionStatusTransport_(sessionToken) {
   }
   if (!envelope || typeof envelope !== "object") {
     throw new Error("AUTH_STATUS_INVALID_ENVELOPE");
+  }
+  return {
+    http_status: response.getResponseCode(),
+    envelope: envelope
+  };
+}
+
+function module01SidebarContextTransport_(sessionToken) {
+  const endpointUrl = module01AuthResolveSidebarContextUrl_();
+  const token = String(sessionToken || "").trim();
+  if (!token) {
+    throw new Error("SESSION_TOKEN_MISSING");
+  }
+
+  const response = UrlFetchApp.fetch(endpointUrl, {
+    method: "get",
+    headers: {
+      Authorization: "Bearer " + token
+    },
+    muteHttpExceptions: true
+  });
+
+  const responseText = response.getContentText();
+  let envelope = null;
+  try {
+    envelope = JSON.parse(responseText);
+  } catch (_error) {
+    throw new Error("SIDEBAR_CONTEXT_INVALID_JSON");
+  }
+  if (!envelope || typeof envelope !== "object") {
+    throw new Error("SIDEBAR_CONTEXT_INVALID_ENVELOPE");
   }
   return {
     http_status: response.getResponseCode(),

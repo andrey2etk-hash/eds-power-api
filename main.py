@@ -18,6 +18,7 @@ from kzo_snapshot_persist import (
     validate_kzo_mvp_snapshot_v1,
 )
 from services.menu_registry_service import MenuRegistryService, resolve_menu_environment_scope
+from services.module01_sidebar_service import build_module01_sidebar_data
 import services.menu_registry_service as _menu_registry_svc
 
 try:
@@ -144,6 +145,7 @@ AUTH_FAILURE_CODE = "AUTH_FAILED"
 AUTH_REQUIRED_ENV_KEYS = ("SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY", "AUTH_SESSION_TTL_HOURS")
 AUTH_MENU_MOCK_RESPONSE_VERSION = "EDS_POWER_MENU_V1"
 AUTH_MENU_ACTION = "menu"
+AUTH_SIDEBAR_CONTEXT_ACTION = "sidebar_context"
 _AUTH_LOGIN_DIAG_ALLOWED_KEYS: frozenset[str] = frozenset(
     {
         "request_id",
@@ -1495,6 +1497,32 @@ def _menu_registry_error_response(
     )
 
 
+def _module01_sidebar_error_response(
+    *,
+    request_id: str,
+    started_at: float,
+    error_code: str,
+    message: str,
+) -> JSONResponse:
+    metadata = _auth_timed_metadata(request_id, started_at)
+    metadata["menu_source"] = "registry"
+    return JSONResponse(
+        status_code=200,
+        content={
+            "status": "error",
+            "data": None,
+            "error": {
+                "error_code": error_code,
+                "message": message,
+                "source_field": None,
+                "module": "MODULE_01",
+                "action": AUTH_SIDEBAR_CONTEXT_ACTION,
+            },
+            "metadata": metadata,
+        },
+    )
+
+
 def _auth_extract_bearer_token(authorization: str | None) -> str | None:
     if not isinstance(authorization, str):
         return None
@@ -2288,6 +2316,66 @@ def module01_auth_menu(authorization: str | None = Header(default=None, alias="A
                 "modules": modules,
                 "menus": menus_flat,
             },
+            "error": None,
+            "metadata": metadata,
+        },
+    )
+
+
+@app.get("/api/module01/sidebar/context")
+def module01_sidebar_context(authorization: str | None = Header(default=None, alias="Authorization")):
+    ctx, err = _auth_validate_session_context(authorization, action=AUTH_SIDEBAR_CONTEXT_ACTION)
+    if err is not None:
+        return err
+
+    client = ctx["client"]
+    user_id = ctx["user_id"]
+    request_id = ctx["request_id"]
+    started_at = ctx["started_at"]
+
+    role_codes = _auth_fetch_active_roles(client, user_id)
+    if not role_codes:
+        return _module01_sidebar_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code="MODULE01_PERMISSION_DENIED",
+            message="Role is not allowed for sidebar context.",
+        )
+
+    env_scope, escope_err = resolve_menu_environment_scope()
+    if escope_err:
+        return _module01_sidebar_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code="MODULE01_SIDEBAR_CONTEXT_UNAVAILABLE",
+            message="Menu environment scope is not configured validly.",
+        )
+
+    try:
+        data = build_module01_sidebar_data(
+            client=client,
+            user_id=user_id,
+            user_email=ctx.get("user_email"),
+            terminal_id=ctx["terminal_id"],
+            expires_at_dt=ctx["expires_at_dt"],
+            role_codes=role_codes,
+            environment_scope=env_scope,
+        )
+    except Exception:  # noqa: BLE001
+        return _module01_sidebar_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code="MODULE01_SIDEBAR_CONTEXT_UNAVAILABLE",
+            message="Sidebar context could not be built.",
+        )
+
+    metadata = _auth_timed_metadata(request_id, started_at)
+    metadata["menu_source"] = "registry"
+    return JSONResponse(
+        status_code=200,
+        content={
+            "status": "success",
+            "data": data,
             "error": None,
             "metadata": metadata,
         },

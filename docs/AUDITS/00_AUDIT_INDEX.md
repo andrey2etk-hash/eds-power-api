@@ -12,8 +12,9 @@ Rule:
 
 ## Latest audit
 
-- **Module 01 Sidebar Technical Spec (`DOC ONLY` / `MODULE_01_SIDEBAR_TECH_SPEC_READY_FOR_AUDIT` / pending Gemini) — Iteration 01 contracts: registry open, context GET, create POST, DocumentProperties id cache rules, primary actions, errors, event map — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_TECHNICAL_SPEC.md`**
-- **Module 01 Sidebar Planning (`PASS` / `SIDEBAR_DESIGN_LOCKED` / Gemini) — workspace design; superseded for implementation detail by technical spec — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_PLANNING.md`**
+- **Module 01 Sidebar Static Context V1 Implementation (`IMPLEMENTED_PENDING_OPERATOR_TEST`) — `GET /api/module01/sidebar/context`, GAS sidebar shell, menu `OPEN_SIDEBAR` mapping, tests 131 PASS — **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_IMPLEMENTATION.md`**
+- **Module 01 Sidebar Technical Spec (`PASS` / `TECH_SPEC_LOCKED` / Gemini) — contracts for sidebar + future create — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_TECHNICAL_SPEC.md`**
+- **Module 01 Sidebar Planning (`PASS` / `SIDEBAR_DESIGN_LOCKED` / Gemini) — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_PLANNING.md`**
 - **EDS Power Terminal Governance Patch (`PASS` / `LOCKED`) — `docs/00_SYSTEM/02_GLOBAL_RULES.md`; `docs/ARCHITECTURE/EDS_POWER_GAS_DEPLOYMENT_AND_SYNC_DOCTRINE.md` — see **`docs/NOW.md`**
 - **EDS Power Terminal UI Shell Doctrine (`PASS` / `ARCHITECTURE_LOCKED` / Gemini) — three-layer terminal UX — **`docs/ARCHITECTURE/EDS_POWER_TERMINAL_UI_SHELL_DOCTRINE.md`**
 - **Module 01 Calculation Slice 01 Planning (`DOC ONLY` / `MODULE_01_CALC_SLICE_01_PLAN_READY_FOR_AUDIT` / pending Gemini — implementation not active) — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CALC_SLICE_01_PLANNING.md`**

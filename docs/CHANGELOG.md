@@ -6,6 +6,22 @@
 
 ---
 
+# 10.05.2026 — Module 01 Sidebar Static Context V1 (`implementation`)
+
+## Факт (**bounded slice**)
+
+- **Tech spec:** **Gemini PASS / `TECH_SPEC_LOCKED`** per task context — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_TECHNICAL_SPEC.md`**.
+- **Backend:** **`GET /api/module01/sidebar/context`** — Bearer session, **`services/module01_sidebar_service.py`**, thin **`main.py`** wiring; **no** calculation/product logic; **no** Cursor SQL/migrations/Render env.
+- **GAS:** **`gas/Module01Sidebar.gs`**, **`gas/Module01Sidebar.html`**, **`gas/AuthTransport.gs`** (sidebar transport), **`gas/core/EDSPowerCore.gs`** (`OPEN_SIDEBAR` → **`edsPowerOpenModule01Sidebar`**); loading + error UI (no blank sidebar).
+- **Tests:** **131** pytest **PASS** (includes **`tests/test_module01_sidebar_context_endpoint.py`**).
+- **Closeout:** **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_IMPLEMENTATION.md`**.
+
+## Далі
+
+- Operator: sync GAS files; deploy API; smoke sidebar; optional registry row **`OPEN_MODULE_01_SIDEBAR`** via **manual SQL** if schema supports — **do not** open Create Calculation modal slice until tasked.
+
+---
+
 # 10.05.2026 — Module 01 Sidebar Technical Spec (`DOC ONLY`)
 
 ## Факт (**technical spec only**)

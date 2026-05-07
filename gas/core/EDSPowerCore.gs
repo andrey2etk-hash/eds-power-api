@@ -6,34 +6,48 @@ const EDS_POWER_MENU_ALLOWED_ACTIONS = {
   REFRESH_MENU: true,
   SESSION_STATUS: true,
   LOGOUT: true,
-  PLACEHOLDER_DISABLED: true
+  PLACEHOLDER_DISABLED: true,
+  OPEN_SIDEBAR: true,
+  OPEN_MODULE_01_SIDEBAR: true
 };
 
 function EDSPowerCore_onTerminalOpen(context) {
   const safeContext = EDSPowerCore_sanitizeContext_(context);
-  EDSPowerCore_renderStaticFallbackMenu_();
+  const refreshOutcome = EDSPowerCore_refreshMenu(context, { silent_errors: true });
   return {
     status: "success",
     core_reachable: true,
     core_version: EDSPowerCore_VERSION,
-    message: "EDSPowerCore foundation reachable",
+    message:
+      refreshOutcome.status === "success"
+        ? "EDSPowerCore reachable; menu refresh attempted"
+        : "EDSPowerCore reachable; dynamic menu unavailable, fallback active",
     terminal_id: safeContext.terminal_id,
     terminal_id_present: !!safeContext.terminal_id,
-    spreadsheet_id_present: !!safeContext.spreadsheet_id
+    spreadsheet_id_present: !!safeContext.spreadsheet_id,
+    menu_refresh_status: refreshOutcome.status,
+    menu_source: refreshOutcome.menu_source || null
   };
 }
 
-function EDSPowerCore_refreshMenu(context) {
+function EDSPowerCore_refreshMenu(context, options) {
   const safeContext = EDSPowerCore_sanitizeContext_(context);
+  const opts = options && typeof options === "object" ? options : {};
+  const silentErrors = opts.silent_errors === true;
   try {
     const transportResult = EDSPowerCore_fetchMenuEnvelope_(safeContext);
     const envelope = transportResult.envelope || {};
     const data = envelope.data || {};
+    const meta = envelope.metadata && typeof envelope.metadata === "object" ? envelope.metadata : {};
+    const resolvedMenuSource =
+      typeof meta.menu_source === "string" && meta.menu_source.trim()
+        ? meta.menu_source.trim()
+        : "unknown";
     const menus = Array.isArray(data.menus) ? data.menus : [];
     const rendered = EDSPowerCore_renderDynamicMenu_(menus);
     const diagnostic = {
       stage: "EDS_POWER_DYNAMIC_MENU_REFRESH",
-      menu_source: "mock_backend",
+      menu_source: resolvedMenuSource,
       base_url_present: transportResult.base_url_present === true,
       endpoint_path: transportResult.endpoint_path || EDS_POWER_DYNAMIC_MENU_ENDPOINT_PATH,
       endpoint_http_status: typeof transportResult.http_status === "number" ? transportResult.http_status : null,
@@ -47,7 +61,7 @@ function EDSPowerCore_refreshMenu(context) {
     Logger.log(JSON.stringify(diagnostic));
     return {
       status: "success",
-      menu_source: "mock_backend",
+      menu_source: resolvedMenuSource,
       core_reachable: true,
       core_version: EDSPowerCore_VERSION,
       terminal_id: safeContext.terminal_id,
@@ -56,7 +70,7 @@ function EDSPowerCore_refreshMenu(context) {
     };
   } catch (error) {
     EDSPowerCore_renderStaticFallbackMenu_();
-    if (typeof EDSPowerCore_showError === "function") {
+    if (!silentErrors && typeof EDSPowerCore_showError === "function") {
       EDSPowerCore_showError(error, safeContext);
     }
     const errorCode = error && typeof error.code === "string"
@@ -65,12 +79,14 @@ function EDSPowerCore_refreshMenu(context) {
     const errorMessage = error && typeof error.message === "string"
       ? error.message
       : "Unknown menu refresh error.";
+    const errHttp =
+      error && typeof error.http_status === "number" ? error.http_status : null;
     const diagnostic = {
       stage: "EDS_POWER_DYNAMIC_MENU_REFRESH",
       menu_source: "fallback_static",
       base_url_present: errorCode === "EDS_POWER_MENU_BASE_URL_MISSING" ? false : null,
       endpoint_path: EDS_POWER_DYNAMIC_MENU_ENDPOINT_PATH,
-      endpoint_http_status: null,
+      endpoint_http_status: errHttp,
       rendered_items: 2,
       terminal_id_mode: safeContext.terminal_id_mode || "unknown",
       terminal_id_present: !!safeContext.terminal_id,
@@ -84,7 +100,8 @@ function EDSPowerCore_refreshMenu(context) {
       menu_source: "fallback_static",
       core_reachable: true,
       core_version: EDSPowerCore_VERSION,
-      terminal_id: safeContext.terminal_id
+      terminal_id: safeContext.terminal_id,
+      endpoint_http_status: errHttp
     };
   }
 }
@@ -173,11 +190,39 @@ function EDSPowerCore_fetchMenuEnvelope_(context) {
   if (!envelope || typeof envelope !== "object") {
     throw new Error("EDS_POWER_MENU_INVALID_ENVELOPE");
   }
+  const httpStatus = response.getResponseCode();
+  const envStatus = typeof envelope.status === "string" ? envelope.status : "";
+  if (envStatus === "auth_error") {
+    const errObj = envelope.error && typeof envelope.error === "object" ? envelope.error : {};
+    throw {
+      code: typeof errObj.error_code === "string" ? errObj.error_code : "AUTH_MISSING_TOKEN",
+      message:
+        typeof errObj.message === "string"
+          ? errObj.message
+          : "Authorization required for menu. Sign in via Module 01 Auth.",
+      http_status: httpStatus
+    };
+  }
+  if (envStatus === "error") {
+    const errObj = envelope.error && typeof envelope.error === "object" ? envelope.error : {};
+    throw {
+      code: typeof errObj.error_code === "string" ? errObj.error_code : "MENU_SERVICE_ERROR",
+      message:
+        typeof errObj.message === "string"
+          ? errObj.message
+          : "Menu service returned an error.",
+      http_status: httpStatus
+    };
+  }
   if (!envelope.data || !Array.isArray(envelope.data.menus)) {
-    throw new Error("EDS_POWER_MENU_ITEMS_MISSING");
+    throw {
+      code: "EDS_POWER_MENU_ITEMS_MISSING",
+      message: "Menu response did not include a menus array.",
+      http_status: httpStatus
+    };
   }
   return {
-    http_status: response.getResponseCode(),
+    http_status: httpStatus,
     base_url_present: true,
     endpoint_path: EDS_POWER_DYNAMIC_MENU_ENDPOINT_PATH,
     envelope: envelope
@@ -243,6 +288,9 @@ function EDSPowerCore_resolveMenuCallback_(item) {
   if (!EDS_POWER_MENU_ALLOWED_ACTIONS[normalizedAction]) {
     return "";
   }
+  if (normalizedAction === "OPEN_SIDEBAR" || actionKey === "OPEN_MODULE_01_SIDEBAR") {
+    return "edsPowerOpenModule01Sidebar";
+  }
   if (normalizedAction === "REFRESH_MENU") {
     return "edsPowerRefreshMenu";
   }
@@ -269,11 +317,19 @@ function EDSPowerCore_renderStaticFallbackMenu_() {
 }
 
 function edsPowerFallbackSetupRequired_() {
-  SpreadsheetApp.getUi().alert("Setup required: set MODULE01_API_BASE_URL in Script Properties.");
+  SpreadsheetApp.getUi().alert(
+    "EDS Power setup or menu refresh failed. Check Apps Script logs (View → Logs)."
+  );
 }
 
 function edsPowerRefreshSetupCheck_() {
-  EDSPowerCore_refreshMenu(EDSPowerCore_sanitizeContext_({}));
+  var ctx;
+  if (typeof buildEDSPowerTerminalContext_ === "function") {
+    ctx = buildEDSPowerTerminalContext_();
+  } else {
+    ctx = EDSPowerCore_sanitizeContext_({});
+  }
+  EDSPowerCore_refreshMenu(ctx);
 }
 
 function edsPowerModulePlaceholder_() {

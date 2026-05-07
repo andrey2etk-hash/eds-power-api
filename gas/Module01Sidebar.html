@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top" />
+    <meta charset="utf-8" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 8px;
+        font-size: 13px;
+        color: #202124;
+      }
+      h1 {
+        font-size: 15px;
+        margin: 0 0 8px 0;
+      }
+      h2 {
+        font-size: 13px;
+        margin: 12px 0 6px 0;
+      }
+      .panel {
+        border: 1px solid #dadce0;
+        border-radius: 4px;
+        padding: 8px;
+        margin-bottom: 10px;
+        background: #fff;
+      }
+      .muted {
+        color: #5f6368;
+        font-size: 12px;
+      }
+      .err {
+        border-color: #ea4335;
+        background: #fce8e6;
+        color: #c5221f;
+      }
+      .load {
+        border-color: #1a73e8;
+        background: #e8f0fe;
+        color: #1967d2;
+      }
+      button {
+        display: block;
+        width: 100%;
+        margin: 4px 0;
+        padding: 6px 8px;
+        font-size: 12px;
+        cursor: not-allowed;
+        opacity: 0.65;
+      }
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="state-loading" class="panel load">
+      Завантаження контексту…
+    </div>
+    <div id="state-error" class="panel err hidden">
+      <strong>Помилка</strong>
+      <div id="error-text" class="muted"></div>
+    </div>
+    <div id="state-main" class="hidden">
+      <h1>Module 01 — Розрахунки</h1>
+
+      <div class="panel">
+        <h2>Сесія / користувач</h2>
+        <div id="user-line" class="muted"></div>
+        <div id="session-line" class="muted"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Поточний розрахунок</h2>
+        <div id="calc-context" class="muted">No active calculation</div>
+      </div>
+
+      <div class="panel">
+        <h2>Основні дії</h2>
+        <button type="button" disabled>Створити новий розрахунок</button>
+        <button type="button" disabled>Знайти розрахунок</button>
+        <button type="button" disabled>Відкрити поточний розрахунок</button>
+        <button type="button" disabled>Оновити статус</button>
+        <p class="muted" style="margin: 6px 0 0 0">Ітерація V1: кнопки-заглушки (без дій).</p>
+      </div>
+    </div>
+
+    <script>
+      function showEl(id, on) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        if (on) el.classList.remove("hidden");
+        else el.classList.add("hidden");
+      }
+
+      function showError(msg) {
+        showEl("state-loading", false);
+        showEl("state-main", false);
+        showEl("state-error", true);
+        document.getElementById("error-text").textContent = msg || "Невідома помилка.";
+      }
+
+      function applySidebar(sb) {
+        showEl("state-loading", false);
+        showEl("state-error", false);
+        showEl("state-main", true);
+
+        var u = sb.user || {};
+        var s = sb.session || {};
+        document.getElementById("user-line").textContent =
+          (u.display_name || "") + (u.role_code ? " · " + u.role_code : "");
+        var exp = s.expires_at || "";
+        var rem = typeof s.remaining_seconds === "number" ? s.remaining_seconds : null;
+        var sessText = "Сесія: активна";
+        if (exp) {
+          sessText += ". Закінчення (UTC): " + exp;
+        }
+        if (rem !== null) {
+          sessText += ". Залишилось секунд: ~" + rem;
+        }
+        document.getElementById("session-line").textContent = sessText;
+
+        var ac = sb.active_calculation;
+        var ctx = document.getElementById("calc-context");
+        if (!ac) {
+          ctx.textContent = "No active calculation";
+        } else {
+          ctx.textContent = JSON.stringify(ac);
+        }
+      }
+
+      function onResult(result) {
+        if (!result || !result.ok) {
+          showError(result && result.message ? result.message : "Помилка завантаження.");
+          return;
+        }
+        var env = result.envelope || {};
+        var data = env.data || {};
+        if (!data.sidebar) {
+          showError("Відповідь без sidebar.");
+          return;
+        }
+        applySidebar(data.sidebar);
+      }
+
+      function onFailure() {
+        showError("Не вдалося викликати сервер (google.script.run).");
+      }
+
+      function start() {
+        google.script.run.withSuccessHandler(onResult).withFailureHandler(onFailure).module01SidebarServerGetContext();
+      }
+
+      start();
+    </script>
+  </body>
+</html>

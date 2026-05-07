@@ -290,32 +290,44 @@ Notes:
 - Planning doc: **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CALC_SLICE_01_PLANNING.md`** — verdict **`MODULE_01_CALC_SLICE_01_PLAN_READY_FOR_AUDIT`**; **no** Python/GAS/DB/SQL implementation in planning task.
 - **Governance:** Terminal shell + governance patch **locked**; **sidebar** design **`SIDEBAR_DESIGN_LOCKED`**; **technical spec** **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_TECHNICAL_SPEC.md`** gates first implementation slice alongside calc planning reference.
 - **Terminal UI Shell Doctrine:** **Gemini PASS / `ARCHITECTURE_LOCKED`** — `docs/ARCHITECTURE/EDS_POWER_TERMINAL_UI_SHELL_DOCTRINE.md`.
-- **Next:** **Sidebar technical spec** Gemini audit (`MODULE_01_SIDEBAR_TECH_SPEC_READY_FOR_AUDIT`); calc slice audit / implementation only if explicitly opened.
+- **Next:** operator sidebar **live** test; calc slice audit / implementation only if explicitly opened.
 
 ### EDS_POWER_MODULE_01_SIDEBAR_PLANNING
 
 Status:
 
-- `SIDEBAR_DESIGN_LOCKED_TECH_SPEC_PENDING`
+- `SIDEBAR_DESIGN_LOCKED`
 
 Notes:
 
 - **Started only after** Terminal UI Shell Doctrine and Terminal Governance Patch were **locked** (Render Thinking, GAS Thin UI, main.py Thin Router, GAS Deployment and Sync).
-- Planning doc: **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_PLANNING.md`** — **Gemini PASS / `SIDEBAR_DESIGN_LOCKED`** (supersedes planning-era ready-for-audit token for design decisions).
-- **Follow-on:** **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_TECHNICAL_SPEC.md`** — **`MODULE_01_SIDEBAR_TECH_SPEC_READY_FOR_AUDIT`** — implementation-ready contract; **no** code in spec task.
+- Planning doc: **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_PLANNING.md`** — **Gemini PASS / `SIDEBAR_DESIGN_LOCKED`**.
+- **Technical spec:** **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_TECHNICAL_SPEC.md`** — **`TECH_SPEC_LOCKED`**; **V1 implementation** — sidebar static context closeout **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_IMPLEMENTATION.md`**.
 - **Locked decisions:** registry opens sidebar; backend owns `active_calculation`; DocumentProperties may cache id only; server revalidates every action; first modal = Create Calculation + immediate persist; grouped/collapsible sections.
 
 ### EDS_POWER_MODULE_01_SIDEBAR_TECHNICAL_SPEC
 
 Status:
 
-- `DOC_PENDING_AUDIT`
+- `TECH_SPEC_LOCKED_IMPLEMENTATION_V1_PENDING_OPERATOR_TEST`
 
 Notes:
 
-- **Technical spec** for Sidebar Iteration 01 — registry `OPEN_MODULE_01_SIDEBAR`, `GET /api/module01/sidebar/context`, `POST /api/module01/calculations/create`, payloads, errors, event map, **DocumentProperties** key `EDS_POWER_MODULE01_ACTIVE_CALCULATION_ID`.
-- **Spec:** **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_TECHNICAL_SPEC.md`** — last **documentation** step before possible first **HTML/GAS** implementation slice.
-- **Next:** Gemini audit + user approval before **`MODULE_01_SIDEBAR_STATIC_CONTEXT_V1`** or create-modal slice.
+- **Technical spec** for Sidebar Iteration 01 — registry `OPEN_MODULE_01_SIDEBAR`, `GET /api/module01/sidebar/context`, `POST /api/module01/calculations/create` (planned only), errors, event map.
+- **Spec:** **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_TECHNICAL_SPEC.md`** — **Gemini PASS / `TECH_SPEC_LOCKED`**.
+- **Implementation:** **`GET /api/module01/sidebar/context`** + GAS/HTML shell — closeout **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_IMPLEMENTATION.md`**.
+- **Next:** operator test + optional registry SQL (manual); **not** active: Create Calculation modal.
+
+### EDS_POWER_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1
+
+Status:
+
+- `IMPLEMENTED_PENDING_OPERATOR_TEST`
+
+Notes:
+
+- First **Module 01** sidebar **shell**: authenticated context only; **no** calculation/create; **no** Cursor SQL.
+- **Artifacts:** `services/module01_sidebar_service.py`, `main.py` route, `tests/test_module01_sidebar_context_endpoint.py`, `gas/Module01Sidebar.gs`, `gas/Module01Sidebar.html`, `gas/AuthTransport.gs`, `gas/core/EDSPowerCore.gs`.
 
 ### EDS_POWER_TERMINAL_UI_SHELL_DOCTRINE
 
