@@ -27,45 +27,45 @@ No code in this document.
 |---------|-----------------|
 | **12-digit `calculation_base_number`** | **`^[0-9]{12}$`** per DDL — store **only** 12 digits in `module01_calculations.calculation_base_number`. **Never** store `YYYYMMDDHHMM-XX` in this column. |
 | **UI display vs DB** | **Display** = `{base_number}-{version_suffix_digits}` e.g. `202605071904-00` where the suffix digits are the two digits from `version_suffix` **without** the leading hyphen for display concatenation logic — i.e. base `202605071904` + `-` + `00` from `-00`. |
-| **`product_type` / `comment` / `external_reference` gaps** | No `product_type` or `external_reference` on `module01_calculations` in repo DDL. **`comment`** has no dedicated header column; **`module01_calculation_versions.notes`** exists. See **§5** and **§8**. |
+| **`product_type` / `comment` / `external_reference` gaps** | **CONFIRMED:** no dedicated columns on **`module01_calculations`**. **V1:** all three map into **`module01_calculation_versions.notes`** via a **structured notes template** (operator closeout). See **§ Confirmed V1 Persistence Mapping**. |
 | **Initial version row** | **Create immediately** in the same backend transaction as header: `version_suffix` = **`-00`** (matches default in DDL). Required so `module01_calculation_status_history` can reference **`calculation_version_id`**. |
 | **`MODULE01_CREATE_CALCULATION` registry** | Must exist as a **permission/registry action** before implementation ships to production users. **No SQL in this task** — prepare **S02** manual SQL / migration planning only (**§14**). |
 
 ## 4. Existing Schema Summary
 
-**Source:** repository migration only (`20260504190000_module01_schema_slice_01.sql`). **Not** live Supabase-connected.
+**Sources:** (1) repository migration `supabase/migrations/20260504190000_module01_schema_slice_01.sql`; (2) **operator read-only Supabase evidence** (columns, constraints, indexes, row counts) — recorded in **§ Schema Confirmation Result**.
+
+**Remote vs repo:** **CONFIRMED** — operator evidence matches the migration-derived expectations below for the three calculation tables (no drift reported for this confirmation slice).
 
 ### `public.module01_calculations`
 
 | Column | Type | Constraints / notes |
 |--------|------|----------------------|
 | `id` | uuid | PK, `gen_random_uuid()` |
-| `calculation_base_number` | text | NOT NULL, **unique**, CHECK **`^[0-9]{12}$`** |
-| `title` | text | nullable |
-| `potential_customer` | text | nullable |
+| `calculation_base_number` | text | NOT NULL, **UNIQUE**, CHECK **`^[0-9]{12}$`** — **CONFIRMED** (operator) |
+| `title` | text | nullable — **CONFIRMED** |
+| `potential_customer` | text | nullable — **CONFIRMED** |
 | `sales_manager_user_id` | uuid | FK → `module01_users`, nullable |
-| `created_by_user_id` | uuid | NOT NULL, FK → `module01_users` |
-| `current_status` | text | NOT NULL, default **`DRAFT`**, status enum CHECK |
-| `is_archived` | boolean | NOT NULL, default false |
+| `created_by_user_id` | uuid | NOT NULL, FK → `module01_users` — **CONFIRMED** |
+| `current_status` | text | NOT NULL, default **`DRAFT`**, status enum CHECK — **CONFIRMED** |
+| `is_archived` | boolean | NOT NULL, default **false** — **CONFIRMED** |
 | `created_at` / `updated_at` | timestamptz | NOT NULL |
 
-**Unknown without operator read-only query:** whether **remote** DB matches this file exactly (drift, manual hotfixes). Mark **UNKNOWN** if operator verification fails.
-
-**Confirmed absent in this migration:** **`product_type`**, **`external_reference`**, **`comment`**, **`metadata` / JSONB** on this table.
+**CONFIRMED absent (no dedicated columns):** **`product_type`**, **`external_reference`**, **`comment`**, **`metadata` / JSONB** on this table — **interim** persistence via **`module01_calculation_versions.notes`** (**§ Confirmed V1 Persistence Mapping**).
 
 ### `public.module01_calculation_versions`
 
 | Column | Type | Constraints / notes |
 |--------|------|----------------------|
 | `id` | uuid | PK |
-| `calculation_id` | uuid | NOT NULL, FK → `module01_calculations` |
-| `version_suffix` | text | NOT NULL, default **`-00`**, CHECK **`^-[0-9]{2}$`**, **unique per** `(calculation_id, version_suffix)` |
-| `calculation_version_number` | text | NOT NULL, **globally unique** |
-| `status` | text | NOT NULL, default **`DRAFT`**, status enum CHECK |
-| `created_by_user_id` | uuid | NOT NULL |
+| `calculation_id` | uuid | NOT NULL, FK → `module01_calculations` — **CONFIRMED** |
+| `version_suffix` | text | NOT NULL, default **`-00`**, CHECK **`^-[0-9]{2}$`**, **unique per** `(calculation_id, version_suffix)` — **CONFIRMED** |
+| `calculation_version_number` | text | NOT NULL, **globally unique** — **CONFIRMED** |
+| `status` | text | NOT NULL, default **`DRAFT`**, status enum CHECK — **CONFIRMED** |
+| `created_by_user_id` | uuid | NOT NULL — **CONFIRMED** |
 | `source_version_id` | uuid | nullable, self-FK |
 | `locked_at`, `locked_by_user_id`, `lock_reason` | — | lock invariant |
-| `notes` | text | nullable |
+| `notes` | text | nullable — **CONFIRMED** (V1 structured payload for `product_type` / `comment` / `external_reference`) |
 | `created_at` / `updated_at` | timestamptz | NOT NULL |
 
 ### `public.module01_calculation_status_history`
@@ -73,20 +73,22 @@ No code in this document.
 | Column | Type | Constraints / notes |
 |--------|------|----------------------|
 | `id` | uuid | PK |
-| `calculation_version_id` | uuid | NOT NULL, FK → `module01_calculation_versions` |
+| `calculation_version_id` | uuid | NOT NULL, FK → `module01_calculation_versions` — **CONFIRMED** (required) |
 | `old_status` | text | nullable (CHECK) |
-| `new_status` | text | NOT NULL (CHECK) |
-| `changed_by_user_id` | uuid | NOT NULL |
+| `new_status` | text | NOT NULL (CHECK) — **CONFIRMED** |
+| `changed_by_user_id` | uuid | NOT NULL — **CONFIRMED** |
 | `changed_at` | timestamptz | NOT NULL |
 | `reason`, `notes` | text | nullable |
 | `request_id` | uuid | nullable |
 | `source_client` | text | nullable |
 
-**Implication:** **status history requires a version id** — header-only insert is **insufficient** if history is written on create.
+**Implication (CONFIRMED):** **status history requires `calculation_version_id`** — create flow must insert **version `-00`** before history.
+
+**Row counts (operator read-only):** **`module01_calculations`**, **`module01_calculation_versions`**, **`module01_calculation_status_history`** — **0** rows each at confirmation time.
 
 ### JSONB elsewhere (not calculation header)
 
-`public.module01_audit_events` includes **`metadata jsonb`** — acceptable for **audit telemetry**, not as the **authoritative** store for `product_type` / header fields unless a **separate** audited design says otherwise. This spec treats **calculation facts** as **row/column (or S02)** only.
+`public.module01_audit_events` includes **`metadata jsonb`** — acceptable for **audit telemetry** only. **V1 authoritative** storage for `product_type` / free-text fields without header columns is **`module01_calculation_versions.notes`** using the **structured notes template** (**§ Confirmed V1 Persistence Mapping**).
 
 ### Roles / registry (repo)
 
@@ -97,13 +99,13 @@ No code in this document.
 
 | Modal field | Required | Backend validation | DB target | Notes |
 |-------------|----------|-------------------|-----------|--------|
-| `calculation_title` | **yes** | Non-empty string; max length **TBD** (confirm before implementation) | **Direct:** `module01_calculations.title` | DDL allows NULL; backend enforces NOT NULL on create. |
-| `potential_customer` | **yes** | Non-empty string; max length **TBD** | **Direct:** `module01_calculations.potential_customer` | Same as title for nullability vs validation. |
-| `product_type` | **yes** | Must be **`KZO`** for V1 | **requires S02 migration** (recommended: add `product_type` to `module01_calculations` with CHECK, or add `header_metadata jsonb` with documented keys) | **No** suitable authoritative column in current repo DDL. **Do not** pretend `audit_events.metadata` is source of truth without a new audit. |
-| `comment` | optional | Length / safety **TBD** | **Direct:** `module01_calculation_versions.notes` (initial **`-00`** row) | If both `comment` and `external_reference` are non-empty and `external_reference` is not yet in S02, backend may **merge** into `notes` with a **stable, documented** text template (interim). |
-| `external_reference` | optional | Length / safety **TBD** | **Preferred:** **S02** — e.g. `module01_calculations.external_reference` | **Interim:** merge into **`module01_calculation_versions.notes`** with labeled line (`Ref:`) until S02 lands — document in implementation, remove after S02. |
+| `calculation_title` | **yes** | Non-empty string; max length **TBD** | **Direct:** `module01_calculations.title` | **CONFIRMED** column; backend enforces NOT NULL on create. |
+| `potential_customer` | **yes** | Non-empty string; max length **TBD** | **Direct:** `module01_calculations.potential_customer` | **CONFIRMED** column. |
+| `product_type` | **yes** | Must be **`KZO`** for V1 | **`module01_calculation_versions.notes`** (structured template) | **CONFIRMED V1** — no header column; **§ Confirmed V1 Persistence Mapping**. |
+| `comment` | optional | Length / safety **TBD** | **`module01_calculation_versions.notes`** (structured template) | **CONFIRMED V1**. |
+| `external_reference` | optional | Length / safety **TBD** | **`module01_calculation_versions.notes`** (structured template) | **CONFIRMED V1**. |
 
-**No invented columns in this spec:** targets marked **S02** require an **audited migration** and **manual apply** per governance.
+**Structured `notes`:** implementation MUST use a **versioned, deterministic** template (e.g. line-oriented `PRODUCT_TYPE:`, `COMMENT:`, `REF:`) so future migrations can parse or migrate to dedicated columns without ambiguity.
 
 ## 6. Calculation Number Contract
 
@@ -122,9 +124,8 @@ No code in this document.
 
 ### `calculation_version_number` (persisted, globally unique)
 
-- Repo DDL: **`calculation_version_number`** `text NOT NULL` **UNIQUE** (no format CHECK).
-- **Recommended value:** **same as UI display number** **`{base}-00`** e.g. `202605071904-00`, **if** global uniqueness holds (base unique + `-00` first version).
-- **Open:** if product requires a different internal key, keep **display** stable and use alternate `calculation_version_number` — **requires schema/ops confirmation**.
+- **CONFIRMED:** NOT NULL, **globally UNIQUE** (operator + repo).
+- **V1 value:** **same as UI display number** **`{calculation_base_number}-{suffix_digits}`** e.g. `202605071904-00` (base **12 digits** + hyphen + **`00`** from **`version_suffix`** `-00`).
 
 ## 7. Create Transaction Sequence
 
@@ -134,13 +135,14 @@ Backend sequence (single **transaction** recommended):
 2. Resolve **user** from session (reject payload `user_id`).
 3. Resolve **role(s)** and **permission** for **`MODULE01_CREATE_CALCULATION`** (registry / static allowlist — **implementation choice**, must be backend-only).
 4. Validate **active terminal** and **`spreadsheet_id`** match session binding.
-5. Validate payload (required fields, `product_type` = **`KZO`**, lengths).
-6. If **`product_type`** persistence requires S02 and S02 is **not** applied: fail with **`MODULE01_CREATE_SCHEMA_UNSUPPORTED`** (or narrow feature flag — **governance decision**).
-7. Generate **`calculation_base_number`** (12 digits).
-8. **Insert** `module01_calculations` row: `title`, `potential_customer`, `created_by_user_id`, `current_status` = **`DRAFT`**, `calculation_base_number`, optional S02 columns when present.
-9. **Insert** `module01_calculation_versions` row: `calculation_id`, **`version_suffix` = `'-00'`**, **`calculation_version_number`** per **§6**, `status` = **`DRAFT`**, `notes` per **§5**, `created_by_user_id`.
-10. **Insert** `module01_calculation_status_history`: `calculation_version_id` = new version id, `old_status` = **null**, `new_status` = **`DRAFT`**, `changed_by_user_id`, `source_client`, `request_id` if available.
-11. **Commit**; return **§10** success envelope including **`sidebar_update`**.
+5. Validate payload (required fields, `product_type` = **`KZO`**, lengths; ensure structured **`notes`** payload fits DB **`text`** limits — **TBD** max).
+6. Generate **`calculation_base_number`** (12 digits, **`^[0-9]{12}$`**).
+7. **Insert** `module01_calculations` row: `title`, `potential_customer`, `created_by_user_id`, `current_status` = **`DRAFT`**, `calculation_base_number`, `is_archived` default false.
+8. **Insert** `module01_calculation_versions` row: `calculation_id`, **`version_suffix` = `'-00'`**, **`calculation_version_number`** per **§6**, `status` = **`DRAFT`**, `notes` = **structured template** from **`product_type`**, **`comment`**, **`external_reference`** (**§ Confirmed V1 Persistence Mapping**), `created_by_user_id`.
+9. **Insert** `module01_calculation_status_history`: `calculation_version_id` = new version id, `old_status` = **null**, `new_status` = **`DRAFT`**, `changed_by_user_id`, `source_client`, `request_id` if available.
+10. **Commit**; return **§10** success envelope including **`sidebar_update`**.
+
+**All-or-nothing:** steps **7–9** MUST run in **one** database transaction; any failure **rolls back** — **§ Confirmed Create Transaction**.
 
 All DB writes **backend-owned** (service role / repository), never from GAS.
 
@@ -150,7 +152,7 @@ All DB writes **backend-owned** (service role / repository), never from GAS.
 - **Header status:** **`DRAFT`** (`current_status` on `module01_calculations`; version **`status`** also **`DRAFT`** initially).
 - **Initial version:** **`-00`**, **same transaction** as header.
 - **Status history:** **mandatory** on create if invariant is “every version has auditable status” — requires **step 10**.
-- **Gaps:** **`product_type`** and **`external_reference`** — **S02** or interim **`notes`** merge (**§5**). Document removal of interim once S02 is live.
+- **CONFIRMED V1:** **`product_type`**, **`comment`**, **`external_reference`** → **`module01_calculation_versions.notes`** (**structured template**). Future dedicated columns = separate **S02+** migration (out of scope for this confirmation).
 
 ## 9. Request Contract
 
@@ -215,7 +217,7 @@ All DB writes **backend-owned** (service role / repository), never from GAS.
 
 **Notes:**
 
-- **`product_type`** in response reflects **request + validation** until a DB column proves stored value.
+- **`product_type`** in response reflects **payload + validation** and MUST match content serialized into **version `notes`** (parseable per structured template).
 - **`sidebar_update`** must align with whatever **`GET /api/module01/sidebar/context`** will expose after implementation (exact field names — **sidebar spec follow-up**).
 
 ## 11. Error Map
@@ -227,7 +229,7 @@ All DB writes **backend-owned** (service role / repository), never from GAS.
 | `MODULE01_CREATE_INVALID_PAYLOAD` | Schema / required field / length | Show field errors + summary; keep modal open |
 | `MODULE01_CREATE_PRODUCT_TYPE_UNSUPPORTED` | Not **`KZO`** | Show message; keep modal open |
 | `MODULE01_CREATE_TERMINAL_MISMATCH` | Terminal / spreadsheet not bound to session | Show mismatch; keep modal open |
-| `MODULE01_CREATE_SCHEMA_UNSUPPORTED` | Required DDL missing (e.g. `product_type` column not migrated) | Show “system not ready”; **no** partial writes |
+| `MODULE01_CREATE_SCHEMA_UNSUPPORTED` | Required tables/columns missing vs operator-confirmed schema (unexpected drift) | Show “system not ready”; **no** partial writes |
 | `MODULE01_CREATE_NUMBER_COLLISION` | Unique violation on base or version number after retries exhausted | Show retry / support message |
 | `MODULE01_CREATE_VERSION_CREATE_FAILED` | Version insert failed after header | **Rollback** transaction; show error |
 | `MODULE01_CREATE_STATUS_HISTORY_FAILED` | History insert failed | **Rollback**; show error |
@@ -280,14 +282,14 @@ All DB writes **backend-owned** (service role / repository), never from GAS.
 
 ## 17. Required Pre-Implementation Checks
 
-1. Confirm **`module01_calculations`** matches migration in **target** Supabase (operator read-only).
-2. Confirm **`module01_calculation_versions`** idem.
-3. Confirm **no `metadata` JSONB** on calculations table unless S02 added.
-4. Confirm **status history** requires **`calculation_version_id`** (repo: yes).
-5. Confirm **`calculation_base_number`** CHECK still **`^[0-9]{12}$`** remotely.
-6. Confirm **registry** approach for **`MODULE01_CREATE_CALCULATION`**: manual SQL vs **S02** migration file.
-7. **Gemini audit** of **this** technical spec.
-8. **User approval** for implementation TASK.
+1. ~~Confirm **`module01_calculations`** in target Supabase~~ — **DONE** (operator read-only schema confirmation; see **§ Schema Confirmation Result**).
+2. ~~Confirm **`module01_calculation_versions`** / **`module01_calculation_status_history`**~~ — **DONE** (same).
+3. ~~Confirm **no `metadata` JSONB** on calculations table~~ — **CONFIRMED**; V1 uses **`notes`** only.
+4. ~~Confirm **status history** requires **`calculation_version_id`**~~ — **CONFIRMED**.
+5. ~~Confirm **`calculation_base_number`** CHECK **`^[0-9]{12}$`** and **UNIQUE**~~ — **CONFIRMED**.
+6. Confirm **registry** approach for **`MODULE01_CREATE_CALCULATION`**: manual SQL vs **S02** migration file (**still required** before production roll-out).
+7. **Gemini audit** of **this** technical spec post–schema confirmation (**if** required by governance).
+8. **User approval** / explicit **implementation TASK**.
 
 ## 18. Out of Scope
 
@@ -295,7 +297,7 @@ Implementation; SQL execution; migrations authoring in this task; backend/GAS/HT
 
 ## 19. Risk Register
 
-1. **Schema mismatch** — remote DB ≠ repo migration.
+1. **Schema mismatch** — **mitigated** for this slice by operator confirmation; re-verify after any remote DDL change.
 2. **Number format collision** — high concurrency on 12-digit minute bucket.
 3. **Client-side validation creep** in GAS.
 4. **Missing registry permission** — button visible but backend denies, or inverse.
@@ -304,15 +306,89 @@ Implementation; SQL execution; migrations authoring in this task; backend/GAS/HT
 7. **Sidebar drift** — cache without refresh.
 8. **UX** — modal closes too fast; user misses success / error.
 
+## Schema Confirmation Result
+
+**Mode:** operator **read-only** Supabase evidence (no Cursor SQL, no DB mutations). **Closeout:** this doc updated from **UNKNOWN** to **CONFIRMED** for the items below.
+
+### Confirmed — `module01_calculations`
+
+- **`calculation_base_number`:** `text` **NOT NULL**; **UNIQUE**; CHECK **`^[0-9]{12}$`**.
+- **Columns present:** `title`, `potential_customer`, `created_by_user_id`, `current_status` default **`DRAFT`**, `is_archived` default **false** (plus PK/FK/timestamps per repo migration).
+- **No dedicated columns** for `product_type`, `comment`, `external_reference`.
+
+### Confirmed — `module01_calculation_versions`
+
+- **`calculation_id`** FK to header.
+- **`version_suffix`** default **`-00`**; **`calculation_version_number`** **NOT NULL**; **`status`** default **`DRAFT`**; **`created_by_user_id`**; **`notes`** (nullable `text`).
+- Initial row **`-00`** is valid per default and per create contract.
+
+### Confirmed — `module01_calculation_status_history`
+
+- Requires **`calculation_version_id`** (NOT NULL FK).
+- Requires **`new_status`**, **`changed_by_user_id`** (and other columns per migration).
+
+### Indexes and constraints
+
+- **Constraints:** base-number format and uniqueness, FKs, status CHECKs — **confirmed** by operator evidence, consistent with `20260504190000_module01_schema_slice_01.sql`.
+- **Indexes:** present on the three tables per operator read-out; **canonical inventory** remains the repo migration file + operator query output (not pasted here to avoid stale duplication).
+
+### Row counts (at confirmation time)
+
+| Table | Row count |
+|-------|-----------|
+| `module01_calculations` | **0** |
+| `module01_calculation_versions` | **0** |
+| `module01_calculation_status_history` | **0** |
+
+### Final field mapping (summary)
+
+Same as **§5** with **CONFIRMED V1** persistence: header fields on **`module01_calculations`**; **`product_type` / `comment` / `external_reference`** on **`module01_calculation_versions.notes`** via **structured template** (**§ Confirmed V1 Persistence Mapping**).
+
+## Confirmed V1 Persistence Mapping
+
+| Source | Target |
+|--------|--------|
+| `calculation_title` | `module01_calculations.title` |
+| `potential_customer` | `module01_calculations.potential_customer` |
+| `product_type` | **`module01_calculation_versions.notes`** (structured template — required line, V1 value **`KZO`**) |
+| `comment` | **`module01_calculation_versions.notes`** (structured template — optional block) |
+| `external_reference` | **`module01_calculation_versions.notes`** (structured template — optional block) |
+| (generated) `calculation_base_number` | `module01_calculations.calculation_base_number` (**12 digits only**) |
+| (initial) `version_suffix` | `module01_calculation_versions.version_suffix` = **`-00`** |
+| (generated) `calculation_version_number` | `module01_calculation_versions.calculation_version_number` (V1 = display form e.g. `{base}-00`) |
+| initial **DRAFT** status | `module01_calculations.current_status`, `module01_calculation_versions.status`, and `module01_calculation_status_history.new_status` |
+
+**Structured notes template (normative for V1):** backend MUST serialize into a single `notes` string, e.g.:
+
+```text
+EDS_POWER_CALC_NOTES_V1
+PRODUCT_TYPE: KZO
+COMMENT: <optional>
+REF: <optional>
+```
+
+- Omit **`COMMENT:`** / **`REF:`** lines when the modal field is empty.
+- **Implementation** MUST parse this format when reading back for sidebar/API (until dedicated columns exist).
+
+## Confirmed Create Transaction
+
+**Required backend transaction (all-or-nothing):**
+
+1. **Insert** calculation **header** (`module01_calculations`) with **`DRAFT`**, **`calculation_base_number`**, **`title`**, **`potential_customer`**, **`created_by_user_id`**.
+2. **Insert** **initial version** row (`module01_calculation_versions`) with **`version_suffix` = `'-00'`**, matching **`calculation_version_number`**, **`status` = `DRAFT`**, **`notes`** from structured template.
+3. **Insert** **status history** (`module01_calculation_status_history`) with **`calculation_version_id`**, **`old_status`** null, **`new_status` = `DRAFT`**, **`changed_by_user_id`**.
+
+If any step fails: **rollback** — no partial header without version/history.
+
 ## 20. Verdict
 
-**`MODULE_01_CREATE_CALCULATION_TECH_SPEC_READY_FOR_SCHEMA_CONFIRMATION_AND_AUDIT`**
+**`MODULE_01_CREATE_CALCULATION_TECH_SPEC_SCHEMA_CONFIRMED_READY_FOR_IMPLEMENTATION_TASKING`**
 
 ---
 
 ## Appendix A — Operator read-only SQL (do not run in Cursor)
 
-**Use only** in Supabase SQL Editor (or read replica) by **operator**, for drift checks.
+**Use only** in Supabase SQL Editor (or read replica) by **operator**, for **drift re-checks** after DDL changes. Schema for Create Calculation V1 was **operator-confirmed** prior to this closeout (see **§ Schema Confirmation Result**).
 
 ### A.1 Columns
 

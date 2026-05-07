@@ -6,6 +6,22 @@
 
 ---
 
+# 07.05.2026 — Create Calculation V1 schema confirmation closeout (`DOC ONLY` / operator read-only evidence)
+
+## Факт
+
+- **Operator read-only** Supabase schema confirmation completed — recorded in **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_TECHNICAL_SPEC.md`** (**§ Schema Confirmation Result**, **§ Confirmed V1 Persistence Mapping**, **§ Confirmed Create Transaction**).
+- **12-digit** `calculation_base_number` CHECK **`^[0-9]{12}$`** and **UNIQUE** — **CONFIRMED**.
+- **Initial version** **`-00`** + **status history** via **`calculation_version_id`** — **CONFIRMED**.
+- **Row counts** **0** on calculation tables at confirmation.
+- **No** DB changes, **no** Cursor SQL, **no** migrations, **no** implementation in this closeout.
+
+## Далі
+
+- **Create Calculation V1 implementation TASK** (explicit user approval).
+
+---
+
 # 07.05.2026 — Module 01 Create Calculation Technical Spec (`DOC ONLY` / pending audit + schema confirmation)
 
 ## Факт (**technical specification only**)

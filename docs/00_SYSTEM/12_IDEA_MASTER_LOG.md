@@ -290,7 +290,7 @@ Notes:
 - Planning doc: **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CALC_SLICE_01_PLANNING.md`** — verdict **`MODULE_01_CALC_SLICE_01_PLAN_READY_FOR_AUDIT`**; **no** Python/GAS/DB/SQL implementation in planning task.
 - **Governance:** Terminal shell + governance patch **locked**; **sidebar** design **`SIDEBAR_DESIGN_LOCKED`**; **technical spec** **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_TECHNICAL_SPEC.md`** gates first implementation slice alongside calc planning reference.
 - **Terminal UI Shell Doctrine:** **Gemini PASS / `ARCHITECTURE_LOCKED`** — `docs/ARCHITECTURE/EDS_POWER_TERMINAL_UI_SHELL_DOCTRINE.md`.
-- **Next:** **Create Calculation Technical Spec** — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_TECHNICAL_SPEC.md`** (pending Gemini audit + schema confirmation); calc slice audit / implementation only if explicitly opened. Sidebar static context V1 **live:** **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_OPERATOR_TEST.md`**.
+- **Next:** **Create Calculation Technical Spec** — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_TECHNICAL_SPEC.md`** — **schema confirmed**; **next:** implementation TASK; KZO/engine **not** active unless tasked. Sidebar static context V1 **live:** **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_OPERATOR_TEST.md`**.
 
 ### EDS_POWER_MODULE_01_SIDEBAR_PLANNING
 
@@ -316,7 +316,7 @@ Notes:
 - **Technical spec** for Sidebar Iteration 01 — registry `OPEN_MODULE_01_SIDEBAR`, `GET /api/module01/sidebar/context`, `POST /api/module01/calculations/create` (planned only), errors, event map.
 - **Spec:** **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_TECHNICAL_SPEC.md`** — **Gemini PASS / `TECH_SPEC_LOCKED`**.
 - **Implementation:** **`GET /api/module01/sidebar/context`** + GAS/HTML shell — **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_IMPLEMENTATION.md`**; **live operator closeout** — **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_OPERATOR_TEST.md`** (**`MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_PASS`**).
-- **Next:** optional registry SQL for **`OPEN_MODULE_01_SIDEBAR`** (manual operator apply only); **Create Calculation** — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_TECHNICAL_SPEC.md`** (**pending Gemini audit + schema confirmation**) — **not** active: **`POST /api/module01/calculations/create`** implementation.
+- **Next:** optional registry SQL for **`OPEN_MODULE_01_SIDEBAR`** (manual operator apply only); **Create Calculation** — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_TECHNICAL_SPEC.md`** (**schema confirmed**; **implementation TASK** next) — **not** active: endpoint until TASK.
 
 ### EDS_POWER_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1
 
@@ -330,31 +330,31 @@ Notes:
 - **Path:** GAS → Render `GET /api/module01/sidebar/context` → Supabase auth/session → **`Module01SidebarHtml`**.
 - **Closeout:** **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_OPERATOR_TEST.md`** (**`MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_PASS`**).
 - **Artifacts:** `services/module01_sidebar_service.py`, `main.py` route, `tests/test_module01_sidebar_context_endpoint.py`, `gas/Module01Sidebar.gs`, `gas/Module01SidebarHtml.html`, `gas/AuthTransport.gs`, `gas/core/EDSPowerCore.gs` — bound Apps Script: **`Module01Sidebar.gs`** + **`Module01SidebarHtml.html`** (distinct base names).
-- **Next lane:** **Create Calculation Technical Spec** — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_TECHNICAL_SPEC.md`** (**`MODULE_01_CREATE_CALCULATION_TECH_SPEC_READY_FOR_SCHEMA_CONFIRMATION_AND_AUDIT`**); planning baseline **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_MODAL_V1_PLANNING.md`**.
+- **Next lane:** **Create Calculation** — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_TECHNICAL_SPEC.md`** — **schema CONFIRMED**; **next** = explicit **implementation TASK** (engineering calculation logic **not** opened by this closeout).
 
 ### EDS_POWER_MODULE_01_CREATE_CALCULATION_MODAL_V1
 
 Status:
 
-- `PLANNING_PASS_TECH_SPEC_PENDING`
+- `PLANNING_PASS_SCHEMA_CONFIRMED_TECH_SPEC`
 
 Notes:
 
 - **First interactive modal** for Module 01: **Створити розрахунок** → authenticated **`POST /api/module01/calculations/create`** (concept → **technical spec**).
 - **Planning doc:** **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_MODAL_V1_PLANNING.md`** — **Gemini `PASS` / ready for technical spec** (task assumption).
-- **Technical spec:** **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_TECHNICAL_SPEC.md`** — **pending** Gemini audit + operator schema confirmation.
+- **Technical spec:** **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_TECHNICAL_SPEC.md`** — **operator read-only schema CONFIRMED** (closeout in spec **§ Schema Confirmation Result**); **next:** implementation TASK (**not** auto-active).
 - **Not active:** implementation, SQL execution by Cursor, modal/GAS/backend code until explicit TASK after approvals.
 
 ### EDS_POWER_MODULE_01_CREATE_CALCULATION_TECHNICAL_SPEC
 
 Status:
 
-- `DOC_PENDING_SCHEMA_CONFIRMATION_AND_AUDIT`
+- `SCHEMA_CONFIRMED_READY_FOR_IMPLEMENTATION_TASKING`
 
 Notes:
 
-- **Contract** for Create Calculation V1: field→DB mapping (repo DDL + **S02** gaps), 12-digit **`calculation_base_number`** vs display **`…-00`**, transactional header + version **`-00`** + status history, error map, registry **`MODULE01_CREATE_CALCULATION`** (manual / S02 — no SQL in spec task).
-- **Spec:** **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_TECHNICAL_SPEC.md`**.
+- **Contract** for Create Calculation V1: **CONFIRMED** mapping — header columns + **`module01_calculation_versions.notes`** (structured template for **`product_type`**, **`comment`**, **`external_reference`**); 12-digit **`calculation_base_number`**, display **`…-00`**, **single transaction**: header + version **`-00`** + **status history**; registry **`MODULE01_CREATE_CALCULATION`** — **§14** (still pre-production).
+- **Spec:** **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_TECHNICAL_SPEC.md`** — verdict **`MODULE_01_CREATE_CALCULATION_TECH_SPEC_SCHEMA_CONFIRMED_READY_FOR_IMPLEMENTATION_TASKING`**.
 
 ### EDS_POWER_TERMINAL_UI_SHELL_DOCTRINE
 
