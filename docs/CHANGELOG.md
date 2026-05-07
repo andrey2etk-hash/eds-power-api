@@ -6,6 +6,20 @@
 
 ---
 
+# 10.05.2026 — Module 01 Sidebar Technical Spec (`DOC ONLY`)
+
+## Факт (**technical spec only**)
+
+- **Module 01 Sidebar Planning:** **Gemini PASS / `SIDEBAR_DESIGN_LOCKED`** — locked: registry-opened sidebar, backend-owned `active_calculation`, `DocumentProperties` cache id-only + server revalidation, first modal = Create Calculation with immediate persist, grouped/collapsible sections UX principle.
+- **Module 01 Sidebar Technical Spec:** **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_TECHNICAL_SPEC.md`** — registry `OPEN_MODULE_01_SIDEBAR`, sidebar context + create payloads, primary actions, error UI, event map, service boundaries — **last doc step before possible first HTML/GAS implementation**; **no** code/SQL/Render.
+- **Verdict:** **`MODULE_01_SIDEBAR_TECH_SPEC_READY_FOR_AUDIT`**.
+
+## Далі
+
+- Gemini audit of technical spec; **do not** open implementation until explicit user approval after **PASS**.
+
+---
+
 # 09.05.2026 — Module 01 Sidebar Planning (`DOC ONLY`)
 
 ## Факт (**planning only**)

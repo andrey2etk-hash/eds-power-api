@@ -12,8 +12,9 @@ Rule:
 
 ## Latest audit
 
-- **Module 01 Sidebar Planning (`DOC ONLY` / `MODULE_01_SIDEBAR_PLAN_READY_FOR_AUDIT` / pending Gemini) — first Module 01 workspace: sidebar sections, Create Calculation modal workflow, `active_calculation`, future API/registry keys; thin GAS / Render boundaries — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_PLANNING.md`**
-- **EDS Power Terminal Governance Patch (`PASS` / `LOCKED`) — Render Thinking / GAS Thin UI + main.py Thin Router (`docs/00_SYSTEM/02_GLOBAL_RULES.md`); GAS Deployment and Sync (`docs/ARCHITECTURE/EDS_POWER_GAS_DEPLOYMENT_AND_SYNC_DOCTRINE.md`); shell doctrine `ARCHITECTURE_LOCKED` — see **`docs/NOW.md`**
+- **Module 01 Sidebar Technical Spec (`DOC ONLY` / `MODULE_01_SIDEBAR_TECH_SPEC_READY_FOR_AUDIT` / pending Gemini) — Iteration 01 contracts: registry open, context GET, create POST, DocumentProperties id cache rules, primary actions, errors, event map — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_TECHNICAL_SPEC.md`**
+- **Module 01 Sidebar Planning (`PASS` / `SIDEBAR_DESIGN_LOCKED` / Gemini) — workspace design; superseded for implementation detail by technical spec — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_PLANNING.md`**
+- **EDS Power Terminal Governance Patch (`PASS` / `LOCKED`) — `docs/00_SYSTEM/02_GLOBAL_RULES.md`; `docs/ARCHITECTURE/EDS_POWER_GAS_DEPLOYMENT_AND_SYNC_DOCTRINE.md` — see **`docs/NOW.md`**
 - **EDS Power Terminal UI Shell Doctrine (`PASS` / `ARCHITECTURE_LOCKED` / Gemini) — three-layer terminal UX — **`docs/ARCHITECTURE/EDS_POWER_TERMINAL_UI_SHELL_DOCTRINE.md`**
 - **Module 01 Calculation Slice 01 Planning (`DOC ONLY` / `MODULE_01_CALC_SLICE_01_PLAN_READY_FOR_AUDIT` / pending Gemini — implementation not active) — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CALC_SLICE_01_PLANNING.md`**
 - **EDS Power DB-Driven Menu Post-Audit Cleanup (`PASS_WITH_CLEANUP`) — auth login diagnostics env-gated (`EDS_POWER_AUTH_DEBUG_LOGS`); operator-governed registry label restore documented; naming EDS Power vs legacy Sakura note; tests 126 PASS — **`docs/AUDITS/2026-05-07_EDS_POWER_DB_DRIVEN_MENU_POST_AUDIT_CLEANUP.md`**
