@@ -62,6 +62,45 @@ The normalized idea log is maintained in:
 
 ---
 
+## Manual SQL Apply Governance Rule
+
+Cursor and AI agents do **not** have direct authority or access to execute SQL against Supabase (or other production databases) from the IDE/agent runtime.
+
+**Rule:**  
+All physical SQL execution against Supabase must be performed **manually** by the user/operator unless a **future approved deployment pipeline** is explicitly created and documented as superseding this rule.
+
+**Current approved operational model:**
+
+1. Cursor prepares migration files, SQL drafts, checklists, verification queries, and reports.
+2. Gemini audits architecture, migration safety, and execution readiness.
+3. Architect agent controls scope and stop conditions.
+4. User/operator manually applies SQL in **Supabase Dashboard SQL Editor** or another **approved** method (e.g. approved CI/CD, after separate governance).
+5. User/operator provides execution results and verification counts.
+6. Cursor records closeout reports **after** user-provided evidence.
+
+**Cursor must NOT:**
+
+- execute SQL against Supabase (hosted or linked remote);
+- run `db push` or equivalent against a remote DB from agent workflows;
+- use or request secret DB passwords in chat;
+- alter a remote database directly;
+- assume SQL was applied without operator evidence;
+- continue to backend integration before apply verification is recorded (when that verification is the gate).
+
+**SQL execution requires:**
+
+- explicit user approval;
+- approved migration file;
+- pre-apply checklist;
+- stop conditions;
+- post-apply verification queries;
+- closeout report.
+
+**If SQL execution fails or is blocked** (e.g. CLI unavailable, credentials, infra):  
+status must be recorded accurately, e.g. **`EXECUTION_BLOCKED`**, **`INFRASTRUCTURE_ERROR`**, or another precise token — not “applied” without evidence.
+
+---
+
 ## 4. Правила модулів
 
 Кожен модуль:
