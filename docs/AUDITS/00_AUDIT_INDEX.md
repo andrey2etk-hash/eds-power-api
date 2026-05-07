@@ -12,6 +12,7 @@ Rule:
 
 ## Latest audit
 
+- **EDS Power DB-Driven Menu Post-Audit Cleanup (`PASS_WITH_CLEANUP`) — auth login diagnostics env-gated (`EDS_POWER_AUTH_DEBUG_LOGS`); operator-governed registry label restore documented; naming EDS Power vs legacy Sakura note; tests 126 PASS — **`docs/AUDITS/2026-05-07_EDS_POWER_DB_DRIVEN_MENU_POST_AUDIT_CLEANUP.md`**
 - **EDS Power DB-Driven Menu Final Operator Validation (`LIVE_VALIDATED_PASS` / `LIVE_VALIDATED_PASS_PENDING_AUDIT`) — operator-recorded auth/session PASS, GAS `menu_source=registry` + HTTP 200, visual Supabase→Sheets menu_label proof, full path GAS→Render→Supabase auth→registry→payload; governance + cleanup §9; **no implementation in closeout** — **`docs/AUDITS/2026-05-07_EDS_POWER_DB_DRIVEN_MENU_FINAL_OPERATOR_VALIDATION.md`**
 - **GAS Core Dynamic Menu Refresh Fix (`GAS_DYNAMIC_MENU_REFRESH_FIX_PENDING_OPERATOR_TEST`) — on-open dynamic attempt; Setup Check uses `buildEDSPowerTerminalContext_`; `metadata.menu_source` in logs; auth/error envelope handling; no backend** — **`docs/AUDITS/2026-05-07_GAS_CORE_DYNAMIC_MENU_REFRESH_FIX.md`**
 - **GAS Menu Config Path Diagnostic (auth vs menu ScriptProperties / Setup Check context)** — **`docs/AUDITS/2026-05-07_GAS_MENU_CONFIG_PATH_DIAGNOSTIC.md`**

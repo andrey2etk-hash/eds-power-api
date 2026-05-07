@@ -1312,7 +1312,14 @@ def _auth_login_shape_flags(payload: Any) -> tuple[bool, bool, str | None, str |
     )
 
 
+def _auth_login_diag_enabled() -> bool:
+    """Temporary login stdout diagnostics; off unless EDS_POWER_AUTH_DEBUG_LOGS is truthy."""
+    return _truthy_env("EDS_POWER_AUTH_DEBUG_LOGS")
+
+
 def _auth_emit_login_diagnostic(line: dict[str, Any]) -> None:
+    if not _auth_login_diag_enabled():
+        return
     payload = {k: line[k] for k in _AUTH_LOGIN_DIAG_ALLOWED_KEYS if k in line}
     # stdout (not logging.info): Uvicorn/Render often omit app INFO unless root is configured;
     # unbuffered flush ensures the line appears with access logs.

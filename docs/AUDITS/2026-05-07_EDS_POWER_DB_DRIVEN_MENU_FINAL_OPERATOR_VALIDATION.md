@@ -101,7 +101,8 @@ Confirmed for this program of record:
 - No **passwords**, **password hashes**, **session tokens**, or **service role keys** stored in this audit body (session excerpt is status UI text without token).  
 - **Manual SQL apply:** Supabase DDL/DML executed by **user/operator** only; Cursor/agents did not run SQL against production.  
 - **GAS** remains a **thin client** (transport + render); **backend** owns auth and menu composition.  
-- **No** new product/calculation logic introduced in this closeout task.
+- **No** new product/calculation logic introduced in this closeout task.  
+- **Naming:** **Canonical** product identifiers = **EDS Power** / **EDSPowerCore**. Historical or third-party audit text may say “Sakura” for Sheets/auth — treat as **legacy wording**; current system naming is **EDS Power** (see `docs/00_SYSTEM/02_GLOBAL_RULES.md`).
 
 ---
 
@@ -117,12 +118,12 @@ This closeout artifact:
 
 ## 9. Remaining Cleanup
 
-Follow-ups (separate tasks / operator actions; **not** performed here):
+Follow-ups (separate tasks / operator actions; **not** performed in the original closeout file edit):
 
-- Remove or **env-gate** temporary **`EDS_POWER_AUTH_LOGIN_DIAG`** logging after governance/audit approval.  
-- **Restore** normal registry `menu_label` values after visual proof if proof strings remain.  
+- **Env-gate** temporary **`EDS_POWER_AUTH_LOGIN_DIAG`** logging — **completed** under **`PASS_WITH_CLEANUP`**: see **`docs/AUDITS/2026-05-07_EDS_POWER_DB_DRIVEN_MENU_POST_AUDIT_CLEANUP.md`** (`EDS_POWER_AUTH_DEBUG_LOGS`).  
+- **Restore** normal registry `menu_label` values after visual proof if proof strings remain — **operator** Dashboard SQL Editor; canonical strings in post-audit doc.  
 - **Commit/sync** canonical GAS files per repo governance if bound script drifts.  
-- **Next integration slice** only after explicit audit + user approval (e.g. Gemini review of this closeout).
+- **Next integration slice** only after explicit task (e.g. Module 01 calculation planning) — **not** activated by cleanup alone.
 
 ---
 
@@ -130,4 +131,4 @@ Follow-ups (separate tasks / operator actions; **not** performed here):
 
 **`EDS_POWER_DB_DRIVEN_MENU_REGISTRY_LIVE_VALIDATED_PASS`**
 
-**Pending:** external **Gemini audit** of this closeout and the cleanup plan — status token **`LIVE_VALIDATED_PASS_PENDING_AUDIT`**.
+**Audit trajectory:** initial closeout **pending Gemini**; subsequent **`PASS_WITH_CLEANUP`** and post-audit cleanup recorded in **`docs/AUDITS/2026-05-07_EDS_POWER_DB_DRIVEN_MENU_POST_AUDIT_CLEANUP.md`**.

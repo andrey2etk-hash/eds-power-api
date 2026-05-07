@@ -6,6 +6,22 @@
 
 ---
 
+# 07.05.2026 — EDS Power DB-Driven Menu: post-audit cleanup (`PASS_WITH_CLEANUP`)
+
+## Факт (**cleanup slice**)
+
+- **Audit:** **`PASS_WITH_CLEANUP`** — login **`EDS_POWER_AUTH_LOGIN_DIAG`** **env-gated** via **`EDS_POWER_AUTH_DEBUG_LOGS`** (default **OFF**); `.env.example` + Render auth path diagnostic updated.
+- **Menu labels:** canonical **REFRESH_MENU / SESSION_STATUS / LOGOUT / MODULE_01_PLACEHOLDER** display strings recorded for **operator** restore in Supabase Dashboard — **no** Cursor SQL.
+- **Naming note:** canonical **EDS Power / EDSPowerCore**; legacy “Sakura” wording in older audit quotes noted in post-audit doc.
+- **No** DB schema, migrations, GAS product logic, calculation modules, or auth behavior change.
+- Audit: **`docs/AUDITS/2026-05-07_EDS_POWER_DB_DRIVEN_MENU_POST_AUDIT_CLEANUP.md`**.
+
+## Далі
+
+- Operator confirms registry labels; then **Module 01 calculation planning** (task-gated only).
+
+---
+
 # 07.05.2026 — EDS Power DB-Driven Menu Registry: final operator validation (closeout / DOC ONLY)
 
 ## Факт (**live validated — operator evidence recorded**)

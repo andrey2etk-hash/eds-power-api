@@ -13,13 +13,17 @@ When `POST /api/module01/auth/login` returns generic **`AUTH_FAILED`** (HTTP 200
 
 **Client contract unchanged:** responses remain generic **`AUTH_FAILED`** for denied login paths; **`AUTH_CONFIG_ERROR`** for configuration failures remains as before.
 
+## Enable / disable
+
+Emission is **`OFF` by default**. Set environment variable **`EDS_POWER_AUTH_DEBUG_LOGS`** to a truthy value (`1`, `true`, `yes`, `on`) **only** for short-lived triage. Unset or falsy in production.
+
 ## Log format
 
 Search Render logs for prefix:
 
 `EDS_POWER_AUTH_LOGIN_DIAG`
 
-Each line is a single JSON object (sorted keys) after that prefix, written to **process stdout** via `print(..., flush=True)` so lines appear alongside Uvicorn access logs (Python’s default logging config often drops `logging.info` from app modules).
+Each line is a single JSON object (sorted keys) after that prefix, written to **process stdout** via `print(..., flush=True)` **only when `EDS_POWER_AUTH_DEBUG_LOGS` is truthy**, so lines appear alongside Uvicorn access logs (Python’s default logging config often drops `logging.info` from app modules).
 
 ### Allowed fields
 

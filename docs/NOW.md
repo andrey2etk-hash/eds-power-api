@@ -22,8 +22,9 @@
 - **DOC 38 BOM Aggregation / Kit Issue doctrine** (**PASS / CLOSED AS DOCTRINE**)
 - **DOC 38 Slice 01 Basic Aggregation** (**CLOSED / VERIFIED**)
 **Selected terminal architecture:** **MODEL C — HYBRID TERMINAL GOVERNANCE**
-**DB-Driven Menu Registry:** **Current step:** **`EDS_POWER_DB_DRIVEN_MENU_REGISTRY_LIVE_VALIDATED_PASS`** — operator path **PASS** (auth/session, **`menu_source` = `registry`**, visual registry label proof); closeout **`docs/AUDITS/2026-05-07_EDS_POWER_DB_DRIVEN_MENU_FINAL_OPERATOR_VALIDATION.md`**. **Pending:** **Gemini audit** — **`LIVE_VALIDATED_PASS_PENDING_AUDIT`**.
-**Next allowed step:** **Gemini audit** of final operator validation + cleanup plan (**§9** in closeout). **Not active:** next product/module implementation until audit + explicit task.
+**DB-Driven Menu Registry:** **Current step:** **`PASS_WITH_CLEANUP`** cleanup **completed** (auth diagnostics env-gated; post-audit doc + label restore governance); **pending:** operator **final confirmation** of canonical registry labels in Supabase — **`docs/AUDITS/2026-05-07_EDS_POWER_DB_DRIVEN_MENU_POST_AUDIT_CLEANUP.md`**.
+**Next allowed step:** Final cleanup verification (labels in Dashboard), then **Module 01 calculation planning** (documentation/task only — **not** calculation implementation active).
+**Live validation closeout:** **`docs/AUDITS/2026-05-07_EDS_POWER_DB_DRIVEN_MENU_FINAL_OPERATOR_VALIDATION.md`** — **`EDS_POWER_DB_DRIVEN_MENU_REGISTRY_LIVE_VALIDATED_PASS`**.
 **Prior diagnostics (context):** `docs/AUDITS/2026-05-07_GAS_MENU_CONFIG_PATH_DIAGNOSTIC.md`, `docs/AUDITS/2026-05-07_GAS_DYNAMIC_MENU_SETUP_FAILURE_DIAGNOSTIC.md`, **`docs/AUDITS/2026-05-07_RENDER_SUPABASE_AUTH_PATH_DIAGNOSTIC.md`**, **`docs/AUDITS/2026-05-07_MODULE_01_LOGIN_TERMINAL_LOOKUP_FIX.md`**, **`docs/AUDITS/2026-05-07_TERMINAL_SPREADSHEET_MATCH_DIAGNOSTIC.md`**.
 **Backend menu reader:** **`MenuRegistryService`** + **`/api/module01/auth/menu`** (**registry** path live-validated per closeout).
 **SQL Registry S01 closeout:** **Manual apply recorded** — **`docs/AUDITS/2026-05-07_EDS_POWER_SQL_REGISTRY_S01_MANUAL_APPLY_REPORT.md`** — verdict **`EDS_POWER_SQL_REGISTRY_S01_APPLY_SUCCESS`**.
