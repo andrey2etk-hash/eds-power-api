@@ -22,8 +22,12 @@
 - **DOC 38 BOM Aggregation / Kit Issue doctrine** (**PASS / CLOSED AS DOCTRINE**)
 - **DOC 38 Slice 01 Basic Aggregation** (**CLOSED / VERIFIED**)
 **Selected terminal architecture:** **MODEL C — HYBRID TERMINAL GOVERNANCE**
-**Current step:** **EDS Power Dynamic Menu Mock Integration — correction pending operator retest**
-**Next allowed step:** **Set MODULE01_API_BASE_URL and rerun `edsPowerRefreshMenu()`**
+**Current step:** **DB-Driven Menu Backend Service — implemented / pending operator test**
+**Next allowed step:** **Render deployment + authenticated operator menu test** (`GET /api/module01/auth/menu` with Bearer session; verify `menu_source = registry` and GAS menu items).
+**Backend menu reader:** **`MenuRegistryService`** + **`/api/module01/auth/menu`** connected to Supabase registry — see **`docs/AUDITS/2026-05-07_EDS_POWER_BACKEND_MENU_SERVICE_IMPLEMENTATION.md`**. **No GAS changes in this slice** (response includes `data.menus` for existing GAS).
+**SQL Registry S01 closeout:** **Manual apply recorded** — **`docs/AUDITS/2026-05-07_EDS_POWER_SQL_REGISTRY_S01_MANUAL_APPLY_REPORT.md`** — verdict **`EDS_POWER_SQL_REGISTRY_S01_APPLY_SUCCESS`**.
+**Wider product/backend scope:** Not expanded beyond menu registry read path.
+**Manual SQL apply governance:** **Current DB execution model: manual SQL apply by user/operator only.** Cursor prepares migrations, checklists, and closeout documentation; **user/operator executes** SQL on Supabase (e.g. Dashboard SQL Editor). See **`docs/00_SYSTEM/02_GLOBAL_RULES.md`** — Manual SQL Apply Governance Rule.
 **Naming governance record:** **Canonical naming in current system = EDS Power / EDS Power Client Core / EDSPowerCore.**
 **Reserved future name note:** **Sakura/SakuraCore reserved for separate future project; not canonical in current EDS Power docs.**
 **Post-auth governance pause:** **After authenticated request flow is verified: NEXT = User-led architecture planning pause.**

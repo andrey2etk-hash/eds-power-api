@@ -78,6 +78,18 @@ Notes:
 - After secure request flow is verified, the project pauses for user-led system/product direction before implementation continues.
 - AI agents support structuring, risk review, and scope protection, but do not auto-advance implementation stage without explicit user direction.
 
+### MANUAL_SQL_APPLY_GOVERNANCE_RULE
+
+Status:
+
+- `GOVERNANCE_RULE_REGISTERED`
+
+Notes:
+
+- Cursor has no direct Supabase database access; agents do not execute SQL against hosted Supabase or assume apply without operator evidence.
+- Physical SQL execution is manual by user/operator under pre-apply checklist, stop conditions, verification queries, and closeout reporting (see `docs/00_SYSTEM/02_GLOBAL_RULES.md`).
+- Supabase CLI or other automated apply may be blocked in operator environment; status must be recorded accurately when execution does not complete (e.g. `EXECUTION_BLOCKED`, `INFRASTRUCTURE_ERROR`).
+
 ### MODULE_01_BATCH_REQUEST_ARCHITECTURE_RULE
 
 Status:
@@ -210,7 +222,7 @@ Notes:
 
 Status:
 
-- `CORRECTION_PENDING_OPERATOR_RETEST`
+- `OPERATOR_PASS`
 
 Notes:
 
@@ -218,7 +230,51 @@ Notes:
 - Auth enforcement for menu endpoint is deferred for mock-pipe validation only and is documented as temporary.
 - False-positive risk was fixed by fallback/dynamic visual separation and safe diagnostics.
 - Governance correction applied: backend label ownership restored and menu title unified.
-- Operator retest required after correction to reconfirm PASS evidence under final behavior.
+- Operator verification after correction confirmed fallback and backend/mock modes with diagnostic proof.
+
+### EDS_POWER_DB_DRIVEN_DYNAMIC_MENU_REGISTRY_CONTRACT
+
+Status:
+
+- `PASS_CORRECTIONS_APPLIED`
+
+Notes:
+
+- Defines future Supabase-backed dynamic menu registry model before SQL/backend implementation.
+- Gemini audit corrections applied: `CORE_VERSION_DEPRECATED` added and EDSPowerCore persistent menu cache explicitly forbidden.
+- Next step is limited to EDS Power SQL Migration Plan Registry S01 as DOC ONLY.
+
+### EDS_POWER_SQL_MIGRATION_PLAN_REGISTRY_S01
+
+Status:
+
+- `COMMITTED_MANUAL_APPLY_VERIFIED`
+
+Notes:
+
+- SQL migration planning document created for first DB-driven dynamic menu registry slice (`modules`, `module_actions`, `role_module_access`).
+- Plan references existing Supabase migration baseline and auth/roles/session schema to avoid guessed conflicts.
+- Gemini `SQL_MIGRATION_PLAN_AUDITED` / **PASS** accepted for the migration plan (`docs/DB_MIGRATIONS/EDS_POWER_SQL_MIGRATION_PLAN_REGISTRY_S01.md`).
+- Gemini **PASS WITH FIXES** and final alignment **ALIGNMENT_PASS** accepted; aligned DDL in `docs/ARCHITECTURE/EDS_POWER_SQL_REGISTRY_S01_DDL_DRAFT.md`.
+- Final pre-migration implementation plan: `docs/DB_MIGRATIONS/EDS_POWER_SQL_REGISTRY_S01_FINAL_IMPLEMENTATION_PLAN.md`; Gemini **PASS (MIGRATION_READY)** accepted for migration authoring gate.
+- Migration file authored: `supabase/migrations/20260507100000_eds_power_dynamic_menu_registry_s01.sql`.
+- Gemini migration file audit **MIGRATION_READY_FOR_APPLY** accepted; pre-apply checklist: `docs/AUDITS/2026-05-07_SQL_REGISTRY_S01_PRE_APPLY_CHECKLIST.md`.
+- **Manual SQL apply completed** by user/operator through **Supabase Dashboard SQL Editor**; closeout: `docs/AUDITS/2026-05-07_EDS_POWER_SQL_REGISTRY_S01_MANUAL_APPLY_REPORT.md` (**`EDS_POWER_SQL_REGISTRY_S01_APPLY_SUCCESS`**).
+- Verification counts (operator): `modules_count` = **2**, `actions_count` = **4**, `role_bindings_count` = **40**; **triggers** = **3**.
+- **Cursor did not execute SQL.** Backend / DB-driven menu implementation remains gated by separate tasks (not opened by apply closeout).
+
+### EDS_POWER_DB_DRIVEN_MENU_BACKEND_INTEGRATION
+
+Status:
+
+- `IMPLEMENTED_PENDING_RENDER_OPERATOR_TEST`
+
+Notes:
+
+- Planning begins after SQL Registry S01 manual apply success (`EDS_POWER_SQL_REGISTRY_S01_APPLY_SUCCESS`).
+- Integration plan: `docs/ARCHITECTURE/EDS_POWER_DB_DRIVEN_MENU_BACKEND_INTEGRATION_PLAN.md` — verdict **`DB_DRIVEN_MENU_BACKEND_PLAN_READY_FOR_AUDIT`**.
+- **Implemented:** `MenuRegistryService`, `GET /api/module01/auth/menu` against registry (see `docs/AUDITS/2026-05-07_EDS_POWER_BACKEND_MENU_SERVICE_IMPLEMENTATION.md`).
+- **Pending:** Render deploy + authenticated operator menu verification. **No GAS changes** in this slice.
 
 ### IDEA-0002 — Google Sheets Sidebar UI
 

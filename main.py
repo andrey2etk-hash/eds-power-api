@@ -16,6 +16,8 @@ from kzo_snapshot_persist import (
     insert_snapshot_row,
     validate_kzo_mvp_snapshot_v1,
 )
+from services.menu_registry_service import MenuRegistryService, resolve_menu_environment_scope
+import services.menu_registry_service as _menu_registry_svc
 
 try:
     from supabase import Client, create_client
@@ -140,6 +142,7 @@ AUTH_FAILURE_MESSAGE = "Authentication failed"
 AUTH_FAILURE_CODE = "AUTH_FAILED"
 AUTH_REQUIRED_ENV_KEYS = ("SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY", "AUTH_SESSION_TTL_HOURS")
 AUTH_MENU_MOCK_RESPONSE_VERSION = "EDS_POWER_MENU_V1"
+AUTH_MENU_ACTION = "menu"
 AUTH_MENU_MOCK_ITEMS = [
     {
         "menu_id": "refresh_menu",
@@ -1268,6 +1271,43 @@ def _auth_fetch_active_roles(client: Client, user_id: str) -> list[str]:
     return sorted(set(role_codes))
 
 
+def _auth_resolve_primary_role_id(client: Client, user_id: str) -> str | None:
+    """Resolve single role UUID for menu/registry use (TEST_OPERATOR preferred, else lexicographic)."""
+    links = client.table("module01_user_roles").select("role_id,is_active").eq("user_id", user_id).execute()
+    link_rows = getattr(links, "data", None)
+    if not isinstance(link_rows, list):
+        return None
+    active_role_ids = [
+        row.get("role_id")
+        for row in link_rows
+        if isinstance(row, dict) and row.get("is_active") is True and isinstance(row.get("role_id"), str)
+    ]
+    if not active_role_ids:
+        return None
+    roles: list[dict[str, Any]] = []
+    for rid in active_role_ids:
+        role = _auth_fetch_single(
+            client,
+            "module01_roles",
+            select="id,role_code,is_active",
+            filters={"id": rid},
+        )
+        if role and role.get("is_active") is True and isinstance(role.get("id"), str):
+            roles.append(role)
+    if not roles:
+        return None
+    by_code = {str(r["role_code"]): str(r["id"]) for r in roles if isinstance(r.get("role_code"), str) and r.get("id")}
+    if "TEST_OPERATOR" in by_code:
+        return by_code["TEST_OPERATOR"]
+    sorted_roles = sorted(roles, key=lambda r: str(r.get("role_code") or ""))
+    first_id = sorted_roles[0].get("id")
+    return str(first_id) if first_id else None
+
+
+def _truthy_env(name: str) -> bool:
+    return os.environ.get(name, "").strip().lower() in ("1", "true", "yes", "on")
+
+
 def _auth_verify_password(hash_value: Any, password: str) -> bool:
     if not isinstance(hash_value, str) or not hash_value:
         return False
@@ -1297,6 +1337,30 @@ def _auth_error_response(
                 "source_field": source_field,
                 "module": AUTH_MODULE_NAME,
                 "action": action,
+            },
+            "metadata": _auth_timed_metadata(request_id, started_at),
+        },
+    )
+
+
+def _menu_registry_error_response(
+    *,
+    request_id: str,
+    started_at: float,
+    error_code: str,
+    message: str,
+) -> JSONResponse:
+    return JSONResponse(
+        status_code=200,
+        content={
+            "status": "error",
+            "data": None,
+            "error": {
+                "error_code": error_code,
+                "message": message,
+                "source_field": None,
+                "module": AUTH_MODULE_NAME,
+                "action": AUTH_MENU_ACTION,
             },
             "metadata": _auth_timed_metadata(request_id, started_at),
         },
@@ -1334,6 +1398,193 @@ def _auth_mock_menu_payload() -> dict[str, Any]:
         },
         "menus": AUTH_MENU_MOCK_ITEMS,
     }
+
+
+def _menu_flatten_for_gas(modules: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Flatten registry modules/actions into legacy `data.menus` list for GAS EDSPowerCore."""
+    flat: list[dict[str, Any]] = []
+    for m in modules:
+        if not isinstance(m, dict):
+            continue
+        code = m.get("module_code")
+        if not isinstance(code, str) or not code:
+            continue
+        mname = m.get("module_name")
+        mstat = m.get("module_status")
+        msort = m.get("sort_order") if isinstance(m.get("sort_order"), int) else 100
+        for a in m.get("actions") or []:
+            if not isinstance(a, dict):
+                continue
+            ak = a.get("action_key")
+            if not isinstance(ak, str) or not ak:
+                continue
+            asort = a.get("sort_order") if isinstance(a.get("sort_order"), int) else 0
+            global_sort = msort * 1000 + asort
+            vis = a.get("visibility")
+            if not isinstance(vis, str) or not vis:
+                vis = "VISIBLE"
+            item: dict[str, Any] = {
+                "menu_id": ak.lower(),
+                "menu_label": a.get("menu_label"),
+                "action_key": ak,
+                "action_type": a.get("action_type"),
+                "visibility": vis,
+                "enabled": bool(a.get("enabled")),
+                "sort_order": global_sort,
+            }
+            if code != "SYSTEM_SHELL":
+                item["module_id"] = code
+                item["module_name"] = mname
+                item["module_status"] = mstat
+            flat.append(item)
+    flat.sort(key=lambda x: (x.get("sort_order") or 0, str(x.get("action_key") or "")))
+    return flat
+
+
+def _auth_validate_session_context(
+    authorization: str | None,
+    *,
+    action: str,
+) -> tuple[dict[str, Any] | None, JSONResponse | None]:
+    """Validate Bearer session; return context dict or auth error response."""
+    started_at = perf_counter()
+    request_id = str(uuid4())
+    bearer_token = _auth_extract_bearer_token(authorization)
+    if not bearer_token:
+        return None, _auth_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code="AUTH_MISSING_TOKEN",
+            message="Authorization token is missing.",
+            action=action,
+        )
+
+    if not _auth_env_ready():
+        return None, _auth_config_error_response(request_id)
+    client = _auth_get_supabase_client()
+    if client is None:
+        return None, _auth_config_error_response(request_id)
+
+    try:
+        token_hash = hashlib.sha256(bearer_token.encode("utf-8")).hexdigest()
+        session_row = _auth_fetch_single(
+            client,
+            "module01_user_sessions",
+            select="id,user_id,terminal_id,expires_at,revoked_at",
+            filters={"session_token_hash": token_hash},
+        )
+        if session_row is None:
+            return None, _auth_error_response(
+                request_id=request_id,
+                started_at=started_at,
+                error_code="AUTH_INVALID_TOKEN",
+                message="Authentication failed.",
+                action=action,
+            )
+
+        if session_row.get("revoked_at") is not None:
+            return None, _auth_error_response(
+                request_id=request_id,
+                started_at=started_at,
+                error_code="AUTH_SESSION_REVOKED",
+                message="Session is revoked.",
+                action=action,
+            )
+
+        expires_raw = session_row.get("expires_at")
+        if not isinstance(expires_raw, str) or not expires_raw.strip():
+            return None, _auth_error_response(
+                request_id=request_id,
+                started_at=started_at,
+                error_code="AUTH_INVALID_TOKEN",
+                message="Authentication failed.",
+                action=action,
+            )
+        expires_str = expires_raw.strip()
+        if expires_str.endswith("Z"):
+            expires_str = expires_str[:-1] + "+00:00"
+        try:
+            expires_at_dt = datetime.fromisoformat(expires_str)
+        except ValueError:
+            return None, _auth_error_response(
+                request_id=request_id,
+                started_at=started_at,
+                error_code="AUTH_INVALID_TOKEN",
+                message="Authentication failed.",
+                action=action,
+            )
+        now_dt = datetime.now(UTC)
+        if expires_at_dt <= now_dt:
+            return None, _auth_error_response(
+                request_id=request_id,
+                started_at=started_at,
+                error_code="AUTH_SESSION_EXPIRED",
+                message="Session is expired.",
+                action=action,
+            )
+
+        user_id = session_row.get("user_id")
+        terminal_id = session_row.get("terminal_id")
+        if not isinstance(user_id, str) or not user_id or not isinstance(terminal_id, str) or not terminal_id:
+            return None, _auth_error_response(
+                request_id=request_id,
+                started_at=started_at,
+                error_code="AUTH_INVALID_TOKEN",
+                message="Authentication failed.",
+                action=action,
+            )
+
+        user = _auth_fetch_single(
+            client,
+            "module01_users",
+            select="id,email,status",
+            filters={"id": user_id},
+        )
+        if user is None or user.get("status") != "ACTIVE":
+            return None, _auth_error_response(
+                request_id=request_id,
+                started_at=started_at,
+                error_code="AUTH_USER_NOT_FOUND",
+                message="User is not available.",
+                action=action,
+            )
+
+        terminal = _auth_fetch_single(
+            client,
+            "module01_user_terminals",
+            select="id,user_id,status",
+            filters={"id": terminal_id},
+        )
+        if (
+            terminal is None
+            or terminal.get("status") != "ACTIVE"
+            or terminal.get("user_id") != user_id
+        ):
+            return None, _auth_error_response(
+                request_id=request_id,
+                started_at=started_at,
+                error_code="AUTH_TERMINAL_MISMATCH",
+                message="Terminal is not valid for this session.",
+                action=action,
+            )
+
+        return {
+            "client": client,
+            "user_id": user_id,
+            "request_id": request_id,
+            "started_at": started_at,
+            "terminal_id": terminal_id,
+            "expires_at_dt": expires_at_dt,
+            "user_email": user.get("email"),
+        }, None
+    except Exception:  # noqa: BLE001
+        return None, _auth_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code="AUTH_INVALID_TOKEN",
+            message="Authentication failed.",
+            action=action,
+        )
 
 
 @app.post("/api/module01/auth/login")
@@ -1450,165 +1701,150 @@ def module01_auth_login(payload: dict[str, Any]):
 
 @app.get("/api/module01/auth/session/status")
 def module01_auth_session_status(authorization: str | None = Header(default=None, alias="Authorization")):
-    started_at = perf_counter()
-    request_id = str(uuid4())
-    bearer_token = _auth_extract_bearer_token(authorization)
-    if not bearer_token:
+    ctx, err = _auth_validate_session_context(authorization, action="session_status")
+    if err is not None:
+        return err
+
+    client = ctx["client"]
+    user_id = ctx["user_id"]
+    request_id = ctx["request_id"]
+    started_at = ctx["started_at"]
+    terminal_id = ctx["terminal_id"]
+    expires_at_dt = ctx["expires_at_dt"]
+    user_email = ctx["user_email"]
+
+    role_codes = _auth_fetch_active_roles(client, user_id)
+    if not role_codes:
         return _auth_error_response(
             request_id=request_id,
             started_at=started_at,
-            error_code="AUTH_MISSING_TOKEN",
-            message="Authorization token is missing.",
+            error_code="AUTH_FORBIDDEN_ROLE",
+            message="Role is not allowed for this action.",
+            action="session_status",
         )
+    primary_role = "TEST_OPERATOR" if "TEST_OPERATOR" in role_codes else role_codes[0]
 
-    if not _auth_env_ready():
-        return _auth_config_error_response(request_id)
-    client = _auth_get_supabase_client()
-    if client is None:
-        return _auth_config_error_response(request_id)
-
-    try:
-        token_hash = hashlib.sha256(bearer_token.encode("utf-8")).hexdigest()
-        session_row = _auth_fetch_single(
-            client,
-            "module01_user_sessions",
-            select="id,user_id,terminal_id,expires_at,revoked_at",
-            filters={"session_token_hash": token_hash},
-        )
-        if session_row is None:
-            return _auth_error_response(
-                request_id=request_id,
-                started_at=started_at,
-                error_code="AUTH_INVALID_TOKEN",
-                message="Authentication failed.",
-            )
-
-        if session_row.get("revoked_at") is not None:
-            return _auth_error_response(
-                request_id=request_id,
-                started_at=started_at,
-                error_code="AUTH_SESSION_REVOKED",
-                message="Session is revoked.",
-            )
-
-        expires_raw = session_row.get("expires_at")
-        if not isinstance(expires_raw, str) or not expires_raw.strip():
-            return _auth_error_response(
-                request_id=request_id,
-                started_at=started_at,
-                error_code="AUTH_INVALID_TOKEN",
-                message="Authentication failed.",
-            )
-        expires_str = expires_raw.strip()
-        if expires_str.endswith("Z"):
-            expires_str = expires_str[:-1] + "+00:00"
-        try:
-            expires_at_dt = datetime.fromisoformat(expires_str)
-        except ValueError:
-            return _auth_error_response(
-                request_id=request_id,
-                started_at=started_at,
-                error_code="AUTH_INVALID_TOKEN",
-                message="Authentication failed.",
-            )
-        now_dt = datetime.now(UTC)
-        if expires_at_dt <= now_dt:
-            return _auth_error_response(
-                request_id=request_id,
-                started_at=started_at,
-                error_code="AUTH_SESSION_EXPIRED",
-                message="Session is expired.",
-            )
-
-        user_id = session_row.get("user_id")
-        terminal_id = session_row.get("terminal_id")
-        if not isinstance(user_id, str) or not user_id or not isinstance(terminal_id, str) or not terminal_id:
-            return _auth_error_response(
-                request_id=request_id,
-                started_at=started_at,
-                error_code="AUTH_INVALID_TOKEN",
-                message="Authentication failed.",
-            )
-
-        user = _auth_fetch_single(
-            client,
-            "module01_users",
-            select="id,email,status",
-            filters={"id": user_id},
-        )
-        if user is None or user.get("status") != "ACTIVE":
-            return _auth_error_response(
-                request_id=request_id,
-                started_at=started_at,
-                error_code="AUTH_USER_NOT_FOUND",
-                message="User is not available.",
-            )
-
-        terminal = _auth_fetch_single(
-            client,
-            "module01_user_terminals",
-            select="id,user_id,status",
-            filters={"id": terminal_id},
-        )
-        if (
-            terminal is None
-            or terminal.get("status") != "ACTIVE"
-            or terminal.get("user_id") != user_id
-        ):
-            return _auth_error_response(
-                request_id=request_id,
-                started_at=started_at,
-                error_code="AUTH_TERMINAL_MISMATCH",
-                message="Terminal is not valid for this session.",
-            )
-
-        role_codes = _auth_fetch_active_roles(client, user_id)
-        if not role_codes:
-            return _auth_error_response(
-                request_id=request_id,
-                started_at=started_at,
-                error_code="AUTH_FORBIDDEN_ROLE",
-                message="Role is not allowed for this action.",
-            )
-        primary_role = "TEST_OPERATOR" if "TEST_OPERATOR" in role_codes else role_codes[0]
-
-        response_payload = {
-            "status": "success",
-            "data": {
-                "authenticated": True,
-                "user_id": user_id,
-                "email": user.get("email"),
-                "role": primary_role,
-                "terminal_id": terminal_id,
-                "expires_at": expires_at_dt.isoformat(),
-                "remaining_seconds": max(0, int((expires_at_dt - now_dt).total_seconds())),
-            },
-            "error": None,
-            "metadata": _auth_timed_metadata(request_id, started_at),
-        }
-        return JSONResponse(status_code=200, content=response_payload)
-    except Exception:  # noqa: BLE001
-        return _auth_error_response(
-            request_id=request_id,
-            started_at=started_at,
-            error_code="AUTH_INVALID_TOKEN",
-            message="Authentication failed.",
-        )
+    now_dt = datetime.now(UTC)
+    response_payload = {
+        "status": "success",
+        "data": {
+            "authenticated": True,
+            "user_id": user_id,
+            "email": user_email,
+            "role": primary_role,
+            "terminal_id": terminal_id,
+            "expires_at": expires_at_dt.isoformat(),
+            "remaining_seconds": max(0, int((expires_at_dt - now_dt).total_seconds())),
+        },
+        "error": None,
+        "metadata": _auth_timed_metadata(request_id, started_at),
+    }
+    return JSONResponse(status_code=200, content=response_payload)
 
 
 @app.get("/api/module01/auth/menu")
-def module01_auth_menu():
-    started_at = perf_counter()
-    request_id = str(uuid4())
+def module01_auth_menu(authorization: str | None = Header(default=None, alias="Authorization")):
+    ctx, err = _auth_validate_session_context(authorization, action=AUTH_MENU_ACTION)
+    if err is not None:
+        return err
+
+    client = ctx["client"]
+    user_id = ctx["user_id"]
+    request_id = ctx["request_id"]
+    started_at = ctx["started_at"]
+
+    if _truthy_env("EDS_MENU_FORCE_MOCK"):
+        metadata = _auth_timed_metadata(request_id, started_at)
+        metadata["logic_version"] = None
+        metadata["menu_source"] = "mock_dev_fallback"
+        metadata["auth_enforcement"] = "authenticated"
+        return JSONResponse(
+            status_code=200,
+            content={
+                "status": "success",
+                "data": _auth_mock_menu_payload(),
+                "error": None,
+                "metadata": metadata,
+            },
+        )
+
+    if not _auth_env_ready() or client is None:
+        return _menu_registry_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code="MENU_REGISTRY_UNAVAILABLE",
+            message="Menu registry is not available.",
+        )
+
+    env_scope, escope_err = resolve_menu_environment_scope()
+    if escope_err:
+        return _menu_registry_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code=escope_err,
+            message="Menu environment scope is not configured validly.",
+        )
+
+    role_id = _auth_resolve_primary_role_id(client, user_id)
+    if not role_id:
+        return _menu_registry_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code="MENU_ROLE_NOT_FOUND",
+            message="No active role resolved for menu registry.",
+        )
+
+    try:
+        service = MenuRegistryService(client)
+        modules, svc_err = service.fetch_menu_modules(role_id, env_scope)
+    except Exception:  # noqa: BLE001
+        return _menu_registry_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code="MENU_REGISTRY_QUERY_FAILED",
+            message="Menu registry query failed.",
+        )
+
+    if svc_err:
+        return _menu_registry_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code=svc_err,
+            message="Menu registry query failed.",
+        )
+
+    if modules is None:
+        return _menu_registry_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code="MENU_REGISTRY_UNAVAILABLE",
+            message="Menu registry returned no data.",
+        )
+
+    if not _menu_registry_svc.MenuRegistryService.menu_has_any_action(modules):
+        return _menu_registry_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code="MENU_NO_ALLOWED_ACTIONS",
+            message="No menu actions are allowed for this role in the current environment.",
+        )
+
+    menus_flat = _menu_flatten_for_gas(modules)
+
     metadata = _auth_timed_metadata(request_id, started_at)
     metadata["logic_version"] = None
-    metadata["mock_slice"] = "DYNAMIC_MENU_PIPE_ONLY"
-    metadata["auth_enforcement"] = "DEFERRED_FOR_MOCK_SLICE"
+    metadata["menu_source"] = "registry"
+    metadata["environment_scope"] = env_scope
+    metadata["auth_enforcement"] = "authenticated"
+
     return JSONResponse(
         status_code=200,
         content={
             "status": "success",
-            "data": _auth_mock_menu_payload(),
+            "data": {
+                "modules": modules,
+                "menus": menus_flat,
+            },
             "error": None,
             "metadata": metadata,
         },

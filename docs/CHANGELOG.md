@@ -6,6 +6,236 @@
 
 ---
 
+# 07.05.2026 — DB-Driven Menu Backend Service (CODE ONLY / backend)
+
+## Факт (**MenuRegistryService + authenticated `/api/module01/auth/menu`**)
+
+- **`MenuRegistryService`** added: `services/menu_registry_service.py` — registry join + filters + grouped **`modules`** payload.
+- **`GET /api/module01/auth/menu`** requires **Bearer** session; **`role_id`** from auth context only (no client-supplied role).
+- Response **`data.modules`** (contract shape) + **`data.menus`** (flat list for existing GAS `EDSPowerCore`).
+- Fail-closed errors: `MENU_REGISTRY_UNAVAILABLE`, `MENU_ROLE_NOT_FOUND`, `MENU_NO_ALLOWED_ACTIONS`, `MENU_ENVIRONMENT_SCOPE_INVALID`, `MENU_REGISTRY_QUERY_FAILED`.
+- Env (names only): **`EDS_MENU_ENVIRONMENT_SCOPE`** (default `PRODUCTION`); optional **`EDS_MENU_FORCE_MOCK`** for authenticated mock fallback (dev).
+- **`_auth_validate_session_context`** shared by session status + menu; tests extended.
+- **No GAS changes.** **No DB / migration / SQL execution.** **No Render config changes.** **No product/calculation logic.**
+- Audit: `docs/AUDITS/2026-05-07_EDS_POWER_BACKEND_MENU_SERVICE_IMPLEMENTATION.md`.
+
+## Далі
+
+Next allowed step:
+- Deploy to Render (or target host) + operator authenticated menu verification
+
+---
+
+# 07.05.2026 — DB-Driven Menu Backend Integration Plan (DOC ONLY / planning)
+
+## Факт (**planning only / no code**)
+
+- **DB-driven menu backend integration plan** created: `docs/ARCHITECTURE/EDS_POWER_DB_DRIVEN_MENU_BACKEND_INTEGRATION_PLAN.md` — verdict **`DB_DRIVEN_MENU_BACKEND_PLAN_READY_FOR_AUDIT`**.
+- SQL Registry S01 manual apply **confirmed** as dependency (`EDS_POWER_SQL_REGISTRY_S01_APPLY_SUCCESS`).
+- **No backend / GAS / DB / Render changes**; **no Python**, **no SQL execution**, **no secrets**.
+- Implementation remains **blocked** pending **Gemini audit** and user approval of a follow-on implementation task.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of backend integration plan
+
+---
+
+# 07.05.2026 — EDS Power SQL Registry S01 manual apply closeout (DOC ONLY / operator evidence)
+
+## Факт (**EDS_POWER_SQL_REGISTRY_S01_APPLY_SUCCESS / no code**)
+
+- SQL Registry S01 **manually applied** through **Supabase Dashboard SQL Editor** (operator evidence).
+- `eds_power` registry tables created on remote: `public.eds_power_modules`, `public.eds_power_module_actions`, `public.eds_power_role_module_access`.
+- Verification counts (operator): `modules_count` = **2**, `actions_count` = **4**, `role_bindings_count` = **40**; **3** `updated_at` triggers verified.
+- **No Cursor DB execution**; no `db push` by Cursor.
+- **No backend / GAS / Render changes** in this closeout.
+- Closeout report: `docs/AUDITS/2026-05-07_EDS_POWER_SQL_REGISTRY_S01_MANUAL_APPLY_REPORT.md`.
+
+## Далі
+
+Next allowed step:
+- Post-apply review + backend integration **planning** (implementation remains gated by separate task; **not** active here).
+
+---
+
+# 07.05.2026 — Manual SQL Apply Governance Rule registered (DOC ONLY)
+
+## Факт (**governance boundary / no DB**)
+
+- **Manual SQL Apply Governance Rule** registered.
+- Cursor direct Supabase DB execution explicitly **forbidden**.
+- User/operator manual SQL execution model recorded (Dashboard SQL Editor or other approved path).
+- SQL apply requires checklist, verification queries, and closeout evidence from operator before Cursor records apply-as-done.
+- Rule text: `docs/00_SYSTEM/02_GLOBAL_RULES.md` — *Manual SQL Apply Governance Rule*.
+- Context: SQL Registry S01 apply attempt showed agent/CLI cannot complete remote apply; operator-led path is the recorded model.
+- No SQL execution performed.
+- No Supabase or DB changes performed.
+
+## Далі
+
+Next allowed step:
+- Operator manual apply per `docs/AUDITS/2026-05-07_SQL_REGISTRY_S01_PRE_APPLY_CHECKLIST.md` and record results
+
+---
+
+# 07.05.2026 — SQL Registry S01 Pre-Apply Checklist (DOC ONLY)
+
+## Факт (**MIGRATION_READY_FOR_APPLY / no DB touch**)
+
+- Gemini final migration file audit verdict recorded: **MIGRATION_READY_FOR_APPLY**.
+- Pre-Apply Checklist created: `docs/AUDITS/2026-05-07_SQL_REGISTRY_S01_PRE_APPLY_CHECKLIST.md`.
+- SQL execution remains **blocked** until explicit user/operator approval and separate apply task.
+- No DB changes performed.
+
+## Далі
+
+Next allowed step:
+- User approval for Supabase Apply (then separate task **EDS POWER SQL REGISTRY S01 — SUPABASE APPLY** if approved)
+
+---
+
+# 07.05.2026 — EDS Power SQL Registry S01 migration file authored (CODE ONLY / NO EXECUTION)
+
+## Факт (**migration file only / Gemini MIGRATION_READY**)
+
+- Supabase migration file authored: `supabase/migrations/20260507100000_eds_power_dynamic_menu_registry_s01.sql`.
+- Based on approved plan (`docs/DB_MIGRATIONS/EDS_POWER_SQL_REGISTRY_S01_FINAL_IMPLEMENTATION_PLAN.md`) and Gemini **PASS (MIGRATION_READY)** for pre-migration audit (recorded in governance step).
+- `public.module01_roles(id)` FK and `public.set_updated_at()` triggers included after read-only repo confirmation in baseline / Module 01 slice.
+- Role binds seeded via join to `public.module01_roles` (active roles only; no hardcoded role UUIDs).
+- No SQL execution performed.
+- No Supabase / DB changes performed.
+- No backend / GAS / Render changes.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of migration file
+
+---
+
+# 07.05.2026 — EDS Power SQL Registry S01 Final Implementation Plan (DOC ONLY)
+
+## Факт (**pre-migration plan / ALIGNMENT_PASS / no execution**)
+
+- SQL Registry S01 **final implementation plan** document created: `docs/DB_MIGRATIONS/EDS_POWER_SQL_REGISTRY_S01_FINAL_IMPLEMENTATION_PLAN.md`.
+- Gemini **ALIGNMENT_PASS** accepted for aligned DDL / final alignment stage.
+- `UPDATED_AT_STRATEGY = DB_TRIGGER_IF_CONFIRMED` and `REGISTRY_ACCESS_STRATEGY = BACKEND_SERVICE_ROLE_ONLY_MVP` recorded in the plan.
+- Consolidated SQL appears **only** as documentation inside that plan (section 9); that step did not add a repo migration file yet.
+- No SQL execution performed.
+- No DB / Supabase changes performed.
+
+## Далі
+
+Next allowed step:
+- Gemini final pre-migration audit of the implementation plan
+
+---
+
+# 07.05.2026 — EDS Power SQL Registry S01 DDL Final Alignment (PASS WITH FIXES / DOC ONLY)
+
+## Факт (**final alignment / no sql / no supabase**)
+
+- Gemini **PASS WITH FIXES** reviewed for SQL Registry S01 DDL Draft.
+- DDL draft aligned: explicit `public.` qualification; generic `modules` replaced with `public.eds_power_modules`, `public.eds_power_module_actions`, `public.eds_power_role_module_access`.
+- `SYSTEM_SHELL` seed ordering clarified (SYSTEM_SHELL module before shell actions; role bindings last after confirmed `role_id` source).
+- Named unique constraint `uq_eds_power_role_module_access_role_action_env`; `role_id` remains non-FK in draft until confirmation; role UUID hardcoding still blocked.
+- Session-table `expires_at` / `issued_at` check deferred to **`AUTH_SESSION_HARDENING_FOLLOWUP`** (separate migration), not in S01 registry scope.
+- `updated_at` strategy recorded as **blocking** final SQL migration until trigger vs API-managed choice is selected.
+- No SQL execution performed. No DB changes performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of final aligned DDL draft
+
+---
+
+# 07.05.2026 — EDS Power SQL Registry S01 DDL Draft (DOC ONLY)
+
+## Факт (**ddl draft / no sql / no supabase**)
+
+- Gemini `SQL_MIGRATION_PLAN_AUDITED` / **PASS** reviewed for SQL Migration Plan Registry S01.
+- DDL draft document created: `docs/ARCHITECTURE/EDS_POWER_SQL_REGISTRY_S01_DDL_DRAFT.md`.
+- `SYSTEM_SHELL` ownership decision moved into DDL draft (dedicated `module_code = SYSTEM_SHELL` module row).
+- Role UUID hardcoding blocked pending schema confirmation in target environment.
+- No SQL execution performed.
+- No Supabase changes performed.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of SQL Registry S01 DDL Draft
+
+---
+
+# 07.05.2026 — EDS Power SQL Migration Plan Registry S01 created
+
+## Факт (**doc plan / sql execution blocked**)
+
+- SQL Migration Plan Registry S01 created in `docs/DB_MIGRATIONS/EDS_POWER_SQL_MIGRATION_PLAN_REGISTRY_S01.md`.
+- First DB-driven dynamic menu registry slice planned (`modules`, `module_actions`, `role_module_access`).
+- Existing migration/baseline references captured to avoid guessed schema conflicts.
+- SQL execution is explicitly blocked pending audit.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of SQL Migration Plan Registry S01
+
+---
+
+# 07.05.2026 — Gemini audit corrections applied for DB-driven dynamic menu registry contract
+
+## Факт (**contract pass / doc corrections applied**)
+
+- Gemini audit corrections applied to EDS Power DB-Driven Dynamic Menu Registry Contract.
+- Error code `CORE_VERSION_DEPRECATED` added to machine-readable error contract.
+- EDSPowerCore persistent menu caching is explicitly forbidden between sessions.
+- No SQL/DB migration/backend/GAS implementation performed in this step.
+
+## Далі
+
+Next allowed step:
+- EDS Power SQL Migration Plan Registry S01 — DOC ONLY
+
+---
+
+# 06.05.2026 — EDS Power DB-driven dynamic menu registry contract created
+
+## Факт (**doc contract / implementation blocked**)
+
+- EDS Power DB-Driven Dynamic Menu Registry Contract created.
+- Transition path from mock menu to DB-driven menu scoped and bounded.
+- SQL/backend implementation explicitly blocked pending contract audit.
+- No DB/API/GAS changes performed in this step.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of DB-driven dynamic menu registry contract
+
+---
+
+# 06.05.2026 — EDS Power Dynamic Menu Mock Integration final operator pass after correction
+
+## Факт (**operator pass / corrected governance verified**)
+
+- EDS Power Dynamic Menu Mock Integration operator verified after governance corrections.
+- Fallback false-positive risk fixed and verified in fallback and backend/mock modes.
+- Backend mock payload reached EDSPowerCore with `endpoint_http_status = 200`.
+- Fallback and dynamic menu now use single canonical `EDS Power` menu title.
+- Backend owns final menu label (`Module 01 — Розрахунки (planned)`), GAS does not append status suffix.
+- No DB/calculation/module expansion.
+
+## Далі
+
+Next allowed step:
+- Gemini audit of EDS Power Dynamic Menu Mock Integration
+
+---
+
 # 06.05.2026 — Dynamic menu governance correction (label ownership + single title)
 
 ## Факт (**governance correction / operator retest required**)
