@@ -6,12 +6,26 @@
 
 ---
 
+# 07.05.2026 — Module 01 Create Calculation Technical Spec (`DOC ONLY` / pending audit + schema confirmation)
+
+## Факт (**technical specification only**)
+
+- **Planning:** Create Calculation Modal V1 — **Gemini `PASS` / ready for technical spec** (task assumption recorded in spec **§2**).
+- **Technical spec:** **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_TECHNICAL_SPEC.md`** — field→schema mapping (repo DDL), 12-digit base vs display, version **`-00`** + status history, errors, registry **`MODULE01_CREATE_CALCULATION`** planning (no SQL in task).
+- **No** Python/GAS/HTML implementation, no Cursor remote SQL, no migrations executed.
+
+## Далі
+
+- **Gemini audit** of technical spec + **operator** read-only Supabase checks (appendix SQL) — then implementation TASK only after user approval.
+
+---
+
 # 07.05.2026 — Module 01 Create Calculation Modal V1 Planning (`DOC ONLY` / pending audit)
 
 ## Факт (**planning document only**)
 
 - **Sidebar Static Context V1** remains **live validated** — **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_OPERATOR_TEST.md`**.
-- **Create Calculation Modal V1** planning started — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_MODAL_V1_PLANNING.md`** — verdict **`MODULE_01_CREATE_CALCULATION_MODAL_V1_PLAN_READY_FOR_AUDIT`**.
+- **Create Calculation Modal V1** planning — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_MODAL_V1_PLANNING.md`** — verdict **`MODULE_01_CREATE_CALCULATION_MODAL_V1_PLAN_READY_FOR_AUDIT`**; **Gemini `PASS` / ready for technical spec** (task assumption; recorded in technical spec **§2**).
 - **No** Python/GAS/HTML implementation, SQL execution, migrations, Render changes, product/calculation/KZO logic in this entry.
 
 ## Далі
