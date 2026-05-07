@@ -19,7 +19,7 @@ Search Render logs for prefix:
 
 `EDS_POWER_AUTH_LOGIN_DIAG`
 
-Each line is a single JSON object (sorted keys) after that prefix.
+Each line is a single JSON object (sorted keys) after that prefix, written to **process stdout** via `print(..., flush=True)` so lines appear alongside Uvicorn access logs (Python’s default logging config often drops `logging.info` from app modules).
 
 ### Allowed fields
 

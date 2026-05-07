@@ -6,6 +6,18 @@
 
 ---
 
+# 07.05.2026 — Module 01 login diagnostic: stdout emission (follow-up)
+
+## Факт (**emission only**)
+
+- **`EDS_POWER_AUTH_LOGIN_DIAG`**: emitted via **`print(..., flush=True)`** to stdout so Render/Uvicorn shows lines (replacing **`logging.info`**, dropped under default root log level **WARNING**).
+
+## Далі
+
+- Redeploy; grep Render logs for **`EDS_POWER_AUTH_LOGIN_DIAG`**.
+
+---
+
 # 07.05.2026 — Module 01 login: Render-side diagnostic logging (log only)
 
 ## Факт (**backend only**)

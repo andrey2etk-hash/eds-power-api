@@ -1,6 +1,5 @@
 import hashlib
 import json
-import logging
 import os
 import secrets
 from datetime import UTC, datetime, timedelta
@@ -1258,7 +1257,9 @@ def _auth_login_shape_flags(payload: Any) -> tuple[bool, bool, str | None, str |
 
 def _auth_emit_login_diagnostic(line: dict[str, Any]) -> None:
     payload = {k: line[k] for k in _AUTH_LOGIN_DIAG_ALLOWED_KEYS if k in line}
-    logging.getLogger(__name__).info("EDS_POWER_AUTH_LOGIN_DIAG %s", json.dumps(payload, sort_keys=True))
+    # stdout (not logging.info): Uvicorn/Render often omit app INFO unless root is configured;
+    # unbuffered flush ensures the line appears with access logs.
+    print("EDS_POWER_AUTH_LOGIN_DIAG " + json.dumps(payload, sort_keys=True), flush=True)
 
 
 def _auth_parse_session_ttl_hours() -> int | None:
