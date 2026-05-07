@@ -12,6 +12,7 @@ Rule:
 
 ## Latest audit
 
+- **Module 01 Create Calculation Modal V1 Planning (`DOC ONLY` / `MODULE_01_CREATE_CALCULATION_MODAL_V1_PLAN_READY_FOR_AUDIT` / pending Gemini audit) — modal workflow + `POST /api/module01/calculations/create` contract concepts; persistence mapping questions; no implementation — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_MODAL_V1_PLANNING.md`**
 - **Module 01 Sidebar Static Context V1 Live Operator Test (`LIVE_PASS` / `MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_PASS`) — Google Sheets sidebar smoke; Render `/api/module01/sidebar/context`; Apps Script HTML naming constraint recorded — **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_OPERATOR_TEST.md`**
 - **Module 01 Sidebar Static Context V1 Implementation (`IMPLEMENTED` / operator LIVE_PASS supersedes pending-test label for live gate) — **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_IMPLEMENTATION.md`**
 - **Module 01 Sidebar Technical Spec (`PASS` / `TECH_SPEC_LOCKED` / Gemini) — contracts for sidebar + future create — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_TECHNICAL_SPEC.md`**

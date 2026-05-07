@@ -290,7 +290,7 @@ Notes:
 - Planning doc: **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CALC_SLICE_01_PLANNING.md`** — verdict **`MODULE_01_CALC_SLICE_01_PLAN_READY_FOR_AUDIT`**; **no** Python/GAS/DB/SQL implementation in planning task.
 - **Governance:** Terminal shell + governance patch **locked**; **sidebar** design **`SIDEBAR_DESIGN_LOCKED`**; **technical spec** **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_TECHNICAL_SPEC.md`** gates first implementation slice alongside calc planning reference.
 - **Terminal UI Shell Doctrine:** **Gemini PASS / `ARCHITECTURE_LOCKED`** — `docs/ARCHITECTURE/EDS_POWER_TERMINAL_UI_SHELL_DOCTRINE.md`.
-- **Next:** **Create Calculation Modal V1** — **DOC / planning only** until explicit TASK; calc slice audit / implementation only if explicitly opened. Sidebar static context V1 **live:** **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_OPERATOR_TEST.md`**.
+- **Next:** **Create Calculation Modal V1** — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_MODAL_V1_PLANNING.md`** (**`PLANNING_DOC_PENDING_AUDIT`**); calc slice audit / implementation only if explicitly opened. Sidebar static context V1 **live:** **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_OPERATOR_TEST.md`**.
 
 ### EDS_POWER_MODULE_01_SIDEBAR_PLANNING
 
@@ -316,13 +316,13 @@ Notes:
 - **Technical spec** for Sidebar Iteration 01 — registry `OPEN_MODULE_01_SIDEBAR`, `GET /api/module01/sidebar/context`, `POST /api/module01/calculations/create` (planned only), errors, event map.
 - **Spec:** **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_TECHNICAL_SPEC.md`** — **Gemini PASS / `TECH_SPEC_LOCKED`**.
 - **Implementation:** **`GET /api/module01/sidebar/context`** + GAS/HTML shell — **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_IMPLEMENTATION.md`**; **live operator closeout** — **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_OPERATOR_TEST.md`** (**`MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_PASS`**).
-- **Next:** optional registry SQL for **`OPEN_MODULE_01_SIDEBAR`** (manual operator apply only); **Create Calculation Modal V1** — **DOC / planning only** until explicit TASK — **not** active: modal implementation, **`POST /api/module01/calculations/create`**.
+- **Next:** optional registry SQL for **`OPEN_MODULE_01_SIDEBAR`** (manual operator apply only); **Create Calculation Modal V1** — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_MODAL_V1_PLANNING.md`** (**`PLANNING_DOC_PENDING_AUDIT`** / Gemini next) — **not** active: **`POST /api/module01/calculations/create`** implementation.
 
 ### EDS_POWER_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1
 
 Status:
 
-- `LIVE_PASS`
+- `LIVE_PASS_CREATE_MODAL_PLANNING_STARTED`
 
 Notes:
 
@@ -330,6 +330,19 @@ Notes:
 - **Path:** GAS → Render `GET /api/module01/sidebar/context` → Supabase auth/session → **`Module01SidebarHtml`**.
 - **Closeout:** **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_OPERATOR_TEST.md`** (**`MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_PASS`**).
 - **Artifacts:** `services/module01_sidebar_service.py`, `main.py` route, `tests/test_module01_sidebar_context_endpoint.py`, `gas/Module01Sidebar.gs`, `gas/Module01SidebarHtml.html`, `gas/AuthTransport.gs`, `gas/core/EDSPowerCore.gs` — bound Apps Script: **`Module01Sidebar.gs`** + **`Module01SidebarHtml.html`** (distinct base names).
+- **Next lane:** Create Calculation Modal V1 **planning** — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_MODAL_V1_PLANNING.md`** (**`MODULE_01_CREATE_CALCULATION_MODAL_V1_PLAN_READY_FOR_AUDIT`**).
+
+### EDS_POWER_MODULE_01_CREATE_CALCULATION_MODAL_V1
+
+Status:
+
+- `PLANNING_DOC_PENDING_AUDIT`
+
+Notes:
+
+- **First interactive modal** for Module 01: **Створити розрахунок** → authenticated **`POST /api/module01/calculations/create`** (concept only); **V1** `product_type` = **KZO** classification only; **no** KZO/engine/BOM/snapshot logic in planning scope.
+- **Planning doc:** **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_MODAL_V1_PLANNING.md`** — persistence questions vs `module01_calculations` / `module01_calculation_versions` / `module01_calculation_status_history` (read-only DDL refs only).
+- **Not active:** implementation, SQL, migrations, modal/GAS/backend code until explicit TASK after audit + user approval.
 
 ### EDS_POWER_TERMINAL_UI_SHELL_DOCTRINE
 

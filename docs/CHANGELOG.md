@@ -6,6 +6,20 @@
 
 ---
 
+# 07.05.2026 — Module 01 Create Calculation Modal V1 Planning (`DOC ONLY` / pending audit)
+
+## Факт (**planning document only**)
+
+- **Sidebar Static Context V1** remains **live validated** — **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_OPERATOR_TEST.md`**.
+- **Create Calculation Modal V1** planning started — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_MODAL_V1_PLANNING.md`** — verdict **`MODULE_01_CREATE_CALCULATION_MODAL_V1_PLAN_READY_FOR_AUDIT`**.
+- **No** Python/GAS/HTML implementation, SQL execution, migrations, Render changes, product/calculation/KZO logic in this entry.
+
+## Далі
+
+- **Gemini audit** of Create Calculation Modal V1 Planning — **then** schema/persistence confirmation before any **`MODULE_01_CREATE_CALCULATION_MODAL_V1_IMPLEMENTATION`** TASK.
+
+---
+
 # 10.05.2026 — Module 01 Sidebar Static Context V1 — live operator test (`LIVE_PASS` / DOC ONLY)
 
 ## Факт (**operator smoke — documentation closeout**)
