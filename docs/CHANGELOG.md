@@ -6,6 +6,23 @@
 
 ---
 
+# 08.05.2026 — Terminal governance patch: Render thinking / GAS sync / main.py thin router (`DOC ONLY`)
+
+## Факт (**governance documentation only**)
+
+- **Terminal UI Shell Doctrine:** external **Gemini** verdict **PASS** / **`ARCHITECTURE_LOCKED`** — `docs/ARCHITECTURE/EDS_POWER_TERMINAL_UI_SHELL_DOCTRINE.md` (§13 updated); cross-references to global rules + GAS deployment doctrine in §1.
+- **User governance patch** recorded in **`docs/00_SYSTEM/02_GLOBAL_RULES.md`**:
+  - **Render Thinking / GAS Thin UI Rule** — all “thinking” on Render/backend; GAS UI shell / transport only (forbidden list explicit).
+  - **main.py Thin Router Rule** — routes, envelopes, service calls, minimal wiring only; no growing business/engine/calc/registry/product logic in `main.py`; extraction required.
+- **New:** **`docs/ARCHITECTURE/EDS_POWER_GAS_DEPLOYMENT_AND_SYNC_DOCTRINE.md`** — repo source of truth; Groups A–D file map; manual sync checklist; no silent Apps Script drift; future deployment decision gate — **no** clasp/API implementation in this task.
+- **No** GAS edits, backend edits, SQL, migrations, Render, sidebar/modal/calc implementation.
+
+## Далі
+
+- Gemini audit of **terminal governance patch** bundle; then Module 01 sidebar + modal **DOC** planning if tasked — **not** implementation until explicit unlock.
+
+---
+
 # 07.05.2026 — EDS Power Terminal UI Shell Doctrine (`DOC ONLY`)
 
 ## Факт (**planning only**)

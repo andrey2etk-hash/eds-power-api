@@ -6,6 +6,13 @@ Define the intended UI architecture of the EDS Power Google Sheets terminal as a
 
 This document is **planning / architecture only**. It does not authorize implementation.
 
+**Governance cross-references** (external audit: **Terminal UI Shell Doctrine = PASS / `ARCHITECTURE_LOCKED`**):
+
+- **`docs/00_SYSTEM/02_GLOBAL_RULES.md`** — **Render Thinking / GAS Thin UI Rule**; **main.py Thin Router Rule**
+- **`docs/ARCHITECTURE/EDS_POWER_GAS_DEPLOYMENT_AND_SYNC_DOCTRINE.md`** — GAS file groups, manual sync, no silent drift; future deployment decision
+
+**Presentation rule:** Sidebar and modal UI must remain a **thin shell** — layout, input collection, and display of **backend-approved** results only; **all decisions and calculations** are **backend-owned** (Render/API).
+
 ## 2. User Vision
 
 The terminal is **not only** a spreadsheet-attached custom menu or a menu-triggered calculation tool.
@@ -162,13 +169,17 @@ This doctrine **does not** implement calculation logic, persistence, or API endp
 
 ## 12. Next Planning Step
 
-After this doctrine is audited:
+With doctrine **locked** (**Gemini:** **PASS** / **`ARCHITECTURE_LOCKED`**):
 
 1. Plan **Module 01 sidebar structure** (sections, actions, mapping to future API/registry).  
 2. Plan the **first modal workflow** (single bounded flow — e.g. create calculation — doc-only until approved).
 
-Calculation **implementation** remains gated by explicit user approval and prior calc-slice planning artifacts; terminal shell planning **precedes** deepening calc-only implementation tasks.
+Calculation **implementation** remains gated by explicit user approval, terminal governance patch audit, and prior calc-slice planning artifacts; terminal shell planning **precedes** deepening calc-only implementation tasks.
 
 ## 13. Verdict
 
-**`TERMINAL_UI_SHELL_DOCTRINE_READY_FOR_AUDIT`**
+**Gemini audit:** **PASS** / **`ARCHITECTURE_LOCKED`**.
+
+Planning-era token **`TERMINAL_UI_SHELL_DOCTRINE_READY_FOR_AUDIT`** is **superseded** by this verdict.
+
+**Normative follow-on (governance patch — pending Gemini):** **`docs/00_SYSTEM/02_GLOBAL_RULES.md`** (**Render Thinking / GAS Thin UI Rule**, **main.py Thin Router Rule**); **`docs/ARCHITECTURE/EDS_POWER_GAS_DEPLOYMENT_AND_SYNC_DOCTRINE.md`**.

@@ -101,6 +101,87 @@ status must be recorded accurately, e.g. **`EXECUTION_BLOCKED`**, **`INFRASTRUCT
 
 ---
 
+## Render Thinking / GAS Thin UI Rule
+
+All **decision-making**, **business**, **engineering**, **calculation**, **permission**, **validation**, and **workflow** logic must live on **Render/backend**.
+
+**Render/backend owns:**
+
+- permissions  
+- role interpretation  
+- engineering validation  
+- calculation logic  
+- product logic  
+- workflow decisions  
+- registry interpretation  
+- snapshot persistence  
+- action authorization  
+- environment filtering  
+- final response envelope  
+
+**GAS may only:**
+
+- render custom menu  
+- open sidebar  
+- open modal dialogs  
+- collect user input  
+- send authenticated batch requests  
+- receive backend response  
+- render backend-approved results  
+- display errors/statuses  
+- store temporary UI/session helper state **where allowed** (presentation and transport helpers — not business truth)  
+
+**GAS must NOT:**
+
+- calculate engineering logic  
+- decide permissions  
+- query Supabase directly  
+- contain product rules  
+- contain BOM rules  
+- contain workflow decisions  
+- contain role logic  
+- silently alter backend payload meaning  
+- create hidden defaults that affect engineering/business output  
+
+If logic appears to require **“thinking”**, it belongs on **Render/backend**, not GAS.
+
+**Normative companion:** `docs/ARCHITECTURE/EDS_POWER_TERMINAL_UI_SHELL_DOCTRINE.md` (terminal shell — three layers; backend authority).
+
+---
+
+## main.py Thin Router Rule
+
+`main.py` must remain a **thin API wiring layer**.
+
+**`main.py` may:**
+
+- define routes  
+- parse request envelopes  
+- call service functions  
+- return **standard** response envelopes  
+- hold **minimal** dependency wiring (shared deps, routers registration)  
+
+**`main.py` must NOT accumulate:**
+
+- business logic  
+- engineering logic  
+- calculation engines  
+- registry interpretation logic  
+- long helper chains  
+- large validation systems  
+- product-specific algorithms  
+
+**Required direction:**
+
+- auth logic should move toward **auth service modules** where practical  
+- menu registry logic belongs in **service files** (e.g. menu registry service)  
+- calculation logic belongs in **dedicated module/service/engine** files  
+- product logic belongs in **product-specific** engines/registries — **not** `main.py`  
+
+Any future implementation task that adds **significant** logic to `main.py` must be **blocked** or **rewritten** as service/module extraction.
+
+---
+
 ## 4. Правила модулів
 
 Кожен модуль:
