@@ -278,6 +278,18 @@ Notes:
 - **Canonical naming:** EDS Power / EDSPowerCore (historical “Sakura” in some audit quotes = legacy wording only).
 - Prior partial: **`docs/AUDITS/2026-05-07_DB_DRIVEN_MENU_RENDER_OPERATOR_TEST.md`**.
 
+### EDS_POWER_MODULE_01_CALC_SLICE_01
+
+Status:
+
+- `PLANNING_DOC_PENDING_AUDIT`
+
+Notes:
+
+- **Started only after** DB-driven menu registry live validation and post-audit cleanup (`LIVE_VALIDATED_PASS_CLEANUP_COMPLETED`).
+- Planning doc: **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CALC_SLICE_01_PLANNING.md`** — verdict **`MODULE_01_CALC_SLICE_01_PLAN_READY_FOR_AUDIT`**; **no** Python/GAS/DB/SQL implementation in planning task.
+- **Next:** Gemini audit + user approval before opening implementation task.
+
 ### IDEA-0002 — Google Sheets Sidebar UI
 
 ### IDEA-0025 — KZO_WELDED_SV_SR_PAIR_DNA

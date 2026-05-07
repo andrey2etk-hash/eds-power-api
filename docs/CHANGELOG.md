@@ -6,6 +6,20 @@
 
 ---
 
+# 07.05.2026 — Module 01 Calculation Slice 01 Planning (`DOC ONLY`)
+
+## Факт (**planning only**)
+
+- **DB-driven menu / auth foundation:** live validated + post-audit cleanup closed — handoff to next slice (**no** new registry work in this entry).
+- **Module 01 Calc Slice 01:** architecture planning doc **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CALC_SLICE_01_PLANNING.md`** — bounded authenticated **`POST /api/module01/calculations/prepare`** concept, mock/minimal engine, GAS thin client, optional persistence options — **no** implementation.
+- **Verdict:** **`MODULE_01_CALC_SLICE_01_PLAN_READY_FOR_AUDIT`** — pending Gemini + user approval before code.
+
+## Далі
+
+- Gemini audit of planning doc; **do not** open implementation until explicit approval.
+
+---
+
 # 07.05.2026 — EDS Power DB-Driven Menu: post-audit cleanup (`PASS_WITH_CLEANUP`)
 
 ## Факт (**cleanup slice**)
@@ -18,7 +32,7 @@
 
 ## Далі
 
-- Operator confirms registry labels; then **Module 01 calculation planning** (task-gated only).
+- Operator confirms registry labels; **Module 01 Calc Slice 01 planning** recorded — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CALC_SLICE_01_PLANNING.md`** — **implementation not opened**.
 
 ---
 

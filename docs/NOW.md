@@ -22,13 +22,12 @@
 - **DOC 38 BOM Aggregation / Kit Issue doctrine** (**PASS / CLOSED AS DOCTRINE**)
 - **DOC 38 Slice 01 Basic Aggregation** (**CLOSED / VERIFIED**)
 **Selected terminal architecture:** **MODEL C — HYBRID TERMINAL GOVERNANCE**
-**DB-Driven Menu Registry:** **Current step:** **`PASS_WITH_CLEANUP`** cleanup **completed** (auth diagnostics env-gated; post-audit doc + label restore governance); **pending:** operator **final confirmation** of canonical registry labels in Supabase — **`docs/AUDITS/2026-05-07_EDS_POWER_DB_DRIVEN_MENU_POST_AUDIT_CLEANUP.md`**.
-**Next allowed step:** Final cleanup verification (labels in Dashboard), then **Module 01 calculation planning** (documentation/task only — **not** calculation implementation active).
-**Live validation closeout:** **`docs/AUDITS/2026-05-07_EDS_POWER_DB_DRIVEN_MENU_FINAL_OPERATOR_VALIDATION.md`** — **`EDS_POWER_DB_DRIVEN_MENU_REGISTRY_LIVE_VALIDATED_PASS`**.
+**DB-Driven Menu Registry:** **Stage closed** — live validated + **`PASS_WITH_CLEANUP`** cleanup; **`docs/AUDITS/2026-05-07_EDS_POWER_DB_DRIVEN_MENU_FINAL_OPERATOR_VALIDATION.md`**, **`docs/AUDITS/2026-05-07_EDS_POWER_DB_DRIVEN_MENU_POST_AUDIT_CLEANUP.md`**.
+**Module 01 Calculation:** **Current step:** **Calculation Slice 01 Planning — DOC ONLY** — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CALC_SLICE_01_PLANNING.md`**. **Next allowed step:** **Gemini audit** of Calculation Slice 01 Planning. **Not active:** implementation (Python/GAS/DB/SQL/Render product code).
 **Prior diagnostics (context):** `docs/AUDITS/2026-05-07_GAS_MENU_CONFIG_PATH_DIAGNOSTIC.md`, `docs/AUDITS/2026-05-07_GAS_DYNAMIC_MENU_SETUP_FAILURE_DIAGNOSTIC.md`, **`docs/AUDITS/2026-05-07_RENDER_SUPABASE_AUTH_PATH_DIAGNOSTIC.md`**, **`docs/AUDITS/2026-05-07_MODULE_01_LOGIN_TERMINAL_LOOKUP_FIX.md`**, **`docs/AUDITS/2026-05-07_TERMINAL_SPREADSHEET_MATCH_DIAGNOSTIC.md`**.
 **Backend menu reader:** **`MenuRegistryService`** + **`/api/module01/auth/menu`** (**registry** path live-validated per closeout).
 **SQL Registry S01 closeout:** **Manual apply recorded** — **`docs/AUDITS/2026-05-07_EDS_POWER_SQL_REGISTRY_S01_MANUAL_APPLY_REPORT.md`** — verdict **`EDS_POWER_SQL_REGISTRY_S01_APPLY_SUCCESS`**.
-**Wider product/backend scope:** Not expanded beyond menu registry read path.
+**Wider product/backend scope:** **Module 01 Calculation Slice 01** — **planning doc only** (`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CALC_SLICE_01_PLANNING.md`); **implementation not active**.
 **Manual SQL apply governance:** **Current DB execution model: manual SQL apply by user/operator only.** Cursor prepares migrations, checklists, and closeout documentation; **user/operator executes** SQL on Supabase (e.g. Dashboard SQL Editor). See **`docs/00_SYSTEM/02_GLOBAL_RULES.md`** — Manual SQL Apply Governance Rule.
 **Naming governance record:** **Canonical naming in current system = EDS Power / EDS Power Client Core / EDSPowerCore.**
 **Reserved future name note:** **Sakura/SakuraCore reserved for separate future project; not canonical in current EDS Power docs.**

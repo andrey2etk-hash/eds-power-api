@@ -12,6 +12,7 @@ Rule:
 
 ## Latest audit
 
+- **Module 01 Calculation Slice 01 Planning (`DOC ONLY` / `MODULE_01_CALC_SLICE_01_PLAN_READY_FOR_AUDIT` / pending Gemini) — bounded authenticated calc path after DB-driven menu closeout; mock engine; no implementation — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CALC_SLICE_01_PLANNING.md`**
 - **EDS Power DB-Driven Menu Post-Audit Cleanup (`PASS_WITH_CLEANUP`) — auth login diagnostics env-gated (`EDS_POWER_AUTH_DEBUG_LOGS`); operator-governed registry label restore documented; naming EDS Power vs legacy Sakura note; tests 126 PASS — **`docs/AUDITS/2026-05-07_EDS_POWER_DB_DRIVEN_MENU_POST_AUDIT_CLEANUP.md`**
 - **EDS Power DB-Driven Menu Final Operator Validation (`LIVE_VALIDATED_PASS` / `LIVE_VALIDATED_PASS_PENDING_AUDIT`) — operator-recorded auth/session PASS, GAS `menu_source=registry` + HTTP 200, visual Supabase→Sheets menu_label proof, full path GAS→Render→Supabase auth→registry→payload; governance + cleanup §9; **no implementation in closeout** — **`docs/AUDITS/2026-05-07_EDS_POWER_DB_DRIVEN_MENU_FINAL_OPERATOR_VALIDATION.md`**
 - **GAS Core Dynamic Menu Refresh Fix (`GAS_DYNAMIC_MENU_REFRESH_FIX_PENDING_OPERATOR_TEST`) — on-open dynamic attempt; Setup Check uses `buildEDSPowerTerminalContext_`; `metadata.menu_source` in logs; auth/error envelope handling; no backend** — **`docs/AUDITS/2026-05-07_GAS_CORE_DYNAMIC_MENU_REFRESH_FIX.md`**
