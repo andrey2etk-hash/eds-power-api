@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from datetime import UTC, datetime
 from typing import Any
 
@@ -26,6 +27,72 @@ def _fetch_active_user_profile(client: Client, user_id: str) -> dict[str, Any] |
     except Exception:  # noqa: BLE001
         return None
     return None
+
+
+def _parse_product_type_from_notes_v1(notes: str | None) -> str | None:
+    if not isinstance(notes, str) or not notes.strip():
+        return None
+    for line in notes.splitlines():
+        m = re.match(r"^PRODUCT_TYPE:\s*(\S+)\s*$", line.strip(), re.IGNORECASE)
+        if m:
+            return m.group(1).upper()
+    return None
+
+
+def _fetch_latest_active_calculation_bundle(
+    client: Client, user_id: str
+) -> dict[str, Any] | None:
+    """Latest non-archived calculation for user + its -00 version row if present."""
+    try:
+        cr = (
+            client.table("module01_calculations")
+            .select("id,calculation_base_number,title,potential_customer,current_status,created_at")
+            .eq("created_by_user_id", user_id)
+            .eq("is_archived", False)
+            .order("created_at", desc=True)
+            .limit(1)
+            .execute()
+        )
+        crows = getattr(cr, "data", None)
+        if not isinstance(crows, list) or not crows or not isinstance(crows[0], dict):
+            return None
+        calc = crows[0]
+        cid = calc.get("id")
+        if not isinstance(cid, str):
+            return None
+        vr = (
+            client.table("module01_calculation_versions")
+            .select("calculation_version_number,status,notes")
+            .eq("calculation_id", cid)
+            .eq("version_suffix", "-00")
+            .limit(1)
+            .execute()
+        )
+        vrows = getattr(vr, "data", None)
+        ver: dict[str, Any] | None = None
+        if isinstance(vrows, list) and vrows and isinstance(vrows[0], dict):
+            ver = vrows[0]
+        disp = None
+        if ver and isinstance(ver.get("calculation_version_number"), str):
+            disp = ver["calculation_version_number"]
+        elif isinstance(calc.get("calculation_base_number"), str):
+            disp = f"{calc['calculation_base_number']}-00"
+        pt = _parse_product_type_from_notes_v1(ver.get("notes") if ver else None) if ver else None
+        if not pt:
+            pt = "KZO"
+        st = calc.get("current_status")
+        stat = st if isinstance(st, str) else "DRAFT"
+        return {
+            "calculation_id": cid,
+            "calculation_display_number": disp,
+            "status": stat,
+            "product_type": pt,
+            "title": calc.get("title"),
+            "potential_customer": calc.get("potential_customer"),
+            "created_at": calc.get("created_at"),
+        }
+    except Exception:  # noqa: BLE001
+        return None
 
 
 def build_module01_sidebar_data(
@@ -54,6 +121,14 @@ def build_module01_sidebar_data(
     now_dt = datetime.now(UTC)
     remaining = max(0, int((expires_at_dt - now_dt).total_seconds()))
 
+    active = _fetch_latest_active_calculation_bundle(client, user_id)
+    current_status_text = "No active calculation"
+    if active:
+        disp = active.get("calculation_display_number") or ""
+        pst = active.get("status") or "DRAFT"
+        pt = active.get("product_type") or "KZO"
+        current_status_text = f"{disp} — {pt} — {pst}" if disp else f"{pt} — {pst}"
+
     sidebar: dict[str, Any] = {
         "sidebar_id": "MODULE_01_CALCULATION_SIDEBAR",
         "module_code": "MODULE_01",
@@ -69,12 +144,12 @@ def build_module01_sidebar_data(
             "expires_at": expires_at_dt.isoformat(),
             "remaining_seconds": remaining,
         },
-        "active_calculation": None,
+        "active_calculation": active,
         "sections": [
             {
                 "section_key": "CURRENT_CONTEXT",
                 "title": "Поточний розрахунок",
-                "status_text": "No active calculation",
+                "status_text": current_status_text,
             },
             {
                 "section_key": "PRIMARY_ACTIONS",

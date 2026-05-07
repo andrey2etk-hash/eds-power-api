@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top" />
+    <meta charset="utf-8" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 12px;
+        font-size: 13px;
+        color: #202124;
+      }
+      h1 {
+        font-size: 15px;
+        margin: 0 0 12px 0;
+      }
+      label {
+        display: block;
+        margin: 8px 0 4px 0;
+        font-weight: 600;
+      }
+      input,
+      textarea,
+      select {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 6px 8px;
+        font-size: 13px;
+        border: 1px solid #dadce0;
+        border-radius: 4px;
+      }
+      textarea {
+        min-height: 64px;
+        resize: vertical;
+      }
+      .actions {
+        margin-top: 14px;
+        display: flex;
+        gap: 8px;
+      }
+      .actions button {
+        flex: 1;
+        padding: 8px;
+        font-size: 13px;
+        cursor: pointer;
+        border-radius: 4px;
+        border: 1px solid #dadce0;
+        background: #fff;
+      }
+      .actions button.primary {
+        background: #1a73e8;
+        color: #fff;
+        border-color: #1a73e8;
+      }
+      .actions button:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+      .err {
+        background: #fce8e6;
+        color: #c5221f;
+        padding: 8px;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        display: none;
+      }
+      .ok {
+        background: #e6f4ea;
+        color: #137333;
+        padding: 8px;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        display: none;
+      }
+      .load {
+        color: #1967d2;
+        margin-bottom: 8px;
+        display: none;
+      }
+      .hint {
+        color: #5f6368;
+        font-size: 12px;
+        margin-top: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Створити розрахунок</h1>
+    <div id="err-box" class="err"></div>
+    <div id="ok-box" class="ok"></div>
+    <div id="load-box" class="load">Зачекайте…</div>
+
+    <div id="form-panel">
+      <label for="calculation_title">Назва розрахунку *</label>
+      <input id="calculation_title" type="text" autocomplete="off" />
+
+      <label for="potential_customer">Потенційний замовник *</label>
+      <input id="potential_customer" type="text" autocomplete="off" />
+
+      <label for="product_type">Тип продукту *</label>
+      <select id="product_type" disabled>
+        <option value="KZO">KZO</option>
+      </select>
+      <p class="hint">V1: лише KZO (задано бекендом).</p>
+
+      <label for="external_reference">Об’єкт / заявка / примітка</label>
+      <input id="external_reference" type="text" autocomplete="off" />
+
+      <label for="comment">Коментар</label>
+      <textarea id="comment"></textarea>
+
+      <div class="actions">
+        <button type="button" id="btn-cancel">Скасувати</button>
+        <button type="button" id="btn-submit" class="primary">Створити</button>
+      </div>
+    </div>
+
+    <script>
+      var bootstrap = null;
+
+      function showErr(msg) {
+        var b = document.getElementById("err-box");
+        b.style.display = msg ? "block" : "none";
+        b.textContent = msg || "";
+      }
+      function showOk(msg) {
+        var b = document.getElementById("ok-box");
+        b.style.display = msg ? "block" : "none";
+        b.textContent = msg || "";
+      }
+      function setLoading(on) {
+        document.getElementById("load-box").style.display = on ? "block" : "none";
+      }
+
+      function readForm() {
+        return {
+          calculation_title: document.getElementById("calculation_title").value,
+          potential_customer: document.getElementById("potential_customer").value,
+          comment: document.getElementById("comment").value,
+          external_reference: document.getElementById("external_reference").value
+        };
+      }
+
+      function validateForm() {
+        var f = readForm();
+        if (!String(f.calculation_title || "").trim()) {
+          return "Вкажіть назву розрахунку.";
+        }
+        if (!String(f.potential_customer || "").trim()) {
+          return "Вкажіть потенційного замовника.";
+        }
+        return null;
+      }
+
+      function onBootstrap(res) {
+        setLoading(false);
+        if (!res || !res.ok) {
+          showErr(res && res.message ? res.message : "Не вдалось підготувати форму.");
+          document.getElementById("btn-submit").disabled = true;
+          return;
+        }
+        bootstrap = {terminal_id: res.terminal_id, spreadsheet_id: res.spreadsheet_id};
+        document.getElementById("btn-submit").disabled = false;
+      }
+
+      function onSubmitResult(res) {
+        setLoading(false);
+        document.getElementById("btn-submit").disabled = false;
+        if (!res || !res.ok) {
+          showErr(res && res.message ? res.message : "Помилка запиту.");
+          return;
+        }
+        var env = res.envelope || {};
+        var st = typeof env.status === "string" ? env.status : "";
+        if (st === "error") {
+          var er = env.error || {};
+          var code = typeof er.error_code === "string" ? er.error_code : "ERROR";
+          var msg = typeof er.message === "string" && er.message ? er.message : "Помилка сервера.";
+          showErr(code + ": " + msg);
+          return;
+        }
+        if (st !== "success" || !env.data || !env.data.calculation) {
+          showErr("Некоректна відповідь сервера.");
+          return;
+        }
+        var calc = env.data.calculation;
+        var disp = calc.calculation_display_number || "";
+        var sid = bootstrap && bootstrap.spreadsheet_id ? bootstrap.spreadsheet_id : "";
+        if (sid && calc.calculation_id) {
+          google.script.run.module01CreateCalculationRememberActiveId_(sid, calc.calculation_id);
+        }
+        showOk("Створено: " + disp + ". Закрийте діалог — бічна панель оновиться.");
+        document.getElementById("form-panel").style.display = "none";
+        setTimeout(function () {
+          google.script.host.close();
+        }, 2200);
+      }
+
+      function doSubmit() {
+        showErr("");
+        showOk("");
+        var v = validateForm();
+        if (v) {
+          showErr(v);
+          return;
+        }
+        if (!bootstrap) {
+          showErr("Контекст не завантажено.");
+          return;
+        }
+        document.getElementById("btn-submit").disabled = true;
+        setLoading(true);
+        google.script.run
+          .withSuccessHandler(onSubmitResult)
+          .withFailureHandler(function () {
+            setLoading(false);
+            document.getElementById("btn-submit").disabled = false;
+            showErr("Помилка виклику сервера (google.script.run).");
+          })
+          .module01CreateCalculationSubmit(readForm(), bootstrap);
+      }
+
+      document.getElementById("btn-cancel").addEventListener("click", function () {
+        google.script.host.close();
+      });
+      document.getElementById("btn-submit").addEventListener("click", doSubmit);
+
+      setLoading(true);
+      document.getElementById("btn-submit").disabled = true;
+      google.script.run
+        .withSuccessHandler(onBootstrap)
+        .withFailureHandler(function () {
+          setLoading(false);
+          showErr("Помилка bootstrap.");
+        })
+        .module01CreateCalculationBootstrap_();
+    </script>
+  </body>
+</html>

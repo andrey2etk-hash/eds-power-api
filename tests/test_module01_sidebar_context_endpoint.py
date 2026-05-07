@@ -88,6 +88,10 @@ class Module01SidebarContextEndpointTests(unittest.TestCase):
                 m.select.return_value.eq.return_value.execute.return_value = role_links
             elif name == "module01_users":
                 m.select.return_value.eq.return_value.limit.return_value.execute.return_value = user_row
+            elif name == "module01_calculations":
+                empty_calc = MagicMock()
+                empty_calc.data = []
+                m.select.return_value.eq.return_value.eq.return_value.order.return_value.limit.return_value.execute.return_value = empty_calc
             return m
 
         mock_client = MagicMock()

@@ -6,6 +6,21 @@
 
 ---
 
+# 07.05.2026 — Module 01 Create Calculation V1 (`implementation`)
+
+## Факт
+
+- **Create Calculation V1** — **`POST /api/module01/calculations/create`**, **`services/module01_calculations_service.py`** transaction-shaped writes (header + version **`-00`** + status history), structured **`notes`** V1, UTC 12-digit base number with collision retry + compensating deletes on partial failure.
+- **GAS:** **`Module01CreateCalculationModal.gs`** + **`Module01CreateCalculationModalHtml.html`**, **`AuthTransport`** path; sidebar button opens modal; **Оновити** reloads context.
+- **Tests:** pytest create endpoint + service + sidebar mocks — **142** passed locally.
+- **Registry:** **`MODULE01_CREATE_CALCULATION`** permission gate — operator DML prepared in audit only; **Cursor did not execute SQL**; no migrations; no Render env; no engineering/KZO/BOM/snapshot logic.
+
+## Далі
+
+- Operator applies **registry DML** + **live create** smoke; technical spec status **`TECH_SPEC_LOCKED_IMPLEMENTATION_V1_PENDING_OPERATOR_TEST`**.
+
+---
+
 # 07.05.2026 — Create Calculation V1 schema confirmation closeout (`DOC ONLY` / operator read-only evidence)
 
 ## Факт

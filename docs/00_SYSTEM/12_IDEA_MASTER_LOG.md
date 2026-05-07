@@ -330,7 +330,7 @@ Notes:
 - **Path:** GAS → Render `GET /api/module01/sidebar/context` → Supabase auth/session → **`Module01SidebarHtml`**.
 - **Closeout:** **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_OPERATOR_TEST.md`** (**`MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_PASS`**).
 - **Artifacts:** `services/module01_sidebar_service.py`, `main.py` route, `tests/test_module01_sidebar_context_endpoint.py`, `gas/Module01Sidebar.gs`, `gas/Module01SidebarHtml.html`, `gas/AuthTransport.gs`, `gas/core/EDSPowerCore.gs` — bound Apps Script: **`Module01Sidebar.gs`** + **`Module01SidebarHtml.html`** (distinct base names).
-- **Next lane:** **Create Calculation** — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_TECHNICAL_SPEC.md`** — **schema CONFIRMED**; **next** = explicit **implementation TASK** (engineering calculation logic **not** opened by this closeout).
+- **Next lane:** **Create Calculation V1** — **code + tests landed** — **`docs/AUDITS/2026-05-07_MODULE_01_CREATE_CALCULATION_V1_IMPLEMENTATION.md`**; **next** = operator **`MODULE01_CREATE_CALCULATION`** DML + live test (engineering calculation logic **not** opened).
 
 ### EDS_POWER_MODULE_01_CREATE_CALCULATION_MODAL_V1
 
@@ -349,12 +349,26 @@ Notes:
 
 Status:
 
-- `SCHEMA_CONFIRMED_READY_FOR_IMPLEMENTATION_TASKING`
+- `TECH_SPEC_LOCKED_IMPLEMENTATION_V1_PENDING_OPERATOR_TEST`
 
 Notes:
 
 - **Contract** for Create Calculation V1: **CONFIRMED** mapping — header columns + **`module01_calculation_versions.notes`** (structured template for **`product_type`**, **`comment`**, **`external_reference`**); 12-digit **`calculation_base_number`**, display **`…-00`**, **single transaction**: header + version **`-00`** + **status history**; registry **`MODULE01_CREATE_CALCULATION`** — **§14** (still pre-production).
-- **Spec:** **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_TECHNICAL_SPEC.md`** — verdict **`MODULE_01_CREATE_CALCULATION_TECH_SPEC_SCHEMA_CONFIRMED_READY_FOR_IMPLEMENTATION_TASKING`**.
+- **Spec:** **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_TECHNICAL_SPEC.md`** — current verdict **`TECH_SPEC_LOCKED_IMPLEMENTATION_V1_PENDING_OPERATOR_TEST`**.
+- **Implementation record:** **`docs/AUDITS/2026-05-07_MODULE_01_CREATE_CALCULATION_V1_IMPLEMENTATION.md`**.
+
+### EDS_POWER_MODULE_01_CREATE_CALCULATION_V1
+
+Status:
+
+- `IMPLEMENTED_PENDING_OPERATOR_DML_AND_LIVE_TEST`
+
+Notes:
+
+- **Slice:** **`POST /api/module01/calculations/create`**, **`services/module01_calculations_service.py`**, GAS modal **`Module01CreateCalculationModal*`**, sidebar refresh path; **no** KZO engineering, BOM, snapshots, Cursor SQL, schema migrations.
+- **Audit:** **`docs/AUDITS/2026-05-07_MODULE_01_CREATE_CALCULATION_V1_IMPLEMENTATION.md`**.
+- **Next:** operator DML for **`MODULE01_CREATE_CALCULATION`** + live create verification.
+
 
 ### EDS_POWER_TERMINAL_UI_SHELL_DOCTRINE
 

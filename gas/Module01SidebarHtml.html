@@ -46,6 +46,10 @@
         margin: 4px 0;
         padding: 6px 8px;
         font-size: 12px;
+        cursor: pointer;
+        opacity: 1;
+      }
+      button:disabled {
         cursor: not-allowed;
         opacity: 0.65;
       }
@@ -63,7 +67,12 @@
       <div id="error-text" class="muted"></div>
     </div>
     <div id="state-main" class="hidden">
-      <h1>Module 01 — Розрахунки</h1>
+      <h1>
+        Module 01 — Розрахунки
+        <span style="font-size: 11px; font-weight: normal; margin-left: 8px">
+          <a href="javascript:void(0)" id="link-refresh" style="color: #1a73e8">Оновити</a>
+        </span>
+      </h1>
 
       <div class="panel">
         <h2>Сесія / користувач</h2>
@@ -78,11 +87,11 @@
 
       <div class="panel">
         <h2>Основні дії</h2>
-        <button type="button" disabled>Створити новий розрахунок</button>
+        <button type="button" id="btn-create-calc">Створити новий розрахунок</button>
         <button type="button" disabled>Знайти розрахунок</button>
         <button type="button" disabled>Відкрити поточний розрахунок</button>
         <button type="button" disabled>Оновити статус</button>
-        <p class="muted" style="margin: 6px 0 0 0">Ітерація V1: кнопки-заглушки (без дій).</p>
+        <p class="muted" style="margin: 6px 0 0 0">Після створення розрахунку натисніть «Оновити».</p>
       </div>
     </div>
 
@@ -123,10 +132,36 @@
 
         var ac = sb.active_calculation;
         var ctx = document.getElementById("calc-context");
-        if (!ac) {
+        var sections = sb.sections || [];
+        var st0 = sections[0] && sections[0].status_text ? sections[0].status_text : null;
+        if (st0) {
+          ctx.textContent = st0;
+        } else if (!ac) {
           ctx.textContent = "No active calculation";
         } else {
           ctx.textContent = JSON.stringify(ac);
+        }
+      }
+
+      var sidebarWired = false;
+      function wireActions() {
+        if (sidebarWired) {
+          return;
+        }
+        sidebarWired = true;
+        var b = document.getElementById("btn-create-calc");
+        if (b) {
+          b.addEventListener("click", function () {
+            google.script.run.edsPowerModule01OpenCreateCalculationModal();
+          });
+        }
+        var r = document.getElementById("link-refresh");
+        if (r) {
+          r.addEventListener("click", function () {
+            showEl("state-loading", true);
+            showEl("state-main", false);
+            start();
+          });
         }
       }
 
@@ -142,6 +177,7 @@
           return;
         }
         applySidebar(data.sidebar);
+        wireActions();
       }
 
       function onFailure() {

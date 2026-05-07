@@ -364,10 +364,10 @@ Same as **§5** with **CONFIRMED V1** persistence: header fields on **`module01_
 EDS_POWER_CALC_NOTES_V1
 PRODUCT_TYPE: KZO
 COMMENT: <optional>
-REF: <optional>
+EXTERNAL_REFERENCE: <optional>
 ```
 
-- Omit **`COMMENT:`** / **`REF:`** lines when the modal field is empty.
+- Omit **`COMMENT:`** / **`EXTERNAL_REFERENCE:`** lines when the modal field is empty.
 - **Implementation** MUST parse this format when reading back for sidebar/API (until dedicated columns exist).
 
 ## Confirmed Create Transaction
@@ -382,7 +382,11 @@ If any step fails: **rollback** — no partial header without version/history.
 
 ## 20. Verdict
 
-**`MODULE_01_CREATE_CALCULATION_TECH_SPEC_SCHEMA_CONFIRMED_READY_FOR_IMPLEMENTATION_TASKING`**
+**`TECH_SPEC_LOCKED_IMPLEMENTATION_V1_PENDING_OPERATOR_TEST`**
+
+Implementation: **`EDS_POWER_MODULE_01_CREATE_CALCULATION_V1`** → **`IMPLEMENTED_PENDING_OPERATOR_DML_AND_LIVE_TEST`** — **`docs/AUDITS/2026-05-07_MODULE_01_CREATE_CALCULATION_V1_IMPLEMENTATION.md`**.
+
+Prior schema gate record (superseded for status by line above): **`MODULE_01_CREATE_CALCULATION_TECH_SPEC_SCHEMA_CONFIRMED_READY_FOR_IMPLEMENTATION_TASKING`**.
 
 ---
 

@@ -19,6 +19,7 @@ from kzo_snapshot_persist import (
 )
 from services.menu_registry_service import MenuRegistryService, resolve_menu_environment_scope
 from services.module01_sidebar_service import build_module01_sidebar_data
+from services.module01_calculations_service import create_calculation_v1, validate_create_payload
 import services.menu_registry_service as _menu_registry_svc
 
 try:
@@ -146,6 +147,7 @@ AUTH_REQUIRED_ENV_KEYS = ("SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY", "AUTH_SES
 AUTH_MENU_MOCK_RESPONSE_VERSION = "EDS_POWER_MENU_V1"
 AUTH_MENU_ACTION = "menu"
 AUTH_SIDEBAR_CONTEXT_ACTION = "sidebar_context"
+AUTH_CREATE_CALCULATION_ACTION = "calculations_create"
 _AUTH_LOGIN_DIAG_ALLOWED_KEYS: frozenset[str] = frozenset(
     {
         "request_id",
@@ -1497,6 +1499,63 @@ def _menu_registry_error_response(
     )
 
 
+def _module01_create_calculation_error_response(
+    *,
+    request_id: str,
+    started_at: float,
+    error_code: str,
+    message: str,
+    source_field: str | None = None,
+) -> JSONResponse:
+    metadata = _auth_timed_metadata(request_id, started_at)
+    metadata["menu_source"] = "registry"
+    return JSONResponse(
+        status_code=200,
+        content={
+            "status": "error",
+            "data": None,
+            "error": {
+                "error_code": error_code,
+                "message": message,
+                "source_field": source_field,
+                "module": "MODULE_01",
+                "action": AUTH_CREATE_CALCULATION_ACTION,
+            },
+            "metadata": metadata,
+        },
+    )
+
+
+def _module01_create_calculation_from_auth_failure(err: JSONResponse) -> JSONResponse:
+    """Map generic auth/config failures to MODULE01 create error envelope."""
+    try:
+        payload = json.loads(err.body.decode("utf-8"))
+    except Exception:  # noqa: BLE001
+        rid, st = str(uuid4()), perf_counter()
+        return _module01_create_calculation_error_response(
+            request_id=rid,
+            started_at=st,
+            error_code="MODULE01_CREATE_BACKEND_UNAVAILABLE",
+            message="Create calculation request failed.",
+        )
+    meta = payload.get("metadata") or {}
+    rid = meta.get("request_id") or str(uuid4())
+    st = perf_counter()
+    if err.status_code >= 500:
+        return _module01_create_calculation_error_response(
+            request_id=str(rid),
+            started_at=st,
+            error_code="MODULE01_CREATE_BACKEND_UNAVAILABLE",
+            message="Backend unavailable for create calculation.",
+        )
+    return _module01_create_calculation_error_response(
+        request_id=str(rid),
+        started_at=st,
+        error_code="MODULE01_CREATE_AUTH_REQUIRED",
+        message="Authentication required for create calculation.",
+    )
+
+
 def _module01_sidebar_error_response(
     *,
     request_id: str,
@@ -2367,6 +2426,77 @@ def module01_sidebar_context(authorization: str | None = Header(default=None, al
             started_at=started_at,
             error_code="MODULE01_SIDEBAR_CONTEXT_UNAVAILABLE",
             message="Sidebar context could not be built.",
+        )
+
+    metadata = _auth_timed_metadata(request_id, started_at)
+    metadata["menu_source"] = "registry"
+    return JSONResponse(
+        status_code=200,
+        content={
+            "status": "success",
+            "data": data,
+            "error": None,
+            "metadata": metadata,
+        },
+    )
+
+
+@app.post("/api/module01/calculations/create")
+def module01_calculations_create(
+    authorization: str | None = Header(default=None, alias="Authorization"),
+    payload: dict[str, Any] | None = None,
+):
+    ctx, err = _auth_validate_session_context(authorization, action=AUTH_CREATE_CALCULATION_ACTION)
+    if err is not None:
+        return _module01_create_calculation_from_auth_failure(err)
+
+    body = payload if isinstance(payload, dict) else {}
+    started_at = ctx["started_at"]
+    request_id = ctx["request_id"]
+    client = ctx["client"]
+    user_id = ctx["user_id"]
+
+    normalized, val_err, field = validate_create_payload(body)
+    if val_err:
+        return _module01_create_calculation_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code=val_err,
+            message="Invalid create calculation payload.",
+            source_field=field,
+        )
+
+    try:
+        data, svc_err = create_calculation_v1(
+            client=client,
+            user_id=user_id,
+            session_terminal_id=ctx["terminal_id"],
+            normalized=normalized,
+            request_id=request_id,
+        )
+    except Exception:  # noqa: BLE001
+        return _module01_create_calculation_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code="MODULE01_CREATE_BACKEND_UNAVAILABLE",
+            message="Create calculation failed.",
+        )
+
+    if svc_err:
+        messages = {
+            "MODULE01_CREATE_PERMISSION_DENIED": "Permission denied for create calculation.",
+            "MODULE01_CREATE_TERMINAL_MISMATCH": "Terminal or spreadsheet does not match session.",
+            "MODULE01_CREATE_PRODUCT_TYPE_UNSUPPORTED": "Product type is not supported.",
+            "MODULE01_CREATE_NUMBER_COLLISION": "Could not allocate calculation number. Retry.",
+            "MODULE01_CREATE_VERSION_CREATE_FAILED": "Could not create calculation version.",
+            "MODULE01_CREATE_STATUS_HISTORY_FAILED": "Could not record calculation status.",
+            "MODULE01_CREATE_BACKEND_UNAVAILABLE": "Backend unavailable.",
+        }
+        return _module01_create_calculation_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code=svc_err,
+            message=messages.get(svc_err, "Create calculation failed."),
         )
 
     metadata = _auth_timed_metadata(request_id, started_at)
