@@ -267,14 +267,16 @@ Notes:
 
 Status:
 
-- `IMPLEMENTED_PENDING_RENDER_OPERATOR_TEST`
+- `LIVE_VALIDATED_PASS_PENDING_AUDIT`
 
 Notes:
 
-- Planning begins after SQL Registry S01 manual apply success (`EDS_POWER_SQL_REGISTRY_S01_APPLY_SUCCESS`).
-- Integration plan: `docs/ARCHITECTURE/EDS_POWER_DB_DRIVEN_MENU_BACKEND_INTEGRATION_PLAN.md` — verdict **`DB_DRIVEN_MENU_BACKEND_PLAN_READY_FOR_AUDIT`**.
-- **Implemented:** `MenuRegistryService`, `GET /api/module01/auth/menu` against registry (see `docs/AUDITS/2026-05-07_EDS_POWER_BACKEND_MENU_SERVICE_IMPLEMENTATION.md`).
-- **Pending:** Render deploy + authenticated operator menu verification. **No GAS changes** in this slice.
+- **Final operator validation (2026-05-07):** closeout **`docs/AUDITS/2026-05-07_EDS_POWER_DB_DRIVEN_MENU_FINAL_OPERATOR_VALIDATION.md`** — verdict **`EDS_POWER_DB_DRIVEN_MENU_REGISTRY_LIVE_VALIDATED_PASS`**; **pending Gemini audit**. Auth/session PASS; dynamic menu **`menu_source` = `registry`**; visual proof: Supabase **`menu_label`** edits reflected in Google Sheets menu (ВАРІАНТ 1–3 operator labels). Full path: GAS → Render → Supabase auth/terminal → `eds_power` registry → Render payload → GAS render.
+- Planning baseline: `docs/ARCHITECTURE/EDS_POWER_DB_DRIVEN_MENU_BACKEND_INTEGRATION_PLAN.md` — verdict **`DB_DRIVEN_MENU_BACKEND_PLAN_READY_FOR_AUDIT`**.
+- **Implemented / deployed:** `MenuRegistryService`, `GET /api/module01/auth/menu` — **`docs/AUDITS/2026-05-07_EDS_POWER_BACKEND_MENU_SERVICE_IMPLEMENTATION.md`**.
+- SQL Registry S01 manual apply: **`docs/AUDITS/2026-05-07_EDS_POWER_SQL_REGISTRY_S01_MANUAL_APPLY_REPORT.md`** (**`EDS_POWER_SQL_REGISTRY_S01_APPLY_SUCCESS`**).
+- **GAS fix (2026-05-07):** **`docs/AUDITS/2026-05-07_GAS_CORE_DYNAMIC_MENU_REFRESH_FIX.md`** — core dynamic refresh + context; operator sync completed per validation closeout.
+- Prior partial: **`docs/AUDITS/2026-05-07_DB_DRIVEN_MENU_RENDER_OPERATOR_TEST.md`** — superseded for end-to-end PASS by final operator validation closeout.
 
 ### IDEA-0002 — Google Sheets Sidebar UI
 

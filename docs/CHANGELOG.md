@@ -6,6 +6,23 @@
 
 ---
 
+# 07.05.2026 — EDS Power DB-Driven Menu Registry: final operator validation (closeout / DOC ONLY)
+
+## Факт (**live validated — operator evidence recorded**)
+
+- **Auth / session:** operator **`Session status: success`** with `authenticated: true` (user_id / terminal_id / expires_at recorded in closeout only; **no** token/password/hash).
+- **Dynamic menu:** GAS log **`menu_source` = `registry`**, `endpoint_http_status` **200**, **`rendered_items` = 3** (2026-05-07 19:07:05).
+- **Visual proof:** temporary Supabase **`menu_label`** changes appeared on Google Sheets menu (**ВАРІАНТ 1–3** strings per operator).
+- Resolved trajectory: Registry S01 apply, GAS sync, terminal/`spreadsheet_id` alignment (incl. **1/I/i**), Argon2id reset; digest alignment **`55874f430c42b7345285dad857d67075`** noted in audit (fingerprint only).
+- **No** code / DB / SQL / GAS / env changes **in this changelog entry** (documentation closeout only).
+- Audit: **`docs/AUDITS/2026-05-07_EDS_POWER_DB_DRIVEN_MENU_FINAL_OPERATOR_VALIDATION.md`** — verdict **`EDS_POWER_DB_DRIVEN_MENU_REGISTRY_LIVE_VALIDATED_PASS`**; **`LIVE_VALIDATED_PASS_PENDING_AUDIT`** (Gemini).
+
+## Далі
+
+- Gemini audit of closeout + cleanup plan (**remove/env-gate auth diag**, restore labels if needed); **no** next module implementation until explicit approval.
+
+---
+
 # 07.05.2026 — Module 01 login: spreadsheet compare digests in diagnostics (log only)
 
 ## Факт (**stdout diagnostics only**)

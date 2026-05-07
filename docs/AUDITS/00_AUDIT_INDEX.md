@@ -12,6 +12,9 @@ Rule:
 
 ## Latest audit
 
+- **EDS Power DB-Driven Menu Final Operator Validation (`LIVE_VALIDATED_PASS` / `LIVE_VALIDATED_PASS_PENDING_AUDIT`) — operator-recorded auth/session PASS, GAS `menu_source=registry` + HTTP 200, visual Supabase→Sheets menu_label proof, full path GAS→Render→Supabase auth→registry→payload; governance + cleanup §9; **no implementation in closeout** — **`docs/AUDITS/2026-05-07_EDS_POWER_DB_DRIVEN_MENU_FINAL_OPERATOR_VALIDATION.md`**
+- **GAS Core Dynamic Menu Refresh Fix (`GAS_DYNAMIC_MENU_REFRESH_FIX_PENDING_OPERATOR_TEST`) — on-open dynamic attempt; Setup Check uses `buildEDSPowerTerminalContext_`; `metadata.menu_source` in logs; auth/error envelope handling; no backend** — **`docs/AUDITS/2026-05-07_GAS_CORE_DYNAMIC_MENU_REFRESH_FIX.md`**
+- **GAS Menu Config Path Diagnostic (auth vs menu ScriptProperties / Setup Check context)** — **`docs/AUDITS/2026-05-07_GAS_MENU_CONFIG_PATH_DIAGNOSTIC.md`**
 - **DB-Driven Menu Backend Service Implementation — `MenuRegistryService`, authenticated `GET /api/module01/auth/menu` to Supabase `eds_power_*` registry, fail-closed errors, `data.menus` for GAS compatibility; pending Render + operator test** — **`docs/AUDITS/2026-05-07_EDS_POWER_BACKEND_MENU_SERVICE_IMPLEMENTATION.md`**
 - **DB-Driven Menu Backend Integration Plan (`DOC ONLY` / baseline for implementation; superseded for endpoint by service implementation audit)** — **`docs/ARCHITECTURE/EDS_POWER_DB_DRIVEN_MENU_BACKEND_INTEGRATION_PLAN.md`**
 - **SQL Registry S01 Manual Apply Report — `EDS_POWER_SQL_REGISTRY_S01_APPLY_SUCCESS` — operator applied `20260507100000_eds_power_dynamic_menu_registry_s01.sql` via Dashboard SQL Editor; tables + counts + triggers per report; no Cursor execution** — **`docs/AUDITS/2026-05-07_EDS_POWER_SQL_REGISTRY_S01_MANUAL_APPLY_REPORT.md`**
