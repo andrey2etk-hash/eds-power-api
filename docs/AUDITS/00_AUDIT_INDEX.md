@@ -12,7 +12,8 @@ Rule:
 
 ## Latest audit
 
-- **Module 01 Sidebar Static Context V1 Implementation (`IMPLEMENTED_PENDING_OPERATOR_TEST`) — `GET /api/module01/sidebar/context`, GAS sidebar shell, menu `OPEN_SIDEBAR` mapping, tests 131 PASS — **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_IMPLEMENTATION.md`**
+- **Module 01 Sidebar Static Context V1 Live Operator Test (`LIVE_PASS` / `MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_PASS`) — Google Sheets sidebar smoke; Render `/api/module01/sidebar/context`; Apps Script HTML naming constraint recorded — **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_OPERATOR_TEST.md`**
+- **Module 01 Sidebar Static Context V1 Implementation (`IMPLEMENTED` / operator LIVE_PASS supersedes pending-test label for live gate) — **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_IMPLEMENTATION.md`**
 - **Module 01 Sidebar Technical Spec (`PASS` / `TECH_SPEC_LOCKED` / Gemini) — contracts for sidebar + future create — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_TECHNICAL_SPEC.md`**
 - **Module 01 Sidebar Planning (`PASS` / `SIDEBAR_DESIGN_LOCKED` / Gemini) — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_PLANNING.md`**
 - **EDS Power Terminal Governance Patch (`PASS` / `LOCKED`) — `docs/00_SYSTEM/02_GLOBAL_RULES.md`; `docs/ARCHITECTURE/EDS_POWER_GAS_DEPLOYMENT_AND_SYNC_DOCTRINE.md` — see **`docs/NOW.md`**

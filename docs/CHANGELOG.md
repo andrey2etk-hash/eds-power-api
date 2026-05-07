@@ -6,6 +6,22 @@
 
 ---
 
+# 10.05.2026 — Module 01 Sidebar Static Context V1 — live operator test (`LIVE_PASS` / DOC ONLY)
+
+## Факт (**operator smoke — documentation closeout**)
+
+- **Live test:** Google Sheets bound GAS → Render **`GET /api/module01/sidebar/context`** → Supabase session/user/role → **`Module01SidebarHtml`** UI — **PASS** per operator attestation.
+- **UI:** title **Module 01 — Розрахунки**; user **Test Auth User**; role **TEST_OPERATOR**; session expiry + remaining seconds visible; **No active calculation**; primary actions visible; buttons disabled/placeholder; **no** blank white sidebar.
+- **Apps Script constraint:** `.gs` / `.html` same base name blocked — repo **`Module01Sidebar.gs`** + **`Module01SidebarHtml.html`** recorded in live closeout.
+- **Audit:** **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_OPERATOR_TEST.md`** — verdict **`MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_LIVE_PASS`**.
+- **No** new implementation, GAS/backend edits, SQL, migrations, Render env, calculation/product logic in this entry.
+
+## Далі
+
+- **DOC / planning only:** Module 01 **Create Calculation Modal V1** planning — **do not** open modal implementation until explicit TASK.
+
+---
+
 # 10.05.2026 — Module 01 sidebar HTML file name (bound Apps Script)
 
 ## Факт (**GAS sync / naming only**)
