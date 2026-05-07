@@ -6,13 +6,24 @@
 
 ---
 
+# 10.05.2026 — Module 01 sidebar HTML file name (bound Apps Script)
+
+## Факт (**GAS sync / naming only**)
+
+- **Rename:** `gas/Module01Sidebar.html` → **`gas/Module01SidebarHtml.html`** — avoids Apps Script conflict (same base name as `Module01Sidebar.gs`).
+- **`Module01Sidebar.gs`:** `createHtmlOutputFromFile("Module01SidebarHtml")`.
+- **Docs:** sync names updated in closeout / spec / **NOW** / idea log.
+- **No** backend, DB, SQL, product logic, or sidebar behavior change.
+
+---
+
 # 10.05.2026 — Module 01 Sidebar Static Context V1 (`implementation`)
 
 ## Факт (**bounded slice**)
 
 - **Tech spec:** **Gemini PASS / `TECH_SPEC_LOCKED`** per task context — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_SIDEBAR_TECHNICAL_SPEC.md`**.
 - **Backend:** **`GET /api/module01/sidebar/context`** — Bearer session, **`services/module01_sidebar_service.py`**, thin **`main.py`** wiring; **no** calculation/product logic; **no** Cursor SQL/migrations/Render env.
-- **GAS:** **`gas/Module01Sidebar.gs`**, **`gas/Module01Sidebar.html`**, **`gas/AuthTransport.gs`** (sidebar transport), **`gas/core/EDSPowerCore.gs`** (`OPEN_SIDEBAR` → **`edsPowerOpenModule01Sidebar`**); loading + error UI (no blank sidebar).
+- **GAS:** **`gas/Module01Sidebar.gs`**, **`gas/Module01SidebarHtml.html`**, **`gas/AuthTransport.gs`** (sidebar transport), **`gas/core/EDSPowerCore.gs`** (`OPEN_SIDEBAR` → **`edsPowerOpenModule01Sidebar`**); loading + error UI (no blank sidebar).
 - **Tests:** **131** pytest **PASS** (includes **`tests/test_module01_sidebar_context_endpoint.py`**).
 - **Closeout:** **`docs/AUDITS/2026-05-07_MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_IMPLEMENTATION.md`**.
 

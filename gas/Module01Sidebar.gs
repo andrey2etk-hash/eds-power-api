@@ -3,7 +3,7 @@
  */
 
 function edsPowerOpenModule01Sidebar() {
-  const html = HtmlService.createHtmlOutputFromFile("Module01Sidebar");
+  const html = HtmlService.createHtmlOutputFromFile("Module01SidebarHtml");
   html.setTitle("Module 01 — Розрахунки");
   SpreadsheetApp.getUi().showSidebar(html);
 }

@@ -269,8 +269,10 @@ Future backend layout (**no** `main.py` bloat):
 Future files (illustrative):
 
 - `Module01Sidebar.gs`  
-- `Module01Sidebar.html`  
+- `Module01SidebarHtml.html`  
 - `Module01CreateCalculationDialog.html`  
+
+**Bound Apps Script:** a `.gs` and `.html` file cannot share the same base name in one project; sidebar HTML uses **`Module01SidebarHtml.html`** and **`HtmlService.createHtmlOutputFromFile("Module01SidebarHtml")`**.
 
 GAS stays **thin:** no calculation, permission, engineering validation, or Supabase access.
 

@@ -18,7 +18,7 @@ Deliver **`MODULE_01_SIDEBAR_STATIC_CONTEXT_V1`**: authenticated **`GET /api/mod
 | `tests/test_module01_sidebar_context_endpoint.py` | Endpoint + thin-route checks |
 | `gas/AuthTransport.gs` | **`module01SidebarContextTransport_`**, **`MODULE01_SIDEBAR_CONTEXT_ENDPOINT_PATH`**, **`module01AuthResolveSidebarContextUrl_`** |
 | `gas/Module01Sidebar.gs` | **`edsPowerOpenModule01Sidebar`**, **`module01SidebarServerGetContext`**, **`module01SidebarBuildSafeContext_`** |
-| `gas/Module01Sidebar.html` | Loading, error, main panels; placeholder disabled buttons |
+| `gas/Module01SidebarHtml.html` | Loading, error, main panels; placeholder disabled buttons |
 | `gas/core/EDSPowerCore.gs` | Menu callback: **`OPEN_SIDEBAR`** / action_key **`OPEN_MODULE_01_SIDEBAR`** → **`edsPowerOpenModule01Sidebar`** |
 
 ## Backend endpoint summary
@@ -35,7 +35,7 @@ Deliver **`MODULE_01_SIDEBAR_STATIC_CONTEXT_V1`**: authenticated **`GET /api/mod
 
 ## GAS files added
 
-- **`Module01Sidebar.gs`** / **`Module01Sidebar.html`** — open sidebar, fetch context via transport, display result or **visible** error.
+- **`Module01Sidebar.gs`** / **`Module01SidebarHtml.html`** — open sidebar, fetch context via transport, display result or **visible** error.
 - **V1:** **no** `DocumentProperties` cache for `active_calculation` (always null from API); namespaced cache deferred.
 
 ## HTML sidebar behavior
@@ -80,8 +80,17 @@ If schema cannot represent **`OPEN_SIDEBAR`** cleanly, track as **registry block
 - **No** auth protocol changes (reuse existing session validation)  
 - **No** secrets logged  
 
+## HTML file naming (bound Apps Script)
+
+Bound Apps Script projects **cannot** use the same base name for a `.gs` and `.html` file. Sync these **distinct** names:
+
+- **`Module01Sidebar.gs`**
+- **`Module01SidebarHtml.html`**
+
+`HtmlService.createHtmlOutputFromFile` uses the HTML file name **without** extension: **`Module01SidebarHtml`**.
+
+**Next:** operator **sync** `Module01Sidebar.gs`, `Module01SidebarHtml.html`, `AuthTransport.gs`, `EDSPowerCore.gs` per **`docs/ARCHITECTURE/EDS_POWER_GAS_DEPLOYMENT_AND_SYNC_DOCTRINE.md`**; deploy API; login; open sidebar (menu entry when registry ready, or manual `edsPowerOpenModule01Sidebar`).
+
 ## Verdict
 
 **`MODULE_01_SIDEBAR_STATIC_CONTEXT_V1_IMPLEMENTED_PENDING_OPERATOR_TEST`**
-
-Next: operator **sync** `Module01Sidebar.gs`, `Module01Sidebar.html`, `AuthTransport.gs`, `EDSPowerCore.gs` per **`docs/ARCHITECTURE/EDS_POWER_GAS_DEPLOYMENT_AND_SYNC_DOCTRINE.md`**; deploy API; login; open sidebar (menu entry when registry ready, or manual `edsPowerOpenModule01Sidebar`).

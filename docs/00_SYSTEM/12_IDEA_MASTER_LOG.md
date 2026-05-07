@@ -327,7 +327,7 @@ Status:
 Notes:
 
 - First **Module 01** sidebar **shell**: authenticated context only; **no** calculation/create; **no** Cursor SQL.
-- **Artifacts:** `services/module01_sidebar_service.py`, `main.py` route, `tests/test_module01_sidebar_context_endpoint.py`, `gas/Module01Sidebar.gs`, `gas/Module01Sidebar.html`, `gas/AuthTransport.gs`, `gas/core/EDSPowerCore.gs`.
+- **Artifacts:** `services/module01_sidebar_service.py`, `main.py` route, `tests/test_module01_sidebar_context_endpoint.py`, `gas/Module01Sidebar.gs`, `gas/Module01SidebarHtml.html`, `gas/AuthTransport.gs`, `gas/core/EDSPowerCore.gs` — bound Apps Script: **`Module01Sidebar.gs`** + **`Module01SidebarHtml.html`** (distinct base names).
 
 ### EDS_POWER_TERMINAL_UI_SHELL_DOCTRINE
 
