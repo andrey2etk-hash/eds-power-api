@@ -111,3 +111,8 @@ function module01CreateCalculationRememberActiveId_(spreadsheetId, calculationId
   var key = "EDS_POWER_" + sid + "_MODULE01_ACTIVE_CALCULATION_ID";
   PropertiesService.getDocumentProperties().setProperty(key, cid);
 }
+
+/** Public wrapper for HtmlService — same rule as bootstrap (no trailing-underscore from google.script.run). */
+function module01CreateCalculationRememberActiveId(spreadsheetId, calculationId) {
+  module01CreateCalculationRememberActiveId_(spreadsheetId, calculationId);
+}

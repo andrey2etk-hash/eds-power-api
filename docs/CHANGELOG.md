@@ -6,6 +6,20 @@
 
 ---
 
+# 07.05.2026 — Create Calculation modal submit UX (`GAS bugfix`)
+
+## Факт
+
+- **Live:** успіх API, але форма в модалці не переходила в видимий успіх — ймовірно **`google.script.run`** на **`module01CreateCalculationRememberActiveId_`** обірвав success handler.
+- **Fix:** публічний **`module01CreateCalculationRememberActiveId`**; панель **«Розрахунок створено»**, **«Створюємо розрахунок...»**, **`submitInFlight`**, блок повторного сабміту, **«Закрити»** замість авто-close.
+- **Audit:** **`docs/AUDITS/2026-05-07_MODULE_01_CREATE_CALCULATION_MODAL_SUBMIT_UX_FIX.md`**. **No** backend/DB.
+
+## Далі
+
+- Operator GAS sync + live create smoke.
+
+---
+
 # 07.05.2026 — Create Calculation modal bootstrap (`GAS bugfix`)
 
 ## Факт

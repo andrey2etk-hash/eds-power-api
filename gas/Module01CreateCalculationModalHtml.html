@@ -83,6 +83,18 @@
         font-size: 12px;
         margin-top: 4px;
       }
+      .success-panel {
+        display: none;
+      }
+      .success-panel h2 {
+        font-size: 15px;
+        margin: 0 0 10px 0;
+        color: #137333;
+      }
+      .success-panel .detail {
+        margin: 8px 0;
+        line-height: 1.45;
+      }
     </style>
   </head>
   <body>
@@ -90,6 +102,15 @@
     <div id="err-box" class="err"></div>
     <div id="ok-box" class="ok"></div>
     <div id="load-box" class="load">Зачекайте…</div>
+
+    <div id="success-panel" class="success-panel">
+      <h2>Розрахунок створено</h2>
+      <div id="success-detail" class="detail"></div>
+      <p class="hint">Оновіть бічну панель («Оновити»), щоб побачити активний розрахунок.</p>
+      <div class="actions">
+        <button type="button" id="btn-close-success" class="primary">Закрити</button>
+      </div>
+    </div>
 
     <div id="form-panel">
       <label for="calculation_title">Назва розрахунку *</label>
@@ -118,6 +139,9 @@
 
     <script>
       var bootstrap = null;
+      var submitInFlight = false;
+      var bootstrapLoadText = "Зачекайте…";
+      var submitLoadText = "Створюємо розрахунок...";
 
       function showErr(msg) {
         var b = document.getElementById("err-box");
@@ -129,8 +153,15 @@
         b.style.display = msg ? "block" : "none";
         b.textContent = msg || "";
       }
-      function setLoading(on) {
-        document.getElementById("load-box").style.display = on ? "block" : "none";
+      function setLoadMessage(text) {
+        document.getElementById("load-box").textContent = text || bootstrapLoadText;
+      }
+      function setLoading(on, message) {
+        var el = document.getElementById("load-box");
+        if (message) {
+          el.textContent = message;
+        }
+        el.style.display = on ? "block" : "none";
       }
 
       function readForm() {
@@ -154,6 +185,7 @@
       }
 
       function onBootstrap(res) {
+        setLoadMessage(bootstrapLoadText);
         setLoading(false);
         if (!res || !res.ok) {
           showErr(res && res.message ? res.message : "Не вдалось підготувати форму.");
@@ -164,40 +196,81 @@
         document.getElementById("btn-submit").disabled = false;
       }
 
-      function onSubmitResult(res) {
+      function showSuccessPanel(calc) {
+        var disp = String(calc.calculation_display_number || "");
+        var st = String(calc.status || "");
+        var pt = String(calc.product_type || "");
+        var lines =
+          "Номер: " +
+          disp +
+          "\nСтатус: " +
+          st +
+          "\nТип продукту: " +
+          pt;
+        document.getElementById("success-detail").textContent = lines;
+        document.getElementById("form-panel").style.display = "none";
+        document.getElementById("success-panel").style.display = "block";
+        document.getElementById("btn-submit").disabled = true;
+        document.getElementById("btn-cancel").disabled = true;
+        showErr("");
+        showOk("");
         setLoading(false);
-        document.getElementById("btn-submit").disabled = false;
+        var sid = bootstrap && bootstrap.spreadsheet_id ? bootstrap.spreadsheet_id : "";
+        var cid = calc.calculation_id;
+        if (sid && cid) {
+          try {
+            google.script.run.module01CreateCalculationRememberActiveId(String(sid), String(cid));
+          } catch (_e) {}
+        }
+      }
+
+      function onSubmitResult(res) {
+        submitInFlight = false;
+        setLoadMessage(bootstrapLoadText);
+        setLoading(false);
+        document.getElementById("btn-cancel").disabled = false;
+
         if (!res || !res.ok) {
+          document.getElementById("btn-submit").disabled = false;
           showErr(res && res.message ? res.message : "Помилка запиту.");
           return;
         }
+
+        var httpStatus = typeof res.http_status === "number" ? res.http_status : 0;
+        if (httpStatus >= 400) {
+          document.getElementById("btn-submit").disabled = false;
+          showErr("Помилка сервера (HTTP " + httpStatus + "). Спробуйте ще раз.");
+          return;
+        }
+
         var env = res.envelope || {};
-        var st = typeof env.status === "string" ? env.status : "";
-        if (st === "error") {
+        var stTop = typeof env.status === "string" ? env.status : "";
+        if (stTop === "error") {
           var er = env.error || {};
           var code = typeof er.error_code === "string" ? er.error_code : "ERROR";
           var msg = typeof er.message === "string" && er.message ? er.message : "Помилка сервера.";
           showErr(code + ": " + msg);
+          document.getElementById("btn-submit").disabled = false;
           return;
         }
-        if (st !== "success" || !env.data || !env.data.calculation) {
-          showErr("Некоректна відповідь сервера.");
+        if (stTop !== "success" || !env.data) {
+          document.getElementById("btn-submit").disabled = true;
+          showErr("Некоректна відповідь сервера. Закрийте вікно та спробуйте пізніше; не натискайте «Створити» повторно, якщо розрахунок уже з’явився в БД.");
           return;
         }
         var calc = env.data.calculation;
-        var disp = calc.calculation_display_number || "";
-        var sid = bootstrap && bootstrap.spreadsheet_id ? bootstrap.spreadsheet_id : "";
-        if (sid && calc.calculation_id) {
-          google.script.run.module01CreateCalculationRememberActiveId_(sid, calc.calculation_id);
+        if (!calc || typeof calc !== "object") {
+          document.getElementById("btn-submit").disabled = true;
+          showErr("Некоректна відповідь сервера (відсутні дані розрахунку). Закрийте вікно та перевірте бічну панель; уникайте повторного створення.");
+          return;
         }
-        showOk("Створено: " + disp + ". Закрийте діалог — бічна панель оновиться.");
-        document.getElementById("form-panel").style.display = "none";
-        setTimeout(function () {
-          google.script.host.close();
-        }, 2200);
+        showSuccessPanel(calc);
       }
 
       function doSubmit() {
+        if (submitInFlight) {
+          return;
+        }
         showErr("");
         showOk("");
         var v = validateForm();
@@ -209,24 +282,37 @@
           showErr("Контекст не завантажено.");
           return;
         }
+        submitInFlight = true;
         document.getElementById("btn-submit").disabled = true;
-        setLoading(true);
+        document.getElementById("btn-cancel").disabled = true;
+        setLoadMessage(submitLoadText);
+        setLoading(true, submitLoadText);
         google.script.run
           .withSuccessHandler(onSubmitResult)
           .withFailureHandler(function () {
+            submitInFlight = false;
+            setLoadMessage(bootstrapLoadText);
             setLoading(false);
             document.getElementById("btn-submit").disabled = false;
+            document.getElementById("btn-cancel").disabled = false;
             showErr("Помилка виклику сервера (google.script.run).");
           })
           .module01CreateCalculationSubmit(readForm(), bootstrap);
       }
 
       document.getElementById("btn-cancel").addEventListener("click", function () {
+        if (submitInFlight) {
+          return;
+        }
         google.script.host.close();
       });
       document.getElementById("btn-submit").addEventListener("click", doSubmit);
+      document.getElementById("btn-close-success").addEventListener("click", function () {
+        google.script.host.close();
+      });
 
-      setLoading(true);
+      setLoadMessage(bootstrapLoadText);
+      setLoading(true, bootstrapLoadText);
       document.getElementById("btn-submit").disabled = true;
       google.script.run
         .withSuccessHandler(onBootstrap)
