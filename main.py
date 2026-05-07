@@ -163,6 +163,16 @@ _AUTH_LOGIN_DIAG_ALLOWED_KEYS: frozenset[str] = frozenset(
         "locked_until_present",
         "password_verify_result",
         "final_auth_result",
+        "request_spreadsheet_len",
+        "stored_spreadsheet_len",
+        "request_spreadsheet_suffix_12",
+        "stored_spreadsheet_suffix_12",
+        "request_spreadsheet_md5",
+        "stored_spreadsheet_md5",
+        "request_spreadsheet_normalized_len",
+        "stored_spreadsheet_normalized_len",
+        "request_spreadsheet_normalized_md5",
+        "stored_spreadsheet_normalized_md5",
     }
 )
 
@@ -1250,6 +1260,43 @@ def _auth_normalize_login_spreadsheet_id(value: Any) -> str:
     return s.strip()
 
 
+def _auth_login_spreadsheet_id_diag(request_sheet: str, stored_raw: Any) -> dict[str, Any]:
+    """Safe compare metadata for stdout login diagnostics (no full ids)."""
+    raw_req = request_sheet if isinstance(request_sheet, str) else ""
+    if isinstance(stored_raw, str):
+        raw_sto = stored_raw
+    elif stored_raw is None:
+        raw_sto = ""
+    else:
+        raw_sto = str(stored_raw)
+
+    norm_req = _auth_normalize_login_spreadsheet_id(raw_req)
+    norm_sto = _auth_normalize_login_spreadsheet_id(raw_sto)
+    match = bool(norm_sto) and norm_req == norm_sto
+
+    def _suffix12(s: str) -> str:
+        if not s:
+            return ""
+        return s[-12:] if len(s) >= 12 else s
+
+    def _md5_utf8(s: str) -> str:
+        return hashlib.md5(s.encode("utf-8")).hexdigest()
+
+    return {
+        "request_spreadsheet_len": len(raw_req),
+        "stored_spreadsheet_len": len(raw_sto),
+        "request_spreadsheet_suffix_12": _suffix12(raw_req),
+        "stored_spreadsheet_suffix_12": _suffix12(raw_sto),
+        "request_spreadsheet_md5": _md5_utf8(raw_req),
+        "stored_spreadsheet_md5": _md5_utf8(raw_sto),
+        "request_spreadsheet_normalized_len": len(norm_req),
+        "stored_spreadsheet_normalized_len": len(norm_sto),
+        "request_spreadsheet_normalized_md5": _md5_utf8(norm_req),
+        "stored_spreadsheet_normalized_md5": _md5_utf8(norm_sto),
+        "terminal_spreadsheet_match": match,
+    }
+
+
 def _auth_login_shape_flags(payload: Any) -> tuple[bool, bool, str | None, str | None]:
     if not isinstance(payload, dict):
         return False, False, None, None
@@ -1941,6 +1988,7 @@ def module01_auth_login(payload: dict[str, Any]):
 
         norm_stored_sheet = _auth_normalize_login_spreadsheet_id(terminal.get("spreadsheet_id"))
         terminal_match = bool(norm_stored_sheet) and norm_stored_sheet == norm_request_sheet
+        _sheet_diag = _auth_login_spreadsheet_id_diag(spreadsheet_id, terminal.get("spreadsheet_id"))
         if not terminal_match:
             _auth_emit_login_diagnostic(
                 {
@@ -1954,8 +2002,8 @@ def module01_auth_login(payload: dict[str, Any]):
                     "locked_until_present": locked_until_present,
                     "password_verify_result": True,
                     "supabase_query_terminal_found": True,
-                    "terminal_spreadsheet_match": False,
                     "final_auth_result": "AUTH_FAILED",
+                    **_sheet_diag,
                 }
             )
             return _auth_failed_response(request_id)
@@ -2015,6 +2063,7 @@ def module01_auth_login(payload: dict[str, Any]):
                 "terminal_status": "ACTIVE",
                 "terminal_spreadsheet_match": terminal_match,
                 "final_auth_result": "AUTH_FAILED",
+                **_auth_login_spreadsheet_id_diag(spreadsheet_id, terminal.get("spreadsheet_id")),
             }
         )
 

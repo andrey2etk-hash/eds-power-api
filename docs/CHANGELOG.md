@@ -6,6 +6,19 @@
 
 ---
 
+# 07.05.2026 — Module 01 login: spreadsheet compare digests in diagnostics (log only)
+
+## Факт (**stdout diagnostics only**)
+
+- **`SPREADSHEET_ID_MISMATCH`** / **`TERMINAL_FOUND`**: **`EDS_POWER_AUTH_LOGIN_DIAG`** now includes lengths, last-12 suffixes, and **MD5 (UTF-8)** of raw + normalized request/stored spreadsheet ids — **no** full ids, **no** auth logic change.
+- Audit: **`docs/AUDITS/2026-05-07_TERMINAL_SPREADSHEET_MATCH_DIAGNOSTIC.md`**.
+
+## Далі
+
+- Redeploy; reproduce mismatch; diff digest fields in Render logs.
+
+---
+
 # 07.05.2026 — Module 01 login: terminal lookup by user + normalized spreadsheet match
 
 ## Факт (**backend only**)
