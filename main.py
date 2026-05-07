@@ -1240,6 +1240,16 @@ def _auth_redact_spreadsheet_suffix(spreadsheet_id: Any) -> str | None:
     return s[-6:] if len(s) >= 6 else s
 
 
+def _auth_normalize_login_spreadsheet_id(value: Any) -> str:
+    """Normalize Sheet file id for comparison (trim + strip common invisible copy/paste characters)."""
+    if not isinstance(value, str):
+        return ""
+    s = value.strip()
+    for ch in ("\ufeff", "\u200b", "\u200e", "\u200f"):
+        s = s.strip(ch)
+    return s.strip()
+
+
 def _auth_login_shape_flags(payload: Any) -> tuple[bool, bool, str | None, str | None]:
     if not isinstance(payload, dict):
         return False, False, None, None
@@ -1903,19 +1913,18 @@ def module01_auth_login(payload: dict[str, Any]):
                 "final_auth_result": "AUTH_FAILED",
             }
         )
+        norm_request_sheet = _auth_normalize_login_spreadsheet_id(spreadsheet_id)
         terminal = _auth_fetch_single(
             client,
             "module01_user_terminals",
             select="id,status,spreadsheet_id",
-            filters={"user_id": user_id, "spreadsheet_id": spreadsheet_id},
+            filters={"user_id": user_id},
         )
-        terminal_sheet = terminal.get("spreadsheet_id") if isinstance(terminal, dict) else None
-        terminal_match = isinstance(terminal_sheet, str) and terminal_sheet.strip() == spreadsheet_id
         if terminal is None:
             _auth_emit_login_diagnostic(
                 {
                     **_base_diag(),
-                    "auth_stage": "SPREADSHEET_ID_MISMATCH",
+                    "auth_stage": "TERMINAL_LOOKUP_FAILED",
                     "supabase_query_user_found": True,
                     "user_status": "ACTIVE",
                     "supabase_query_auth_row_found": True,
@@ -1929,6 +1938,28 @@ def module01_auth_login(payload: dict[str, Any]):
                 }
             )
             return _auth_failed_response(request_id)
+
+        norm_stored_sheet = _auth_normalize_login_spreadsheet_id(terminal.get("spreadsheet_id"))
+        terminal_match = bool(norm_stored_sheet) and norm_stored_sheet == norm_request_sheet
+        if not terminal_match:
+            _auth_emit_login_diagnostic(
+                {
+                    **_base_diag(),
+                    "auth_stage": "SPREADSHEET_ID_MISMATCH",
+                    "supabase_query_user_found": True,
+                    "user_status": "ACTIVE",
+                    "supabase_query_auth_row_found": True,
+                    "password_algorithm": password_algorithm,
+                    "password_hash_present": password_hash_present,
+                    "locked_until_present": locked_until_present,
+                    "password_verify_result": True,
+                    "supabase_query_terminal_found": True,
+                    "terminal_spreadsheet_match": False,
+                    "final_auth_result": "AUTH_FAILED",
+                }
+            )
+            return _auth_failed_response(request_id)
+
         if terminal.get("status") != "ACTIVE":
             _auth_emit_login_diagnostic(
                 {

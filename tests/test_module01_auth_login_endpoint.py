@@ -33,6 +33,10 @@ def _decode_response(response) -> tuple[int, dict]:
     return response.status_code, json.loads(response.body.decode("utf-8"))
 
 
+TEST_USER_ID = "09ca45e0-56f7-414d-85ff-6f69bfdab621"
+TERMINAL_ROW_ID = "10578103-6c44-4eaf-a825-402d1fc5f7a6"
+
+
 class Module01AuthLoginEndpointTests(unittest.TestCase):
     def test_valid_login_returns_success_and_stores_hash_only(self):
         recorder = _InsertRecorder()
@@ -45,7 +49,7 @@ class Module01AuthLoginEndpointTests(unittest.TestCase):
         def _fetch_single(_client, table: str, *, select: str, filters: dict):
             if table == "module01_users":
                 return {
-                    "id": "09ca45e0-56f7-414d-85ff-6f69bfdab621",
+                    "id": TEST_USER_ID,
                     "email": "test.auth@eds.local",
                     "display_name": "Test Auth User",
                     "status": "ACTIVE",
@@ -53,9 +57,9 @@ class Module01AuthLoginEndpointTests(unittest.TestCase):
             if table == "module01_user_auth":
                 return {"password_hash": "$argon2id$v=19$m=65536,t=3,p=4$abc$def", "locked_until": None}
             if table == "module01_user_terminals":
-                if filters.get("spreadsheet_id") == "sheet-1":
+                if filters.get("user_id") == TEST_USER_ID:
                     return {
-                        "id": "10578103-6c44-4eaf-a825-402d1fc5f7a6",
+                        "id": TERMINAL_ROW_ID,
                         "status": "ACTIVE",
                         "spreadsheet_id": "sheet-1",
                     }
@@ -103,7 +107,7 @@ class Module01AuthLoginEndpointTests(unittest.TestCase):
         def _fetch_single(_client, table: str, *, select: str, filters: dict):
             if table == "module01_users":
                 return {
-                    "id": "09ca45e0-56f7-414d-85ff-6f69bfdab621",
+                    "id": TEST_USER_ID,
                     "email": "test.auth@eds.local",
                     "display_name": "Test Auth User",
                     "status": "ACTIVE",
@@ -143,7 +147,56 @@ class Module01AuthLoginEndpointTests(unittest.TestCase):
         def _fetch_single(_client, table: str, *, select: str, filters: dict):
             if table == "module01_users":
                 return {
-                    "id": "09ca45e0-56f7-414d-85ff-6f69bfdab621",
+                    "id": TEST_USER_ID,
+                    "email": "test.auth@eds.local",
+                    "display_name": "Test Auth User",
+                    "status": "ACTIVE",
+                }
+            if table == "module01_user_auth":
+                return {"password_hash": "$argon2id$v=19$m=65536,t=3,p=4$abc$def", "locked_until": None}
+            if table == "module01_user_terminals":
+                if filters.get("user_id") == TEST_USER_ID:
+                    return {
+                        "id": TERMINAL_ROW_ID,
+                        "status": "ACTIVE",
+                        "spreadsheet_id": "sheet-1",
+                    }
+                return None
+            return None
+
+        with (
+            patch.dict(
+                "os.environ",
+                {
+                    "SUPABASE_URL": "https://example.supabase.co",
+                    "SUPABASE_SERVICE_ROLE_KEY": "service-role-key",
+                    "AUTH_SESSION_TTL_HOURS": "12",
+                },
+                clear=False,
+            ),
+            patch("main._auth_get_supabase_client", return_value=_InsertRecorder()),
+            patch("main._auth_fetch_single", side_effect=_fetch_single),
+            patch("main._auth_fetch_active_roles", return_value=["TEST_OPERATOR"]),
+            patch("main._auth_verify_password", return_value=True),
+        ):
+            response = module01_auth_login(payload)
+
+        status_code, body = _decode_response(response)
+        self.assertEqual(status_code, 200)
+        self.assertEqual(body["status"], "auth_failed")
+        self.assertEqual(body["error"]["error_code"], "AUTH_FAILED")
+
+    def test_no_terminal_row_returns_auth_failed(self):
+        payload = {
+            "email": "test.auth@eds.local",
+            "password": "secret-password",
+            "spreadsheet_id": "sheet-1",
+        }
+
+        def _fetch_single(_client, table: str, *, select: str, filters: dict):
+            if table == "module01_users":
+                return {
+                    "id": TEST_USER_ID,
                     "email": "test.auth@eds.local",
                     "display_name": "Test Auth User",
                     "status": "ACTIVE",
@@ -174,7 +227,104 @@ class Module01AuthLoginEndpointTests(unittest.TestCase):
         status_code, body = _decode_response(response)
         self.assertEqual(status_code, 200)
         self.assertEqual(body["status"], "auth_failed")
+
+    def test_terminal_inactive_returns_auth_failed(self):
+        payload = {
+            "email": "test.auth@eds.local",
+            "password": "secret-password",
+            "spreadsheet_id": "sheet-1",
+        }
+
+        def _fetch_single(_client, table: str, *, select: str, filters: dict):
+            if table == "module01_users":
+                return {
+                    "id": TEST_USER_ID,
+                    "email": "test.auth@eds.local",
+                    "display_name": "Test Auth User",
+                    "status": "ACTIVE",
+                }
+            if table == "module01_user_auth":
+                return {"password_hash": "$argon2id$v=19$m=65536,t=3,p=4$abc$def", "locked_until": None}
+            if table == "module01_user_terminals":
+                if filters.get("user_id") == TEST_USER_ID:
+                    return {
+                        "id": TERMINAL_ROW_ID,
+                        "status": "DISABLED",
+                        "spreadsheet_id": "sheet-1",
+                    }
+                return None
+            return None
+
+        with (
+            patch.dict(
+                "os.environ",
+                {
+                    "SUPABASE_URL": "https://example.supabase.co",
+                    "SUPABASE_SERVICE_ROLE_KEY": "service-role-key",
+                    "AUTH_SESSION_TTL_HOURS": "12",
+                },
+                clear=False,
+            ),
+            patch("main._auth_get_supabase_client", return_value=_InsertRecorder()),
+            patch("main._auth_fetch_single", side_effect=_fetch_single),
+            patch("main._auth_fetch_active_roles", return_value=["TEST_OPERATOR"]),
+            patch("main._auth_verify_password", return_value=True),
+        ):
+            response = module01_auth_login(payload)
+
+        status_code, body = _decode_response(response)
+        self.assertEqual(status_code, 200)
+        self.assertEqual(body["status"], "auth_failed")
         self.assertEqual(body["error"]["error_code"], "AUTH_FAILED")
+
+    def test_spreadsheet_id_normalized_for_terminal_match(self):
+        recorder = _InsertRecorder()
+        payload = {
+            "email": "test.auth@eds.local",
+            "password": "secret-password",
+            "spreadsheet_id": "sheet-1",
+        }
+
+        def _fetch_single(_client, table: str, *, select: str, filters: dict):
+            if table == "module01_users":
+                return {
+                    "id": TEST_USER_ID,
+                    "email": "test.auth@eds.local",
+                    "display_name": "Test Auth User",
+                    "status": "ACTIVE",
+                }
+            if table == "module01_user_auth":
+                return {"password_hash": "$argon2id$v=19$m=65536,t=3,p=4$abc$def", "locked_until": None}
+            if table == "module01_user_terminals":
+                if filters.get("user_id") == TEST_USER_ID:
+                    return {
+                        "id": TERMINAL_ROW_ID,
+                        "status": "ACTIVE",
+                        "spreadsheet_id": "\ufeff sheet-1 \n",
+                    }
+                return None
+            return None
+
+        with (
+            patch.dict(
+                "os.environ",
+                {
+                    "SUPABASE_URL": "https://example.supabase.co",
+                    "SUPABASE_SERVICE_ROLE_KEY": "service-role-key",
+                    "AUTH_SESSION_TTL_HOURS": "12",
+                },
+                clear=False,
+            ),
+            patch("main._auth_get_supabase_client", return_value=recorder),
+            patch("main._auth_fetch_single", side_effect=_fetch_single),
+            patch("main._auth_fetch_active_roles", return_value=["TEST_OPERATOR"]),
+            patch("main._auth_verify_password", return_value=True),
+        ):
+            response = module01_auth_login(payload)
+
+        status_code, body = _decode_response(response)
+        self.assertEqual(status_code, 200)
+        self.assertEqual(body["status"], "success")
 
     def test_missing_required_env_fails_closed(self):
         payload = {

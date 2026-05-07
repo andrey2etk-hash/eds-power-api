@@ -25,7 +25,7 @@
 **Module 01 Auth (operator):** **Current step:** Login **`AUTH_FAILED`** for **`test.auth@eds.local`** despite ACTIVE user / **`TEST_OPERATOR`** / ACTIVE terminal — treat as **password/hash or `spreadsheet_id` mismatch** until verified ( **`docs/AUDITS/2026-05-07_MODULE_01_TEST_USER_PASSWORD_RESET_PLAN.md`** ). **Next:** **Controlled password reset procedure** (operator-only; no secrets in repo/chat).
 **Current step:** **GAS core dynamic menu refresh fix — in repo; `GAS_DYNAMIC_MENU_REFRESH_FIX_PENDING_OPERATOR_TEST`**
 **Next allowed step:** Deploy **`gas/core/EDSPowerCore.gs`** to Apps Script; operator re-test open / **Refresh Setup Check** / login + menu (see **`docs/AUDITS/2026-05-07_GAS_CORE_DYNAMIC_MENU_REFRESH_FIX.md`**).
-**Diagnostics (context):** `docs/AUDITS/2026-05-07_GAS_MENU_CONFIG_PATH_DIAGNOSTIC.md`, `docs/AUDITS/2026-05-07_GAS_DYNAMIC_MENU_SETUP_FAILURE_DIAGNOSTIC.md`, **`docs/AUDITS/2026-05-07_RENDER_SUPABASE_AUTH_PATH_DIAGNOSTIC.md`** (login **`EDS_POWER_AUTH_LOGIN_DIAG`** on Render after deploy).
+**Diagnostics (context):** `docs/AUDITS/2026-05-07_GAS_MENU_CONFIG_PATH_DIAGNOSTIC.md`, `docs/AUDITS/2026-05-07_GAS_DYNAMIC_MENU_SETUP_FAILURE_DIAGNOSTIC.md`, **`docs/AUDITS/2026-05-07_RENDER_SUPABASE_AUTH_PATH_DIAGNOSTIC.md`**, **`docs/AUDITS/2026-05-07_MODULE_01_LOGIN_TERMINAL_LOOKUP_FIX.md`** (login terminal **`user_id` + normalized `spreadsheet_id`**).
 **Backend menu reader:** **`MenuRegistryService`** + **`/api/module01/auth/menu`** (unchanged in this task).
 **SQL Registry S01 closeout:** **Manual apply recorded** — **`docs/AUDITS/2026-05-07_EDS_POWER_SQL_REGISTRY_S01_MANUAL_APPLY_REPORT.md`** — verdict **`EDS_POWER_SQL_REGISTRY_S01_APPLY_SUCCESS`**.
 **Wider product/backend scope:** Not expanded beyond menu registry read path.

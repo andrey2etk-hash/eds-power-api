@@ -6,6 +6,20 @@
 
 ---
 
+# 07.05.2026 — Module 01 login: terminal lookup by user + normalized spreadsheet match
+
+## Факт (**backend only**)
+
+- **`module01_user_terminals`**: login loads terminal by **`user_id`** only (schema: one terminal per user), then validates **`spreadsheet_id`** in Python after **`_auth_normalize_login_spreadsheet_id`** (trim + strip BOM / invisible chars).
+- **`SPREADSHEET_ID_MISMATCH`**: terminal row exists but normalized id ≠ request; **`TERMINAL_LOOKUP_FAILED`**: no row for user.
+- Audit: **`docs/AUDITS/2026-05-07_MODULE_01_LOGIN_TERMINAL_LOOKUP_FIX.md`**.
+
+## Далі
+
+- Redeploy Render; verify GAS login for bound Sheet.
+
+---
+
 # 07.05.2026 — Module 01 login diagnostic: stdout emission (follow-up)
 
 ## Факт (**emission only**)
