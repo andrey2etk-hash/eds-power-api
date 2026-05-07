@@ -367,6 +367,7 @@ Notes:
 
 - **Slice:** **`POST /api/module01/calculations/create`**, **`services/module01_calculations_service.py`**, GAS modal **`Module01CreateCalculationModal*`**, sidebar refresh path; **no** KZO engineering, BOM, snapshots, Cursor SQL, schema migrations.
 - **Audit:** **`docs/AUDITS/2026-05-07_MODULE_01_CREATE_CALCULATION_V1_IMPLEMENTATION.md`**.
+- **GAS bootstrap fix (07.05.2026):** public **`module01CreateCalculationBootstrap`** for **`google.script.run`** — **`docs/AUDITS/2026-05-07_MODULE_01_CREATE_CALCULATION_MODAL_BOOTSTRAP_FIX.md`**.
 - **Next:** operator DML for **`MODULE01_CREATE_CALCULATION`** + live create verification.
 
 

@@ -53,6 +53,11 @@ function module01CreateCalculationBootstrap_() {
   }
 }
 
+/** Public wrapper for HTMLService: google.script.run cannot call trailing-underscore functions reliably. */
+function module01CreateCalculationBootstrap() {
+  return module01CreateCalculationBootstrap_();
+}
+
 function module01CreateCalculationBuildPayload_(form, bootstrap) {
   return {
     source_client: "GAS_TERMINAL_V1",

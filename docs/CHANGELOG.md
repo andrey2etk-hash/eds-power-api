@@ -6,6 +6,20 @@
 
 ---
 
+# 07.05.2026 — Create Calculation modal bootstrap (`GAS bugfix`)
+
+## Факт
+
+- **Modal** stuck on **«Зачекайте…»** because **`google.script.run`** targeted private **`module01CreateCalculationBootstrap_`**, which Apps Script does not expose reliably to HTMLService.
+- **Fix:** public **`module01CreateCalculationBootstrap()`** wrapper in **`Module01CreateCalculationModal.gs`**; HTML calls **`module01CreateCalculationBootstrap`**.
+- **Audit:** **`docs/AUDITS/2026-05-07_MODULE_01_CREATE_CALCULATION_MODAL_BOOTSTRAP_FIX.md`**. **No** backend, DB, SQL, registry, product logic.
+
+## Далі
+
+- Operator re-sync GAS; live modal smoke.
+
+---
+
 # 07.05.2026 — Module 01 Create Calculation V1 (`implementation`)
 
 ## Факт

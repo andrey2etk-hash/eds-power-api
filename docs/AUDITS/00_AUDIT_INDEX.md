@@ -12,6 +12,7 @@ Rule:
 
 ## Latest audit
 
+- **Module 01 Create Calculation Modal Bootstrap Fix (`GAS` / public `module01CreateCalculationBootstrap` for `google.script.run`) — **`docs/AUDITS/2026-05-07_MODULE_01_CREATE_CALCULATION_MODAL_BOOTSTRAP_FIX.md`**
 - **Module 01 Create Calculation V1 Implementation (`IMPLEMENTED_PENDING_OPERATOR_DML_AND_LIVE_TEST`)** — endpoint, service, GAS modal, tests; operator DML template for **`MODULE01_CREATE_CALCULATION`**; PostgREST compensating-delete note — **`docs/AUDITS/2026-05-07_MODULE_01_CREATE_CALCULATION_V1_IMPLEMENTATION.md`**
 - **Create Calculation V1 Schema Confirmation — `READ_ONLY_OPERATOR_EVIDENCE`** — operator columns/constraints/indexes/row counts; technical spec updated **UNKNOWN → CONFIRMED** — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_TECHNICAL_SPEC.md`**
 - **Module 01 Create Calculation Technical Spec (`DOC ONLY` / `MODULE_01_CREATE_CALCULATION_TECH_SPEC_SCHEMA_CONFIRMED_READY_FOR_IMPLEMENTATION_TASKING`) — implementation tasking next — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CREATE_CALCULATION_TECHNICAL_SPEC.md`**
