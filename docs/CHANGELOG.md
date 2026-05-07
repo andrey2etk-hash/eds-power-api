@@ -6,6 +6,21 @@
 
 ---
 
+# 07.05.2026 — EDS Power Terminal UI Shell Doctrine (`DOC ONLY`)
+
+## Факт (**planning only**)
+
+- **User clarification:** Google Sheets terminal is an **interactive UI shell** — **custom menu** (global/session/modules), **module sidebar** (working menu per `active_module`), **modals** (forms, confirmations, parameters, execution dialogs) — not only menu-triggered calc.
+- **Doctrine:** **`docs/ARCHITECTURE/EDS_POWER_TERMINAL_UI_SHELL_DOCTRINE.md`** — three-layer UX model, registry implications (future `ui_surface` etc., **no** SQL in this task), GAS thin-client + backend authority boundaries — **no** implementation.
+- **Module 01 calculation:** **planning paused** until Terminal UI Shell Doctrine is **Gemini-audited**; calc slice planning doc remains reference — **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CALC_SLICE_01_PLANNING.md`**.
+- **Verdict:** **`TERMINAL_UI_SHELL_DOCTRINE_READY_FOR_AUDIT`** — **no** GAS/backend/DB/Render/calc code in this task.
+
+## Далі
+
+- Gemini audit of Terminal UI Shell Doctrine; then plan Module 01 **sidebar structure** + **first modal workflow** (DOC ONLY).
+
+---
+
 # 07.05.2026 — Module 01 Calculation Slice 01 Planning (`DOC ONLY`)
 
 ## Факт (**planning only**)

@@ -288,7 +288,20 @@ Notes:
 
 - **Started only after** DB-driven menu registry live validation and post-audit cleanup (`LIVE_VALIDATED_PASS_CLEANUP_COMPLETED`).
 - Planning doc: **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_CALC_SLICE_01_PLANNING.md`** — verdict **`MODULE_01_CALC_SLICE_01_PLAN_READY_FOR_AUDIT`**; **no** Python/GAS/DB/SQL implementation in planning task.
-- **Next:** Gemini audit + user approval before opening implementation task.
+- **Governance pause:** User clarified terminal = **menu + sidebar + modals** shell; **advance/deepen calc implementation planning** deferred until **`EDS_POWER_TERMINAL_UI_SHELL_DOCTRINE`** is audited (**`docs/ARCHITECTURE/EDS_POWER_TERMINAL_UI_SHELL_DOCTRINE.md`**).
+- **Next (after shell doctrine audit):** Gemini audit + user approval on calc slice; then implementation tasks if explicitly opened.
+
+### EDS_POWER_TERMINAL_UI_SHELL_DOCTRINE
+
+Status:
+
+- `PLANNING_DOC_PENDING_AUDIT`
+
+Notes:
+
+- **User-led clarification:** Terminal should use **custom menu** for global navigation and session, **sidebar** for the active module’s main working menu, **modals** for focused operations (forms, confirmations, parameters, execution dialogs).
+- Doctrine: **`docs/ARCHITECTURE/EDS_POWER_TERMINAL_UI_SHELL_DOCTRINE.md`** — verdict **`TERMINAL_UI_SHELL_DOCTRINE_READY_FOR_AUDIT`**; **no** GAS/backend/DB/registry schema/calculation implementation.
+- **Next:** Gemini audit; then DOC planning for Module 01 **sidebar structure** and **first modal workflow**.
 
 ### IDEA-0002 — Google Sheets Sidebar UI
 
