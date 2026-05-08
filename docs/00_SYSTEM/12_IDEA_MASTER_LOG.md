@@ -383,6 +383,7 @@ Notes:
 - Doctrine: **`docs/ARCHITECTURE/EDS_POWER_TERMINAL_UI_SHELL_DOCTRINE.md`** — **Gemini:** **PASS** / **`ARCHITECTURE_LOCKED`** (§13).
 - **Governance patch:** **PASS / locked** — **`docs/00_SYSTEM/02_GLOBAL_RULES.md`** (**Render Thinking / GAS Thin UI Rule**; **main.py Thin Router Rule**); **`docs/ARCHITECTURE/EDS_POWER_GAS_DEPLOYMENT_AND_SYNC_DOCTRINE.md`**.
 - **Thin shell:** Sidebar/modal = presentation + input collection; **all thinking** on Render/backend per user rule.
+- **Terminal UX stabilization V1 (08.05.2026):** single top menu **EDS Power** (no **EDS Power Auth** duplicate); auto-open Module 01 sidebar when session valid; manual **Відкрити бокову панель** — **`docs/AUDITS/2026-05-08_TERMINAL_UX_STABILIZATION_V1.md`**.
 
 ### EDS_POWER_GAS_DEPLOYMENT_AND_SYNC_DOCTRINE
 

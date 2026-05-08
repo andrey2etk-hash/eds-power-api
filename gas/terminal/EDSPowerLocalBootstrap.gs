@@ -2,14 +2,8 @@ const EDS_POWER_BOOTSTRAP_VERSION = "foundation-skeleton-v1";
 const EDS_POWER_TERMINAL_ID_PROPERTY = "EDS_POWER_TERMINAL_ID";
 
 function onOpen() {
-  if (typeof registerModule01DemoMenu_ === "function") {
-    registerModule01DemoMenu_();
-  }
-  if (typeof module01AuthOnOpen_ === "function") {
-    module01AuthOnOpen_();
-  }
-
   const context = buildEDSPowerTerminalContext_();
+
   if (!context.terminal_id) {
     addEDSPowerEmergencyFallbackMenu_();
     edsPowerShowFallbackError("Terminal setup required: terminal_id is missing in ScriptProperties.");
@@ -24,11 +18,34 @@ function onOpen() {
 
   try {
     EDSPowerCore_onTerminalOpen(context);
+    edsPowerTryAutoOpenModule01Sidebar_(context);
   } catch (error) {
     addEDSPowerEmergencyFallbackMenu_();
     edsPowerShowFallbackError("EDSPowerCore failed on open. Check configuration.");
     if (typeof EDSPowerCore_showError === "function") {
       EDSPowerCore_showError(error, context);
+    }
+  }
+}
+
+/**
+ * After successful menu init: open Module 01 sidebar if session cookie exists (non-authoritative UI hint).
+ */
+function edsPowerTryAutoOpenModule01Sidebar_(context) {
+  const ctx = context && typeof context === "object" ? context : buildEDSPowerTerminalContext_();
+  if (ctx.user_session_present !== true) {
+    return;
+  }
+  try {
+    edsPowerOpenModule01Sidebar();
+  } catch (_e) {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    if (ss) {
+      ss.toast(
+        "Не вдалося відкрити бічну панель автоматично. Меню: EDS Power → Відкрити бокову панель.",
+        "EDS Power",
+        8
+      );
     }
   }
 }
@@ -72,7 +89,12 @@ function buildEDSPowerTerminalContext_() {
   const terminalIdMode = terminalId === "TERMINAL_TEMPLATE" ? "template_marker" : "assigned";
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const activeSheet = spreadsheet ? spreadsheet.getActiveSheet() : null;
-  const hasSession = typeof module01AuthHasSession_ === "function" ? module01AuthHasSession_() : false;
+  const sessionData = typeof module01AuthGetSession_ === "function" ? module01AuthGetSession_() : null;
+  const expired =
+    sessionData &&
+    typeof module01AuthIsExpired_ === "function" &&
+    module01AuthIsExpired_(sessionData);
+  const hasSession = !!sessionData && !expired;
   return {
     terminal_id: terminalId,
     terminal_id_mode: terminalIdMode,
@@ -107,10 +129,24 @@ function runEDSPowerTerminalFoundationHandshakeTest() {
 }
 
 function addEDSPowerEmergencyFallbackMenu_() {
-  SpreadsheetApp.getUi()
-    .createMenu("EDS Power Fallback")
-    .addItem("Show Setup Message", "edsPowerShowFallbackSetupRequired_")
-    .addToUi();
+  const ui = SpreadsheetApp.getUi();
+  const ctx = typeof buildEDSPowerTerminalContext_ === "function" ? buildEDSPowerTerminalContext_() : {};
+  const hasSession = ctx.user_session_present === true;
+  const menu = ui.createMenu("EDS Power");
+  if (hasSession) {
+    menu.addItem("Перевірити сесію", "runModule01AuthenticatedSessionStatusCheck");
+  } else {
+    menu.addItem("Авторизуватись", "module01AuthLogin");
+  }
+  menu.addItem("Відкрити бокову панель", "edsPowerOpenModule01Sidebar");
+  menu.addItem("Оновити меню", "edsPowerRefreshMenu");
+  menu.addItem("Module 01 — Розрахунки", "edsPowerOpenModule01Sidebar");
+  if (hasSession) {
+    menu.addItem("Вийти", "module01AuthLogout");
+  }
+  menu.addSeparator();
+  menu.addItem("⚠ Показати повідомлення про налаштування", "edsPowerShowFallbackSetupRequired_");
+  menu.addToUi();
 }
 
 function edsPowerShowFallbackSetupRequired_() {

@@ -12,6 +12,7 @@ Rule:
 
 ## Latest audit
 
+- **Terminal UX Stabilization V1 (`GAS` / single EDS Power menu, auto-open Module 01 sidebar, manual sidebar fallback) — **`docs/AUDITS/2026-05-08_TERMINAL_UX_STABILIZATION_V1.md`**
 - **Module 01 Create Calculation Modal Submit UX Fix (`GAS` / success panel, public `module01CreateCalculationRememberActiveId`, duplicate-submit guard) — **`docs/AUDITS/2026-05-07_MODULE_01_CREATE_CALCULATION_MODAL_SUBMIT_UX_FIX.md`**
 - **Module 01 Create Calculation Modal Bootstrap Fix (`GAS` / public `module01CreateCalculationBootstrap` for `google.script.run`) — **`docs/AUDITS/2026-05-07_MODULE_01_CREATE_CALCULATION_MODAL_BOOTSTRAP_FIX.md`**
 - **Module 01 Create Calculation V1 Implementation (`IMPLEMENTED_PENDING_OPERATOR_DML_AND_LIVE_TEST`)** — endpoint, service, GAS modal, tests; operator DML template for **`MODULE01_CREATE_CALCULATION`**; PostgREST compensating-delete note — **`docs/AUDITS/2026-05-07_MODULE_01_CREATE_CALCULATION_V1_IMPLEMENTATION.md`**

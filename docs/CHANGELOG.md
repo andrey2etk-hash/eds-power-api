@@ -6,6 +6,21 @@
 
 ---
 
+# 08.05.2026 — Terminal UX stabilization V1 (`GAS` / single menu + auto sidebar)
+
+## Факт
+
+- **Один** верхній custom menu **`EDS Power`**: shell (авторизація / бокова панель / оновлення меню / Module 01 / вихід) + пункти реєстру без дублювання колбеків.
+- **Прибрано** другий top menu **`EDS Power Auth`** і виклик **demo** menu з **`onOpen`**.
+- **`onOpen`:** після успіху core — автовідкриття sidebar за наявності **не простроченої** сесії; **`toast`** при помилці.
+- **Audit:** **`docs/AUDITS/2026-05-08_TERMINAL_UX_STABILIZATION_V1.md`**. **No** backend/DB/SQL/product/KZO engine.
+
+## Далі
+
+- Operator GAS sync + live перевірка порядку меню та auto-open.
+
+---
+
 # 07.05.2026 — Create Calculation modal submit UX (`GAS bugfix`)
 
 ## Факт

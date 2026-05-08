@@ -11,6 +11,15 @@ const EDS_POWER_MENU_ALLOWED_ACTIONS = {
   OPEN_MODULE_01_SIDEBAR: true
 };
 
+/** Callbacks registered in the canonical shell block — skip duplicate registry rows. */
+const EDS_POWER_UNIFIED_MENU_FIXED_CALLBACKS = {
+  edsPowerOpenModule01Sidebar: true,
+  edsPowerRefreshMenu: true,
+  runModule01AuthenticatedSessionStatusCheck: true,
+  module01AuthLogin: true,
+  module01AuthLogout: true
+};
+
 function EDSPowerCore_onTerminalOpen(context) {
   const safeContext = EDSPowerCore_sanitizeContext_(context);
   const refreshOutcome = EDSPowerCore_refreshMenu(context, { silent_errors: true });
@@ -44,7 +53,7 @@ function EDSPowerCore_refreshMenu(context, options) {
         ? meta.menu_source.trim()
         : "unknown";
     const menus = Array.isArray(data.menus) ? data.menus : [];
-    const rendered = EDSPowerCore_renderDynamicMenu_(menus);
+    const rendered = EDSPowerCore_renderUnifiedMainMenu_(safeContext, menus);
     const diagnostic = {
       stage: "EDS_POWER_DYNAMIC_MENU_REFRESH",
       menu_source: resolvedMenuSource,
@@ -69,7 +78,7 @@ function EDSPowerCore_refreshMenu(context, options) {
       endpoint_http_status: transportResult.http_status
     };
   } catch (error) {
-    EDSPowerCore_renderStaticFallbackMenu_();
+    EDSPowerCore_renderStaticFallbackMenu_(safeContext);
     if (!silentErrors && typeof EDSPowerCore_showError === "function") {
       EDSPowerCore_showError(error, safeContext);
     }
@@ -240,9 +249,32 @@ function EDSPowerCore_resolveSessionToken_() {
   return token || "";
 }
 
-function EDSPowerCore_renderDynamicMenu_(menus) {
+function EDSPowerCore_appendShellMenuItems_(menu, context) {
+  const hasSession = context.user_session_present === true;
+  if (hasSession) {
+    menu.addItem("Перевірити сесію", "runModule01AuthenticatedSessionStatusCheck");
+  } else {
+    menu.addItem("Авторизуватись", "module01AuthLogin");
+  }
+  menu.addItem("Відкрити бокову панель", "edsPowerOpenModule01Sidebar");
+  menu.addItem("Оновити меню", "edsPowerRefreshMenu");
+  menu.addItem("Module 01 — Розрахунки", "edsPowerOpenModule01Sidebar");
+  if (hasSession) {
+    menu.addItem("Вийти", "module01AuthLogout");
+  }
+  menu.addSeparator();
+}
+
+/**
+ * Single top-level "EDS Power" menu: shell actions + registry-driven items (deduped).
+ */
+function EDSPowerCore_renderUnifiedMainMenu_(context, menus) {
   const ui = SpreadsheetApp.getUi();
-  const visibleMenus = menus
+  const safeContext = EDSPowerCore_sanitizeContext_(context);
+  const menu = ui.createMenu(EDS_POWER_BOOTSTRAP_MENU_TITLE);
+  EDSPowerCore_appendShellMenuItems_(menu, safeContext);
+
+  const visibleMenus = (menus || [])
     .filter(function (item) {
       return item && typeof item === "object" && String(item.visibility || "") === EDS_POWER_VISIBLE_STATUS;
     })
@@ -250,11 +282,10 @@ function EDSPowerCore_renderDynamicMenu_(menus) {
       return Number(a.sort_order || 0) - Number(b.sort_order || 0);
     });
 
-  const menu = ui.createMenu(EDS_POWER_BOOTSTRAP_MENU_TITLE);
   let rendered = 0;
   visibleMenus.forEach(function (item) {
     const callbackName = EDSPowerCore_resolveMenuCallback_(item);
-    if (!callbackName) {
+    if (!callbackName || EDS_POWER_UNIFIED_MENU_FIXED_CALLBACKS[callbackName]) {
       return;
     }
     const label = EDSPowerCore_resolveMenuLabel_(item);
@@ -308,12 +339,13 @@ function EDSPowerCore_resolveMenuCallback_(item) {
   return "";
 }
 
-function EDSPowerCore_renderStaticFallbackMenu_() {
-  SpreadsheetApp.getUi()
-    .createMenu(EDS_POWER_BOOTSTRAP_MENU_TITLE)
-    .addItem("⚠ Setup Required", "edsPowerFallbackSetupRequired_")
-    .addItem("Refresh Setup Check", "edsPowerRefreshSetupCheck_")
-    .addToUi();
+function EDSPowerCore_renderStaticFallbackMenu_(context) {
+  const safeContext = EDSPowerCore_sanitizeContext_(context || {});
+  const menu = SpreadsheetApp.getUi().createMenu(EDS_POWER_BOOTSTRAP_MENU_TITLE);
+  EDSPowerCore_appendShellMenuItems_(menu, safeContext);
+  menu.addItem("⚠ Діагностика: налаштування", "edsPowerFallbackSetupRequired_");
+  menu.addItem("Оновити перевірку (меню)", "edsPowerRefreshSetupCheck_");
+  menu.addToUi();
 }
 
 function edsPowerFallbackSetupRequired_() {

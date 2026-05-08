@@ -1,5 +1,3 @@
-const MODULE01_AUTH_MENU_TITLE = "EDS Power Auth";
-
 function module01AuthBuildSafeDebugMessage_(httpStatus, envelope) {
   const status = envelope && typeof envelope.status === "string" ? envelope.status : "unknown";
   const errorObj = envelope && envelope.error && typeof envelope.error === "object" ? envelope.error : {};
@@ -58,26 +56,16 @@ function module01AuthBuildTransportDebugObject_(error) {
 }
 
 function module01AuthOnOpen_() {
-  const ui = SpreadsheetApp.getUi();
-  const menu = ui.createMenu(MODULE01_AUTH_MENU_TITLE);
-  const sessionData = module01AuthGetSession_();
-  const isLoggedIn = !!sessionData && !module01AuthIsExpired_(sessionData);
-
-  if (isLoggedIn) {
-    menu
-      .addItem("Оновити меню", "module01AuthRefreshMenu")
-      .addItem("Перевірити сесію", "runModule01AuthenticatedSessionStatusCheck")
-      .addItem("Вийти", "module01AuthLogout");
-  } else {
-    menu.addItem("Авторизуватись", "module01AuthLogin");
+  if (typeof edsPowerRefreshMenu === "function") {
+    edsPowerRefreshMenu();
   }
-
-  menu.addToUi();
 }
 
 function module01AuthRefreshMenu() {
-  module01AuthOnOpen_();
-  SpreadsheetApp.getUi().alert("Меню авторизації оновлено.");
+  if (typeof edsPowerRefreshMenu === "function") {
+    edsPowerRefreshMenu();
+  }
+  SpreadsheetApp.getUi().alert("Меню оновлено.");
 }
 
 function module01AuthLogin() {
@@ -136,7 +124,16 @@ function module01AuthSubmitLogin(email, password) {
       user_email: String(user.email || normalizedEmail).trim().toLowerCase(),
       role_codes: Array.isArray(user.role_codes) ? user.role_codes : []
     });
-    module01AuthOnOpen_();
+    if (typeof edsPowerRefreshMenu === "function") {
+      edsPowerRefreshMenu();
+    } else if (typeof module01AuthOnOpen_ === "function") {
+      module01AuthOnOpen_();
+    }
+    if (typeof edsPowerTryAutoOpenModule01Sidebar_ === "function") {
+      const ctx =
+        typeof buildEDSPowerTerminalContext_ === "function" ? buildEDSPowerTerminalContext_() : {};
+      edsPowerTryAutoOpenModule01Sidebar_(ctx);
+    }
     return {ok: true, message: "Авторизація успішна."};
   } catch (error) {
     return {
@@ -149,7 +146,11 @@ function module01AuthSubmitLogin(email, password) {
 
 function module01AuthLogout() {
   module01AuthClearSession_();
-  module01AuthOnOpen_();
+  if (typeof edsPowerRefreshMenu === "function") {
+    edsPowerRefreshMenu();
+  } else if (typeof module01AuthOnOpen_ === "function") {
+    module01AuthOnOpen_();
+  }
   SpreadsheetApp.getUi().alert("Сесію очищено. Необхідна повторна авторизація.");
 }
 

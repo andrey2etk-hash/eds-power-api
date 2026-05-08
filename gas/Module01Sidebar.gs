@@ -25,7 +25,7 @@ function module01SidebarBuildSafeContext_() {
     return {
       ok: false,
       code: "AUTH_MISSING_TOKEN",
-      message: "Потрібна авторизація. Увійдіть через EDS Power / Module 01 Auth."
+      message: "Потрібна авторизація. Меню: EDS Power → Авторизуватись."
     };
   }
 
