@@ -371,6 +371,19 @@ Notes:
 - **Next:** operator DML for **`MODULE01_CREATE_CALCULATION`** + live create verification.
 
 
+### MODULE_01_CALCULATION_RECORD_VERSIONED_EDITOR_FLOW_V1
+
+Status:
+
+- `SCOPE_DEFINED_PENDING_AUDIT`
+
+Notes:
+
+- **User doctrine:** Module 01 must **create calculation record first**; **initial version always `-00`**; **equipment type belongs to calculation item level**, not calculation record level at creation.
+- **Scope doc (DOC ONLY):** **`docs/00-02_CALC_CONFIGURATOR/MODULE_01_CALCULATION_RECORD_VERSIONED_EDITOR_FLOW_V1.md`**.
+- **Next:** Gemini (or equivalent) **audit** before implementation planning; **no** code/DB/API in this intake.
+
+
 ### EDS_POWER_TERMINAL_UI_SHELL_DOCTRINE
 
 Status:

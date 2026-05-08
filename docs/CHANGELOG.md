@@ -6,6 +6,22 @@
 
 ---
 
+# 10.05.2026 — Module 01 Calculation Record + Versioned Editor Flow V1 (`DOC ONLY` / scope definition)
+
+## Факт
+
+- **Doctrine:** **calculation-record-first** — контейнер розрахунку перед позиціями; **тип обладнання на рівні item**, не на рівні всього розрахунку при створенні.
+- **Версії:** початкова завжди **`-00`**; повний номер **`<base>-<suffix>`**; ревізії **`-01`**, **`-02`**, … без тихої перезапису закомічених версій (деталі — open questions).
+- **Документ:** **`docs/00-02_CALC_CONFIGURATOR/MODULE_01_CALCULATION_RECORD_VERSIONED_EDITOR_FLOW_V1.md`** — **SCOPE DEFINITION**; **немає** реалізації API/GAS/DB.
+- **Idea log:** **`MODULE_01_CALCULATION_RECORD_VERSIONED_EDITOR_FLOW_V1`** — **`SCOPE_DEFINED_PENDING_AUDIT`**.
+- **Next (governance):** аудит scope doc (**Gemini** або еквівалент) — **`docs/NOW.md`**.
+
+## Далі
+
+- Audit; **не** відкривати implementation Create Calculation Modal до явного TASK після узгодження.
+
+---
+
 # 09.05.2026 — Terminal UX Stabilization V1 operator closeout (`DOC ONLY` / `OPERATOR_VERIFIED_WITH_NOTES`)
 
 ## Факт
