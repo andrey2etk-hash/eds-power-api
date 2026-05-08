@@ -6,6 +6,21 @@
 
 ---
 
+# 09.05.2026 — Terminal UX Stabilization V1 operator closeout (`DOC ONLY` / `OPERATOR_VERIFIED`)
+
+## Факт
+
+- **Operator:** **`UX STABLE`** — єдине верхнє меню **`EDS Power`**, дубль **`EDS Power Auth`** усунуто, стабільний порядок, без auto-open sidebar без авторизації, з авторизацією — auto-open sidebar при перезавантаженні аркуша, fallback — єдиний shell.
+- **Closeout:** **`docs/AUDITS/2026-05-09_TERMINAL_UX_STABILIZATION_V1_OPERATOR_CLOSEOUT.md`** — verdict **`TERMINAL_UX_STABILIZATION_V1_OPERATOR_VERIFIED`**.
+- **Governance next:** **Module 01 Create Calculation Modal V1** — **SCOPE DEFINITION / DOC ONLY** — **implementation not active** in this entry.
+- **No** GAS/API/DB/SQL/Render changes in this closeout.
+
+## Далі
+
+- DOC ONLY scope work for Create Calculation Modal V1 per **`docs/NOW.md`**.
+
+---
+
 # 08.05.2026 — Terminal UX stabilization V1 (`GAS` / single menu + auto sidebar)
 
 ## Факт
