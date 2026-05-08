@@ -71,12 +71,14 @@ Operative **sub-state** strings (such as **`PENDING_SUPABASE_VERIFICATION`**) ap
 
 Status:
 
-- `BACKEND_VERIFIED_PENDING_LIVE_SMOKE`
+- `BACKEND_VERIFIED`
+- `CALCULATION_ITEMS_API_V1_ROUTE_LIVE_AUTH_SMOKE_PENDING_OPERATOR_TOKEN`
 
 Notes:
 
-- Backend implementation passed Gemini audit and tests.
-- GAS remains deferred until live backend smoke test.
+- **Deploy:** **`b3b5f824d203a4673f066b97cc940a346cc9ce55`** on **`origin/main`**; **Render** **`POST .../items/add`** returns **`AUTH_MISSING_TOKEN`** (route **live**), not **404**.
+- **Pending:** operator **Bearer** + **DRAFT** calculation + registry **`calculation_items`** if required — **`docs/AUDITS/2026-05-08_MODULE_01_CALCULATION_ITEMS_API_V1_LIVE_SMOKE.md`**.
+- GAS remains deferred.
 
 ### POST_AUTH_USER_LED_ARCHITECTURE_PAUSE
 

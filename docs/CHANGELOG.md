@@ -6,6 +6,51 @@
 
 ---
 
+# 08.05.2026 — Calculation Items API V1 — commit, push, deploy, live route verified (`CODE` + `DOC`)
+
+## Факт
+
+- **Commit:** **`b3b5f824d203a4673f066b97cc940a346cc9ce55`** — `feat(module01): implement calculation items api v1 add list` — **`main.py`**, **`services/module01_calculation_items_service.py`**, **`tests/test_module01_calculation_items_api.py`** only (create-calculation message map kept unchanged vs accidental diff).
+- **Push:** **`origin/main`** updated; **Render** auto-deploy; **~2 min** **404** then **`POST .../items/add`** → **200** **`AUTH_MISSING_TOKEN`** (**`calculation_items`**).
+- **Authed smoke:** **pending** operator token — **`CALCULATION_ITEMS_API_V1_ROUTE_LIVE_AUTH_SMOKE_PENDING_OPERATOR_TOKEN`** — **`docs/AUDITS/2026-05-08_MODULE_01_CALCULATION_ITEMS_API_V1_LIVE_SMOKE.md`**.
+- **No** GAS / SQL / DB / product logic.
+
+## Далі
+
+- Operator: live authed smoke (registry permission **`calculation_items`** if needed).
+
+---
+
+# 08.05.2026 — Calculation Items API V1 deployment alignment / re-smoke (`DOC` + probes)
+
+## Факт
+
+- **Live** **`https://eds-power-api.onrender.com`:** **`GET /api/module01/auth/session/status`** (no header) → **200** **`AUTH_MISSING_TOKEN`**; **`POST /api/module01/calculations/items/add`** → **HTTP 404** persists.
+- **Git alignment:** **`origin/main`** and **local `HEAD`** **`main.py`** contain **no** items routes; **working tree** has routes + **untracked** **`services/module01_calculation_items_service.py`** — **unblock = commit + push + redeploy**, not redeploy alone.
+- **Audit:** **`docs/AUDITS/2026-05-08_MODULE_01_CALCULATION_ITEMS_API_V1_LIVE_SMOKE.md`** — verdict **`CALCULATION_ITEMS_API_V1_DEPLOYMENT_BLOCKED_ROUTE_404_PERSISTS`**.
+- **No** GAS / SQL / DB schema / product code changes in this step.
+
+## Далі
+
+- Operator: **push** items API backend to **`origin/main`** (minimal commit) → **Render** deploy → repeat route + auth smoke.
+
+---
+
+# 08.05.2026 — Module 01 Calculation Items API V1 — live backend smoke (`DOC` / operator evidence)
+
+## Факт
+
+- **Smoke:** **`docs/AUDITS/2026-05-08_MODULE_01_CALCULATION_ITEMS_API_V1_LIVE_SMOKE.md`** — **`CALCULATION_ITEMS_API_V1_LIVE_SMOKE_BLOCKED_PUBLIC_RENDER_404`**.
+- **Public Render** **`https://eds-power-api.onrender.com`:** **`POST /api/module01/calculations/items/add`** and **`GET .../items`** → **HTTP 404** (`Not Found`); **control** **`GET /api/module01/auth/session/status`** → **200** + **`AUTH_INVALID_TOKEN`** (deploy alive; items routes **not** on this build).
+- **Scenarios 1–6** (add/list/hierarchy/negatives) **not run** on public host — blocked by missing routes. **No** production item IDs created.
+- **GAS** not implemented for this slice.
+
+## Далі
+
+- **Redeploy** API with Calculation Items routes → repeat smoke (Bearer + DRAFT calculation) → record **LIVE_PASS** in audit; **then** **Calculation Editor GAS Client** scope doc step — **DOC ONLY** until tasked.
+
+---
+
 # 08.05.2026 — Module 01 Calculation Items API V1 — backend verified (`DOC` closeout)
 
 ## Факт
