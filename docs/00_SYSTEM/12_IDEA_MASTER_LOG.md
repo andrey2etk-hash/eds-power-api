@@ -67,6 +67,17 @@ Operative **sub-state** strings (such as **`PENDING_SUPABASE_VERIFICATION`**) ap
 
 ## Idea Notes
 
+### MODULE_01_CALCULATION_ITEMS_API_V1
+
+Status:
+
+- `BACKEND_VERIFIED_PENDING_LIVE_SMOKE`
+
+Notes:
+
+- Backend implementation passed Gemini audit and tests.
+- GAS remains deferred until live backend smoke test.
+
 ### POST_AUTH_USER_LED_ARCHITECTURE_PAUSE
 
 Status:

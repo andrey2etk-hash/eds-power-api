@@ -6,6 +6,28 @@
 
 ---
 
+# 08.05.2026 — Module 01 Calculation Items API V1 — backend verified (`DOC` closeout)
+
+## Факт
+
+- **Calculation Items API V1** backend phase closed after **Gemini** **PASS WITH PERFORMANCE/CONCURRENCY NOTE**.
+- **Verdicts:** **`CALCULATION_ITEMS_API_V1_BACKEND_VERIFIED`** / **`CALCULATION_ITEMS_API_V1_VERIFIED`**.
+- **Audit:** **`docs/AUDITS/2026-05-08_MODULE_01_CALCULATION_ITEMS_API_V1_BACKEND_CLOSEOUT.md`**.
+- **Add/list** endpoints implemented.
+- **`total_quantity`** and **`display_index`** are backend-owned.
+- **Preorder** sorting verified.
+- **Tests:** **158** passed.
+- **Concurrency** limitation accepted for V1: read-max → insert may cause **`ITEM_SORT_CONFLICT`** under concurrent writes.
+- **Decimal → float** in API response accepted because **GAS is display-only**.
+- **Not implemented:** **GAS/UI**, product logic, **BOM/pricing**.
+
+## Далі
+
+- **Next allowed step:** **Module 01 Calculation Items API V1 — Live Backend Smoke Test**.
+- **GAS** remains **off** for this slice until separately tasked.
+
+---
+
 # 10.05.2026 — Module 01 Calculation V1 reconciliation plan (`DOC ONLY` / read-only inventory)
 
 ## Факт
