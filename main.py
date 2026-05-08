@@ -20,6 +20,11 @@ from kzo_snapshot_persist import (
 from services.menu_registry_service import MenuRegistryService, resolve_menu_environment_scope
 from services.module01_sidebar_service import build_module01_sidebar_data
 from services.module01_calculations_service import create_calculation_v1, validate_create_payload
+from services.module01_calculation_items_service import (
+    add_calculation_item_v1,
+    list_calculation_items_v1,
+    validate_items_add_payload,
+)
 import services.menu_registry_service as _menu_registry_svc
 
 try:
@@ -148,6 +153,7 @@ AUTH_MENU_MOCK_RESPONSE_VERSION = "EDS_POWER_MENU_V1"
 AUTH_MENU_ACTION = "menu"
 AUTH_SIDEBAR_CONTEXT_ACTION = "sidebar_context"
 AUTH_CREATE_CALCULATION_ACTION = "calculations_create"
+AUTH_CALCULATION_ITEMS_ACTION = "calculation_items"
 _AUTH_LOGIN_DIAG_ALLOWED_KEYS: frozenset[str] = frozenset(
     {
         "request_id",
@@ -1499,6 +1505,42 @@ def _menu_registry_error_response(
     )
 
 
+def _module01_calculation_items_error_response(
+    *,
+    request_id: str,
+    started_at: float,
+    error_code: str,
+    message: str,
+    source_field: str | None = None,
+) -> JSONResponse:
+    metadata = _auth_timed_metadata(request_id, started_at)
+    metadata["menu_source"] = "registry"
+    return JSONResponse(
+        status_code=200,
+        content={
+            "status": "error",
+            "data": None,
+            "error": {
+                "error_code": error_code,
+                "message": message,
+                "source_field": source_field,
+                "module": "MODULE_01",
+                "action": AUTH_CALCULATION_ITEMS_ACTION,
+            },
+            "metadata": metadata,
+        },
+    )
+
+
+def _module01_parse_uuid_param(value: str | None) -> str | None:
+    if not isinstance(value, str) or not value.strip():
+        return None
+    try:
+        return str(UUID(value.strip()))
+    except ValueError:
+        return None
+
+
 def _module01_create_calculation_error_response(
     *,
     request_id: str,
@@ -2506,6 +2548,143 @@ def module01_calculations_create(
         content={
             "status": "success",
             "data": data,
+            "error": None,
+            "metadata": metadata,
+        },
+    )
+
+
+_MODULE01_ITEMS_ERROR_MESSAGES: dict[str, str] = {
+    "CALCULATION_NOT_FOUND": "Calculation not found.",
+    "CALCULATION_VERSION_NOT_FOUND": "Calculation version not found.",
+    "VERSION_NOT_DRAFT": "Version is not editable (not DRAFT).",
+    "ITEM_PARENT_NOT_FOUND": "Parent item not found.",
+    "ITEM_PARENT_VERSION_MISMATCH": "Parent item does not belong to this calculation version.",
+    "ITEM_PARENT_NOT_CONTAINER": "Parent must be a CONTAINER.",
+    "ITEM_DEPTH_LIMIT_EXCEEDED": "Maximum item depth exceeded.",
+    "ITEM_INVALID_KIND": "Invalid item kind.",
+    "ITEM_INVALID_QUANTITY": "Quantity must be greater than zero.",
+    "ITEM_SORT_CONFLICT": "Could not assign sort order (conflict). Retry.",
+    "ITEM_CREATE_FAILED": "Could not create item.",
+}
+
+
+@app.post("/api/module01/calculations/items/add")
+def module01_calculation_items_add(
+    authorization: str | None = Header(default=None, alias="Authorization"),
+    payload: dict[str, Any] | None = None,
+):
+    ctx, err = _auth_validate_session_context(authorization, action=AUTH_CALCULATION_ITEMS_ACTION)
+    if err is not None:
+        return err
+
+    body = payload if isinstance(payload, dict) else {}
+    started_at = ctx["started_at"]
+    request_id = ctx["request_id"]
+    client = ctx["client"]
+    user_id = ctx["user_id"]
+
+    normalized, val_err, field = validate_items_add_payload(body)
+    if val_err:
+        return _module01_calculation_items_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code=val_err,
+            message=_MODULE01_ITEMS_ERROR_MESSAGES.get(val_err, "Item add failed."),
+            source_field=field,
+        )
+
+    try:
+        data, svc_err, src_field = add_calculation_item_v1(
+            client=client,
+            user_id=user_id,
+            normalized=normalized,
+        )
+    except Exception:  # noqa: BLE001
+        return _module01_calculation_items_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code="ITEM_CREATE_FAILED",
+            message=_MODULE01_ITEMS_ERROR_MESSAGES["ITEM_CREATE_FAILED"],
+        )
+
+    if svc_err:
+        return _module01_calculation_items_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code=svc_err,
+            message=_MODULE01_ITEMS_ERROR_MESSAGES.get(svc_err, "Item add failed."),
+            source_field=src_field,
+        )
+
+    metadata = _auth_timed_metadata(request_id, started_at)
+    metadata["menu_source"] = "registry"
+    return JSONResponse(
+        status_code=200,
+        content={
+            "status": "success",
+            "data": data,
+            "error": None,
+            "metadata": metadata,
+        },
+    )
+
+
+@app.get("/api/module01/calculations/{calculation_id}/versions/{version_id}/items")
+def module01_calculation_items_list(
+    calculation_id: str,
+    version_id: str,
+    authorization: str | None = Header(default=None, alias="Authorization"),
+):
+    ctx, err = _auth_validate_session_context(authorization, action=AUTH_CALCULATION_ITEMS_ACTION)
+    if err is not None:
+        return err
+
+    started_at = ctx["started_at"]
+    request_id = ctx["request_id"]
+    client = ctx["client"]
+    user_id = ctx["user_id"]
+
+    cid = _module01_parse_uuid_param(calculation_id)
+    vid = _module01_parse_uuid_param(version_id)
+    if not cid or not vid:
+        return _module01_calculation_items_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code="CALCULATION_NOT_FOUND",
+            message=_MODULE01_ITEMS_ERROR_MESSAGES["CALCULATION_NOT_FOUND"],
+        )
+
+    try:
+        items, list_err = list_calculation_items_v1(
+            client=client,
+            user_id=user_id,
+            calculation_id=cid,
+            version_id=vid,
+        )
+    except Exception:  # noqa: BLE001
+        return _module01_calculation_items_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code="ITEM_CREATE_FAILED",
+            message=_MODULE01_ITEMS_ERROR_MESSAGES["ITEM_CREATE_FAILED"],
+        )
+
+    if list_err:
+        return _module01_calculation_items_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code=list_err,
+            message=_MODULE01_ITEMS_ERROR_MESSAGES.get(list_err, "Items list failed."),
+        )
+
+    metadata = _auth_timed_metadata(request_id, started_at)
+    metadata["menu_source"] = "registry"
+    return JSONResponse(
+        status_code=200,
+        content={
+            "status": "success",
+            "data": {"items": items},
             "error": None,
             "metadata": metadata,
         },
