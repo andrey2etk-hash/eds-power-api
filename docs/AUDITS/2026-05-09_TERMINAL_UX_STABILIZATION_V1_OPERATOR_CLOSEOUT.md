@@ -2,57 +2,55 @@
 
 ## Objective
 
-Close **Terminal UX Stabilization V1** after successful **operator verification** (**`UX STABLE`**) — documentation and governance only. No code, API, or database work in this closeout.
+Close **Terminal UX Stabilization V1** after **operator verification with notes** — documentation and governance only. This gate records that critical instability is **no longer blocking** without claiming UI/UX is **final**. No code, API, or database work in this closeout.
 
 ## Scope
 
-- **In scope:** operator attestation of live Google Sheets terminal behavior aligned with **`docs/AUDITS/2026-05-08_TERMINAL_UX_STABILIZATION_V1.md`**.
-- **Out of scope:** GAS edits, backend, Supabase, SQL, Render, Module 01 calculation implementation, Create Calculation Modal implementation.
+- **In scope:** operator attestation of live Google Sheets terminal behavior against **`docs/AUDITS/2026-05-08_TERMINAL_UX_STABILIZATION_V1.md`**, plus explicit **limitations** and **non-final** UX posture.
+- **Out of scope:** GAS edits, backend, Supabase, SQL, Render, Module 01 calculation implementation, Create Calculation Modal implementation, **and any further UX refinement** (separate scoped task only).
 
-## Operator test scenarios
+## Operator result
 
-| ID | Focus |
-|----|--------|
-| A | No authenticated session |
-| B | Active authenticated session |
-| C | Fallback / degraded menu path |
-| D | Thin client (no new business logic in terminal layer) |
+**`UX STABLE WITH NOTES`**
 
-## Scenario A — No Auth
+Critical menu instability is **resolved enough** to **close the stabilization gate**. The operator does **not** consider the UX **fully as desired** or **final**.
 
-- Reload bound Google Sheet **without** a valid stored session (or after **Вийти**).
-- **Expected:** Exactly **one** top-level custom menu: **EDS Power** (no **EDS Power Auth**, no duplicate ordering confusion).
-- **Expected:** **Module 01 sidebar does not** open automatically on reload.
-- **Expected:** Operator can open sidebar via **EDS Power → Відкрити бокову панель** (or **Module 01 — Розрахунки**).
+## Verified behavior
 
-## Scenario B — Auth Active
+- **Single** top-level **EDS Power** menu behavior is **stable enough** for the current gate (no longer the blocking duplicate/random top-menu failure mode).
+- **Duplicate / random second-menu** issue is **no longer blocking** operations.
+- **Unauthenticated** context: **no** auto-open sidebar (acceptable for gate).
+- **Authenticated** session: **auto-open** Module 01 sidebar is **acceptable for the current gate** (not asserted as perfect).
+- **Terminal** remains **usable** for the **next controlled planning step** (DOC ONLY scope definition).
+- **GAS** remains **terminal UI / client layer** only (no KZO/calculation engine introduced in this lane).
 
-- Sign in via **EDS Power → Авторизуватись** (existing flow).
-- Reload sheet (F5 / reopen).
-- **Expected:** **EDS Power** remains the **only** canonical top menu; items reflect session (**Перевірити сесію**, **Вийти**, etc.).
-- **Expected:** **Module 01 sidebar opens automatically** on reload when session is **valid and non-expired** (per V1 design).
-- **Expected:** Menu order remains **stable** across reloads (no random swap with a second top menu).
+## Operator notes
 
-## Verified behavior (operator)
+> UX is stable, but not fully as desired.
 
-- **Only one** top custom menu: **EDS Power**.
-- **Duplicate menu** issue (**EDS Power** vs **EDS Power Auth**) **resolved**.
-- **No** unauthenticated **auto-open** sidebar.
-- **Authenticated** session: **auto-open** Module 01 sidebar on sheet reload **confirmed**.
-- **Fallback** menu uses the **unified EDS Power shell** (auth / sidebar / refresh / Module 01 / logout + diagnostics) per V1 implementation doc.
-- **GAS** remains **terminal UI / client layer** only (transport, presentation, session storage hints — no KZO/calculation engine).
+Interpretation recorded in governance:
+
+- Stabilization **V1 is closed** as a **gate**, not as a **UX finish line**.
+- Any additional polish, layout, copy, or workflow tuning must be a **separately scoped** UX task with its own approval — **not** implied by this closeout.
+
+## Known UX limitations (explicit non-final)
+
+- **Overall UX** is **not** marked perfect or final in any governance doc updated by this closeout.
+- Residual dissatisfaction (operator) is **acknowledged**; **no** commitment to “done” on terminal polish.
+- **Further UX refinement** is **deferred** until an explicit follow-on task defines scope, success criteria, and boundaries (still thin-client / no product engine in GAS unless governance changes).
 
 ## What was NOT changed
 
-- **No** changes to GAS source in this closeout.
-- **No** API, **no** DB schema, **no** SQL, **no** Render environment changes in this closeout.
-- **No** new Module 01 calculation or Create Calculation Modal **implementation** triggered by this document.
+- **No** GAS, **no** API, **no** DB, **no** SQL, **no** Render changes in this closeout revision.
+- **No** new Module 01 calculation or modal **implementation**.
+- **No** continuation of UX code work **inside** this documentation task.
 
 ## Governance confirmation
 
-- **Manual SQL / Supabase:** unchanged; operator-only execution model unchanged.
-- **Next work sequencing:** recorded in **`docs/NOW.md`** — **DOC ONLY** scope definition for **Module 01 Create Calculation Modal V1**; **implementation not activated** by this closeout.
+- **Verdict:** **`TERMINAL_UX_STABILIZATION_V1_OPERATOR_VERIFIED_WITH_NOTES`**
+- **Next work sequencing:** **`docs/NOW.md`** — **Module 01 Create Calculation Modal V1** — **SCOPE DEFINITION / DOC ONLY**; **implementation not activated**.
+- **UX posture:** stable enough to proceed; **not** final; future UX = **separate scope**.
 
 ## Verdict
 
-**`TERMINAL_UX_STABILIZATION_V1_OPERATOR_VERIFIED`**
+**`TERMINAL_UX_STABILIZATION_V1_OPERATOR_VERIFIED_WITH_NOTES`**

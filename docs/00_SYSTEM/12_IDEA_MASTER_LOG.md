@@ -383,18 +383,18 @@ Notes:
 - Doctrine: **`docs/ARCHITECTURE/EDS_POWER_TERMINAL_UI_SHELL_DOCTRINE.md`** — **Gemini:** **PASS** / **`ARCHITECTURE_LOCKED`** (§13).
 - **Governance patch:** **PASS / locked** — **`docs/00_SYSTEM/02_GLOBAL_RULES.md`** (**Render Thinking / GAS Thin UI Rule**; **main.py Thin Router Rule**); **`docs/ARCHITECTURE/EDS_POWER_GAS_DEPLOYMENT_AND_SYNC_DOCTRINE.md`**.
 - **Thin shell:** Sidebar/modal = presentation + input collection; **all thinking** on Render/backend per user rule.
-- **Terminal UX stabilization V1 (08.05.2026):** single top menu **EDS Power** (no **EDS Power Auth** duplicate); auto-open Module 01 sidebar when session valid; manual **Відкрити бокову панель** — **`docs/AUDITS/2026-05-08_TERMINAL_UX_STABILIZATION_V1.md`**. **Operator verified (09.05.2026):** **`docs/AUDITS/2026-05-09_TERMINAL_UX_STABILIZATION_V1_OPERATOR_CLOSEOUT.md`** — **`TERMINAL_UX_STABILIZATION_V1_OPERATOR_VERIFIED`**.
+- **Terminal UX stabilization V1 (08.05.2026):** single top menu **EDS Power** (no **EDS Power Auth** duplicate); auto-open Module 01 sidebar when session valid; manual **Відкрити бокову панель** — **`docs/AUDITS/2026-05-08_TERMINAL_UX_STABILIZATION_V1.md`**. **Operator closeout (09.05.2026):** **`docs/AUDITS/2026-05-09_TERMINAL_UX_STABILIZATION_V1_OPERATOR_CLOSEOUT.md`** — **`TERMINAL_UX_STABILIZATION_V1_OPERATOR_VERIFIED_WITH_NOTES`** (UX stable enough for gate; **not** final UX).
 
 
 ### TERMINAL_UX_STABILIZATION_V1
 
 Status:
 
-- `OPERATOR_VERIFIED`
+- `OPERATOR_VERIFIED_WITH_NOTES`
 
 Notes:
 
-- **Single menu truth** and **authenticated auto-open sidebar** verified by operator — **`docs/AUDITS/2026-05-09_TERMINAL_UX_STABILIZATION_V1_OPERATOR_CLOSEOUT.md`**.
+- UX **stable enough** to close stabilization gate; operator notes **«stable, but not fully as desired»** — **not** marked perfect or final. Further refinement **separately scoped** — **`docs/AUDITS/2026-05-09_TERMINAL_UX_STABILIZATION_V1_OPERATOR_CLOSEOUT.md`**.
 - **Implementation reference:** **`docs/AUDITS/2026-05-08_TERMINAL_UX_STABILIZATION_V1.md`**.
 
 ### EDS_POWER_GAS_DEPLOYMENT_AND_SYNC_DOCTRINE
