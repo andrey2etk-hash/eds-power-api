@@ -6,6 +6,21 @@
 
 ---
 
+# 10.05.2026 — Module 01 Calculation V1 reconciliation plan (`DOC ONLY` / read-only inventory)
+
+## Факт
+
+- **Doctrine:** **`MODULE_01_CALCULATION_RECORD_VERSIONED_EDITOR_FLOW_V1`** — Gemini **`PASS` / `READY_FOR_RECONCILIATION`** (зафіксовано в governance).
+- **План:** **`docs/AUDITS/2026-05-10_MODULE_01_CALCULATION_V1_RECONCILIATION_PLAN.md`** — конфлікт **`product_type`** на create (API, GAS, `notes`, тести, техспека) vs **item-level** doctrine; **`-00`** у поточній імплементації — **PASS**; ревізії **`-01+`** — ще ні.
+- **Рекомендація в плані (без реалізації):** Option A як north star (прибрати обов’язковий **`product_type`** з create) з узгодженими слайсами.
+- **No** GAS/API/DB/SQL/Render змін.
+
+## Далі
+
+- Gemini audit плану reconciliation; потім явні implementation TASK.
+
+---
+
 # 10.05.2026 — Module 01 Calculation Record + Versioned Editor Flow V1 (`DOC ONLY` / scope definition)
 
 ## Факт

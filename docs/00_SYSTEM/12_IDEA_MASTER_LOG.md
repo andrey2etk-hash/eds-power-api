@@ -375,13 +375,14 @@ Notes:
 
 Status:
 
-- `SCOPE_DEFINED_PENDING_AUDIT`
+- `APPROVED_PENDING_RECONCILIATION`
 
 Notes:
 
-- **User doctrine:** Module 01 must **create calculation record first**; **initial version always `-00`**; **equipment type belongs to calculation item level**, not calculation record level at creation.
-- **Scope doc (DOC ONLY):** **`docs/00-02_CALC_CONFIGURATOR/MODULE_01_CALCULATION_RECORD_VERSIONED_EDITOR_FLOW_V1.md`**.
-- **Next:** Gemini (or equivalent) **audit** before implementation planning; **no** code/DB/API in this intake.
+- **Target doctrine passed Gemini audit** — **`PASS` / `READY_FOR_RECONCILIATION`** (governance input).
+- **Scope doc:** **`docs/00-02_CALC_CONFIGURATOR/MODULE_01_CALCULATION_RECORD_VERSIONED_EDITOR_FLOW_V1.md`**.
+- **Reconciliation plan (read-only inventory, DOC ONLY):** **`docs/AUDITS/2026-05-10_MODULE_01_CALCULATION_V1_RECONCILIATION_PLAN.md`** — **`product_type`** on create vs **item-level** doctrine; **no** code changes in plan authoring.
+- **Next:** Gemini audit of **reconciliation plan**; then bounded implementation tasks — **not** started here.
 
 
 ### EDS_POWER_TERMINAL_UI_SHELL_DOCTRINE

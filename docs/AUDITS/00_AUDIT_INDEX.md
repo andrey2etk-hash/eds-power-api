@@ -12,7 +12,8 @@ Rule:
 
 ## Latest audit
 
-- **Module 01 Calculation Record + Versioned Editor Flow V1** — Scope Definition / pending audit (DOC ONLY) — `docs/00-02_CALC_CONFIGURATOR/MODULE_01_CALCULATION_RECORD_VERSIONED_EDITOR_FLOW_V1.md`
+- **Module 01 Calculation V1 Reconciliation Plan — DOC ONLY / pending Gemini audit — `docs/AUDITS/2026-05-10_MODULE_01_CALCULATION_V1_RECONCILIATION_PLAN.md`**
+- **Module 01 Calculation Record + Versioned Editor Flow V1** — Scope Definition — `docs/00-02_CALC_CONFIGURATOR/MODULE_01_CALCULATION_RECORD_VERSIONED_EDITOR_FLOW_V1.md`
 - **Terminal UX Stabilization V1 Operator Closeout (`OPERATOR_VERIFIED_WITH_NOTES` / `TERMINAL_UX_STABILIZATION_V1_OPERATOR_VERIFIED_WITH_NOTES`) — DOC ONLY — **`docs/AUDITS/2026-05-09_TERMINAL_UX_STABILIZATION_V1_OPERATOR_CLOSEOUT.md`**
 - **Terminal UX Stabilization V1 (`GAS` / single EDS Power menu, auto-open Module 01 sidebar, manual sidebar fallback) — **`docs/AUDITS/2026-05-08_TERMINAL_UX_STABILIZATION_V1.md`**
 - **Module 01 Create Calculation Modal Submit UX Fix (`GAS` / success panel, public `module01CreateCalculationRememberActiveId`, duplicate-submit guard) — **`docs/AUDITS/2026-05-07_MODULE_01_CREATE_CALCULATION_MODAL_SUBMIT_UX_FIX.md`**
