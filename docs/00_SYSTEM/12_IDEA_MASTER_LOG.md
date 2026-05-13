@@ -67,18 +67,157 @@ Operative **sub-state** strings (such as **`PENDING_SUPABASE_VERIFICATION`**) ap
 
 ## Idea Notes
 
+### MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SCOPE
+
+Status:
+
+- `DOCTRINE_STABILIZED`
+- `CALCULATION_EDITOR_GAS_CLIENT_V1_SCOPE_LOCKED`
+- `SLICE_01_OPERATOR_PASS` / `CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_01_OPERATOR_PASS`
+
+Notes:
+
+- **`docs/AUDITS/2026-05-08_MODULE_01_CALCULATION_EDITOR_GAS_V1_SCOPE.md`** — **locked** client scope after **Gemini** doctrine audit (**DOC STATUS** only in this closeout).
+- **Read-only Sheet preview** applies **only** to this **Calculation Editor GAS Client V1** scope (sidebar-primary; Sheet preview range is a **local UI decision** for this slice). **Future** Module 01 or other modules may use **Sheets** for **controlled batch input** **through GAS → API**; **backend** remains source of truth — see **`Sheet Input Boundary Clarification`** in scope doc.
+- Items API **authed live smoke** **`PASS`** (**2026-05-12**) — operator **`runModule01CalculationItemsAuthedSmokeTest()`**; **`docs/AUDITS/2026-05-08_MODULE_01_CALCULATION_ITEMS_API_V1_LIVE_SMOKE.md`**.
+- **2026-05-12:** **Slice 01** — **`docs/AUDITS/2026-05-12_MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_01.md`** — Sidebar skeleton + **GET items** — operator **`CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_01_OPERATOR_PASS`**. Active calculation/version context verified in terminal.
+- **2026-05-12:** **Slice 02** — **`CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_02_OPERATOR_PASS`**. **GAS UX** — **`MODULE_01_GAS_UX_BOUNDARY_DECISIONS_LOCKED`** — next work = **bounded corrections** (menu / modal scope / transport split), **not** **Slice 03** — **`docs/AUDITS/2026-05-12_MODULE_01_GAS_UX_BOUNDARY_DECISION_LOCK.md`**. See **`MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_02_ADD_ITEM_FORM`**, **`MODULE_01_GAS_UX_BOUNDARY_DECISION_LOCK`**. **Product priority** — **`MODULE_01_KZO_FIRST_EDITOR_FOCUS`**.
+
+### MODULE_01_ITEM_TYPE_REGISTRY_V1
+
+Status:
+
+- `ITEM_TYPE_REGISTRY_V1_LOCKED_FOR_DOC_CASCADE`
+
+Notes:
+
+- **`docs/00-02_CALC_CONFIGURATOR/MODULE_01_ITEM_TYPE_REGISTRY_V1.md`** — canonical **`item_type`** / root vs child / legacy aliases / **depth 2** / **`STRICT_REJECT`** accepted / **`PARENT_REQUIRED_FOR_CHILD_ITEM`**.
+- **Created** after **`docs/AUDITS/2026-05-13_GEMINI_CRITICAL_CROSS_AUDIT_MODULE_01_PARENT_PRODUCT_HIERARCHY.md`** (**`PASS_WITH_DOC_FIXES`** accepted).
+- **Blocking prerequisite** before **parent enforcement** API/GAS/DB and **Slice 03**; dependent docs cascaded (**hierarchical doctrine**, **editor technical spec**, **versioned editor flow**, **Slice 02** legacy scope narrative, **parent product hierarchy doctrine**, **`item_kind`** mapping **`KZO_CELL`/`SHOS_CABINET` → `PRODUCT`**, **`SERVICE_ITEM` → `SERVICE`** — **no** **`ITEM`** in DB CHECK assumptions unless explicitly **future/open**).
+
+### MODULE_01_PARENT_PRODUCT_HIERARCHY_DOC_CASCADE
+
+Status:
+
+- `DOC_CASCADE_VERIFIED_STRICT_REJECT_LOCKED`
+
+Notes:
+
+- **Gemini PASS** accepted — **`docs/AUDITS/2026-05-13_MODULE_01_PARENT_PRODUCT_HIERARCHY_DOC_CASCADE_GEMINI_PASS.md`** — verdict **`DOC_CASCADE_VERIFIED_STRICT_REJECT_LOCKED`**.
+- **`STRICT_REJECT`** **locked** as **approved production policy** — **`KZO_CELL`** / legacy root **`KZO`** (child-only interpretation) **not** root; **parent product** (**`MEDIUM_VOLTAGE_*`**, **`KTP`**) mandatory before children.
+- **Doc Cascade** applied (**2026-05-13**) across hierarchical doctrine, editor technical spec, versioned editor flow, Slice 02 legacy scope, parent doctrine, editor V1 scope, registry; **`item_kind`** mapping per registry (**no** **`ITEM`** in CHECK assumptions unless **future/open**).
+- **Implementation** — **API `STRICT_REJECT` enforcement** — **`docs/AUDITS/2026-05-13_MODULE_01_API_STRICT_REJECT_ENFORCEMENT.md`** — **Render route + auth gate verified**; **full authenticated suite pending operator** (see audit **Render Verification**).
+
+### MODULE_01_API_STRICT_REJECT_ENFORCEMENT
+
+Status:
+
+- `API_STRICT_REJECT_RENDER_ROUTE_AND_AUTH_GATE_VERIFIED`
+- `API_STRICT_REJECT_RENDER_FULL_SUITE_PENDING_OPERATOR_SESSION`
+
+Notes:
+
+- **`docs/AUDITS/2026-05-13_MODULE_01_API_STRICT_REJECT_ENFORCEMENT.md`** — **`POST .../items/add`**: **`PARENT_REQUIRED_FOR_CHILD_ITEM`** when child-only **`item_type`** at root (**local pytest PASS**). **Render:** route live; **invalid Bearer** → **`AUTH_INVALID_TOKEN`**, **`action`:** **`calculation_items`**. **Authenticated** negative/positive **STRICT_REJECT** rows **not** run in agent env (**no token**).
+- **Next:** operator completes **Render Verification** table (Tests 1–7) → then set **`API_STRICT_REJECT_RENDER_VERIFIED`** in audit + Idea Notes. **GAS** / **Delete Item** = **separate** planning/tasks.
+
+### MODULE_01_PARENT_PRODUCT_HIERARCHY_RECONCILIATION
+
+Status:
+
+- `MEMO_RECORDED`
+- `PASS_READY_FOR_GEMINI_AUDIT` **(memo verdict)**
+- `GEMINI_CROSS_AUDIT_PASS_WITH_DOC_FIXES` **(2026-05-13)**
+
+Notes:
+
+- **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_PARENT_PRODUCT_HIERARCHY_DOCTRINE.md`** — **KZO_CELL** not root; parents **`MEDIUM_VOLTAGE_SWITCHGEAR_10KV`**, **`MEDIUM_VOLTAGE_SWITCHGEAR_6KV`**, **`KTP`**; **SHOS** child under parent.
+- **`docs/AUDITS/2026-05-13_MODULE_01_PARENT_PRODUCT_HIERARCHY_RECONCILIATION_MEMO.md`** — cross-check vs **`MODULE_01_HIERARCHICAL_CALCULATION_ITEMS_DOCTRINE`**, **`MODULE_01_CALCULATION_EDITOR_TECHNICAL_SPEC_V1`**, **`MODULE_01_CALCULATION_RECORD_VERSIONED_EDITOR_FLOW_V1`**, **Slice 02** Add Item / **KZO-first**; **conflict matrix** + **reconciliation options**; **implementation blockers** before code.
+- **`docs/AUDITS/2026-05-13_GEMINI_CRITICAL_CROSS_AUDIT_MODULE_01_PARENT_PRODUCT_HIERARCHY.md`** — **`PASS_WITH_DOC_FIXES`**; **registry** prerequisite — **`MODULE_01_ITEM_TYPE_REGISTRY_V1`** (**`ITEM_TYPE_REGISTRY_V1_LOCKED_FOR_DOC_CASCADE`**).
+- **2026-05-13:** **Parent Product Hierarchy Doc Cascade** — **Gemini PASS** — **`DOC_CASCADE_VERIFIED_STRICT_REJECT_LOCKED`**; **API `STRICT_REJECT` enforcement** — **`API_STRICT_REJECT_RENDER_ROUTE_AND_AUTH_GATE_VERIFIED`** / **`API_STRICT_REJECT_RENDER_FULL_SUITE_PENDING_OPERATOR_SESSION`** — **`docs/AUDITS/2026-05-13_MODULE_01_API_STRICT_REJECT_ENFORCEMENT.md`**.
+
+### MODULE_01_GAS_UX_BOUNDARY_DECISION_LOCK
+
+Status:
+
+- `DECISIONS_LOCKED`
+- `MODULE_01_GAS_UX_BOUNDARY_DECISIONS_LOCKED`
+- `MODULE_01_GAS_UX_CORRECTION_A_MENU_CLEANUP_OPERATOR_PASS`
+
+Notes:
+
+- **Follows** **`MODULE_01_GAS_UX_TERMINAL_ARCHITECTURE_RESTABILIZATION`**. **Locked:** one top-level **Module 01 — Розрахунки**; **Calculation Editor** from hub **action**; **sidebar** vs **modal** doctrine; **inline Add Item** = **prototype only**; **local GAS** prototype-only until **core/library** plan; **transports** out of **smoke** file long-term; **Slice 03** frozen until corrections. **`docs/AUDITS/2026-05-12_MODULE_01_GAS_UX_BOUNDARY_DECISION_LOCK.md`**.
+- **Parent product hierarchy** memo (**2026-05-13**) adds **item-tree** governance **parallel** to UX lock — **`MODULE_01_PARENT_PRODUCT_HIERARCHY_RECONCILIATION`**.
+- **2026-05-12 — Correction A (menu cleanup):** **operator PASS** — compact menu verified; peer **Calculation Editor** and duplicate **Відкрити бокову панель** removed; hub **Відкрити редактор розрахунку** opens editor — **`docs/AUDITS/2026-05-12_MODULE_01_GAS_UX_CORRECTION_A_MENU_CLEANUP.md`** § *Operator Test — PASS* (**`MODULE_01_GAS_UX_CORRECTION_A_MENU_CLEANUP_OPERATOR_PASS`**). **Next bounded step:** **Correction C** — GAS file classification / **transport split** scope (**Slice 03** still blocked).
+
+### MODULE_01_GAS_UX_TERMINAL_ARCHITECTURE_RESTABILIZATION
+
+Status:
+
+- `PENDING_OPERATOR_DECISION` **→ superseded**
+- `GAS_UX_TERMINAL_ARCHITECTURE_RESTABILIZATION_PENDING_OPERATOR_DECISION` **→ closed by boundary lock**
+- `DECISIONS_LOCKED` **(carry-forward:** see **`MODULE_01_GAS_UX_BOUNDARY_DECISION_LOCK`** **)**
+
+Notes:
+
+- Original drift audit: **`docs/AUDITS/2026-05-12_MODULE_01_GAS_UX_TERMINAL_ARCHITECTURE_RESTABILIZATION.md`**. **Operator/architect decisions** recorded in **`docs/AUDITS/2026-05-12_MODULE_01_GAS_UX_BOUNDARY_DECISION_LOCK.md`** (**`MODULE_01_GAS_UX_BOUNDARY_DECISIONS_LOCKED`**).
+
+### MODULE_01_KZO_FIRST_EDITOR_FOCUS
+
+Status:
+
+- `ACTIVE_PRODUCT_FOCUS`
+
+Notes:
+
+- **Current Module 01 Calculation Editor priority** is **KZO cells** as **first-level** items (**`item_kind` = `CONTAINER`**, **`item_type` = `KZO`**) and **future** busbar-related nodes **inside** those cells — **product/engineering logic** and **BOM/pricing** are **out of scope** until separately tasked.
+- **Hierarchical Items API / DB** stay **generic**; **operator UI** stays **KZO-first** and must **not** become a universal multi-product configurator. **KTP/BMZ/full ShchO/PR-cabinet-first** lanes remain **future**.
+- **Scope anchor:** **`docs/AUDITS/2026-05-12_MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_02_SCOPE.md`** § *KZO-First Product Focus*.
+- **2026-05-12:** Sidebar **`Module01CalculationEditorSidebar.html`** implements locked **KZO-first** presets (no KTP/BMZ/ShchO/PR/METERING catalog UI).
+- **2026-05-12:** **Slice 02 operator PASS** — top-level **CONTAINER/KZO** from sidebar persisted in Supabase — see **`MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_02_ADD_ITEM_FORM`**.
+- **2026-05-12:** Further **KZO-first** expansion **gated** by **`MODULE_01_GAS_UX_BOUNDARY_DECISION_LOCK`** (**bounded** menu / modal / transport corrections; **no Slice 03** until freeze lifted per boundary doc).
+
 ### MODULE_01_CALCULATION_ITEMS_API_V1
 
 Status:
 
 - `BACKEND_VERIFIED`
-- `CALCULATION_ITEMS_API_V1_ROUTE_LIVE_AUTH_SMOKE_PENDING_OPERATOR_TOKEN`
+- `AUTHED_LIVE_SMOKE_PASS` / `CALCULATION_ITEMS_API_V1_AUTHED_LIVE_SMOKE_PASS`
 
 Notes:
 
-- **Deploy:** **`b3b5f824d203a4673f066b97cc940a346cc9ce55`** on **`origin/main`**; **Render** **`POST .../items/add`** returns **`AUTH_MISSING_TOKEN`** (route **live**), not **404**.
-- **Pending:** operator **Bearer** + **DRAFT** calculation + registry **`calculation_items`** if required — **`docs/AUDITS/2026-05-08_MODULE_01_CALCULATION_ITEMS_API_V1_LIVE_SMOKE.md`**.
-- GAS remains deferred.
+- **Deploy:** **`b3b5f824d203a4673f066b97cc940a346cc9ce55`** on **`origin/main`**; **Render** items routes **live**.
+- **2026-05-12:** Live **GAS** → **Render** smoke **PASS** — **add**/**list**/**negatives**; session from **`UserProperties`**; **no** token in docs.
+- **Test data:** items persisted for operator **DRAFT** version display **`202605081045-00`** (**test**).
+- **Historical:** **2026-05-12** agent attempt **`CALCULATION_ITEMS_API_V1_AUTHED_SMOKE_BLOCKED_BY_AUTH_OR_ROLE`** (no Bearer in Cursor env).
+- **Next:** **Correction C** — GAS file classification / **transport split** scope (**Correction A** menu **`MODULE_01_GAS_UX_CORRECTION_A_MENU_CLEANUP_OPERATOR_PASS`**); **B** Add Item **modal** scope when separately tasked — per **`MODULE_01_GAS_UX_BOUNDARY_DECISION_LOCK`** before **Slice 03** / further GAS feature expansion; **not** product engine / BOM implementation.
+
+### MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_02_ADD_ITEM_FORM
+
+Status:
+
+- **`SLICE_02_OPERATOR_PASS`**
+- **`CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_02_OPERATOR_PASS`**
+- `CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_02_IMPLEMENTATION_RECORDED`
+
+Notes:
+
+- **Operator closeout (2026-05-12):** Top-level **KZO** item created from sidebar (**`item_name`** **005**, **`id`** **`d9dae4f7-d710-4d09-9d62-4bfdab5f27ff`**); verified in **`public.module01_calculation_items`**; flow **sidebar → GAS → POST → Render → Supabase → GET → sidebar** — **`docs/AUDITS/2026-05-12_MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_02_IMPLEMENTATION.md`** § *Operator Test — PASS*.
+- **Next slice** should remain **KZO-first**; **not** a universal multi-product configurator.
+- **Implementation (KZO-first UI):** **`gas/Module01CalculationEditorSidebar.html`**, **`gas/Module01CalculationEditor.gs`** (`module01EditorAddItem`); scope **`CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_02_SCOPE_LOCKED`** — **`docs/AUDITS/2026-05-12_MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_02_SCOPE.md`**. **Risk layer** still applies to future slices.
+- **KZO-first product focus:** **`MODULE_01_KZO_FIRST_EDITOR_FOCUS`**.
+- **2026-05-12:** **`MODULE_01_GAS_UX_BOUNDARY_DECISIONS_LOCKED`** — **inline Add Item** = **prototype/proof**; production doctrine = **modal** for **Add Item**; **Editor** entry from **Розрахунки** hub (**not** peer top-level menu); **`docs/AUDITS/2026-05-12_MODULE_01_GAS_UX_BOUNDARY_DECISION_LOCK.md`**.
+
+### MODULE_01_VISUAL_ITEM_BUILDER_FUTURE_UX_DOCTRINE
+
+Status:
+
+- `FUTURE_UX_DOCTRINE_RECORDED`
+- `VISUAL_ITEM_BUILDER_FUTURE_UX_DOCTRINE_RECORDED`
+
+Notes:
+
+- **`docs/00-02_CALC_CONFIGURATOR/MODULE_01_VISUAL_ITEM_BUILDER_FUTURE_UX_DOCTRINE.md`** — User vision: future **visual blocks / drag-and-drop** hierarchy UX for calculation items (KTP, KZO, ShchO, cabinets, etc.). **Thin client** preserved; **backend** SoT; **batch save** model; staged **V1–V4** evolution (form → quick add → **tree DnD** → optional **canvas**).
+- **Does not block** **`MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_02_ADD_ITEM_FORM`** or current Add Item Form scope/implementation path.
 
 ### POST_AUTH_USER_LED_ARCHITECTURE_PAUSE
 

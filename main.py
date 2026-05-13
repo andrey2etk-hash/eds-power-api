@@ -23,6 +23,7 @@ from services.module01_calculations_service import create_calculation_v1, valida
 from services.module01_calculation_items_service import (
     add_calculation_item_v1,
     list_calculation_items_v1,
+    parent_required_for_child_item_message,
     validate_items_add_payload,
 )
 import services.menu_registry_service as _menu_registry_svc
@@ -2566,6 +2567,7 @@ _MODULE01_ITEMS_ERROR_MESSAGES: dict[str, str] = {
     "ITEM_INVALID_QUANTITY": "Quantity must be greater than zero.",
     "ITEM_SORT_CONFLICT": "Could not assign sort order (conflict). Retry.",
     "ITEM_CREATE_FAILED": "Could not create item.",
+    "PARENT_REQUIRED_FOR_CHILD_ITEM": "Select or create parent product first.",
 }
 
 
@@ -2609,11 +2611,14 @@ def module01_calculation_items_add(
         )
 
     if svc_err:
+        msg = _MODULE01_ITEMS_ERROR_MESSAGES.get(svc_err, "Item add failed.")
+        if svc_err == "PARENT_REQUIRED_FOR_CHILD_ITEM":
+            msg = parent_required_for_child_item_message(str(normalized.get("item_type") or ""))
         return _module01_calculation_items_error_response(
             request_id=request_id,
             started_at=started_at,
             error_code=svc_err,
-            message=_MODULE01_ITEMS_ERROR_MESSAGES.get(svc_err, "Item add failed."),
+            message=msg,
             source_field=src_field,
         )
 

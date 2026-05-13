@@ -6,6 +6,411 @@
 
 ---
 
+# 13.05.2026 — Module 01 API STRICT_REJECT — Render partial verification (route + auth gate)
+
+## Факт
+
+- **Public Render** **`POST /api/module01/calculations/items/add`** — **HTTP 200**; **invalid Bearer** → **`auth_error`**, **`AUTH_INVALID_TOKEN`**, **`action`:** **`calculation_items`** — **route registered**; **no** tokens logged — **`docs/AUDITS/2026-05-13_MODULE_01_API_STRICT_REJECT_ENFORCEMENT.md`** § *Render Verification*.
+- **Authenticated** Tests **1–7** (**`PARENT_REQUIRED_FOR_CHILD_ITEM`**, valid MV root, child **`KZO_CELL`**) — **not run** in agent environment (**no operator session**).
+- **No** GAS/UI/SQL/schema/env changes; **no** legacy row deletes.
+- **Verdict:** **`API_STRICT_REJECT_RENDER_ROUTE_AND_AUTH_GATE_VERIFIED`**; full **`API_STRICT_REJECT_RENDER_VERIFIED`** — **pending operator** authenticated run.
+
+## Далі
+
+- Operator **Bearer** + DRAFT calculation/version → complete audit table → optional **DOC ONLY** planning: parent-first GAS/UI **or** Delete Item / Slice 03.
+
+---
+
+# 13.05.2026 — Module 01 API STRICT_REJECT enforcement (backend only)
+
+## Факт
+
+- **`STRICT_REJECT`** enforced on **`POST /api/module01/calculations/items/add`**: **`parent_item_id`** null + child-only **`item_type`** (**`KZO_CELL`**, legacy **`KZO`**, **`SHOS_CABINET`**, **`SHCHO`**, **`SERVICE_ITEM`**) → **`error_code`** **`PARENT_REQUIRED_FOR_CHILD_ITEM`**, **`source_field`** **`parent_item_id`**, type-specific **`message`** — existing Module 01 items error envelope (**`module`:** **`MODULE_01`**, **`action`:** **`calculation_items`**).
+- **`services/module01_calculation_items_service.py`**, **`main.py`**; **`pytest`** **`tests/test_module01_calculation_items_api.py`** — **PASS** (local).
+- **No** GAS/HTML, **no** SQL/migrations/schema, **no** Render env, **no** legacy row updates — closeout **`docs/AUDITS/2026-05-13_MODULE_01_API_STRICT_REJECT_ENFORCEMENT.md`** — **`API_STRICT_REJECT_IMPLEMENTED_PENDING_RENDER_VERIFICATION`**.
+
+## Далі
+
+- **Render** verification of **`STRICT_REJECT`** behavior on deployed API.
+
+---
+
+# 13.05.2026 — Module 01 Doc Cascade Gemini PASS — STRICT_REJECT locked (`DOC ONLY`)
+
+## Факт
+
+- **Gemini** verdict **`PASS (Doc Cascade Verified)`** accepted — closeout **`docs/AUDITS/2026-05-13_MODULE_01_PARENT_PRODUCT_HIERARCHY_DOC_CASCADE_GEMINI_PASS.md`** — **`DOC_CASCADE_VERIFIED_STRICT_REJECT_LOCKED`**.
+- **`STRICT_REJECT`** **locked** as **approved production policy** — root **`KZO_CELL`** and legacy **`KZO`** (child-only) **rejected**; valid roots **only** **`MEDIUM_VOLTAGE_SWITCHGEAR_10KV`**, **`MEDIUM_VOLTAGE_SWITCHGEAR_6KV`**, **`KTP`**; **parent-first** mandatory before child items.
+- **Slice 02** remains **`PRE_PARENT_DOCTRINE_LEGACY_SCOPE`** / **historical** operator evidence — **not** normative hierarchy law.
+- **Root KZO** creation **to be blocked** in **next bounded** implementation: **Module 01 API `STRICT_REJECT` enforcement** (explicit TASK).
+- **Delete Item** remains **later** slice — **not** first implementation step after this PASS.
+- **No** backend/GAS/SQL/DB changes performed in this closeout (**DOC ONLY**).
+
+## Далі
+
+- **Module 01 API `STRICT_REJECT` enforcement** — **bounded implementation** (explicit TASK). **Slice 03**, **Delete Item**, **GAS rewrite** — **not** authorized by this document.
+
+---
+
+# 13.05.2026 — Module 01 Parent Product Hierarchy Doc Cascade — DOC ONLY (closeout)
+
+## Факт
+
+- **`STRICT_REJECT`** accepted and **recorded** as **target production policy** — **`KZO_CELL`** / legacy root **`KZO`** **must not** be root; **root parent product** (**`MEDIUM_VOLTAGE_*`**, **`KTP`**) **mandatory** before **child** **`KZO_CELL`** / **`SHOS_CABINET`** / **`SERVICE_ITEM`**.
+- **Item Type Registry V1** — **`ITEM_TYPE_REGISTRY_V1_LOCKED_FOR_DOC_CASCADE`** — **`docs/00-02_CALC_CONFIGURATOR/MODULE_01_ITEM_TYPE_REGISTRY_V1.md`**.
+- **Parent-first doctrine** cascaded into **`MODULE_01_HIERARCHICAL_CALCULATION_ITEMS_DOCTRINE`**, **`MODULE_01_CALCULATION_EDITOR_TECHNICAL_SPEC_V1`**, **`MODULE_01_CALCULATION_RECORD_VERSIONED_EDITOR_FLOW_V1`**, **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_PARENT_PRODUCT_HIERARCHY_DOCTRINE.md`**, **`docs/AUDITS/2026-05-12_MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_02_SCOPE.md`** (**`PRE_PARENT_DOCTRINE_LEGACY_SCOPE`**), **`MODULE_01_CALCULATION_EDITOR_V1_SCOPE`**, **`docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`**, **`docs/NOW.md`**, **`docs/AUDITS/00_AUDIT_INDEX.md`**.
+- **Root-KZO** / **KZO-first** **Slice 02** behavior marked **legacy** / **`LEGACY_ORPHAN_DATA`** / **pre-parent-doctrine** — **operator PASS** = **historical evidence only**.
+- **`item_kind`** doc alignment: **`KZO_CELL`** / **`SHOS_CABINET`** → **`PRODUCT`**; **`SERVICE_ITEM`** → **`SERVICE`** — **no** **`ITEM`** introduced into DB CHECK assumptions unless explicitly **future/open**.
+- **Superseded for “next step”** by **`13.05.2026 — Module 01 Doc Cascade Gemini PASS`** above — **Gemini** audit of Doc Cascade **PASS** recorded; **doc-only** blocker **cleared**.
+
+## Далі
+
+- (Historical) **Gemini** audit — **completed** — see top CHANGELOG entry **`Doc Cascade Gemini PASS`**.
+
+---
+
+# 13.05.2026 — Module 01 Item Type Registry V1 + parent hierarchy cross-audit accepted
+
+## Факт
+
+- **Gemini** critical cross-audit **`PASS_WITH_DOC_FIXES`** accepted — **`docs/AUDITS/2026-05-13_GEMINI_CRITICAL_CROSS_AUDIT_MODULE_01_PARENT_PRODUCT_HIERARCHY.md`**.
+- **Canonical registry** (**DOC ONLY**): **`docs/00-02_CALC_CONFIGURATOR/MODULE_01_ITEM_TYPE_REGISTRY_V1.md`** — root **`MEDIUM_VOLTAGE_*`**, **`KTP`**; children **`KZO_CELL`**, **`SHOS_CABINET`**, **`SERVICE_ITEM`**; legacy **`KZO`** / **`SHCHO`** aliases; **`STRICT_REJECT`** target + **`PARENT_REQUIRED_FOR_CHILD_ITEM`**.
+- **Naming fork** (**`KZO`** / **`KZO_CELL`**, **`SHCHO`** / **`SHOS_CABINET`**) recorded for **Doc Cascade**.
+- **Slice 03**, delete-item, validation, **parent-first** UX — **not** authorized until **Doc Cascade** + approval.
+
+## Далі
+
+- **Module 01 Parent Product Hierarchy Doc Cascade** — **DOC ONLY**.
+
+---
+
+# 13.05.2026 — Module 01 parent product hierarchy reconciliation memo (`DOC ONLY`)
+
+## Факт
+
+- **Reconciliation memo:** **`docs/AUDITS/2026-05-13_MODULE_01_PARENT_PRODUCT_HIERARCHY_RECONCILIATION_MEMO.md`** — compares **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_PARENT_PRODUCT_HIERARCHY_DOCTRINE.md`** to **`MODULE_01_HIERARCHICAL_CALCULATION_ITEMS_DOCTRINE`**, **`MODULE_01_CALCULATION_EDITOR_TECHNICAL_SPEC_V1`**, **`MODULE_01_CALCULATION_RECORD_VERSIONED_EDITOR_FLOW_V1`**, and **Slice 02 Add Item** docs.
+- **Conflicts recorded:** **standalone / top-level KZO** (legacy docs + **KZO-first** Slice 02) vs **parent-before-KZO** rule; **`item_type`** naming (**`KZO`** vs **`KZO_CELL`**, **`SHCHO`** vs **`SHOS_CABINET`**); **`MEDIUM_VOLTAGE_*`** parents **absent** from technical spec draft enum.
+- **Verdict (memo):** **`PASS_READY_FOR_GEMINI_AUDIT`** — **no** code / SQL / GAS / backend changes in this task.
+
+## Далі
+
+- **Gemini** (or equivalent) audit: merge parent doctrine with hierarchical + technical spec; lock **`item_type`** / validation policy.
+- **Registry:** **`docs/NOW.md`**, **`docs/AUDITS/00_AUDIT_INDEX.md`**, **`docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`** updated.
+
+---
+
+# 12.05.2026 — Module 01 GAS UX Correction A — menu cleanup operator PASS
+
+## Факт
+
+- Operator verified compact **EDS Power** menu.
+- One canonical **Module 01** entry remains: **Module 01 — Розрахунки**.
+- Peer top-level **Module 01 — Calculation Editor** removed from normal menu.
+- Duplicate **Відкрити бокову панель** removed.
+- **Calculation Editor** opens from **Module 01 — Розрахунки** hub via **Відкрити редактор розрахунку**.
+- No backend/SQL/DB/product logic changes.
+
+## Далі
+
+- Next correction: **GAS file classification / transport split scope** (**Correction C**).
+- Slice 03 remains blocked.
+
+---
+
+# 12.05.2026 — Module 01 GAS UX Correction A — menu cleanup
+
+## Факт
+
+- Top-level **Calculation Editor** menu entry removed/hidden from **normal operator** shell menu.
+- **Module 01 — Розрахунки** remains canonical **Module 01** entry.
+- **Calculation Editor** opens from **Module 01 — Розрахунки** panel (**Відкрити редактор розрахунку**).
+- Duplicate module mental model reduced (**Відкрити бокову панель** removed; same handler as hub).
+- No backend/SQL/product logic changes.
+
+## Далі
+
+- Operator test of menu cleanup.
+- Next correction after **PASS:** GAS file classification / transport split scope or Add Item modal refactor scope.
+- Slice 03 remains blocked.
+
+---
+
+# 12.05.2026 — Module 01 GAS UX boundary decisions locked
+
+## Факт
+
+- Operator/architect **architecture alarm** from restabilization audit **closed** with **locked** boundaries — **`docs/AUDITS/2026-05-12_MODULE_01_GAS_UX_BOUNDARY_DECISION_LOCK.md`** (**`MODULE_01_GAS_UX_BOUNDARY_DECISIONS_LOCKED`**).
+- **Single canonical** top-level **Module 01** entry: **Module 01 — Розрахунки**. **Calculation Editor** shall open **from** hub panel (**not** peer top-level in **production** UX; top-level editor may remain **temporarily** until menu cleanup).
+- **Sidebar/modal** doctrine **restored:** sidebar = hub / context / list / **actions**; **modal** = operations (**create calculation**, **add item**, future edit/confirm). **Inline Add Item** = Slice 02 **prototype/proof only**.
+- **Local GAS** module files = **prototype acceptable**; **central core/library** + deployment plan **before** scaling terminals; **production editor** must **not** depend long-term on **smoke/dev transport** files — **transport split** / core integration is a **bounded follow-up task**.
+- **Feature expansion frozen:** **no Slice 03** until menu correction **or** approved tasks + **Add Item modal** direction recorded + **local/core** documentation + **smoke** classification.
+
+## Далі
+
+- **Bounded correction tasks:** **1.** menu cleanup · **2.** Add Item **modal** refactor **scope** · **3.** GAS file classification / **transport split** scope.
+
+---
+
+# 12.05.2026 — Module 01 GAS UX / Terminal Architecture Re-stabilization started
+
+## Факт
+
+- User flagged duplicate **Module 01** menu entries (**Calculation Editor** vs **Розрахунки** / sidebar).
+- User flagged local **GAS** script growth vs thin-terminal / core doctrine.
+- User flagged **sidebar** vs **modal** doctrine drift (Add Item in **Calculation Editor** sidebar).
+- User flagged architect **decision-flow** risk (implementation convenience ahead of recorded gates).
+- Feature expansion **paused** for architecture re-stabilization — audit **`docs/AUDITS/2026-05-12_MODULE_01_GAS_UX_TERMINAL_ARCHITECTURE_RESTABILIZATION.md`** (**`GAS_UX_TERMINAL_ARCHITECTURE_RESTABILIZATION_PENDING_OPERATOR_DECISION`**).
+
+## Далі
+
+- Operator decisions: **canonical menu** model, **sidebar vs modal** boundary, **local template vs central core/library**.
+- **No Slice 03** until decisions are recorded.
+
+---
+
+# 12.05.2026 — Module 01 Calculation Editor GAS Client V1 Slice 02 — operator PASS (Add Item Form)
+
+## Факт
+
+- Slice 02 Add Item Form **operator test passed** (2026-05-12).
+- Top-level **KZO** item created from **Google Sheet** sidebar: **CONTAINER**/**KZO**, **`item_name`** **005**, **`local_quantity`** **2**, **`total_quantity`** **2**, **`display_index`** **3**, **`sort_order`** **102**, **`item_status`** **DRAFT**, **`id`** **`d9dae4f7-d710-4d09-9d62-4bfdab5f27ff`**.
+- Row verified in **`public.module01_calculation_items`** (Supabase SQL — operator evidence).
+- Flow verified: **sidebar → GAS → POST /items/add → Render → Supabase → GET refresh → sidebar**; backend-owned **display_index** / **total_quantity** displayed.
+- **No** token exposure; **no** backend/SQL/schema/product-logic changes during test.
+
+## Далі
+
+- Define **next KZO-first** slice under governance; **not** a broad multi-product configurator.
+
+---
+
+# 12.05.2026 — Module 01 Calculation Editor Slice 02 — implementation audit (full checklist)
+
+## Факт
+
+- **`docs/AUDITS/2026-05-12_MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_02_IMPLEMENTATION.md`** rewritten with required sections: Objective, Scope, Files changed, Add Item form, **KZO-first UI behavior**, Parent picker, POST integration, Sticky form, Error handling, Risk safeguards, Not implemented, Operator test, Verdict.
+- **`MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_02_ADD_ITEM_FORM`:** **`IMPLEMENTED_PENDING_OPERATOR_TEST`** (unchanged code path — GAS already KZO-first aligned).
+
+## Далі
+
+- Operator test on terminal.
+
+---
+
+# 12.05.2026 — Module 01 Calculation Editor Slice 02 — KZO-first Add Item UI (locked scope)
+
+## Факт
+
+- **`gas/Module01CalculationEditorSidebar.html`:** Add Item **`item_kind`** / **`item_type`** presets narrowed to **KZO-first** — **CONTAINER**/**KZO** (primary), optional **SERVICE**/**SERVICE**, **MANUAL**/**MANUAL**; **no** universal product picker (KTP, BMZ, ShchO, PR cabinet, catalog).
+- Scope lock: **`CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_02_SCOPE_LOCKED`** — **`docs/AUDITS/2026-05-12_MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_02_SCOPE.md`**.
+- Implementation audit updated: **`docs/AUDITS/2026-05-12_MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_02_IMPLEMENTATION.md`**.
+- No backend/SQL/Render/product-engine changes.
+
+## Далі
+
+- Operator test of Add Item Form on terminal (KZO-first UI).
+
+---
+
+# 12.05.2026 — Module 01 Calculation Editor — KZO-first focus clarified
+
+## Факт
+
+- User clarified that current priority is top-level KZO cells and busbar-related work **inside** KZO cells (**future** product logic, not Slice 02).
+- Generic hierarchy remains foundation, but **UI** must not expose all product types at once.
+- KTP/BMZ/full multi-product workflows remain **future** capabilities.
+- Slice 02 Add Item Form must stay **KZO-first** and **not** become a universal product configurator.
+
+## Далі
+
+- **Done (2026-05-12):** GAS Add Item **KZO-first** presets — **`gas/Module01CalculationEditorSidebar.html`**. **Next:** operator test.
+
+---
+
+# 12.05.2026 — Module 01 Calculation Editor GAS Client V1 Slice 02 — Add Item Form implemented
+
+## Факт
+
+- Add Item Form implemented in Calculation Editor sidebar.
+- POST /items/add integration added through GAS server-side function.
+- Parent Picker limited to Top-level + top-level CONTAINER items.
+- Sticky form behavior implemented.
+- GET items refresh after successful add.
+- Error_code display implemented.
+- No backend/SQL/product logic changes.
+
+## Далі
+
+- Operator test of Add Item Form.
+- Slice 03 not active.
+
+---
+
+# 12.05.2026 — Module 01 Calculation Editor GAS Client V1 Slice 02 — risk layer added
+
+## Факт
+
+- User flagged missing risk layer in recent Slice planning.
+- Slice 02 Add Item Form scope updated with explicit Risk Layer / Risk Audit.
+- Risks recorded: thin-client violation, hierarchy integrity, sort conflict, context drift, auth/role, test-data pollution, chronology drift, UX overload.
+- No implementation performed.
+
+## Далі
+
+- Gemini audit of Slice 02 scope with risk layer.
+- Implementation only after PASS and operator approval.
+
+---
+
+# 12.05.2026 — Module 01 Visual Item Builder — future UX doctrine recorded
+
+## Факт
+
+- User proposed future visual block/drag-and-drop item builder for hierarchical calculation items.
+- Idea recorded as future UX doctrine, not current implementation.
+- Current Slice 02 Add Item Form remains unchanged.
+- Frontend may visualize and collect operator intent, but backend remains source of truth.
+- Full canvas/block editor deferred due to performance and complexity risk.
+- Recommended evolution: form → quick add palette → drag-and-drop tree list → optional canvas builder.
+
+## Далі
+
+- Continue current Slice 02 Add Item Form path.
+- Revisit visual builder only after basic editor flows are stable.
+
+---
+
+# 12.05.2026 — Module 01 Calculation Editor GAS Client V1 Slice 02 — Add Item Form scope started
+
+## Факт
+
+- Slice 01 operator PASS accepted.
+- Slice 02 Add Item Form scope definition started.
+- Add Item implementation not started.
+- Sidebar remains thin client.
+- Backend remains owner of validation, hierarchy, total_quantity, display_index, and persistence.
+
+## Далі
+
+- Gemini audit of Slice 02 scope (`docs/AUDITS/2026-05-12_MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_02_SCOPE.md`).
+- Implementation only after PASS and operator approval.
+
+---
+
+# 12.05.2026 — Module 01 Calculation Editor GAS Client V1 Slice 01 — operator PASS
+
+## Факт
+
+- Calculation Editor sidebar opened successfully from EDS Power menu.
+- Active calculation context now includes calculation_id and calculation_version_id.
+- Sidebar successfully rendered items from backend GET /items.
+- Backend-owned display_index and total_quantity displayed correctly.
+- Smoke-test hierarchy rendered:
+  - 1 КТП №1
+  - 1.1 Комірка КЗО №1
+  - 2 Окрема комірка КЗО
+- No token exposed.
+- No POST item mutation implemented.
+- No backend/DB/SQL/product logic changes.
+
+## Далі
+
+- Next allowed step: Gemini audit of **`docs/AUDITS/2026-05-12_MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_02_SCOPE.md`** (Slice 02 scope).
+- Add Item implementation remains blocked until separately scoped and approved.
+
+---
+
+# 12.05.2026 — Module 01 Calculation Editor GAS Client V1 — Slice 01 (`GAS` / pending operator)
+
+## Sidebar skeleton + GET items (read-only)
+
+- **Вердикт (implementation):** **`SLICE_01_IMPLEMENTED_PENDING_OPERATOR_TEST`** — реалізовано **GAS** sidebar **`Module01CalculationEditorSidebar`** + сервер **`Module01CalculationEditor.gs`**; лише **`GET`** items; **без** Add Item / **`POST`** / BOM / pricing / product engine.
+- **Operator closeout (2026-05-12):** **`CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_01_OPERATOR_PASS`** — див. блок **`# 12.05.2026 — Module 01 Calculation Editor GAS Client V1 Slice 01 — operator PASS`** вище та **`docs/AUDITS/2026-05-12_MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_01.md`** § *Operator Test — PASS*.
+- **Меню:** **EDS Power** → **Module 01 — Calculation Editor**; пункт **Operator smoke: Items API (authed)** прибрано з **статичного** shell-меню (функція smoke лишається для ручного запуску).
+- **Контекст:** **`EDS_POWER_{spreadsheetId}_MODULE01_ACTIVE_*`** у **DocumentProperties** + опційне злиття з **`sidebar.active_calculation`** для display/status/calculation_id (потрібні **обидва** UUID для GET: calculation + version).
+- **Рендер:** список у порядку відповіді API; **display_index** / **qty** як у payload (без обчислення правил ієрархії на клієнті).
+- **2026-05-12 (GAS fix):** якщо є **`calculation_id`** без **`calculation_version_id`** — чітке повідомлення **Active calculation context is incomplete: missing calculation_version_id.** (**`INCOMPLETE_ACTIVE_CONTEXT_MISSING_VERSION`**); ключ **`MODULE01_ACTIVE_CALCULATION_STATUS`** у **DocumentProperties**; operator helper **`module01SetActiveCalculationContextForCurrentTest()`** (лише властивості документа, без HTTP/Supabase) — див. аудит **`docs/AUDITS/2026-05-12_MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_01.md`**.
+- **Док:** **`docs/AUDITS/2026-05-12_MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_01.md`**, **`docs/NOW.md`**, **`docs/AUDITS/00_AUDIT_INDEX.md`**, **`docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`**, **`docs/CHANGELOG.md`**.
+- **Далі:** **Slice 02 — Add Item Form Scope Definition** (DOC); **Add Item** implementation — **не** активувати.
+
+---
+
+# 12.05.2026 — Module 01 Calculation Items API V1 — live smoke (`OPERATOR PASS` + agent attempt / `DOC`)
+
+## Operator authenticated live smoke — PASS
+
+- **Дата (operator closeout):** **12.05.2026**
+- **Вердикт:** **`CALCULATION_ITEMS_API_V1_AUTHED_LIVE_SMOKE_PASS`** — оператор виконав **`runModule01CalculationItemsAuthedSmokeTest()`** у **Google Sheets**; сесія з **`UserProperties`**; **Render** прийняв автентифіковані **add** / **list** / негативні сценарії (**`ITEM_PARENT_NOT_CONTAINER`**, **`ITEM_INVALID_QUANTITY`**).
+- **Підтверджено:** Bearer з термінала, валідація позицій, ієрархія / **`total_quantity`** / **`display_index`** у живому режимі; **токен** **не** у доках/чаті/репо.
+- **Тестові дані:** реальні рядки **items** у **Supabase** для **DRAFT** версії з display **`202605081045-00`** (тестовий контур).
+- **Оновлено (chronology resync, D-02):** **`docs/AUDITS/2026-05-08_MODULE_01_CALCULATION_ITEMS_API_V1_LIVE_SMOKE.md`**, **`docs/NOW.md`**, **`docs/AUDITS/00_AUDIT_INDEX.md`**, **`docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`**, **`docs/CHANGELOG.md`**. **Integrity:** попередня мітка **13.05.2026** для operator PASS була **помилковою** (**`RECURRING_CHRONO_DRIFT`**); **канонічна дата** operator closeout — **12.05.2026**.
+- **Далі (gate):** **Module 01 Calculation Editor GAS Client V1 — Slice 02 — Add Item Form Scope Definition** (DOC; implementation **not** opened).
+
+## Cursor/agent — route probe / blocked authed attempt (same calendar day, earlier)
+
+- **Render** **`POST /api/module01/calculations/items/add`** (no `Authorization`, `{}` body): **HTTP 200**, **`AUTH_MISSING_TOKEN`**, **`action`** **`calculation_items`** — маршрут **живий** (див. **`metadata.request_id`** в **`docs/AUDITS/2026-05-08_MODULE_01_CALCULATION_ITEMS_API_V1_LIVE_SMOKE.md`**).
+- **Сценарії 1–6** з валідним **Bearer** у середовищі **Cursor/agent** **не виконані** — **немає** operator token у env; токен **не** збережено в доках/репо.
+- **Вердикт спроби:** **`CALCULATION_ITEMS_API_V1_AUTHED_SMOKE_BLOCKED_BY_AUTH_OR_ROLE`** (незавершений authed smoke без Bearer у виконавця).
+- **Без** змін коду / GAS / HTML / SQL / DB / **Render env** на етапі agent-probe.
+
+## Далі
+
+- **Operator PASS** зафіксовано **12.05.2026** в аудиті вище; **Slice 01** — **`docs/AUDITS/2026-05-12_MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_01.md`** (**pending operator** Sidebar GET items).
+
+---
+
+# 12.05.2026 — Module 01 Calculation Editor GAS Client V1 (`DOC ONLY` / `DOC STATUS`)
+
+## Closeout — scope LOCKED (post–Gemini doctrine audit)
+
+- **Статус:** **`DOCTRINE_STABILIZED`**, **`CALCULATION_EDITOR_GAS_CLIENT_V1_SCOPE_LOCKED`** — стабільна стоп-точка зафіксована в **`docs/NOW.md`**, **`docs/00_SYSTEM/12_IDEA_MASTER_LOG.md`**, **`docs/CHANGELOG.md`**.
+- **GAS** (Sidebar editor): **не розпочато**.
+- **Items API:** **12.05.2026** **`CALCULATION_ITEMS_API_V1_AUTHED_LIVE_SMOKE_PASS`** (operator GAS smoke) — gate для **Sidebar** TASK знято; див. об’єднаний блок **`# 12.05.2026 — Module 01 Calculation Items API V1`** вище.
+- **Рекомендовано далі:** **TASK** — **Implementation Planning / Sidebar Skeleton** (authed Items smoke **PASS**).
+- **Доктрина:** **read-only Sheet preview** — **лише локально** для **Calculation Editor V1**; **майбутні** Sheets можуть бути **контрольованим вводом** через **batch/API**; **backend** лишається **джерелом правди**.
+- **Без** коду / GAS / backend / SQL / DB / змін **Render**.
+
+## Same day — Sheet read-only scope tightened (wording)
+
+- **Scope doc** **`docs/AUDITS/2026-05-08_MODULE_01_CALCULATION_EDITOR_GAS_V1_SCOPE.md`**: **read-only Sheet preview** стосується лише **Calculation Editor GAS Client V1** (preview range як локальне UI-рішення), **без** глобального правила «Sheet не редактор для всієї системи».
+- **Майбутні зрізи:** Google Sheets **можуть** бути **контрольованою поверхнею вводу** (batch ranges, form-like layout, збір у GAS, **API** після validation envelope) — **SoT** на **backend**; **заборонено** прямий Supabase з GAS, **per-cell API spam**, бізнес-логіку у формулах/GAS як authority, невалідовані мутації БД, приховану product-логіку в комірках.
+
+## Далі
+
+- Оператор: **authed Items API smoke** зафіксовано **12.05.2026** — **`docs/AUDITS/2026-05-08_MODULE_01_CALCULATION_ITEMS_API_V1_LIVE_SMOKE.md`**.
+- **TASK** на GAS Sidebar — лише після явного відкриття зрізу.
+
+---
+
+# 07.05.2026 — Calculation Editor GAS Client V1 — Sheet preview doctrine clarification (`DOC ONLY`)
+
+## Факт
+
+- **Scope doc** **`docs/AUDITS/2026-05-08_MODULE_01_CALCULATION_EDITOR_GAS_V1_SCOPE.md`**: **read-only Sheet preview** for items applies **only** to **Calculation Editor GAS Client V1** editor flow — **not** a global EDS Power rule.
+- **Future:** Google Sheets **may** be a **controlled input surface** in **scoped** tasks (**batch** ranges, form-like layouts, GAS → **API** after validation); **backend** remains source of truth; **never** direct Supabase, **per-cell** API spam, or **business logic** in formulas as authority.
+- **No** implementation (GAS/HTML/backend/SQL/DB).
+
+## Далі
+
+- **Gemini audit** of GAS Client V1 Scope (updated wording).
+
+---
+
+# 08.05.2026 — Module 01 Calculation Editor GAS Client V1 — scope definition (`DOC ONLY`)
+
+## Факт
+
+- **Scope doc:** **`docs/AUDITS/2026-05-08_MODULE_01_CALCULATION_EDITOR_GAS_V1_SCOPE.md`** — **`CALCULATION_EDITOR_GAS_CLIENT_V1_SCOPE_READY_FOR_GEMINI_AUDIT`**.
+- **Context:** Items API **deployed**; **Render** route **live** (**`AUTH_MISSING_TOKEN`** **`calculation_items`** on unauthenticated **`POST .../items/add`**); **full authenticated smoke** still **pending**.
+- **Doctrine:** **sidebar-first** Calculation Editor V1; **GAS thin client**; **for this V1 editor slice**, **Sheet** item mirror = **read-only preview** (clarified **07.05.2026** / **12.05.2026** — not a global “Sheets never accept input” rule); **backend** owns validation, hierarchy, **`total_quantity`**, **`display_index`**, **`sort_order`**, **DRAFT** checks.
+- **No** GAS/HTML implementation, **no** backend/SQL/DB/product/BOM/pricing.
+
+## Далі
+
+- **Gemini audit** of GAS Client V1 Scope; optional operator **authed** Items API smoke before implementation TASK.
+
+---
+
 # 08.05.2026 — Calculation Items API V1 — commit, push, deploy, live route verified (`CODE` + `DOC`)
 
 ## Факт

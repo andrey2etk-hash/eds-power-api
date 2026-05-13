@@ -8,7 +8,9 @@ from unittest.mock import MagicMock, patch
 from main import module01_calculation_items_add, module01_calculation_items_list
 from services.module01_calculation_items_service import (
     add_calculation_item_v1,
+    is_child_only_item_type,
     list_calculation_items_v1,
+    parent_required_for_child_item_message,
     validate_items_add_payload,
 )
 
@@ -29,6 +31,327 @@ def _norm(body: dict):
 
 
 class Module01CalculationItemsServiceTests(unittest.TestCase):
+    def test_strict_reject_child_only_types_helpers(self):
+        for t in ("KZO_CELL", "kzo_cell", "KZO", "SHOS_CABINET", "SHCHO", "SERVICE_ITEM"):
+            self.assertTrue(is_child_only_item_type(t), t)
+        self.assertFalse(is_child_only_item_type("MEDIUM_VOLTAGE_SWITCHGEAR_10KV"))
+        self.assertFalse(is_child_only_item_type("KTP"))
+        msg_kzo = parent_required_for_child_item_message("KZO_CELL")
+        self.assertIn("KZO_CELL cannot be created as root", msg_kzo)
+        self.assertIn("SHOS_CABINET cannot be created as root", parent_required_for_child_item_message("SHCHO"))
+        self.assertIn("SERVICE_ITEM cannot be created as root", parent_required_for_child_item_message("SERVICE_ITEM"))
+
+    def test_valid_root_parent_mv_10kv(self):
+        def _table(name: str):
+            m = MagicMock()
+            if name == "module01_calculation_items":
+                m.insert.return_value.execute.return_value = MagicMock(
+                    data=[
+                        {
+                            "id": PID,
+                            "calculation_id": CID,
+                            "calculation_version_id": VID,
+                            "parent_item_id": None,
+                            "item_kind": "CONTAINER",
+                            "item_type": "MEDIUM_VOLTAGE_SWITCHGEAR_10KV",
+                            "item_name": "Root",
+                            "local_quantity": 1.0,
+                            "total_quantity": 1.0,
+                            "item_status": "DRAFT",
+                            "sort_order": 100,
+                            "display_index": "1",
+                            "payload_json": {},
+                            "result_summary_json": {},
+                            "created_at": "2026-05-08T00:00:00Z",
+                            "updated_at": "2026-05-08T00:00:00Z",
+                        }
+                    ]
+                )
+            return m
+
+        mock_client = MagicMock()
+        mock_client.table.side_effect = _table
+
+        with (
+            patch(
+                "services.module01_calculation_items_service._table_fetch_single",
+                side_effect=[
+                    {"id": CID, "created_by_user_id": UID},
+                    {"id": VID, "calculation_id": CID, "status": "DRAFT"},
+                ],
+            ),
+            patch("services.module01_calculation_items_service._max_sibling_sort_order", return_value=None),
+            patch("services.module01_calculation_items_service._count_siblings", return_value=0),
+        ):
+            n = _norm(
+                {
+                    "calculation_id": CID,
+                    "calculation_version_id": VID,
+                    "parent_item_id": None,
+                    "item_kind": "CONTAINER",
+                    "item_type": "MEDIUM_VOLTAGE_SWITCHGEAR_10KV",
+                    "item_name": "Root",
+                    "local_quantity": 1,
+                }
+            )
+            data, err, _ = add_calculation_item_v1(client=mock_client, user_id=UID, normalized=n)
+
+        self.assertIsNone(err)
+        assert data is not None
+        self.assertEqual(data["item"]["item_type"], "MEDIUM_VOLTAGE_SWITCHGEAR_10KV")
+
+    def test_valid_root_parent_ktp(self):
+        def _table(name: str):
+            m = MagicMock()
+            if name == "module01_calculation_items":
+                m.insert.return_value.execute.return_value = MagicMock(
+                    data=[
+                        {
+                            "id": PID,
+                            "calculation_id": CID,
+                            "calculation_version_id": VID,
+                            "parent_item_id": None,
+                            "item_kind": "CONTAINER",
+                            "item_type": "KTP",
+                            "item_name": "KTP root",
+                            "local_quantity": 1.0,
+                            "total_quantity": 1.0,
+                            "item_status": "DRAFT",
+                            "sort_order": 100,
+                            "display_index": "1",
+                            "payload_json": {},
+                            "result_summary_json": {},
+                            "created_at": "2026-05-08T00:00:00Z",
+                            "updated_at": "2026-05-08T00:00:00Z",
+                        }
+                    ]
+                )
+            return m
+
+        mock_client = MagicMock()
+        mock_client.table.side_effect = _table
+
+        with (
+            patch(
+                "services.module01_calculation_items_service._table_fetch_single",
+                side_effect=[
+                    {"id": CID, "created_by_user_id": UID},
+                    {"id": VID, "calculation_id": CID, "status": "DRAFT"},
+                ],
+            ),
+            patch("services.module01_calculation_items_service._max_sibling_sort_order", return_value=None),
+            patch("services.module01_calculation_items_service._count_siblings", return_value=0),
+        ):
+            n = _norm(
+                {
+                    "calculation_id": CID,
+                    "calculation_version_id": VID,
+                    "parent_item_id": None,
+                    "item_kind": "CONTAINER",
+                    "item_type": "KTP",
+                    "item_name": "KTP root",
+                    "local_quantity": 1,
+                }
+            )
+            data, err, _ = add_calculation_item_v1(client=mock_client, user_id=UID, normalized=n)
+
+        self.assertIsNone(err)
+        assert data is not None
+        self.assertEqual(data["item"]["item_type"], "KTP")
+
+    def test_strict_reject_root_kzo_cell(self):
+        mock_client = MagicMock()
+        with patch(
+            "services.module01_calculation_items_service._table_fetch_single",
+            side_effect=[
+                {"id": CID, "created_by_user_id": UID},
+                {"id": VID, "calculation_id": CID, "status": "DRAFT"},
+            ],
+        ):
+            n = _norm(
+                {
+                    "calculation_id": CID,
+                    "calculation_version_id": VID,
+                    "parent_item_id": None,
+                    "item_kind": "PRODUCT",
+                    "item_type": "KZO_CELL",
+                    "item_name": "Bad root",
+                    "local_quantity": 1,
+                }
+            )
+            _, err, f = add_calculation_item_v1(client=mock_client, user_id=UID, normalized=n)
+
+        self.assertEqual(err, "PARENT_REQUIRED_FOR_CHILD_ITEM")
+        self.assertEqual(f, "parent_item_id")
+        mock_client.table.assert_not_called()
+
+    def test_strict_reject_root_legacy_kzo(self):
+        mock_client = MagicMock()
+        with patch(
+            "services.module01_calculation_items_service._table_fetch_single",
+            side_effect=[
+                {"id": CID, "created_by_user_id": UID},
+                {"id": VID, "calculation_id": CID, "status": "DRAFT"},
+            ],
+        ):
+            n = _norm(
+                {
+                    "calculation_id": CID,
+                    "calculation_version_id": VID,
+                    "parent_item_id": None,
+                    "item_kind": "CONTAINER",
+                    "item_type": "KZO",
+                    "item_name": "Legacy root",
+                    "local_quantity": 1,
+                }
+            )
+            _, err, f = add_calculation_item_v1(client=mock_client, user_id=UID, normalized=n)
+
+        self.assertEqual(err, "PARENT_REQUIRED_FOR_CHILD_ITEM")
+        self.assertEqual(f, "parent_item_id")
+
+    def test_strict_reject_root_shos_cabinet(self):
+        mock_client = MagicMock()
+        with patch(
+            "services.module01_calculation_items_service._table_fetch_single",
+            side_effect=[
+                {"id": CID, "created_by_user_id": UID},
+                {"id": VID, "calculation_id": CID, "status": "DRAFT"},
+            ],
+        ):
+            n = _norm(
+                {
+                    "calculation_id": CID,
+                    "calculation_version_id": VID,
+                    "parent_item_id": None,
+                    "item_kind": "PRODUCT",
+                    "item_type": "SHOS_CABINET",
+                    "item_name": "Bad",
+                    "local_quantity": 1,
+                }
+            )
+            _, err, _ = add_calculation_item_v1(client=mock_client, user_id=UID, normalized=n)
+
+        self.assertEqual(err, "PARENT_REQUIRED_FOR_CHILD_ITEM")
+
+    def test_strict_reject_root_shcho_alias(self):
+        mock_client = MagicMock()
+        with patch(
+            "services.module01_calculation_items_service._table_fetch_single",
+            side_effect=[
+                {"id": CID, "created_by_user_id": UID},
+                {"id": VID, "calculation_id": CID, "status": "DRAFT"},
+            ],
+        ):
+            n = _norm(
+                {
+                    "calculation_id": CID,
+                    "calculation_version_id": VID,
+                    "parent_item_id": None,
+                    "item_kind": "PRODUCT",
+                    "item_type": "SHCHO",
+                    "item_name": "Bad",
+                    "local_quantity": 1,
+                }
+            )
+            _, err, _ = add_calculation_item_v1(client=mock_client, user_id=UID, normalized=n)
+
+        self.assertEqual(err, "PARENT_REQUIRED_FOR_CHILD_ITEM")
+
+    def test_strict_reject_root_service_item(self):
+        mock_client = MagicMock()
+        with patch(
+            "services.module01_calculation_items_service._table_fetch_single",
+            side_effect=[
+                {"id": CID, "created_by_user_id": UID},
+                {"id": VID, "calculation_id": CID, "status": "DRAFT"},
+            ],
+        ):
+            n = _norm(
+                {
+                    "calculation_id": CID,
+                    "calculation_version_id": VID,
+                    "parent_item_id": None,
+                    "item_kind": "SERVICE",
+                    "item_type": "SERVICE_ITEM",
+                    "item_name": "Bad",
+                    "local_quantity": 1,
+                }
+            )
+            _, err, _ = add_calculation_item_v1(client=mock_client, user_id=UID, normalized=n)
+
+        self.assertEqual(err, "PARENT_REQUIRED_FOR_CHILD_ITEM")
+
+    def test_valid_child_kzo_cell_under_mv_parent(self):
+        def _table(name: str):
+            m = MagicMock()
+            if name == "module01_calculation_items":
+                m.insert.return_value.execute.return_value = MagicMock(
+                    data=[
+                        {
+                            "id": "55555555-5555-5555-5555-555555555555",
+                            "calculation_id": CID,
+                            "calculation_version_id": VID,
+                            "parent_item_id": PID,
+                            "item_kind": "PRODUCT",
+                            "item_type": "KZO_CELL",
+                            "item_name": "Cell",
+                            "local_quantity": 2.0,
+                            "total_quantity": 4.0,
+                            "item_status": "DRAFT",
+                            "sort_order": 100,
+                            "display_index": "1.1",
+                            "payload_json": {},
+                            "result_summary_json": {},
+                            "created_at": "2026-05-08T00:00:00Z",
+                            "updated_at": "2026-05-08T00:00:00Z",
+                        }
+                    ]
+                )
+            return m
+
+        mock_client = MagicMock()
+        mock_client.table.side_effect = _table
+
+        with (
+            patch(
+                "services.module01_calculation_items_service._table_fetch_single",
+                side_effect=[
+                    {"id": CID, "created_by_user_id": UID},
+                    {"id": VID, "calculation_id": CID, "status": "DRAFT"},
+                    {
+                        "id": PID,
+                        "calculation_id": CID,
+                        "calculation_version_id": VID,
+                        "parent_item_id": None,
+                        "item_kind": "CONTAINER",
+                        "item_type": "MEDIUM_VOLTAGE_SWITCHGEAR_10KV",
+                        "total_quantity": 2.0,
+                        "display_index": "1",
+                    },
+                ],
+            ),
+            patch("services.module01_calculation_items_service._max_sibling_sort_order", return_value=None),
+            patch("services.module01_calculation_items_service._count_siblings", return_value=0),
+        ):
+            n = _norm(
+                {
+                    "calculation_id": CID,
+                    "calculation_version_id": VID,
+                    "parent_item_id": PID,
+                    "item_kind": "PRODUCT",
+                    "item_type": "KZO_CELL",
+                    "item_name": "Cell",
+                    "local_quantity": 2,
+                }
+            )
+            data, err, _ = add_calculation_item_v1(client=mock_client, user_id=UID, normalized=n)
+
+        self.assertIsNone(err)
+        assert data is not None
+        self.assertEqual(data["item"]["item_type"], "KZO_CELL")
+        self.assertEqual(data["item"]["total_quantity"], 4.0)
+
     def test_add_top_level_container(self):
         def _table(name: str):
             m = MagicMock()
@@ -518,6 +841,60 @@ class Module01CalculationItemsEndpointTests(unittest.TestCase):
 
         _, body = _decode(response)
         self.assertEqual(body["error"]["error_code"], "CALCULATION_NOT_FOUND")
+
+    def test_add_parent_required_error_message_on_endpoint(self):
+        future = (datetime.now(UTC) + timedelta(hours=1)).isoformat()
+
+        def _fetch_single(_client, table: str, *, select: str, filters: dict):
+            if table == "module01_user_sessions":
+                return {
+                    "user_id": UID,
+                    "terminal_id": "10578103-6c44-4eaf-a825-402d1fc5f7a6",
+                    "expires_at": future,
+                    "revoked_at": None,
+                }
+            if table == "module01_users":
+                return {"id": UID, "status": "ACTIVE"}
+            if table == "module01_user_terminals":
+                return {
+                    "id": "10578103-6c44-4eaf-a825-402d1fc5f7a6",
+                    "user_id": UID,
+                    "status": "ACTIVE",
+                }
+            return None
+
+        mock_client = MagicMock()
+        with (
+            patch.dict(
+                "os.environ",
+                {"SUPABASE_URL": "https://x.co", "SUPABASE_SERVICE_ROLE_KEY": "k", "AUTH_SESSION_TTL_HOURS": "12"},
+                clear=False,
+            ),
+            patch("main._auth_get_supabase_client", return_value=mock_client),
+            patch("main._auth_fetch_single", side_effect=_fetch_single),
+            patch(
+                "main.add_calculation_item_v1",
+                return_value=(None, "PARENT_REQUIRED_FOR_CHILD_ITEM", "parent_item_id"),
+            ),
+        ):
+            response = module01_calculation_items_add(
+                "Bearer tok",
+                {
+                    "calculation_id": CID,
+                    "calculation_version_id": VID,
+                    "item_kind": "PRODUCT",
+                    "item_type": "SHCHO",
+                    "item_name": "x",
+                    "local_quantity": 1,
+                },
+            )
+
+        _, body = _decode(response)
+        self.assertEqual(body["status"], "error")
+        self.assertEqual(body["error"]["error_code"], "PARENT_REQUIRED_FOR_CHILD_ITEM")
+        self.assertEqual(body["error"]["source_field"], "parent_item_id")
+        self.assertIn("SHOS_CABINET cannot be created as root", body["error"]["message"])
+        self.assertEqual(body["error"]["module"], "MODULE_01")
 
     def test_add_success_envelope(self):
         future = (datetime.now(UTC) + timedelta(hours=1)).isoformat()

@@ -15,6 +15,18 @@ from services.module01_calculations_service import _is_unique_violation, _table_
 
 ALLOWED_ITEM_KINDS = frozenset({"CONTAINER", "PRODUCT", "SERVICE", "MANUAL", "CUSTOM"})
 
+# STRICT_REJECT (DOC_CASCADE_VERIFIED_STRICT_REJECT_LOCKED): these item_type values are child-only
+# and must not be created with parent_item_id null. Legacy aliases KZO / SHCHO map to KZO_CELL / SHOS_CABINET.
+_CHILD_ONLY_ITEM_TYPES = frozenset(
+    {
+        "KZO_CELL",
+        "SHOS_CABINET",
+        "SERVICE_ITEM",
+        "KZO",
+        "SHCHO",
+    }
+)
+
 Q4 = Decimal("0.0001")
 
 
@@ -26,6 +38,23 @@ def _is_uuid_str(value: Any) -> bool:
     except ValueError:
         return False
     return True
+
+
+def is_child_only_item_type(item_type: str) -> bool:
+    """True if item_type (case-insensitive) is a child-only canonical or legacy alias."""
+    if not isinstance(item_type, str) or not item_type.strip():
+        return False
+    return item_type.strip().upper() in _CHILD_ONLY_ITEM_TYPES
+
+
+def parent_required_for_child_item_message(item_type: str) -> str:
+    """Human-readable STRICT_REJECT message; source_field is always parent_item_id on API."""
+    key = item_type.strip().upper() if isinstance(item_type, str) else ""
+    if key in ("SHOS_CABINET", "SHCHO"):
+        return "SHOS_CABINET cannot be created as root. Select or create parent product first."
+    if key == "SERVICE_ITEM":
+        return "SERVICE_ITEM cannot be created as root. Select or create parent product first."
+    return "KZO_CELL cannot be created as root. Select or create parent product first."
 
 
 def _dec_quantity(value: Any) -> Decimal | None:
@@ -222,6 +251,9 @@ def add_calculation_item_v1(
         return None, "CALCULATION_VERSION_NOT_FOUND", None
     if str(ver.get("status") or "").upper() != "DRAFT":
         return None, "VERSION_NOT_DRAFT", None
+
+    if parent_item_id is None and is_child_only_item_type(str(normalized.get("item_type") or "")):
+        return None, "PARENT_REQUIRED_FOR_CHILD_ITEM", "parent_item_id"
 
     local_q: Decimal = normalized["local_quantity"]
     total_q: Decimal
