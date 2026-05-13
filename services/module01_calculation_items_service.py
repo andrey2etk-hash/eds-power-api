@@ -1,4 +1,4 @@
-"""Module 01 — Calculation Items API V1 (add + list). No product/engine/GAS. Bounded slice."""
+"""Module 01 — Calculation Items API V1 (add + list + delete). No product/engine/GAS. Bounded slice."""
 
 from __future__ import annotations
 
@@ -124,6 +124,39 @@ def validate_items_add_payload(body: Any) -> tuple[dict[str, Any] | None, str | 
         None,
         None,
     )
+
+
+def validate_items_delete_payload(body: Any) -> tuple[dict[str, Any] | None, str | None, str | None]:
+    """Return (normalized, error_code, source_field). See audit: invalid UUIDs use ITEM_DELETE_FAILED + field."""
+    if not isinstance(body, dict):
+        return None, "ITEM_DELETE_FAILED", None
+    cid = body.get("calculation_id")
+    if not _is_uuid_str(cid):
+        return None, "ITEM_DELETE_FAILED", "calculation_id"
+    vid = body.get("calculation_version_id")
+    if not _is_uuid_str(vid):
+        return None, "ITEM_DELETE_FAILED", "calculation_version_id"
+    iid = body.get("item_id")
+    if not _is_uuid_str(iid):
+        return None, "ITEM_DELETE_FAILED", "item_id"
+    return (
+        {
+            "calculation_id": str(cid).strip(),
+            "calculation_version_id": str(vid).strip(),
+            "item_id": str(iid).strip(),
+        },
+        None,
+        None,
+    )
+
+
+def _item_has_children_in_version(client: Client, *, version_id: str, parent_item_id: str) -> bool:
+    q = client.table("module01_calculation_items").select("id")
+    q = q.eq("calculation_version_id", version_id)
+    q = q.eq("parent_item_id", parent_item_id)
+    result = q.limit(1).execute()
+    rows = getattr(result, "data", None)
+    return isinstance(rows, list) and len(rows) > 0
 
 
 def _max_sibling_sort_order(client: Client, *, version_id: str, parent_item_id: str | None) -> int | None:
@@ -326,6 +359,96 @@ def add_calculation_item_v1(
         return None, "ITEM_CREATE_FAILED", None
     created = rows[0]
     return {"item": _normalize_item_row(created)}, None, None
+
+
+def delete_calculation_item_v1(
+    *,
+    client: Client,
+    user_id: str,
+    normalized: dict[str, Any],
+) -> tuple[dict[str, Any] | None, str | None, str | None]:
+    """
+    Hard-delete one item in a DRAFT version. No reindex, no cascade.
+    Returns (data, error_code, source_field).
+    Wrong calculation/version for an existing row: ITEM_NOT_FOUND (privacy).
+    """
+    calculation_id = normalized["calculation_id"]
+    version_id = normalized["calculation_version_id"]
+    item_id = normalized["item_id"]
+
+    calc = _table_fetch_single(
+        client,
+        "module01_calculations",
+        select="id,created_by_user_id",
+        filters={"id": calculation_id},
+    )
+    if calc is None or str(calc.get("created_by_user_id") or "") != user_id:
+        return None, "CALCULATION_NOT_FOUND", None
+
+    ver = _table_fetch_single(
+        client,
+        "module01_calculation_versions",
+        select="id,calculation_id,status",
+        filters={"id": version_id},
+    )
+    if ver is None or str(ver.get("calculation_id") or "") != calculation_id:
+        return None, "CALCULATION_VERSION_NOT_FOUND", None
+    if str(ver.get("status") or "").upper() != "DRAFT":
+        return None, "VERSION_NOT_DRAFT", None
+
+    item = _table_fetch_single(
+        client,
+        "module01_calculation_items",
+        select="id,calculation_id,calculation_version_id,parent_item_id,display_index,item_type,item_name,sort_order",
+        filters={"id": item_id},
+    )
+    if item is None:
+        return None, "ITEM_NOT_FOUND", "item_id"
+    if str(item.get("calculation_id") or "") != calculation_id:
+        return None, "ITEM_NOT_FOUND", "item_id"
+    if str(item.get("calculation_version_id") or "") != version_id:
+        return None, "ITEM_NOT_FOUND", "item_id"
+
+    if _item_has_children_in_version(client, version_id=version_id, parent_item_id=item_id):
+        return None, "ITEM_HAS_CHILDREN", "item_id"
+
+    di_raw = item.get("display_index")
+    deleted_display_index = "" if di_raw is None else str(di_raw)
+
+    parent_raw = item.get("parent_item_id")
+    parent_out: str | None = str(parent_raw).strip() if parent_raw else None
+
+    try:
+        del_res = (
+            client.table("module01_calculation_items")
+            .delete()
+            .eq("id", item_id)
+            .eq("calculation_version_id", version_id)
+            .eq("calculation_id", calculation_id)
+            .execute()
+        )
+    except Exception:  # noqa: BLE001
+        return None, "ITEM_DELETE_FAILED", None
+
+    del_rows = getattr(del_res, "data", None)
+    if not isinstance(del_rows, list) or not del_rows:
+        return None, "ITEM_NOT_FOUND", "item_id"
+
+    itype = item.get("item_type")
+    iname = item.get("item_name")
+    data: dict[str, Any] = {
+        "deleted_item_id": item_id,
+        "calculation_id": calculation_id,
+        "calculation_version_id": version_id,
+        "parent_item_id": parent_out,
+        "deleted_display_index": deleted_display_index,
+        "refresh_required": True,
+    }
+    if isinstance(itype, str) and itype.strip():
+        data["deleted_item_type"] = itype.strip()
+    if isinstance(iname, str) and iname.strip():
+        data["deleted_item_name"] = iname.strip()
+    return data, None, None
 
 
 def list_calculation_items_v1(

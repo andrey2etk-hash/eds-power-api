@@ -106,19 +106,28 @@ Notes:
 - **Gemini PASS** accepted — **`docs/AUDITS/2026-05-13_MODULE_01_PARENT_PRODUCT_HIERARCHY_DOC_CASCADE_GEMINI_PASS.md`** — verdict **`DOC_CASCADE_VERIFIED_STRICT_REJECT_LOCKED`**.
 - **`STRICT_REJECT`** **locked** as **approved production policy** — **`KZO_CELL`** / legacy root **`KZO`** (child-only interpretation) **not** root; **parent product** (**`MEDIUM_VOLTAGE_*`**, **`KTP`**) mandatory before children.
 - **Doc Cascade** applied (**2026-05-13**) across hierarchical doctrine, editor technical spec, versioned editor flow, Slice 02 legacy scope, parent doctrine, editor V1 scope, registry; **`item_kind`** mapping per registry (**no** **`ITEM`** in CHECK assumptions unless **future/open**).
-- **Implementation** — **API `STRICT_REJECT` enforcement** — **`docs/AUDITS/2026-05-13_MODULE_01_API_STRICT_REJECT_ENFORCEMENT.md`** — **Render route + auth gate verified**; **full authenticated suite pending operator** (see audit **Render Verification**).
+- **Implementation** — **API `STRICT_REJECT` enforcement** — **`docs/AUDITS/2026-05-13_MODULE_01_API_STRICT_REJECT_ENFORCEMENT.md`** — **`API_STRICT_REJECT_RENDER_VERIFIED`** (operator smoke **2026-05-13**).
 
 ### MODULE_01_API_STRICT_REJECT_ENFORCEMENT
 
 Status:
 
-- `API_STRICT_REJECT_RENDER_ROUTE_AND_AUTH_GATE_VERIFIED`
-- `API_STRICT_REJECT_RENDER_FULL_SUITE_PENDING_OPERATOR_SESSION`
+- `API_STRICT_REJECT_RENDER_VERIFIED`
 
 Notes:
 
-- **`docs/AUDITS/2026-05-13_MODULE_01_API_STRICT_REJECT_ENFORCEMENT.md`** — **`POST .../items/add`**: **`PARENT_REQUIRED_FOR_CHILD_ITEM`** when child-only **`item_type`** at root (**local pytest PASS**). **Render:** route live; **invalid Bearer** → **`AUTH_INVALID_TOKEN`**, **`action`:** **`calculation_items`**. **Authenticated** negative/positive **STRICT_REJECT** rows **not** run in agent env (**no token**).
-- **Next:** operator completes **Render Verification** table (Tests 1–7) → then set **`API_STRICT_REJECT_RENDER_VERIFIED`** in audit + Idea Notes. **GAS** / **Delete Item** = **separate** planning/tasks.
+- **`docs/AUDITS/2026-05-13_MODULE_01_API_STRICT_REJECT_ENFORCEMENT.md`** — Render **operator** smoke: Tests **1–4** **PASS**; **`PARENT_REQUIRED_FOR_CHILD_ITEM`** live for root **`KZO_CELL`** / **`KZO`**; valid MV parent root + **`KZO_CELL`** child **PASS**. **Ref:** **`15a8bf5`**. **No** GAS/UI/SQL/schema/legacy delete in closeout task.
+- **Next (downstream):** **Module 01 Delete Item** — **Render verification** — **`POST /api/module01/calculations/items/delete`** — see **`MODULE_01_DELETE_ITEM_SLICE_03`** / **`docs/AUDITS/2026-05-13_MODULE_01_DELETE_ITEM_BACKEND_IMPLEMENTATION.md`**.
+
+### MODULE_01_DELETE_ITEM_SLICE_03
+
+Status:
+
+- `BACKEND_IMPLEMENTED_PENDING_RENDER_VERIFICATION`
+
+Notes:
+
+- **Scope:** **`docs/AUDITS/2026-05-13_MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_03_DELETE_ITEM_SCOPE.md`**. **Design:** **`docs/AUDITS/2026-05-13_MODULE_01_DELETE_ITEM_BACKEND_IMPLEMENTATION_DESIGN.md`**. **Implementation closeout:** **`docs/AUDITS/2026-05-13_MODULE_01_DELETE_ITEM_BACKEND_IMPLEMENTATION.md`** — **`DELETE_ITEM_BACKEND_IMPLEMENTED_PENDING_RENDER_VERIFICATION`**. **`POST /api/module01/calculations/items/delete`**, **hard** delete, **DRAFT**, **`ITEM_HAS_CHILDREN`**, **`ITEM_NOT_FOUND`** on version/calc mismatch (**privacy**), **`NO_REINDEX_ON_DELETE`**. **Backend only**; **GAS** delete UI **later**. **Next:** **Render** authenticated verification.
 
 ### MODULE_01_PARENT_PRODUCT_HIERARCHY_RECONCILIATION
 
@@ -133,7 +142,6 @@ Notes:
 - **`docs/ARCHITECTURE/EDS_POWER_MODULE_01_PARENT_PRODUCT_HIERARCHY_DOCTRINE.md`** — **KZO_CELL** not root; parents **`MEDIUM_VOLTAGE_SWITCHGEAR_10KV`**, **`MEDIUM_VOLTAGE_SWITCHGEAR_6KV`**, **`KTP`**; **SHOS** child under parent.
 - **`docs/AUDITS/2026-05-13_MODULE_01_PARENT_PRODUCT_HIERARCHY_RECONCILIATION_MEMO.md`** — cross-check vs **`MODULE_01_HIERARCHICAL_CALCULATION_ITEMS_DOCTRINE`**, **`MODULE_01_CALCULATION_EDITOR_TECHNICAL_SPEC_V1`**, **`MODULE_01_CALCULATION_RECORD_VERSIONED_EDITOR_FLOW_V1`**, **Slice 02** Add Item / **KZO-first**; **conflict matrix** + **reconciliation options**; **implementation blockers** before code.
 - **`docs/AUDITS/2026-05-13_GEMINI_CRITICAL_CROSS_AUDIT_MODULE_01_PARENT_PRODUCT_HIERARCHY.md`** — **`PASS_WITH_DOC_FIXES`**; **registry** prerequisite — **`MODULE_01_ITEM_TYPE_REGISTRY_V1`** (**`ITEM_TYPE_REGISTRY_V1_LOCKED_FOR_DOC_CASCADE`**).
-- **2026-05-13:** **Parent Product Hierarchy Doc Cascade** — **Gemini PASS** — **`DOC_CASCADE_VERIFIED_STRICT_REJECT_LOCKED`**; **API `STRICT_REJECT` enforcement** — **`API_STRICT_REJECT_RENDER_ROUTE_AND_AUTH_GATE_VERIFIED`** / **`API_STRICT_REJECT_RENDER_FULL_SUITE_PENDING_OPERATOR_SESSION`** — **`docs/AUDITS/2026-05-13_MODULE_01_API_STRICT_REJECT_ENFORCEMENT.md`**.
 
 ### MODULE_01_GAS_UX_BOUNDARY_DECISION_LOCK
 
@@ -2015,11 +2023,11 @@ Self-checkout analogy:
 
 EDS Power role sketch (illustrative — **not** execution scope now):
 
-- Майстер — only their operation  
-- Конструктор — only required engineering inputs  
-- Менеджер — commercial flow  
-- Комплектувальник — pick task  
-- Керівник — analytics / bottlenecks  
+- Майстер — only their operation
+- Конструктор — only required engineering inputs
+- Менеджер — commercial flow
+- Комплектувальник — pick task
+- Керівник — analytics / bottlenecks
 - Бухгалтерія — accounting truth **when role requires exposure to it**
 
 Possible future implications (**no** TASK until renormalized):

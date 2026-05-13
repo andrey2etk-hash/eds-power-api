@@ -22,9 +22,11 @@ from services.module01_sidebar_service import build_module01_sidebar_data
 from services.module01_calculations_service import create_calculation_v1, validate_create_payload
 from services.module01_calculation_items_service import (
     add_calculation_item_v1,
+    delete_calculation_item_v1,
     list_calculation_items_v1,
     parent_required_for_child_item_message,
     validate_items_add_payload,
+    validate_items_delete_payload,
 )
 import services.menu_registry_service as _menu_registry_svc
 
@@ -2559,6 +2561,9 @@ _MODULE01_ITEMS_ERROR_MESSAGES: dict[str, str] = {
     "CALCULATION_NOT_FOUND": "Calculation not found.",
     "CALCULATION_VERSION_NOT_FOUND": "Calculation version not found.",
     "VERSION_NOT_DRAFT": "Version is not editable (not DRAFT).",
+    "ITEM_NOT_FOUND": "Item not found.",
+    "ITEM_HAS_CHILDREN": "Item has child items. Delete children first.",
+    "ITEM_DELETE_FAILED": "Could not delete item.",
     "ITEM_PARENT_NOT_FOUND": "Parent item not found.",
     "ITEM_PARENT_VERSION_MISMATCH": "Parent item does not belong to this calculation version.",
     "ITEM_PARENT_NOT_CONTAINER": "Parent must be a CONTAINER.",
@@ -2614,6 +2619,68 @@ def module01_calculation_items_add(
         msg = _MODULE01_ITEMS_ERROR_MESSAGES.get(svc_err, "Item add failed.")
         if svc_err == "PARENT_REQUIRED_FOR_CHILD_ITEM":
             msg = parent_required_for_child_item_message(str(normalized.get("item_type") or ""))
+        return _module01_calculation_items_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code=svc_err,
+            message=msg,
+            source_field=src_field,
+        )
+
+    metadata = _auth_timed_metadata(request_id, started_at)
+    metadata["menu_source"] = "registry"
+    return JSONResponse(
+        status_code=200,
+        content={
+            "status": "success",
+            "data": data,
+            "error": None,
+            "metadata": metadata,
+        },
+    )
+
+
+@app.post("/api/module01/calculations/items/delete")
+def module01_calculation_items_delete(
+    authorization: str | None = Header(default=None, alias="Authorization"),
+    payload: dict[str, Any] | None = None,
+):
+    ctx, err = _auth_validate_session_context(authorization, action=AUTH_CALCULATION_ITEMS_ACTION)
+    if err is not None:
+        return err
+
+    body = payload if isinstance(payload, dict) else {}
+    started_at = ctx["started_at"]
+    request_id = ctx["request_id"]
+    client = ctx["client"]
+    user_id = ctx["user_id"]
+
+    normalized, val_err, field = validate_items_delete_payload(body)
+    if val_err:
+        return _module01_calculation_items_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code=val_err,
+            message=_MODULE01_ITEMS_ERROR_MESSAGES.get(val_err, "Item delete failed."),
+            source_field=field,
+        )
+
+    try:
+        data, svc_err, src_field = delete_calculation_item_v1(
+            client=client,
+            user_id=user_id,
+            normalized=normalized,
+        )
+    except Exception:  # noqa: BLE001
+        return _module01_calculation_items_error_response(
+            request_id=request_id,
+            started_at=started_at,
+            error_code="ITEM_DELETE_FAILED",
+            message=_MODULE01_ITEMS_ERROR_MESSAGES["ITEM_DELETE_FAILED"],
+        )
+
+    if svc_err:
+        msg = _MODULE01_ITEMS_ERROR_MESSAGES.get(svc_err, "Item delete failed.")
         return _module01_calculation_items_error_response(
             request_id=request_id,
             started_at=started_at,

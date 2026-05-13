@@ -6,6 +6,88 @@
 
 ---
 
+# 13.05.2026 — Module 01 Delete Item — backend endpoint implemented (`BACKEND ONLY`)
+
+## Факт
+
+- **`POST /api/module01/calculations/items/delete`** — **hard** delete одного рядка **`module01_calculation_items`**, лише **`DRAFT`**, **`ITEM_HAS_CHILDREN`** якщо є дочірні в тій самій версії; **без** cascade / bulk / soft delete / reindex.
+- **`services/module01_calculation_items_service.py`**: **`validate_items_delete_payload`**, **`delete_calculation_item_v1`**; **`main.py`**: маршрут + конверт помилок **Module 01 items**; **`tests/test_module01_calculation_items_api.py`**: тести A–I + endpoint — **`pytest -q`** **36 passed** (локально).
+- Збіг **calculation_version_id** / **calculation_id** для існуючого item → **`ITEM_NOT_FOUND`** (**privacy**). Невалідні UUID у JSON → **`ITEM_DELETE_FAILED`** + **`source_field`**.
+- **Без** GAS / UI / SQL / міграцій / Render env.
+
+## Далі
+
+- **Render verification** автентифікованого **`POST .../items/delete`**. **GAS** delete — окремий TASK.
+
+---
+
+# 13.05.2026 — Module 01 Delete Item — backend implementation design (`DOC ONLY`)
+
+## Факт
+
+- Створено **`docs/AUDITS/2026-05-13_MODULE_01_DELETE_ITEM_BACKEND_IMPLEMENTATION_DESIGN.md`** — **`DELETE_ITEM_BACKEND_DESIGN_READY_FOR_GEMINI_AUDIT`**.
+- Задокументовано **`POST /api/module01/calculations/items/delete`**, тіло запиту (**`calculation_id`**, **`calculation_version_id`**, **`item_id`**, опційно **`confirm`**), конверт відповіді та **success** **`data`** (включно з **`refresh_required`**).
+- Зафіксовано **послідовність валідації** (розрахунок → версія **DRAFT** → рядок → лічильник дочірніх → **`ITEM_HAS_CHILDREN`** / delete; **без** reindex і cascade).
+- Намічено сценарії **pytest** (A–I): листок, порожній батько, батько з дітьми, не-DRAFT, mismatch, подвійне видалення, legacy orphan, перевірка **без** зміни **`display_index`** / **`sort_order`** у siblings.
+- **Імплементація не виконувалась** — без коду маршруту, GAS, SQL, міграцій, видалення рядків.
+
+## Далі
+
+- **Gemini audit** **backend implementation design** — **DOC ONLY**; код лише після окремого TASK після **PASS** аудиту.
+
+---
+
+# 13.05.2026 — Module 01 Delete Item Slice 03 — scope critic PASS / policy locked (`DOC ONLY`)
+
+## Факт
+
+- **Critic / Gemini** scope audit: **PASS** — **Ready for Implementation Planning** — **`docs/AUDITS/2026-05-13_MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_03_DELETE_ITEM_SCOPE.md`** § *Gemini Scope Audit Closeout*.
+- **`BLOCK_PARENT_DELETE_IF_CHILDREN_EXIST`** прийнято оператором; **`ITEM_HAS_CHILDREN`** зафіксовано як код помилки для «батько має дочірні елементи».
+- **Hard delete** прийнято для **MVP**.
+- **Напрям endpoint:** перевага **`POST /api/module01/calculations/items/delete`** над HTTP **`DELETE`** — зручність для **GAS** **`UrlFetchApp`** та корпоративних **proxy**.
+- **`NO_REINDEX_ON_DELETE`** прийнято.
+- Після успішного видалення клієнт **перезавантажує** список (**GET** items).
+- **MVP:** лише **одиничне** видалення — **без** bulk / cascade / undo / soft delete.
+- **Імплементація не виконувалась** — без backend / GAS / SQL / БД / видалення рядків у цьому завданні.
+
+## Далі
+
+- **Superseded** by backend implementation design doc above; **next:** **Gemini audit** of **`docs/AUDITS/2026-05-13_MODULE_01_DELETE_ITEM_BACKEND_IMPLEMENTATION_DESIGN.md`**.
+
+---
+
+# 13.05.2026 — Module 01 Calculation Editor Slice 03 — Delete Item scope (`DOC ONLY`)
+
+## Факт
+
+- **`API_STRICT_REJECT_RENDER_VERIFIED`** прийнято як **передумову** для плану **безпечного видалення** — **`docs/AUDITS/2026-05-13_MODULE_01_API_STRICT_REJECT_ENFORCEMENT.md`**.
+- **Зафіксовано scope** Delete Item (Slice 03): **`docs/AUDITS/2026-05-13_MODULE_01_CALCULATION_EDITOR_GAS_CLIENT_V1_SLICE_03_DELETE_ITEM_SCOPE.md`** — вердикти **`SLICE_03_DELETE_ITEM_SCOPE_DRAFTED`**, **`IMPLEMENTATION_NOT_AUTHORIZED_YET`**.
+- **Запропоновано** політику **safe delete**: лише **DRAFT**, один **hard delete** рядка, **без cascade**; типово **`BLOCK_PARENT_DELETE_IF_CHILDREN_EXIST`** з **`ITEM_HAS_CHILDREN`**; **`NO_REINDEX_ON_DELETE`**; валідація на **backend**; **GAS** — тонкий клієнт.
+- У цьому завданні **немає** backend / GAS / UI / SQL / БД / міграцій / Render — лише документація.
+
+## Далі
+
+- **Superseded** by critic **PASS** closeout above — **`SLICE_03_DELETE_ITEM_SCOPE_LOCKED_FOR_IMPLEMENTATION_PLANNING`**; **next:** **Backend Implementation Design** — **DOC ONLY**.
+
+---
+
+# 13.05.2026 — Module 01 API STRICT_REJECT — operator Render smoke closeout (`DOC ONLY`)
+
+## Факт
+
+- **Operator-authenticated** smoke on **`POST /api/module01/calculations/items/add`** (**`https://eds-power-api.onrender.com`**) — **PASS** — **`docs/AUDITS/2026-05-13_MODULE_01_API_STRICT_REJECT_ENFORCEMENT.md`** § *Operator smoke closeout*.
+- **Tests 1–2:** root **`KZO_CELL`** / legacy **`KZO`** with **`parent_item_id`** null → **`PARENT_REQUIRED_FOR_CHILD_ITEM`**, **`source_field`** **`parent_item_id`**.
+- **Test 3:** root **`CONTAINER` + `MEDIUM_VOLTAGE_SWITCHGEAR_10KV`** → **`success`**, **`parent_item_id`** null.
+- **Test 4:** **`KZO_CELL`** child under Test **3** parent → **`success`**, child **`display_index`** pattern.
+- **Verdict:** **`API_STRICT_REJECT_RENDER_VERIFIED`**. **Implementation ref:** **`15a8bf5`**.
+- **No** GAS / UI / SQL / DB schema / migration / Render env / legacy mutation / row delete in this task.
+
+## Далі
+
+- **Delete Item / Slice 03:** scope **critic PASS** — policy **locked** — **`SLICE_03_DELETE_ITEM_SCOPE_LOCKED_FOR_IMPLEMENTATION_PLANNING`** — **next:** **Backend Implementation Design** (**DOC ONLY**). **Module 01 Parent-First UI Correction Planning** — **окремо** — **not** auto-implementation.
+
+---
+
 # 13.05.2026 — Module 01 API STRICT_REJECT — Render partial verification (route + auth gate)
 
 ## Факт
@@ -1603,7 +1685,7 @@ Next allowed step:
 
 # 06.05.2026 — Module 01 Auth Login Endpoint Implementation Plan created (doc-only)
 
-## Факт (**bounded implementation planning / no code**) 
+## Факт (**bounded implementation planning / no code**)
 
 - Module 01 Auth Login Endpoint Implementation Plan created.
 - Backend-first bounded login scope defined for `POST /api/module01/auth/login`.
